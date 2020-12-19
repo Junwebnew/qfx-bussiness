@@ -214,23 +214,6 @@ export default {
             } else {
                 return 0
             }
-        },
-
-
-
-        returnSendResult(obj) {
-            if (obj.sendEmailResult === '1') {
-                return '成功'
-            }
-            else if (obj.sendEmailResult === '0') {
-                return '失败：' + obj.sendEmailFaileureReason
-            }
-            return ''
-        },
-        //表格用户选中
-        initTable() {
-            this.pageNo = 1;
-            this.getList()
         }
     },
     beforeDestroy() {
