@@ -79,7 +79,7 @@
                 <el-table-column label="驳回日期" width='200px' align='center' prop='rejectDate' />
 
                 <el-table-column label="注册日期" width='200px' align='center' prop='trademarkApplicationDate' />
-
+                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="相关操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
@@ -179,88 +179,7 @@ export default {
         checkDetail(obj) {
 
             let key = this.$route.name + obj.id
-            this.$router.push('/resources/reject/detail')
-        },
-        handleSizeChange(val) {
-            this.pageSize = val;
-            this.pageNo = 1;
-            this.getList()
-        },
-        handleCurrentChange(val) {
-            this.pageNo = val || 1;
-            this.getList()
-        },
-        //判断是否已领过
-        isReceive(id) {
-            return this.$axios.get(`api-qfx/opportunity/ifCollectioned?id=${id}`)
-        },
-        //分配资源
-        allotBussindess(bussId, userId) {
-            //参数userId，领取时不传,分配需要 
-            let str = userId ? `&userId=${userId}` : ''
-            this.isReceive(bussId)
-                .then(isMsg => {
-                    if (isMsg.code == 200) {
-                        return this.$axios.get(`api-qfx/opportunity/distributionAndCollection?id=${bussId}` + str)
-                    }
-                    else {
-                        this.$message.warning(isMsg.message)
-                    }
-                })
-                .then(res => {
-                    if (res && res.code == 200) {
-                        this.$message.success(str ? '分配成功！' : '领取成功！');
-                        this.initTable()
-                    }
-                })
-        },
-        //发送邮件
-        sendEmailFunc(id) {
-
-            this.$confirm(`是否发送邮件?`, '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then((btn) => {
-
-                this.$axios.get(`api-qfx/trademark/sendRecentApplicationEmail?id=${id}`)
-                    .then(res => {
-                        console.log(111, res)
-                        if (res.code == 200) {
-                            this.$message.success('发送成功！');
-                        }
-                        else {
-                            this.$message.error(res.msg);
-                        }
-                    })
-                    .catch(res => {
-                        this.$message.error('发送失败');
-                    })
-
-            })
-                .catch(() => { })
-        },
-        /** 查询用户列表 */
-        getUserList() {
-            // console.log(111,this.blongDepartment)
-            this.$axios.get(`api-qfx/org/user/pageList?loading?pageNum=1&pageSize=10&orgCode=${this.blongDepartment.orgCode}`)
-                .then(res => {
-                    this.userList = res.data;
-                })
-        },
-        returnSendResult(obj) {
-            if (obj.sendEmailResult === '1') {
-                return '成功'
-            }
-            else if (obj.sendEmailResult === '0') {
-                return '失败：' + obj.sendEmailFaileureReason
-            }
-            return ''
-        },
-        //表格用户选中
-        initTable() {
-            this.pageNo = 1;
-            this.getList()
+            this.$router.push('/resources/reject/detail?id=' + obj.id)
         }
     },
     beforeDestroy() {

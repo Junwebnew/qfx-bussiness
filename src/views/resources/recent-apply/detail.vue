@@ -92,14 +92,14 @@
                 <el-col :span="24" class="mb20">
                     <span class="custom-label text-left">申请人信息</span>
                 </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
+                <el-col :lg="12" :sm="12" :xs="24">
                     <span class="custom-label">申请人主体:</span>
                     <div class="custom-r">
                         {{json.applicationNameCn || '--'}}
                     </div>
 
                 </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
+                <el-col :lg="12" :sm="12" :xs="24">
                     <span class="custom-label"> 申请人地址：</span>
                     <div class="custom-r">
                         {{json.applicationDddrCn || '--'}}
@@ -107,7 +107,6 @@
                 </el-col>
             </el-row>
         </div>
-
         <div class="mb10 back-fff pad20 custom-box">
             <el-row :gutter="20">
                 <el-col :span="24" class="mb20">
@@ -136,7 +135,7 @@ import { recentApplyDetail } from "@/api/resources";
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'recentApply-detail',
+    name: 'recent-apply-detail',
     data() {
         return {
             title: '详情页',
@@ -151,11 +150,14 @@ export default {
             'userId'
         ])
     },
+    watch: {
+        $route(now) {
+            if ('recent-apply-detail' == now.name && this.$route.query.id != now.query.id) {
+                this.initPage(now.query.id)
+            }
+        }
+    },
     created() {
-        // this.initList('n1', () => {
-        //     this.initList('n2')
-        // })
-
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
@@ -163,6 +165,9 @@ export default {
         initPage(id) {
             recentApplyDetail(id)
                 .then(res => {
+
+                    this.title = (res.data.trademarkName || '') + ' 详情'
+
                     this.json = res.data
                 })
         },

@@ -132,11 +132,11 @@
 </template>
 
 <script>
-import { recentApplyDetail } from "@/api/resources";
+import { objectionAnalysisDetail } from "@/api/resources";
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'recentApply-detail',
+    name: 'objection-analysis-detail',
     data() {
         return {
             title: '详情页',
@@ -151,17 +151,20 @@ export default {
             'userId'
         ])
     },
+    watch: {
+        $route(now) {
+            if ('objection-analysis-detail' == now.name && this.$route.query.id != now.query.id) {
+                this.initPage(now.query.id)
+            }
+        }
+    },
     created() {
-        // this.initList('n1', () => {
-        //     this.initList('n2')
-        // })
-
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+        this.initPage(this.$route.query.id)
     },
     methods: {
 
         initPage(id) {
-            recentApplyDetail(id)
+            objectionAnalysisDetail(id)
                 .then(res => {
                     this.json = res.data
                 })

@@ -128,7 +128,7 @@ export const constantRoutes = [
     },
 ];
 
-//全部路由
+//自定义路由
 
 export const asyncAllRoutes = [
     {
@@ -248,7 +248,7 @@ export const asyncAllRoutes = [
             },
             {
                 name: "recent-apply-detail",
-                path: "recent-apply/etail",
+                path: "recent-apply/detail",
                 hidden: true,
                 component: "resources/recent-apply/detail",
                 meta: { title: "近日申请-详情", icon: "post", noCache: true },
@@ -315,16 +315,16 @@ export const asyncAllRoutes = [
                 meta: { title: "商标驳回-详情", icon: "post", noCache: true },
             },
             {
-                name: " objection-analysis",
-                path: " objection-analysis",
+                name: "objection-analysis",
+                path: "objection-analysis",
                 hidden: false,
                 component: "resources/objection-analysis/index",
                 meta: { title: "异议分析", icon: "log", noCache: true },
 
             },
             {
-                name: " objection-analysis-detail",
-                path: " objection-analysis/detail",
+                name: "objection-analysis-detail",
+                path: "objection-analysis/detail",
                 hidden: true,
                 component: "resources/objection-analysis/detail",
                 meta: { title: "异议分析-详情", icon: "post", noCache: true },

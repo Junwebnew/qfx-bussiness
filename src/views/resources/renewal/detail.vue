@@ -11,82 +11,51 @@
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">商标名称：</span>
                     <div class="custom-r">
-                        {{json.trademarkName || '--'}}
+                        {{json.tmName || '--'}}
                     </div>
 
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 商标图样：</span>
-                    <div class="custom-r">
-                        <el-image style="width:100px" :src="$getImg(json.graphicStyle) || json.originalGraphicStyle || ''" :alt="'营业执照'" :preview-src-list="[$getImg(json.graphicStyle,1)]"></el-image>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">申请/注册号：</span>
-                    <div class="custom-r">
-                        {{json.trademarkNumber || '--'}}
-                    </div>
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">国际分类：</span>
                     <div class="custom-r">
-                        {{json.typeOfTrademarkCode}}类-{{json.typeOfTrademarkName || '--'}}
+                        {{json.intClass}}类
                     </div>
-
                 </el-col>
+                <el-col :lg="8" :sm="12" :xs="24">
+                    <span class="custom-label">申请/注册号：</span>
+                    <div class="custom-r">
+                        {{json.regNum || '--'}}
+                    </div>
+                </el-col>
+                <!-- <el-col :lg="8" :sm="12" :xs="24">
+                    <span class="custom-label"> 商标图样：</span>
+                    <div class="custom-r">
+                        <el-image style="width:100px" :src="$getImg(json.graphicStyle) || json.originalGraphicStyle || ''" :alt="'营业执照'" :preview-src-list="[$getImg(json.graphicStyle,1)]"></el-image>
+                    </div>
+                </el-col> -->
+            </el-row>
+            <el-row :gutter="20">
+
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label"> 当前状态：</span>
                     <div class="custom-r">
-                        {{json.legalStatusName || '--'}}
+                        {{json.commonStatus || '--'}}
                     </div>
                 </el-col>
-            </el-row>
-            <el-row :gutter="20">
                 <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">申请日期：</span>
+                    <span class="custom-label">截止日期：</span>
                     <div class="custom-r">
-                        {{json.trademarkApplicationDate || '--'}}
+                        {{json.applicationNameId || '--'}}
                     </div>
-
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">代理机构：</span>
-
                     <div class="custom-r">
                         {{json.agency || '--'}}
-                    </div>
-
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 邮箱：</span>
-                    <div class="custom-r">
-                        {{json.email || '--'}}
-                    </div>
-
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :lg="12" :sm="12" :xs="24">
-                    <span class="custom-label">已选择类似群：</span>
-                    <div class="custom-r">
-                        {{json.similarGroup || '--'}}
-                    </div>
-
-                </el-col>
-                <el-col :lg="12" :sm="12" :xs="24">
-                    <span class="custom-label">已选择商品项：</span>
-
-                    <div class="custom-r">
-                        <ul class="product-list">
-                            <li class="list" v-for='(item,idx) in initServerArr(json.goodsServices)' :key='idx' :title=" replaceDel(item) " v-html="item"></li>
-                        </ul>
                     </div>
                 </el-col>
             </el-row>
         </div>
-
         <div class="mb10 back-fff pad20 custom-box">
             <el-row :gutter="20">
                 <el-col :span="24" class="mb20">
@@ -95,14 +64,14 @@
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">申请人主体:</span>
                     <div class="custom-r">
-                        {{json.applicationNameCn || '--'}}
+                        {{json.userName || '--'}}
                     </div>
 
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label"> 申请人地址：</span>
                     <div class="custom-r">
-                        {{json.applicationDddrCn || '--'}}
+                        {{json.userAddress || '--'}}
                     </div>
                 </el-col>
             </el-row>
@@ -132,7 +101,7 @@
 </template>
 
 <script>
-import { recentApplyDetail } from "@/api/resources";
+import { renewalrDetail } from "@/api/resources";
 import { mapGetters } from 'vuex'
 
 export default {
@@ -151,6 +120,13 @@ export default {
             'userId'
         ])
     },
+    watch: {
+        $route(now) {
+            if ('renewal-detail' == now.name && this.$route.query.id != now.query.id) {
+                this.initPage(now.query.id)
+            }
+        }
+    },
     created() {
         // this.initList('n1', () => {
         //     this.initList('n2')
@@ -161,8 +137,9 @@ export default {
     methods: {
 
         initPage(id) {
-            recentApplyDetail(id)
+            renewalrDetail(id)
                 .then(res => {
+                    this.title = (res.data.tmName || '') + ' 详情页'
                     this.json = res.data
                 })
         },

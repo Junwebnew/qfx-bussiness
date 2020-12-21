@@ -11,14 +11,14 @@
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">商标名称：</span>
                     <div class="custom-r">
-                        {{json.trademarkName || '--'}}
+                        {{json.tmName || '--'}}
                     </div>
 
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label"> 商标图样：</span>
                     <div class="custom-r">
-                        <el-image style="width:100px" :src="$getImg(json.graphicStyle) || json.originalGraphicStyle || ''" :alt="'营业执照'" :preview-src-list="[$getImg(json.graphicStyle,1)]"></el-image>
+                        <el-image style="width:100px" :src="$getImg(json.graphicStyle) || ''" :alt="'营业执照'" :preview-src-list="[$getImg(json.graphicStyle,1)]"></el-image>
                     </div>
                 </el-col>
             </el-row>
@@ -26,21 +26,15 @@
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">申请/注册号：</span>
                     <div class="custom-r">
-                        {{json.trademarkNumber || '--'}}
+                        {{json.regNum || '--'}}
                     </div>
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">国际分类：</span>
                     <div class="custom-r">
-                        {{json.typeOfTrademarkCode}}类-{{json.typeOfTrademarkName || '--'}}
+                        {{json.intClass}}类
                     </div>
 
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 当前状态：</span>
-                    <div class="custom-r">
-                        {{json.legalStatusName || '--'}}
-                    </div>
                 </el-col>
             </el-row>
             <el-row :gutter="20">
@@ -59,31 +53,6 @@
                     </div>
 
                 </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 邮箱：</span>
-                    <div class="custom-r">
-                        {{json.email || '--'}}
-                    </div>
-
-                </el-col>
-            </el-row>
-            <el-row :gutter="20">
-                <el-col :lg="12" :sm="12" :xs="24">
-                    <span class="custom-label">已选择类似群：</span>
-                    <div class="custom-r">
-                        {{json.similarGroup || '--'}}
-                    </div>
-
-                </el-col>
-                <el-col :lg="12" :sm="12" :xs="24">
-                    <span class="custom-label">已选择商品项：</span>
-
-                    <div class="custom-r">
-                        <ul class="product-list">
-                            <li class="list" v-for='(item,idx) in initServerArr(json.goodsServices)' :key='idx' :title=" replaceDel(item) " v-html="item"></li>
-                        </ul>
-                    </div>
-                </el-col>
             </el-row>
         </div>
 
@@ -95,14 +64,14 @@
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label">申请人主体:</span>
                     <div class="custom-r">
-                        {{json.applicationNameCn || '--'}}
+                        {{json.applicationName || '--'}}
                     </div>
 
                 </el-col>
                 <el-col :lg="8" :sm="12" :xs="24">
                     <span class="custom-label"> 申请人地址：</span>
                     <div class="custom-r">
-                        {{json.applicationDddrCn || '--'}}
+                        {{json.applicationAddress || '--'}}
                     </div>
                 </el-col>
             </el-row>
@@ -132,11 +101,11 @@
 </template>
 
 <script>
-import { recentApplyDetail } from "@/api/resources";
+import { rejectDetail } from "@/api/resources";
 import { mapGetters } from 'vuex'
 
 export default {
-    name: 'recentApply-detail',
+    name: 'reject-detail',
     data() {
         return {
             title: '详情页',
@@ -151,6 +120,13 @@ export default {
             'userId'
         ])
     },
+    watch: {
+        $route(now) {
+            if ('reject-detail' == now.name && this.$route.query.id != now.query.id) {
+                this.initPage(now.query.id)
+            }
+        }
+    },
     created() {
         // this.initList('n1', () => {
         //     this.initList('n2')
@@ -161,7 +137,7 @@ export default {
     methods: {
 
         initPage(id) {
-            recentApplyDetail(id)
+            rejectDetail(id)
                 .then(res => {
                     this.json = res.data
                 })

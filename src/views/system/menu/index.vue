@@ -239,7 +239,8 @@ import {
     qmxUpdateTree,
     qmxBtnList,
     qmxBtnUpdate,
-    qmxBtnDel
+    qmxBtnDel,
+    qmxDelTree
 } from "@/api/system/menu";
 import { deepClone } from "@/utils/index";
 
@@ -377,7 +378,7 @@ export default {
                 viewName: undefined,
                 memo: undefined,
                 isShow: 1,
-                isSaveCache: 1
+                isSaveCache: 0
             };
             this.resetForm("form");
         },
@@ -431,7 +432,7 @@ export default {
                 type: "warning"
             })
                 .then(function () {
-                    return delMenu(row.id);
+                    return qmxDelTree([row.id]);
                 })
                 .then(() => {
                     this.getList();

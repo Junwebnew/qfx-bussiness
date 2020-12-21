@@ -29,6 +29,7 @@
             <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
                 <div class="avatar-wrapper">
                     <img :src="avatar" class="user-avatar">
+                    <span class="name text-delic">{{name}}</span>
                     <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
@@ -55,7 +56,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+// import RuoYiDoc from '@/components/RuoYi/Doc'
 import qmxmsg from '@/components/RuoYi/msg'
 
 export default {
@@ -66,14 +67,15 @@ export default {
         SizeSelect,
         Search,
         RuoYiGit,
-        RuoYiDoc,
+        // RuoYiDoc,
         qmxmsg
     },
     computed: {
         ...mapGetters([
             'sidebar',
             'avatar',
-            'device'
+            'device',
+            'name'
         ]),
         setting: {
             get() {
@@ -167,21 +169,28 @@ export default {
             margin-right: 30px;
 
             .avatar-wrapper {
-                margin-top: 8px;
                 position: relative;
-
+                line-height: 50px;
                 .user-avatar {
                     cursor: pointer;
                     width: 35px;
                     height: 35px;
                     border-radius: 50%;
+                    vertical-align: middle;
+                }
+                .name {
+                    display: inline-block;
+                    font-size: 12px;
+                    vertical-align: middle;
+                    margin-left: 4px;
+                    max-width: 50px;
                 }
 
                 .el-icon-caret-bottom {
                     cursor: pointer;
                     position: absolute;
                     right: -20px;
-                    top: 12px;
+                    top: 22px;
                     font-size: 12px;
                 }
             }

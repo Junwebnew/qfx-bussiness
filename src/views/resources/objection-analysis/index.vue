@@ -101,6 +101,7 @@
                         <span>{{scope.row.objectionCountNum || '--'}}个</span>
                     </template>
                 </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="相关操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
@@ -202,8 +203,9 @@ export default {
         },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.id
-            this.$router.push('/resources/objection-analysis/detail')
+            let key = this.$route.name + obj.preliNoticeTrademarkId
+            this.$router.push('/resources/objection-analysis/detail?id=' + obj.preliNoticeTrademarkId)
+
         },
         lastTime(e) {
             if (!e) return 0
