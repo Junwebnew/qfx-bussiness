@@ -27,13 +27,13 @@
                 <el-form ref="regForm" :model="regForm" :rules="regRules" class="login-form">
                     <el-form-item prop="companyName">
                         <div class="stepItem">
-                            <el-input v-model="regForm.companyName" maxLength='50' auto-complete="off" clearable placeholder="请输入企业全称（或个人名称）">
+                            <el-input v-model="regForm.companyName" maxLength='40' auto-complete="off" clearable placeholder="请输入企业全称（或个人名称）">
                             </el-input>
                         </div>
                     </el-form-item>
                     <el-form-item prop="name">
                         <div class="stepItem">
-                            <el-input v-model="regForm.name" maxLength='50' auto-complete="off" clearable placeholder="请输入联系人">
+                            <el-input v-model="regForm.name" maxLength='20' auto-complete="off" clearable placeholder="请输入联系人">
                             </el-input>
                         </div>
                     </el-form-item>
@@ -47,7 +47,7 @@
                     <el-form-item prop="code">
                         <div class="stepItem">
                             <div class="codeBox">
-                                <el-input v-model="regForm.code" auto-complete="off" maxLength='10' placeholder="短信验证码">
+                                <el-input v-model="regForm.code" auto-complete="off" maxLength='6' placeholder="短信验证码">
                                 </el-input>
                             </div>
                             <div class="getCodeBox btn" @click="clickGetCode" :class="{'unUse':!isClick}">
@@ -73,13 +73,13 @@
                     </el-form-item>
                     <el-form-item prop="password">
                         <div class="stepItem">
-                            <el-input v-model="passFrom.password" type='password' maxLength='30' auto-complete="off" show-password clearable placeholder="请输入您的密码">
+                            <el-input v-model="passFrom.password" type='password' maxLength='20' auto-complete="off" show-password clearable placeholder="请输入您的密码">
                             </el-input>
                         </div>
                     </el-form-item>
                     <el-form-item prop="rePass">
                         <div class="stepItem">
-                            <el-input v-model="passFrom.rePass" type='password' maxLength='30' auto-complete="off" show-password clearable placeholder="重复您的密码">
+                            <el-input v-model="passFrom.rePass" type='password' maxLength='20' auto-complete="off" show-password clearable placeholder="重复您的密码">
                             </el-input>
                         </div>
                     </el-form-item>
@@ -143,9 +143,14 @@ export default {
         }
 
         var validateUseName = (rule, value, callback) => {
+
+            let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
+
             if (value === '') {
                 callback(new Error('登录用户名不能为空'))
-
+            }
+            else if (emojiTest.test(value)) {
+                callback(new Error('不能输入表情符号'))
             }
             else {
                 checkExists(value).then(res => {

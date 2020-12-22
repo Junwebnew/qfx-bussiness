@@ -73,6 +73,13 @@ export function objectionAnalysisList(data) {
 export function objectionAnalysisDetail(id) {
     return $axios.post('resource/objectionAnalysis/get', '"' + id + '"')
 }
+/**
+ * 
+ * 异议分析相似列表
+*/
+export function objectionAnalysisDetailList(data) {
+    return $axios.post('resource/objectionAnalysis/page/listForPhoneDetail', data)
+}
 
 /**
  * 商标驳回 关联电话分页查询

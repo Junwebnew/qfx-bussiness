@@ -2,19 +2,23 @@
     <div class="app-container">
         <el-row>
             <!--部门数据-->
-            <el-col :span="4" :xs="24">
+            <el-col :span="5" :xs="24">
                 <div class="r back-fff">
                     <div class="head-container">
                         <el-input ref='tree' v-model="deptName" placeholder="请输入部门名称" clearable size="small" prefix-icon="el-icon-search" style="margin-bottom: 20px" />
                     </div>
                     <div class="head-container">
-                        <el-tree highlight-current :data="deptOptions" :props="defaultProps" :expand-on-click-node="false" :filter-node-method="filterNode" ref="tree" default-expand-all @node-click="handleNodeClick" />
+                        <el-tree highlight-current :data="deptOptions" :props="defaultProps" :expand-on-click-node="false" :filter-node-method="filterNode" ref="tree" default-expand-all @node-click="handleNodeClick">
+                            <div class="custom-tree-node text-delic" slot-scope="{ node}">
+                                <span :title="node.label ">{{ node.label }}</span>
+                            </div>
+                        </el-tree>
                     </div>
                 </div>
 
             </el-col>
             <!--用户数据-->
-            <el-col :span="20" :xs="24">
+            <el-col :span="19" :xs="24">
                 <div class="l-t back-fff pad20 mb10" v-show="showSearch">
                     <el-form :model="queryParams" ref="queryForm" label-width="120px">
                         <el-row :gutter="20">
@@ -233,6 +237,23 @@ export default {
         ])
     },
     data() {
+
+        var validateUseName = (rule, value, callback) => {
+
+            let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
+
+            if (value === '') {
+                callback(new Error('用户名不能为空'))
+            }
+            else if (emojiTest.test(value)) {
+                callback(new Error('不能输入表情符号'))
+            }
+            else {
+
+                callback()
+            }
+        }
+
         return {
             // 遮罩层
             loading: true,
@@ -312,7 +333,8 @@ export default {
             // 表单校验
             rules: {
                 name: [
-                    { required: true, message: "用户姓名不能为空", trigger: "blur" }
+                    { validator: validateUseName, trigger: "blur" },
+
                 ],
                 orgId: [
                     { required: true, message: "归属部门不能为空", trigger: "change" }
@@ -672,9 +694,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-container {
-    padding: 10px 10px 0px;
-}
 .lin29 {
     line-height: 29px;
 }

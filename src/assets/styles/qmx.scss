@@ -33,10 +33,18 @@ ul {
 th > .cell {
   color: #000;
 }
-
 /** 基础通用 **/
 .col {
   color: #3da4ff !important;
+}
+.col-red {
+  color: #ff4949;
+}
+.col-green {
+  color: #13ce66;
+}
+.col-warn {
+  color: #ffba00;
 }
 .f12 {
   font-size: 12px !important;

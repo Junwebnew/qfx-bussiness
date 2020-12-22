@@ -204,7 +204,7 @@ export default {
         checkDetail(obj) {
 
             let key = this.$route.name + obj.preliNoticeTrademarkId
-            this.$router.push('/resources/objection-analysis/detail?id=' + obj.preliNoticeTrademarkId)
+            this.$router.push('/resources/objection-analysis/detail?id=' + obj.preliNoticeTrademarkId + "&num=" + this.activeNum)
 
         },
         lastTime(e) {

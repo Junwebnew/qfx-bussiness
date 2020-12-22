@@ -108,7 +108,7 @@ export default {
     name: 'reject-detail',
     data() {
         return {
-            title: '详情页',
+            title: '驳回详情',
             json: {},
             loading: false,
             tableData: []
@@ -128,10 +128,6 @@ export default {
         }
     },
     created() {
-        // this.initList('n1', () => {
-        //     this.initList('n2')
-        // })
-
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
@@ -139,6 +135,7 @@ export default {
         initPage(id) {
             rejectDetail(id)
                 .then(res => {
+                    this.title = res.data.tmName + ' 驳回详情'
                     this.json = res.data
                 })
         },

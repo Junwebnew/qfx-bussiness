@@ -67,9 +67,9 @@
                 </el-table-column>
                 <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='150px'>
                     <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
+                        <el-button v-if="isShowUpdate(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
                         <el-button size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增</el-button>
-                        <el-button v-if="scope.row.type != 1" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
+                        <el-button v-if="isShowDel(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -191,6 +191,7 @@ export default {
     },
     computed: {
         ...mapGetters([
+            'superAdmin',
             'superAdmin'
         ])
     },
@@ -254,6 +255,28 @@ export default {
 
                 return (i.name.indexOf(name) != -1 || (i.children && i.children.length != 0))
             })
+
+        },
+        /* 1-企业（唯一） 2-部门（多个） */
+        // 是否显示 修改
+        isShowUpdate(row) {
+
+            if (row.type == 1) {
+
+                return this.superAdmin
+            }
+
+            return true
+        },
+        // 是否显示 删除
+        isShowDel(row) {
+
+            if (row.type == 1) {
+
+                return this.superAdmin
+            }
+
+            return true
 
         },
         // 字典状态字典翻译

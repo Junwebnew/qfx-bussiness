@@ -18,7 +18,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="用户姓名" prop="name">
-                                <el-input v-model="form.name" placeholder="请输入用户姓名" />
+                                <el-input v-model="form.name" placeholder="请输入用户姓名" maxlength="30" />
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -71,13 +71,6 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <!-- <el-row>
-            <el-col :span="24">
-                <el-form-item label="备注">
-                <el-input v-model="form.memo" type="textarea" placeholder="请输入内容"></el-input>
-                </el-form-item>
-            </el-col>
-            </el-row> -->
                 </el-form>
 
             </div>
@@ -118,6 +111,22 @@ export default {
         ])
     },
     data() {
+
+        var validateUseName = (rule, value, callback) => {
+
+            let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
+
+            if (value === '') {
+                callback(new Error('用户名不能为空21212'))
+            }
+            else if (emojiTest.test(value)) {
+                callback(new Error('不能输入表情符号'))
+            }
+            else {
+
+                callback()
+            }
+        }
         return {
             // 遮罩层
             loading: true,
@@ -166,7 +175,7 @@ export default {
             // 表单校验
             rules: {
                 name: [
-                    { required: true, message: "用户姓名不能为空", trigger: "blur" }
+                    { validator: validateUseName, trigger: "blur" },
                 ],
                 orgId: [
                     { required: true, message: "归属部门不能为空", trigger: "change" }
