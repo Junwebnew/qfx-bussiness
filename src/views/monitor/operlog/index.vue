@@ -5,8 +5,8 @@
                 <!-- <el-form-item label="系统模块" prop="title">
                 <el-input v-model="queryParams.title" placeholder="请输入系统模块" clearable style="width: 240px;" size="small" @keyup.enter.native="handleQuery" />
             </el-form-item> -->
-                <el-form-item label="操作人员" prop="loginName">
-                    <el-input v-model="queryParams.loginName" placeholder="请输入操作人员" clearable style="width: 240px;" size="small" @keyup.enter.native="handleQuery" />
+                <el-form-item label="操作人员" prop="creatorName">
+                    <el-input v-model="queryParams.creatorName" placeholder="请输入操作人员" clearable style="width: 240px;" size="small" @keyup.enter.native="handleQuery" />
                 </el-form-item>
                 <el-form-item label="操作类型" prop="eventTypeList">
                     <el-select v-model="queryParams.eventTypeList" placeholder="操作类型" multiple clearable size="small" style="width: 240px">
@@ -167,7 +167,7 @@ export default {
                 pageNum: 1,
                 pageSize: 50,
                 eventTypeList: [],
-                loginName: undefined
+                creatorName: undefined
             }
         };
     },

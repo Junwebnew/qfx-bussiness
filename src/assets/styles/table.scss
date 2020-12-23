@@ -1,0 +1,16 @@
+.c-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.c-table td {
+  padding: 5px 5px 5px 10px ;
+  padding-right: 0;
+  border: 1px solid #e4eef6;
+  height: 40px;
+}
+.c-table td.n {
+    background: #f2f9fc;
+    width: 100px;
+}

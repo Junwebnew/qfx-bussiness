@@ -1,16 +1,17 @@
 /**
  * 通用css样式布局处理
- * Copyright (c) 2019 ruoyi
+ * Copyright (c) 2020 Jun
  */
 html,
 body {
-  font-family: "\5FAE\8F6F\96C5\9ED1", "Microsoft Yahei", "Hiragino Sans GB",
-    tahoma, arial, "\5B8B\4F53";
+  font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+    helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
+    segoe ui emoji, segoe ui symbol, noto color emoji;
   font-size: 14px;
   background-color: #edf0f4;
   margin: 0;
   padding: 0;
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
   color: rgba(0, 0, 0, 0.85);
 }
@@ -25,10 +26,12 @@ h4,
 h5,
 label,
 p,
-ul {
+ul,
+i {
   font-weight: normal;
   padding: 0;
   margin: 0;
+  font-style: normal;
 }
 th > .cell {
   color: #000;
@@ -112,7 +115,9 @@ th > .cell {
 .mb20 {
   margin-bottom: 20px;
 }
-
+.mb16 {
+  margin-bottom: 16px;
+}
 .back-fff {
   background-color: #ffffff;
 }
@@ -146,6 +151,10 @@ th > .cell {
       margin-left: 1px;
     }
   }
+}
+.higthLight {
+  color: #fff !important;
+  background: red !important;
 }
 //滚动盒子,设置滚动条样式
 .scroll-box {
@@ -339,20 +348,48 @@ ul::-webkit-scrollbar-thumb {
     line-height: 30px;
     color: #17233d;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 16px;
   }
 }
+.full-height {
+  height: calc(100vh - 100px);
+}
+.full-height2 {
+  height: calc(100vh - 172px);
+}
 .custom-box {
-  .el-row {
-    margin-bottom: 20px;
+  .tit {
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+    padding-bottom: 20px;
+    font-size: 16px;
+    // font-weight: bold;
   }
   .custom-label {
     text-align: right;
     float: left;
+
+    min-width: 110px;
+    line-height: 2;
   }
   .custom-r {
     overflow: hidden;
+    line-height: 2;
+    color: #515a6e;
+    .imgBox {
+      width: 180px;
+      height: 160px;
+      border: 1px solid #f0f0f0;
+      line-height: 160px;
+      text-align: center;
+      overflow: hidden;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+      }
+    }
   }
 }
 

@@ -1,6 +1,17 @@
 
 import $axios from '@/utils/http'
 
+
+//获取商标详情
+export function getTmDetail(id) {
+    return $axios.get('/API/api-e/trademarkdetail/get/' + id)
+}
+
+//获取公告详情
+export function getTmNoticeDetail(id) {
+    return $axios.get(`/API/api-e/preliminarynotice/getNewList?tradeMarkId=${id}&pc=pc`)
+}
+
 /**
  * 近日申请商标分页查询 关联电话分页查询
  */

@@ -3,97 +3,80 @@
         <div class="head-parts mb10">
             <div class="words">{{title}}</div>
         </div>
-        <div class="mb10 back-fff pad20 custom-box">
-            <el-row :gutter="20">
-                <el-col :span="24" class="mb20">
-                    <span class="custom-label text-left">基本信息</span>
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">商标名称：</span>
-                    <div class="custom-r">
-                        {{json.tmName || '--'}}
-                    </div>
 
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">国际分类：</span>
-                    <div class="custom-r">
-                        {{json.intClass}}类
+        <div class="mb10 custom-box">
+            <el-row :gutter="10">
+                <!-- //左侧 -->
+                <el-col :sm="17" :xs="24">
+                    <div class="back-fff pad20 ">
+                        <el-row :gutter="20" class="mb16">
+                            <el-col :span="24">
+                                <p class="tit">基本信息</p>
+                            </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
+                            <el-col :xs="24">
+                                <el-row :gutter="20">
+                                    <el-col :sm="12" :xs="24" class="mb16">
+                                        <span class="custom-label">商标名称：</span>
+                                        <div class="custom-r">
+                                            {{json.tmName || '--'}}
+                                        </div>
+                                    </el-col>
+                                    <el-col :sm="12" :xs="24" class="mb16">
+                                        <span class="custom-label">注册号：</span>
+                                        <div class="custom-r">
+                                            {{json.regNum || '--'}}
+                                        </div>
+                                    </el-col>
+                                    <el-col :sm="12" :xs="24" class="mb16">
+                                        <span class="custom-label">国际分类：</span>
+                                        <div class="custom-r">
+                                            {{json.intClass}}类
+                                        </div>
+                                    </el-col>
+                                    <el-col :sm="12" :xs="24" class="mb16">
+                                        <span class="custom-label">截止日期：</span>
+                                        <div class="custom-r">
+                                            {{json.annDate || '--'}}
+                                        </div>
+                                    </el-col>
+                                    <el-col :sm="12" :xs="24" class="mb16">
+                                        <span class="custom-label">代理机构：</span>
+                                        <div class="custom-r">
+                                            {{json.agency || '--'}}
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                            </el-col>
+                        </el-row>
                     </div>
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">申请/注册号：</span>
-                    <div class="custom-r">
-                        {{json.regNum || '--'}}
-                    </div>
-                </el-col>
-                <!-- <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 商标图样：</span>
-                    <div class="custom-r">
-                        <el-image style="width:100px" :src="$getImg(json.graphicStyle) || json.originalGraphicStyle || ''" :alt="'营业执照'" :preview-src-list="[$getImg(json.graphicStyle,1)]"></el-image>
-                    </div>
-                </el-col> -->
-            </el-row>
-            <el-row :gutter="20">
-
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 当前状态：</span>
-                    <div class="custom-r">
-                        {{json.commonStatus || '--'}}
-                    </div>
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">截止日期：</span>
-                    <div class="custom-r">
-                        {{json.applicationNameId || '--'}}
-                    </div>
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">代理机构：</span>
-                    <div class="custom-r">
-                        {{json.agency || '--'}}
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="mb10 back-fff pad20 custom-box">
-            <el-row :gutter="20">
-                <el-col :span="24" class="mb20">
-                    <span class="custom-label text-left">申请人信息</span>
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label">申请人主体:</span>
-                    <div class="custom-r">
-                        {{json.userName || '--'}}
-                    </div>
-
-                </el-col>
-                <el-col :lg="8" :sm="12" :xs="24">
-                    <span class="custom-label"> 申请人地址：</span>
-                    <div class="custom-r">
-                        {{json.userAddress || '--'}}
-                    </div>
-                </el-col>
-            </el-row>
-        </div>
-
-        <div class="mb10 back-fff pad20 custom-box">
-            <el-row :gutter="20">
-                <el-col :span="24" class="mb20">
-                    <span class="custom-label text-left">联系信息</span>
-                </el-col>
-                <el-col :span='24'>
-                    <el-table v-loading="loading" :data="tableData" row-key="id">
-                        <el-table-column label="联系方式" align='center' prop="trademarkApplicationDate"></el-table-column>
-                        <el-table-column label="最新领取" align='center' prop="trademarkApplicationDate"></el-table-column>
-                        <el-table-column label="相关操作" width='220' align='center'>
-                            <template slot-scope="scope">
-                                <div class='operation'>
-                                    <el-button size="mini" type="success " @click="getResourse(scope.row)">领取</el-button>
+                    <div class="mt10 back-fff pad20 custom-box">
+                        <el-row :gutter="20">
+                            <el-col :span="24" class="mb16">
+                                <p class=" tit">申请人信息</p>
+                            </el-col>
+                            <el-col :lg="12" :sm="12" :xs="24">
+                                <span class="custom-label">申请人主体：</span>
+                                <div class="custom-r">
+                                    {{json.userName || '--'}}
                                 </div>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                            </el-col>
+                            <el-col :lg="12" :sm="12" :xs="24">
+                                <span class="custom-label">申请人地址：</span>
+                                <div class="custom-r">
+                                    {{json.userAddress || '--'}}
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
+                <!-- //右侧 -->
+                <el-col :sm="7" :xs="24">
+                    <div class="back-fff pad20 full-height full-height2">
+                        <p class="tit mb16">联系信息</p>
+                        <phoneList :phoneList='json.phoneList' />
+                    </div>
                 </el-col>
             </el-row>
         </div>
@@ -102,10 +85,13 @@
 
 <script>
 import { agencyCancelDetail } from "@/api/resources";
-import { mapGetters } from 'vuex'
+import phoneList from '../_module/telModelu'
 
 export default {
     name: 'renewal-detail',
+    components: {
+        phoneList
+    },
     data() {
         return {
             title: '详情页',
@@ -113,12 +99,6 @@ export default {
             loading: false,
             tableData: []
         }
-    },
-    computed: {
-        ...mapGetters([
-            'organizationId',
-            'userId'
-        ])
     },
     watch: {
         $route(now) {
@@ -135,7 +115,7 @@ export default {
 
             agencyCancelDetail(id)
                 .then(res => {
-                    this.title = (res.data.tmName || '') + ' 详情页'
+                    this.title = (res.data.tmName || '') + ' 机构注销详情'
                     this.json = res.data
                 })
         },

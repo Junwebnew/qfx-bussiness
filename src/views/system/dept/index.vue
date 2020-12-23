@@ -49,10 +49,6 @@
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
 
                 </el-col>
-                <!-- <el-col :span="1.5">
-                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-                </el-col>
-                <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
             </el-row>
 
             <el-table v-loading="loading" :data="deptList" row-key="id" default-expand-all :tree-props="treePros">
@@ -65,10 +61,10 @@
                         <span>{{ scope.row.createTime }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='150px'>
+                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='220px'>
                     <template slot-scope="scope">
                         <el-button v-if="isShowUpdate(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
-                        <el-button size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增</el-button>
+                        <el-button size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增下级部门</el-button>
                         <el-button v-if="isShowDel(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
                     </template>
                 </el-table-column>
@@ -215,6 +211,7 @@ export default {
                 this.deptList = arr
 
                 this.loading = false;
+
             })
         },
         //数据子集切换和删除

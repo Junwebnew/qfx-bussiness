@@ -83,7 +83,7 @@
                 <el-table-column label="相关操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情212</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -158,7 +158,7 @@ export default {
         },
         /** 搜索按钮操作 */
         handleQuery() {
-            this.queryParams.page = 1;
+            this.queryParams.pageNum = 1;
             this.getList();
         },
         //重置表单

@@ -1,117 +1,56 @@
 <template>
     <div class="app-container">
         <div class="content">
-            <!-- 
-            <h1>通知中心</h1>
+            <div class="back-fff pad20">
 
-            <div class='title'>
-                <div class="navBox">
-                    <span></span>
-                </div>
-            </div> -->
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="公告" name="n1">
 
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="公告" name="n1">
+                        <el-card class="box-card">
+                            <div class="listBox">
+                                <div v-show='total.n1 > 0 '>
+                                    <ul>
+                                        <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                            <h3 class="head"> {{item.title}}</h3>
+                                            <p class="desc">{{item.content}}</p>
+                                            <small>{{item.createTime}}</small>
+                                        </li>
+                                    </ul>
+                                    <p @click="getMore('n1')" class="col more text-center" v-if='pageNum.n1 * pageSize < total.n1'>加载更多</p>
+                                    <p class="more text-center" v-else>加载完毕</p>
+                                </div>
 
-                    <el-card class="box-card">
-                        <div class="listBox">
-                            <div v-show='total.n1 > 0 '>
-                                <ul>
-                                    <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
-                                        <h3 class="head"> {{item.title}}</h3>
-                                        <p class="desc">{{item.content}}</p>
-                                        <small>{{item.createTime}}</small>
-                                    </li>
-                                </ul>
-                                <p @click="getMore('n1')" class="col more text-center" v-if='pageNum.n1 * pageSize < total.n1'>加载更多</p>
-                                <p class="more text-center" v-else>加载完毕</p>
+                                <div v-show='total.n1 == 0 ' class="noneMsg">
+                                    暂无相关消息
+                                </div>
+
                             </div>
+                        </el-card>
+                    </el-tab-pane>
+                    <el-tab-pane label="消息" name="n2">
+                        <el-card class="box-card">
+                            <div class="listBox">
+                                <div v-show='total.n2 > 0 '>
+                                    <ul>
+                                        <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                            <h3 class="head"> {{item.title}}</h3>
+                                            <p class="desc">{{item.content}}</p>
+                                            <small>{{item.createTime}}</small>
+                                        </li>
+                                    </ul>
+                                    <p @click="getMore('n2')" class="col more text-center" v-if='pageNum.n2 * pageSize < total.n2'>加载更多</p>
+                                    <p class="more text-center" v-else>加载完毕</p>
+                                </div>
 
-                            <div v-show='total.n1 == 0 ' class="noneMsg">
-                                暂无相关消息
+                                <div v-show='total.n2 == 0 ' class="noneMsg">
+                                    暂无相关消息
+                                </div>
                             </div>
+                        </el-card>
 
-                            <!-- <div v-show=' total.n1  > 0 '>
-                                <el-collapse @change="handleChange">
-                                    <el-collapse-item v-for="(item,idx) in noticeArr" :key='idx' :name="idx">
-                                        <template slot="title">
-                                            <div class="head" :class="{'read':item.isRead}">
-                                                <div class="l">
-                                                    {{item.title}}
-                                                </div>
-                                                <div class="r">
-                                                    {{item.createTime}}
-                                                </div>
-                                            </div>
-                                        </template>
-                                        <p class="desc" :class="{'read':item.isRead}">
-                                            {{item.content}}
-                                        </p>
-                                    </el-collapse-item>
-
-                                </el-collapse>
-
-                               
-                            </div>
-                            <div v-show=' total.n1 == 0 ' class="noneMsg">
-                                暂无相关消息
-                            </div> -->
-                        </div>
-                    </el-card>
-
-                </el-tab-pane>
-                <el-tab-pane label="消息" name="n2">
-                    <el-card class="box-card">
-
-                        <div class="listBox">
-                            <div v-show='total.n2 > 0 '>
-                                <ul>
-                                    <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
-                                        <h3 class="head"> {{item.title}}</h3>
-                                        <p class="desc">{{item.content}}</p>
-                                        <small>{{item.createTime}}</small>
-                                    </li>
-                                </ul>
-                                <p @click="getMore('n2')" class="col more text-center" v-if='pageNum.n2 * pageSize < total.n2'>加载更多</p>
-                                <p class="more text-center" v-else>加载完毕</p>
-                            </div>
-
-                            <div v-show='total.n2 == 0 ' class="noneMsg">
-                                暂无相关消息
-                            </div>
-
-                            <!-- <div class="listBox">
-                            <div v-show=' total.n2 > 0 '>
-                                <el-collapse @change="handleChange">
-                                    <el-collapse-item v-for="(item,idx) in messageArr" :key='idx' :name="idx">
-                                        <template slot="title">
-                                            <div class="head">
-                                                <div class="l">
-                                                    {{item.title}}
-                                                </div>
-                                                <div class="r">
-                                                    {{item.createTime}}
-                                                </div>
-                                            </div>
-                                        </template>
-                                        <p class="desc">
-                                            {{item.content}}
-                                        </p>
-                                    </el-collapse-item>
-
-                                </el-collapse>
-                                <p @click="getMore('n2')" class="col more text-center" v-if='pageNum.n2 * pageSize < total.n2'>加载更多</p>
-                                <p class="more text-center" v-else>加载完毕</p>
-                            </div>
-                            <div v-show=' total.n2 == 0' class="noneMsg">
-                                暂无相关消息
-                            </div> -->
-                        </div>
-                    </el-card>
-
-                </el-tab-pane>
-            </el-tabs>
-
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
     </div>
 </template>
