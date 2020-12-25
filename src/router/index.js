@@ -231,6 +231,24 @@ export const asyncAllRoutes = [
         ],
     },
     {
+        name: "center",
+        path: "/center",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "Layout",
+        alwaysShow: true,
+        meta: { title: "个人中心", icon: "user", noCache: false },
+        children: [
+            {
+                name: "thread",
+                path: "thread",
+                hidden: false,
+                component: "center/thread/index",
+                meta: { title: "我的线索", icon: "post", noCache: true },
+            },
+        ]
+    },
+    {
         name: "resources",
         path: "/resources",
         hidden: false,

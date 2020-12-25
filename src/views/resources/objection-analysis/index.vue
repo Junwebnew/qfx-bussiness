@@ -26,7 +26,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="申请人地址" prop="applicationDddrCn" class="el-form-item-none">
+                        <el-form-item label="申请人地址" prop="preliNoticeApplicationDddrCn" class="el-form-item-none">
                             <el-input v-model="queryParams.applicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -36,7 +36,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="机构地址" prop="applicationDddrCn" class="el-form-item-none">
+                        <el-form-item label="机构地址" prop="preliNoticeAgencyNameDddrCn" class="el-form-item-none">
                             <el-input v-model="queryParams.agencyAddr" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -204,7 +204,7 @@ export default {
         checkDetail(obj) {
 
             let key = this.$route.name + obj.preliNoticeTrademarkId
-            this.$router.push('/resources/objection-analysis/detail?id=' + obj.preliNoticeTrademarkId + "&num=" + this.activeNum)
+            this.$router.push('/resources/objection-analysis/detail?id=' + obj.id + "&num=" + this.activeNum)
 
         },
         lastTime(e) {

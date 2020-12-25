@@ -150,13 +150,16 @@ export default {
                 .then(res => {
                     let data1 = res[0].data,
                         data2 = res[1].data
+
                     // higthLight
                     if (data1.goodsServices && data2.goodsServices) {
 
-                        this.show = true
+
                         this.contrastText(data1, data2, 'goodsServices')
                         this.contrastText(data1, data2, 'similarGroup')
                     }
+
+                    this.show = true
 
                     this.tmJson1 = data1
                     this.tmJson2 = data2

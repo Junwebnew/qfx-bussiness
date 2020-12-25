@@ -70,6 +70,13 @@
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="管理员">
+                                <el-radio-group v-model="form.whetherAdmin">
+                                    <el-radio v-for="dict in adminArr" :key="dict.key" :label="dict.value">{{dict.key}}</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                 </el-form>
 
@@ -116,8 +123,8 @@ export default {
 
             let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
 
-            if (value === '') {
-                callback(new Error('用户名不能为空21212'))
+            if (!value) {
+                callback(new Error('用户名不能为空'))
             }
             else if (emojiTest.test(value)) {
                 callback(new Error('不能输入表情符号'))
@@ -160,22 +167,18 @@ export default {
             postOptions: [],
             // 角色选项
             roleOptions: [],
+            // 是否管理员选项
+            adminArr: [{ 'key': '是', value: 1 }, { 'key': '否', value: 0 }],
             // 表单参数
             form: {
-                'password': 123456
+                'password': 123456,
+                'whetherAdmin': 0, //是否管理员  0 否 1 是
             },
             // 查询参数
-            queryParams: {
-                pageNum: 1,
-                pageSize: 10,
-                name: undefined,
-                mobile: undefined,
-                orgIds: undefined
-            },
             // 表单校验
             rules: {
                 name: [
-                    { validator: validateUseName, trigger: "blur" },
+                    { required: true, validator: validateUseName, trigger: "blur" },
                 ],
                 orgId: [
                     { required: true, message: "归属部门不能为空", trigger: "change" }

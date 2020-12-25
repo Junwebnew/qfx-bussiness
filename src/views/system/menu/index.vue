@@ -41,10 +41,6 @@
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
 
                 </el-col>
-                <!-- <el-col :span="1.5">
-                <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-            </el-col>
-            <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar> -->
             </el-row>
 
             <el-table v-loading="loading" :data="menuList" row-key="id" default-expand-all :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
@@ -68,17 +64,12 @@
                         <span>{{ scope.row.isSaveCache == 0 ? "否" : "是" }}</span>
                     </template>
                 </el-table-column>
-                <!-- <el-table-column label="创建时间" align="center" prop="createTime">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column> -->
-                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width="220">
+                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width="220" fixed="right">
                     <template slot-scope="scope">
-                        <el-button size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
-                        <el-button size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增子菜单</el-button>
-                        <el-button size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
-                        <el-button size="mini" type="text" @click="handleBtnBox(scope.row)" v-hasPermi="['t-btn']">按钮</el-button>
+                        <el-button size="mini" class="col-add" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增子菜单</el-button>
+                        <el-button size="mini" class="col-update" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
+                        <el-button size="mini" class="col-del" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
+                        <el-button size="mini" class="col-other" type="text" @click="handleBtnBox(scope.row)" v-hasPermi="['t-btn']">按钮</el-button>
                     </template>
                 </el-table-column>
             </el-table>

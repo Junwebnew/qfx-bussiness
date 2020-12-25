@@ -26,7 +26,7 @@
 
             <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" @submit.native.prevent>
                 <el-form-item label="部门名称" prop="name">
-                    <el-input v-model="queryParams.name" placeholder="请输入部门名称" clearable size="small" @keyup.enter.native="handleQuery" />
+                    <el-input v-model="queryParams.name" placeholder="请输入部门名称" maxLength='100' clearable size="small" @keyup.enter.native="handleQuery" />
                 </el-form-item>
                 <!-- <el-form-item label="状态" prop="commonStatus">
                     <el-select v-model="queryParams.commonStatus" placeholder="部门状态" clearable size="small">
@@ -47,7 +47,6 @@
                 <el-col :span="20" align='right'>
                     <el-button type="primary" class="mr10" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-
                 </el-col>
             </el-row>
 
@@ -61,11 +60,11 @@
                         <span>{{ scope.row.createTime }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='220px'>
+                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='220px' fixed="right">
                     <template slot-scope="scope">
-                        <el-button v-if="isShowUpdate(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
-                        <el-button size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增下级部门</el-button>
-                        <el-button v-if="isShowDel(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
+                        <el-button class="col-add" size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增下级部门</el-button>
+                        <el-button class="col-update" v-if="isShowUpdate(scope.row,scope.$index)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
+                        <el-button class="col-del" v-if="isShowDel(scope.row,scope.$index)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -81,7 +80,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="部门名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入部门名称" />
+                            <el-input v-model="form.name" placeholder="请输入部门名称" maxLength='100' />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -256,17 +255,19 @@ export default {
         },
         /* 1-企业（唯一） 2-部门（多个） */
         // 是否显示 修改
-        isShowUpdate(row) {
+        isShowUpdate(row, index) {
 
+            if (index == 0) return false
             if (row.type == 1) {
-
                 return this.superAdmin
             }
 
             return true
         },
         // 是否显示 删除
-        isShowDel(row) {
+        isShowDel(row, index) {
+
+            if (index == 0) return false
 
             if (row.type == 1) {
 

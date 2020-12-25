@@ -237,17 +237,6 @@ export default {
             &.active {
                 background-color: #ffffff;
                 color: #2d8cf0;
-                // border-color: #42b98
-                // &::before {
-                //     content: "";
-                //     background: #fff;
-                //     display: inline-block;
-                //     width: 8px;
-                //     height: 8px;
-                //     border-radius: 50%;
-                //     position: relative;
-                //     margin-right: 2px;
-                // }
             }
         }
     }

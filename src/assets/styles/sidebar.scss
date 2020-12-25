@@ -89,10 +89,14 @@
     & .nest-menu .el-submenu > .el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $sideBarWidth !important;
-
+      background-color: $menuItemBg !important;
+      &.is-active {
+        background-color: $menuactive !important;
+        color: $menuHovertext !important;
+      }
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
-        // color: red;
+        // background-color: rgba(0, 0, 0, 0.06) !important;
+        color: $menuHovertext !important;
       }
     }
   }
@@ -192,10 +196,13 @@
 
   .nest-menu .el-submenu > .el-submenu__title,
   .el-menu-item {
+    &.is-active {
+      background-color: $menuactive !important;
+      color: $menuHovertext !important;
+    }
     &:hover {
       // you can use $subMenuHover
-      //   background-color: rgba(0, 0, 0, 0.06) !important;
-      background-color: rosybrown !important;
+      background-color: rgba(0, 0, 0, 0.06) !important;
     }
   }
 

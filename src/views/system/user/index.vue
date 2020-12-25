@@ -35,7 +35,7 @@
                             </el-col>
                             <el-col :lg="8" :sm="12" :xs="24">
                                 <el-form-item label="审核状态" prop="status" class="el-form-item-none">
-                                    <el-select v-model="queryParams.checkStatus" placeholder="用户状态" clearable size="small" style="width: 100%">
+                                    <el-select v-model="queryParams.checkStatusList" placeholder="用户状态" multiple clearable size="small" style="width: 100%">
                                         <el-option v-for="dict in statusOptions" :key="dict.value" :label="dict.key" :value="dict.value" />
                                     </el-select>
                                 </el-form-item>
@@ -61,10 +61,10 @@
                 <div class="back-fff pad20">
 
                     <el-row :gutter="20">
-                        <el-col :span="3" class="lin32">
+                        <el-col :span="4" class="lin32">
                             <span class="f18">用户列表</span>
                         </el-col>
-                        <el-col :span="9" :offset="12" align='right'>
+                        <el-col :span="18" :offset="2" align='right'>
                             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
                             <el-button type="warning" icon="el-icon-plus" size="mini" @click="handleAdd('main')" v-hasPermi="['addmain-btn']">新增主账号</el-button>
                             <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
@@ -120,6 +120,7 @@
                             <template slot-scope="scope">
                                 <span class="mr5">{{scope.row.name}}</span>
                                 <el-tag v-if="scope.row.accountType == 0" size="mini">主</el-tag>
+                                <el-tag v-if="scope.row.whetherAdmin == 1" type="success" size="mini">管</el-tag>
                             </template>
                         </el-table-column>
                         <el-table-column label="部门" align="center" prop="organizationName" :show-overflow-tooltip="true" />
@@ -142,12 +143,12 @@
                                 <span>{{ parseTime(scope.row.createTime) }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width">
+                        <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                             <template slot-scope="scope">
-                                <el-button v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
-                                <el-button v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
-                                <el-button v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleResetPwd(scope.row)" v-hasPermi="['t-rest']">重置</el-button>
-                                <el-button v-if="isShowBtnCheck(scope.row)" size="mini" type="text" @click="handleCheck(scope.row)" v-hasPermi="['t-check']">审核</el-button>
+                                <el-button class="col-update" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
+                                <el-button class="col-del" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
+                                <el-button class="col-add" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleResetPwd(scope.row)" v-hasPermi="['t-rest']">重置</el-button>
+                                <el-button class="col-other" v-if="isShowBtnCheck(scope.row)" size="mini" type="text" @click="handleCheck(scope.row)" v-hasPermi="['t-check']">审核</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -301,7 +302,7 @@ export default {
             form: {
                 'password': 123456,
                 'commonStatus': 1,
-                checkStatus: ""
+                checkStatusList: []
             },
             defaultProps: {
                 children: "treeVoList",
@@ -560,10 +561,10 @@ export default {
         handleAdd(type) {
 
             if (type == 'main') {
-                this.$refs.addMainUser.showFunc({ orgId: this.organizationId, password: 123456, commonStatus: 1 }, '添加主用户')
+                this.$refs.addMainUser.showFunc({ orgId: this.organizationId, password: 123456, commonStatus: 1, whetherAdmin: 1 }, '添加主用户')
             }
             else {
-                this.$refs.addUser.showFunc({ orgId: this.queryParams.orgId, password: 123456, commonStatus: 1 }, '添加用户')
+                this.$refs.addUser.showFunc({ orgId: this.queryParams.orgId, password: 123456, commonStatus: 1, whetherAdmin: 0 }, '添加用户')
             }
         },
         /** 修改按钮操作 */

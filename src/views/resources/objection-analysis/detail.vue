@@ -4,7 +4,7 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 ">
+                    <div class="back-fff pad20 " id='detail'>
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
@@ -113,7 +113,7 @@
                                     <el-table-column label="相关操作" width='220' align='center'>
                                         <template slot-scope="scope">
                                             <div class='operation'>
-                                                <el-button size="mini" type="text" @click="getResourse(scope.row)">获取电话</el-button>
+                                                <el-button size="mini" type="text" @click="getResourseTel(scope.row)">获取电话</el-button>
                                                 <el-button size="mini" type="text" @click="contrastFunc(scope.row)">对比分析</el-button>
                                             </div>
                                         </template>
@@ -127,7 +127,17 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' />
+                        <div class="selectItem" v-show="selectItem.applicationNameCn">
+                            <div>
+                                <label>商标名：</label>
+                                <p>{{selectItem.trademarkName}}</p>
+                            </div>
+                            <div>
+                                <label>申请人：</label>
+                                <p>{{selectItem.applicationNameCn}}</p>
+                            </div>
+                        </div>
+                        <phoneList :phoneList=" selectItem.phoneList " />
                     </div>
                 </el-col>
             </el-row>
@@ -151,7 +161,8 @@ export default {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            selectItem: {},
         }
     },
     watch: {
@@ -167,19 +178,31 @@ export default {
     methods: {
 
         initPage(id, num) {
-            // id = '789453628768903168'
-            // objectionAnalysisDetail(id)
-            //     .then(res => {
-            //         this.json = res.data || {}
-            //     })
+
+            this.selectItem = {}
+
+
+            const loading = this.$loading({
+                lock: true,
+                spinner: 'el-icon-loading',
+                background: 'rgba(255, 255, 255, 0.7)',
+                target: "#detail"
+            });
+
+            objectionAnalysisDetail(id)
+                .then(res => {
+                    this.json = res.data || {}
+                    loading.close()
+                })
             this.initList(id, num)
         },
         initList(id, num) {
-            //获取的是列表，包含了当前商标数据
-            objectionAnalysisDetailList({ preliNoticeTrademarkId: id, preliminaryNoticeNumber: num })
+            //获取的是列表
+            this.loading = true
+            objectionAnalysisDetailList({ analysisPreliId: id, noticeNumber: num })
                 .then(res => {
-                    this.json = res.data[0]
                     this.tableData = res.data
+                    this.loading = false
                 })
         },
         initServerArr(str) {
@@ -209,14 +232,29 @@ export default {
                 return 0
             }
         },
-        getResourse(row) {
-
+        getResourseTel(row) {
+            this.selectItem = row
         },
         contrastFunc(row) {
-            this.$refs.contrast.getDetail(row.trademarkId, row.preliNoticeTrademarkId)
+            this.$refs.contrast.getDetail(this.json.preliNoticeTrademarkId, row.trademarkId)
         }
     }
 }
 </script>
 <style lang="scss" scoped>
+.selectItem {
+    margin-bottom: 20px;
+    line-height: 1.5;
+    > div {
+        margin-bottom: 6px;
+    }
+    label {
+        float: left;
+        width: 60px;
+    }
+    p {
+        overflow: hidden;
+        color: #515a6e;
+    }
+}
 </style>

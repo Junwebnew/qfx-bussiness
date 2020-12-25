@@ -71,26 +71,6 @@ export function agencyCancelDetail(id) {
     return $axios.post('resource/agencyCancel/get', '"' + id + '"')
 }
 
-/**
- * 异议分析 关联电话分页查询
- */
-export function objectionAnalysisList(data) {
-    return $axios.post('resource/objectionAnalysis/page/listForPhone', data)
-}
-
-/**
- * 异议分析  详情
- */
-export function objectionAnalysisDetail(id) {
-    return $axios.post('resource/objectionAnalysis/get', '"' + id + '"')
-}
-/**
- * 
- * 异议分析相似列表
-*/
-export function objectionAnalysisDetailList(data) {
-    return $axios.post('resource/objectionAnalysis/page/listForPhoneDetail', data)
-}
 
 /**
  * 商标驳回 关联电话分页查询
@@ -104,4 +84,26 @@ export function rejectList(data) {
  */
 export function rejectDetail(id) {
     return $axios.post('resource/reject/get', '"' + id + '"')
+}
+
+/**
+ * 异议分析 关联电话分页查询
+ */
+export function objectionAnalysisList(data) {
+    return $axios.post('objectionanalysis/preli/page/pageListForPhone', data)
+}
+
+/**
+ * 异议分析  详情
+ */
+export function objectionAnalysisDetail(id) {
+    return $axios.post('objectionanalysis/preli/get', '"' + id + '"')
+}
+
+/**
+ * 
+ * 异议分析相似列表
+*/
+export function objectionAnalysisDetailList(data) {
+    return $axios.post('objectionanalysis/page/list', data)
 }

@@ -199,7 +199,7 @@ export default {
             },
             passRules: {
                 loginName: [
-                    { validator: validateUseName, trigger: "blur" },
+                    { required: true, validator: validateUseName, trigger: "blur" },
                 ],
                 password: [
                     { required: true, trigger: "blur", message: "密码不能为空" },
