@@ -15,7 +15,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="商标大类" prop="typeOfTrademarkCode" class="el-form-item-none">
+                        <el-form-item label="国际分类" prop="typeOfTrademarkCode" class="el-form-item-none">
                             <el-input v-model="queryParams.typeOfTrademarkCode" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -32,7 +32,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="申请时间段" prop="time" class="el-form-item-none">
+                        <el-form-item label="申请日期" prop="time" class="el-form-item-none">
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -69,7 +69,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="注册号" align='center' prop="trademarkNumber"></el-table-column>
-                <el-table-column label="商标大类" show-overflow-tooltip>
+                <el-table-column label="国际分类" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span>
                             {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName || '暂无'}}
@@ -80,15 +80,14 @@
                 <el-table-column label="代理机构" prop="agency" show-overflow-tooltip></el-table-column>
                 <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="相关操作" width='220' align='center'>
+                <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>
             </el-table>
-
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>

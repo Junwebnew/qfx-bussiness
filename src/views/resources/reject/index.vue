@@ -20,7 +20,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="商标大类" prop="intClass" class="el-form-item-none">
+                        <el-form-item label="国际分类" prop="intClass" class="el-form-item-none">
                             <el-input v-model="queryParams.intClass" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -34,15 +34,14 @@
                             <el-input v-model="queryParams.applicationAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="驳回时间" prop="rejectdateRange" class="el-form-item-none">
-                            <el-date-picker v-model="rejectdateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                        <el-form-item label="申请日期" prop="applydateRange" class="el-form-item-none">
+                            <el-date-picker v-model="applydateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="申请时间" prop="applydateRange" class="el-form-item-none">
-                            <el-date-picker v-model="applydateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                        <el-form-item label="驳回日期" prop="rejectdateRange" class="el-form-item-none">
+                            <el-date-picker v-model="rejectdateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="24" :xs="24" align='right'>
@@ -71,16 +70,15 @@
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column label="商标名" prop='tmName' align='center'> </el-table-column>
-                <el-table-column label="代理机构" prop='agency' align='center' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="注册号" prop='tmNum' align='center'> </el-table-column>
+                <el-table-column label="国际分类" prop='intClass' align='center'> </el-table-column>
                 <el-table-column label="申请人" prop='applicationName' align='center'> </el-table-column>
                 <el-table-column label="申请人地址" prop='applicationAddress' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="商标大类" prop='intClass' align='center'> </el-table-column>
-
-                <el-table-column label="驳回日期" width='200px' align='center' prop='rejectDate' />
-
+                <el-table-column label="代理机构" prop='agency' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="注册日期" width='200px' align='center' prop='trademarkApplicationDate' />
+                <el-table-column label="驳回日期" width='200px' align='center' prop='rejectDate' />
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="相关操作" width='220' align='center'>
+                <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
@@ -120,7 +118,7 @@ export default {
                 hasPhone: true,
                 applicationType: ""
             },
-            //初始时间
+            //初始日期
             initDate: [],
             //申请人类型
             aplicationTypeArr: [

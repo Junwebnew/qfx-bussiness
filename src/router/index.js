@@ -240,11 +240,25 @@ export const asyncAllRoutes = [
         meta: { title: "个人中心", icon: "user", noCache: false },
         children: [
             {
-                name: "thread",
-                path: "thread",
+                name: "clue",
+                path: "clue",
                 hidden: false,
-                component: "center/thread/index",
+                component: "center/clue/index",
                 meta: { title: "我的线索", icon: "post", noCache: true },
+            },
+            {
+                name: "clue-all",
+                path: "clue-all",
+                hidden: false,
+                component: "center/clue-all/index",
+                meta: { title: "所有线索", icon: "post", noCache: true },
+            },
+            {
+                name: "clue-detail",
+                path: "clue/detail",
+                hidden: true,
+                component: "center/clue/detail",
+                meta: { title: "线索详情", icon: "post", noCache: true },
             },
         ]
     },

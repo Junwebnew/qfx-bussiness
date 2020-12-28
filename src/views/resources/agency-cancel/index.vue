@@ -2,34 +2,39 @@
     <div class="app-container">
         <div class="back-fff form-box mb10" v-show="showSearch">
 
-            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="110px">
                 <el-row :gutter="20">
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人" prop="userName" class="el-form-item-none">
                             <el-input v-model="queryParams.userName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="注册号" prop="regNum" class="el-form-item-none">
                             <el-input v-model="queryParams.regNum" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="国际分类" prop="intClass" class="el-form-item-none">
+                            <el-input v-model="queryParams.intClass" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="代理机构" prop="agency" class="el-form-item-none">
                             <el-input v-model="queryParams.agency" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人地址" prop="userAddress" class="el-form-item-none">
                             <el-input v-model="queryParams.userAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="结束时间段" prop="time" class="el-form-item-none">
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="专用权结束日期" prop="time" class="el-form-item-none">
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -55,17 +60,17 @@
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column label="商标名" prop='tmName' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="注册号" prop='regNum' align='center'> </el-table-column>
-                <el-table-column label="类别" prop='intClass' align='center'> </el-table-column>
+                <el-table-column label="注册号" prop='regNum' width='100' align='center'> </el-table-column>
+                <el-table-column label="国际分类" prop='intClass' width='80' align='center'> </el-table-column>
                 <el-table-column label="申请人" prop='userName' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="申请人地址" prop='userAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="专用权期限结束时间" width='200px' align='center' prop='annDate' />
+                <el-table-column label="专用权结束日期" width='120px' align='center' prop='annDate' />
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="相关操作" width='220' align='center'>
+                <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>

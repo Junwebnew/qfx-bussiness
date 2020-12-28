@@ -376,8 +376,10 @@ ul::-webkit-scrollbar-thumb {
   .tit {
     border-bottom: 1px solid #f0f0f0;
     color: #333;
-    padding-bottom: 20px;
+    padding-bottom: 14px;
     font-size: 16px;
+    line-height: 30px;
+    height: 44px;
     // font-weight: bold;
   }
   .custom-label {

@@ -13,18 +13,47 @@
 </template>
 
 <script>
-import { changeDetail } from "@/api/resources";
+import { receiveResource } from "@/api/resources";
 
 export default {
     props: {
         phoneList: {
             type: Array,
             default: () => []
+        },
+        /*资源Id*/
+        resourceId: {
+            type: String | Number
+        },
+
+        /*所属业务（1：线索 2：商机）*/
+        businessBelong: {
+            type: String | Number,
+            default: 1
+        },
+        /*类型不能为空 1：分配 2：领取 3：拨打电话*/
+        type: {
+            type: String | Number,
+            default: 2
+        },
+
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:商标驳回*/
+        resourcesModule: {
+            type: String | Number
+        },
+    },
+    computed: {
+        typeStr() {
+            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject']
+
+            return arr[this.resourcesModule - 1]
         }
     },
     data() {
         return {
-            loading: false
+            loading: false,
+            /*分配给谁*/
+            distributionToUserId: '',
         }
     },
     methods: {
@@ -35,15 +64,33 @@ export default {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
-            }).then(function () {
+            }).then(() => {
 
                 that.loading = true
-                setTimeout(() => {
-                    that.loading = false
-                }, 2000);
 
-            }).catch(response => {
-                console.log('4534', response)
+                let obj = {
+                    businessBelong: this.businessBelong,
+                    distributionToUserId: this.distributionToUserId,
+                    phoneId: row.id,
+                    phoneNumber: row.phone,
+                    resourceId: this.resourceId,
+                    resourcesModule: this.resourcesModule,
+                    type: this.type
+                }
+
+                console.log(this.typeStr, obj)
+
+                receiveResource(this.typeStr, obj).then(res => {
+
+                    this.msgSuccess('领取成功')
+
+                    that.loading = false
+
+                    that.$emit('reload')
+                })
+
+            }).catch(error => {
+                console.log('4534', error)
             })
 
         }

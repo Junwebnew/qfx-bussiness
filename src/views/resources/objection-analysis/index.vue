@@ -21,7 +21,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="申请人名称" prop="preliNoticeApplicationNameCn" class="el-form-item-none">
+                        <el-form-item label="申请人" prop="preliNoticeApplicationNameCn" class="el-form-item-none">
                             <el-input v-model="queryParams.preliNoticeApplicationNameCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -31,7 +31,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="机构名称" prop="preliNoticeAgencyName" class="el-form-item-none">
+                        <el-form-item label="代理机构" prop="preliNoticeAgencyName" class="el-form-item-none">
                             <el-input v-model="queryParams.preliNoticeAgencyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -80,7 +80,7 @@
                 </el-table-column>
                 <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='110px' align='center'>
                 </el-table-column>
-                <el-table-column label="商标分类" width='130px' align='center'>
+                <el-table-column label="国际分类" width='130px' align='center'>
                     <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTypeOfTrademarkCode}}类-{{scope.row.preliNoticeTypeOfTrademarkName}}</span>
                     </template>
@@ -102,10 +102,10 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="相关操作" width='220' align='center'>
+                <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>

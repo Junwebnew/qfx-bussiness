@@ -44,6 +44,13 @@
                                         </div>
                                     </el-col>
                                     <el-col :xs="24" class="mb16">
+                                        <span class="custom-label">驳回日期：</span>
+                                        <div class="custom-r">
+                                            {{json.rejectDate || '--'}}
+                                        </div>
+                                    </el-col>
+
+                                    <el-col :xs="24" class="mb16">
                                         <span class="custom-label">代理机构：</span>
                                         <div class="custom-r">
                                             {{json.agency || '--'}}
@@ -85,7 +92,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='6' :resourceId='json.id' @reload='initPage' />
                     </div>
                 </el-col>
             </el-row>
@@ -123,6 +130,7 @@ export default {
     methods: {
 
         initPage(id) {
+            id = id || this.json.id
             rejectDetail(id)
                 .then(res => {
                     this.title = res.data.tmName + ' 驳回详情'

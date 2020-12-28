@@ -62,7 +62,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' />
                     </div>
                 </el-col>
             </el-row>
@@ -88,6 +88,7 @@ export default {
     },
     watch: {
         $route(now) {
+
             if ('change' == now.name && this.$route.query.id != now.query.id) {
                 this.initPage(now.query.id)
             }

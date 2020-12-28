@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="back-fff form-box mb10" v-show="showSearch">
 
-            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="110px">
                 <el-row :gutter="20">
                     <el-col :lg="8" :sm="12" :xs="24">
                         <el-form-item label="申请人" prop="userName" class="el-form-item-none">
@@ -32,7 +32,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="8" :sm="12" :xs="24">
-                        <el-form-item label="截止日期" prop="enddateRange" class="el-form-item-none">
+                        <el-form-item label="专用权结束日期" prop="enddateRange" class="el-form-item-none">
                             <el-date-picker v-model="enddateRange" size="small" style="width: 100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -60,17 +60,17 @@
 
                 <el-table-column label="商标名" prop='tmName' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="注册号" width='100px' prop='regNum' align='center'> </el-table-column>
-                <el-table-column label="类别" width='60px' prop='intClass' align='center'> </el-table-column>
+                <el-table-column label="国际分类" width='100px' prop='intClass' align='center'> </el-table-column>
                 <el-table-column label="申请人" prop='userName' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="申请人地址" prop='userAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="专用权期限结束时间" width='150px' align='center'>
+                <el-table-column label="专用权结束日期" width='150px' align='center'>
                     <template slot-scope="scope">
                         <span>{{scope.row.annDate}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center'> </el-table-column>
-                <el-table-column label="相关操作" width='200' align='center'>
+                <el-table-column label="操作" width='200' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>

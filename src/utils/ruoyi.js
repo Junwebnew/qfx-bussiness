@@ -61,8 +61,8 @@ export function addDateRange(params, dateRange, propName) {
             params["startCreateTime"] = dateRange[0];
             params["endCreateTime"] = dateRange[1];
         } else {
-            params[propName + "startCreateTime"] = dateRange[0];
-            params[propName + "endCreateTime"] = dateRange[1];
+            params[propName.start] = dateRange[0];
+            params[propName.end] = dateRange[1];
         }
     }
     else {

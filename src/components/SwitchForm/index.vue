@@ -1,14 +1,10 @@
 <!-- @author Shiyn/   huangmx 20200807优化-->
 <template>
-    <div class="top-right-btn">
-        <el-row>
-            <el-button size="mini" type="primary" plain :icon=" showSwitch ? 'el-icon-upload2' : 'el-icon-download' " @click="toggleSearch()">{{ showSwitch ? '收起' : '展开' }} </el-button>
-        </el-row>
-    </div>
+    <el-button size="mini" :icon=" showSwitch ? 'el-icon-upload2' : 'el-icon-download' " @click="toggleSearch()"></el-button>
 </template>
 <script>
 export default {
-    name: "SwitchSHowBtn",
+    name: "SwitchForm",
     data() {
         return {};
     },

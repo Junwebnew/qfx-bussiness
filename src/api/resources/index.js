@@ -107,3 +107,10 @@ export function objectionAnalysisDetail(id) {
 export function objectionAnalysisDetailList(data) {
     return $axios.post('objectionanalysis/page/list', data)
 }
+
+
+//资源领取为线索
+
+export function receiveResource(typeStr, data) {
+    return $axios.post(`${typeStr}/receive`, data)
+}

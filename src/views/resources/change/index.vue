@@ -40,10 +40,10 @@
                 <el-table-column label="申请人地址" prop='companyAddress' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="社会信用代码或身份证号" prop='creditCode' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="相关操作" width='200' align='center'>
+                <el-table-column label="操作" width='200' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>

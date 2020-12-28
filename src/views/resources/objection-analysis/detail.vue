@@ -96,12 +96,12 @@
                                             {{scope.row.resourceType == 1 ? '商标名相同' : '商标名近似' }}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="国际分类" show-overflow-tooltip>
+                                    <el-table-column label="国际分类">
                                         <template slot-scope="scope">
                                             {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="注册号" prop="applicationNumber" show-overflow-tooltip>
+                                    <el-table-column label="注册号" prop="applicationNumber">
                                     </el-table-column>
                                     <el-table-column label="申请日期" show-overflow-tooltip>
                                         <template slot-scope="scope">
@@ -110,7 +110,7 @@
                                     </el-table-column>
                                     <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip>
                                     </el-table-column>
-                                    <el-table-column label="相关操作" width='220' align='center'>
+                                    <el-table-column label="操作" width='220' align='center' class-name="small-padding fixed-width">
                                         <template slot-scope="scope">
                                             <div class='operation'>
                                                 <el-button size="mini" type="text" @click="getResourseTel(scope.row)">获取电话</el-button>
@@ -133,11 +133,15 @@
                                 <p>{{selectItem.trademarkName}}</p>
                             </div>
                             <div>
+                                <label>注册号：</label>
+                                <p>{{selectItem.applicationNumber}}</p>
+                            </div>
+                            <div>
                                 <label>申请人：</label>
                                 <p>{{selectItem.applicationNameCn}}</p>
                             </div>
                         </div>
-                        <phoneList :phoneList=" selectItem.phoneList " />
+                        <phoneList :phoneList=" selectItem.phoneList " resourcesModule='2' :resourceId='selectItem.id' />
                     </div>
                 </el-col>
             </el-row>
