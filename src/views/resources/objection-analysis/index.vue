@@ -15,33 +15,33 @@
             </div>
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="商标名称" prop="preliNoticeTrademarkName" class="el-form-item-none">
                             <el-input v-model="queryParams.preliNoticeTrademarkName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人" prop="preliNoticeApplicationNameCn" class="el-form-item-none">
                             <el-input v-model="queryParams.preliNoticeApplicationNameCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人地址" prop="preliNoticeApplicationDddrCn" class="el-form-item-none">
                             <el-input v-model="queryParams.applicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="代理机构" prop="preliNoticeAgencyName" class="el-form-item-none">
                             <el-input v-model="queryParams.preliNoticeAgencyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="机构地址" prop="preliNoticeAgencyNameDddrCn" class="el-form-item-none">
                             <el-input v-model="queryParams.agencyAddr" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
 
-                    <el-col :lg="8" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="18" :sm="12" :xs="24" align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

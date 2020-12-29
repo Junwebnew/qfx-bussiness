@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <!-- 添加或修改参数配置对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
             <div class="pad20">
@@ -198,7 +197,7 @@ export default {
                     { required: true, message: "归属部门不能为空", trigger: "change" }
                 ],
                 roleIds: [
-                    { required: true, message: "角色不能为空", trigger: "change" }
+                    { required: true, message: "角色不能为空", trigger: "blur" }
                 ],
                 password: [
                     { required: true, message: "用户密码不能为空", trigger: "blur" }

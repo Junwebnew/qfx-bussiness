@@ -4,39 +4,39 @@
 
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="代理机构" prop="agency" class="el-form-item-none">
                             <el-input v-model="queryParams.agency" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="注册号" prop="trademarkNumber" class="el-form-item-none">
                             <el-input v-model="queryParams.trademarkNumber" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="国际分类" prop="typeOfTrademarkCode" class="el-form-item-none">
                             <el-input v-model="queryParams.typeOfTrademarkCode" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人地址" prop="applicationDddrCn" class="el-form-item-none">
                             <el-input v-model="queryParams.applicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人类型" prop="applicationType" class="el-form-item-none">
                             <el-select v-model="queryParams.applicationType" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in aplicationTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请日期" prop="time" class="el-form-item-none">
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='24' align='right'>
+                    <el-col :span='12' align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

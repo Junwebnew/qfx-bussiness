@@ -144,6 +144,12 @@ th > .cell {
 .pad10-20 {
   padding: 10px 20px;
 }
+.pad0-20 {
+  padding: 0 20px;
+}
+.pad0-30 {
+  padding: 0 30px;
+}
 
 .el-dialog:not(.is-fullscreen) {
   margin-top: 6vh !important;
@@ -170,6 +176,7 @@ th > .cell {
   color: #fff !important;
   background: red !important;
 }
+pad
 //滚动盒子,设置滚动条样式
 .scroll-box {
   overflow: auto;

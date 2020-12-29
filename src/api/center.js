@@ -52,6 +52,8 @@ export function getBussStatusList(data) {
     })
 }
 
+// clueopp/businessClueoppFollowStatus/page/list/myClueoppIsShow
+
 /**
  * 我的线索-分页查询
  */
@@ -59,10 +61,14 @@ export function clueMyList(data) {
     return $axios.post('clue/clue/page/list/me', data)
 }
 
+//今日跟待进线索-分页查询
+export function clueTodayList(data) {
+    return $axios.post('clue/clue/page/list/me/today', data)
+}
 
-/**
+/*
  * 所有线索-分页查询
- * */
+*/
 
 export function clueList(data) {
     return $axios.post('clue/clue/page/list/all', data)
@@ -101,3 +107,9 @@ export function clueMarksList(data) {
 export function clueMarksUpdate(data) {
     return $axios.post('clueopp/businessClueoppFollowRecord/saveorupdate', data)
 }
+
+//添加或更新线索商机提醒时间
+export function clueTipsUpdate(data) {
+    return $axios.post('clueopp/businessClueoppFollowRemind/saveorupdate', data)
+}
+

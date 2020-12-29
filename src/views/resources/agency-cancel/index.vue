@@ -34,7 +34,7 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="12" :sm="12" :xs="24" align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

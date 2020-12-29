@@ -169,13 +169,13 @@ export default {
             selectItem: {},
         }
     },
-    watch: {
-        $route(now) {
-            if ('objection-analysis-detail' == now.name && this.$route.query.id != now.query.id) {
-                this.initPage(now.query.id, now.query.num)
-            }
-        }
-    },
+    // watch: {
+    //     $route(now) {
+    //         if ('objection-analysis-detail' == now.name && this.$route.query.id != now.query.id) {
+    //             this.initPage(now.query.id, now.query.num)
+    //         }
+    //     }
+    // },
     created() {
         this.initPage(this.$route.query.id, this.$route.query.num)
     },

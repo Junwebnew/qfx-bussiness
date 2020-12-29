@@ -100,16 +100,17 @@ export default {
             tableData: []
         }
     },
-    watch: {
-        $route(now) {
+    // watch: {
+    //     $route(now) {
 
-            if ('agency-cancel-detail' == now.name && this.$route.query.id != now.query.id) {
+    //         if ('agency-cancel-detail' == now.name && this.$route.query.id != now.query.id) {
 
-                this.initPage(now.query.id)
-            }
-        }
-    },
+    //             this.initPage(now.query.id)
+    //         }
+    //     }
+    // },
     created() {
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this.$route.query.id)
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {

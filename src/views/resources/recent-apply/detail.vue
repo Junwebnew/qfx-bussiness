@@ -115,13 +115,13 @@ export default {
             tableData: []
         }
     },
-    watch: {
-        $route(now) {
-            if ('recent-apply-detail' == now.name && this.$route.query.id != now.query.id) {
-                this.initPage(now.query.id)
-            }
-        }
-    },
+    // watch: {
+    //     $route(now) {
+    //         if ('recent-apply-detail' == now.name && this.$route.query.id != now.query.id) {
+    //             this.initPage(now.query.id)
+    //         }
+    //     }
+    // },
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },

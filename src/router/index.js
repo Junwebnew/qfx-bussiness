@@ -237,7 +237,7 @@ export const asyncAllRoutes = [
         redirect: "noRedirect",
         component: "Layout",
         alwaysShow: true,
-        meta: { title: "个人中心", icon: "user", noCache: false },
+        meta: { title: "个人中心", icon: "user", noCache: true },
         children: [
             {
                 name: "clue",
@@ -260,6 +260,13 @@ export const asyncAllRoutes = [
                 component: "center/clue/detail",
                 meta: { title: "线索详情", icon: "post", noCache: true },
             },
+            {
+                name: "today",
+                path: "today",
+                hidden: false,
+                component: "center/today/index",
+                meta: { title: "今日待跟进", icon: "post", noCache: true },
+            },
         ]
     },
     {
@@ -269,14 +276,14 @@ export const asyncAllRoutes = [
         redirect: "noRedirect",
         component: "Layout",
         alwaysShow: true,
-        meta: { title: "资源模块", icon: "example", noCache: false },
+        meta: { title: "资源模块", icon: "example", noCache: true },
         children: [
             {
                 name: "recent-apply",
                 path: "recent-apply",
                 hidden: false,
                 component: "resources/recent-apply/index",
-                meta: { title: "近日申请", icon: "post", noCache: true },
+                meta: { title: "近日申请", icon: "post", noCache: false },
             },
             {
                 name: "recent-apply-detail",
@@ -291,7 +298,7 @@ export const asyncAllRoutes = [
                 path: "renewal",
                 hidden: false,
                 component: "resources/renewal/index",
-                meta: { title: "商标续展", icon: "log", noCache: true },
+                meta: { title: "商标续展", icon: "log", noCache: false },
             },
             {
                 name: "renewal-detail",
@@ -306,7 +313,7 @@ export const asyncAllRoutes = [
                 path: "change",
                 hidden: false,
                 component: "resources/change/index",
-                meta: { title: "商标变更", icon: "log", noCache: true },
+                meta: { title: "商标变更", icon: "log", noCache: false },
 
             },
             {
@@ -321,7 +328,7 @@ export const asyncAllRoutes = [
                 path: "agency-cancel",
                 hidden: false,
                 component: "resources/agency-cancel/index",
-                meta: { title: "代理机构注销", icon: "log", noCache: true },
+                meta: { title: "代理机构注销", icon: "log", noCache: false },
 
             },
             {
@@ -336,7 +343,7 @@ export const asyncAllRoutes = [
                 path: "reject",
                 hidden: false,
                 component: "resources/reject/index",
-                meta: { title: "商标驳回", icon: "log", noCache: true },
+                meta: { title: "商标驳回", icon: "log", noCache: false },
 
             },
             {
@@ -351,7 +358,7 @@ export const asyncAllRoutes = [
                 path: "objection-analysis",
                 hidden: false,
                 component: "resources/objection-analysis/index",
-                meta: { title: "异议分析", icon: "log", noCache: true },
+                meta: { title: "异议分析", icon: "log", noCache: false },
 
             },
             {
@@ -361,8 +368,6 @@ export const asyncAllRoutes = [
                 component: "resources/objection-analysis/detail",
                 meta: { title: "异议分析-详情", icon: "post", noCache: true },
             }
-
-
         ],
     },
     {

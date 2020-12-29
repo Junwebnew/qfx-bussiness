@@ -40,6 +40,8 @@ export default {
         getVnode() {
             // 判断子集非空
             if (this.$children.length == 0) return false;
+
+            console.log('9999子组件9999', this.$children)
             let vnode;
             for (let item of this.$children) {
                 // 如果data中有key则代表找到了keep-alive下面的子集，这个key就是router-view上的key

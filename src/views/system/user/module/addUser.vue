@@ -184,7 +184,7 @@ export default {
                     { required: true, message: "归属部门不能为空", trigger: "change" }
                 ],
                 roleIds: [
-                    { required: true, message: "角色不能为空", trigger: "change" }
+                    { required: true, message: "角色不能为空", trigger: "blur" }
                 ],
                 password: [
                     { required: true, message: "用户密码不能为空", trigger: "blur" }

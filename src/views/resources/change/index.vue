@@ -4,17 +4,17 @@
 
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人" prop="userName" class="el-form-item-none">
                             <el-input v-model="queryParams.companyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人地址" prop="userAddress" class="el-form-item-none">
                             <el-input v-model="queryParams.companyAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="8" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="12" :sm="12" :xs="24" align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
