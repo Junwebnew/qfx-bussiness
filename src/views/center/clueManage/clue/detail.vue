@@ -15,88 +15,86 @@
                                         <span>基本信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12">
-                                        <el-tooltip class="item" effect="dark" content="新增提醒" placement="top">
-                                            <el-button size="mini" type='warning' circle icon="el-icon-bell" @click="handleAddTips()" />
-                                        </el-tooltip>
+                                        <el-button type="warning" size='mini' @click="handleAddTips()">新增提醒</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">客户名称：</span>
                                 <div class="custom-r">
                                     {{json.customerName || '--'}}
                                 </div>
                             </el-col>
 
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系人：</span>
                                 <div class="custom-r">
                                     {{json.contactName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系电话：</span>
                                 <div class="custom-r">
                                     {{json.contactPhone}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系QQ：</span>
                                 <div class="custom-r">
                                     {{json.contactQq || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系微信：</span>
                                 <div class="custom-r">
                                     {{json.contactWx || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属商务：</span>
                                 <div class="custom-r">
                                     {{json.counselorId || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">申请人名称：</span>
                                 <div class="custom-r">
                                     {{json.applicantName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属部门：</span>
                                 <div class="custom-r">
                                     {{json.deptId || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">线索状态：</span>
                                 <div class="custom-r">
                                     {{formatterStatus(json.followStatus)}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源来源：</span>
                                 <div class="custom-r">
                                     {{json.resourceId || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源类型：</span>
                                 <div class="custom-r">
                                     {{json.resourceType || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">业务类型：</span>
                                 <div class="custom-r">
                                     {{json.vocId || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="8" :xs="24" class="mb16">
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">线索说明：</span>
                                 <div class="custom-r">
                                     {{json.busexplain || '--'}}
@@ -112,37 +110,36 @@
                                         <span>备注信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12">
-                                        <el-tooltip class="item" effect="dark" content="新增" placement="top">
-                                            <el-button size="mini" type='primary' circle icon="el-icon-plus" @click="handleAddMarks()" />
-                                        </el-tooltip>
-
-                                        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-                                            <el-button size="mini" circle icon="el-icon-refresh" @click="getmarks()" />
-                                        </el-tooltip>
+                                        <el-button type="primary" size='mini' @click="handleChange()">状态变更</el-button>
+                                        <el-button type="success" size='mini' @click="handleAddMarks()">新增备注</el-button>
+                                        <el-button type="info" size='mini' @click="getmarks()">刷新</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
                             <el-col>
-                                <el-table :data="marksList" row-key="id" class="table" v-loading='markLoading'>
-                                    <el-table-column type="index" width="50"></el-table-column>
-                                    <el-table-column label="跟进用户" prop="userName"></el-table-column>
-                                    <el-table-column label="线索状态" :formatter='formatterStatus' prop="businessStatusId"></el-table-column>
-                                    <el-table-column label="备注时间" prop="remarkDate"></el-table-column>
-                                    <el-table-column label="备注内容" prop="remarkContent"></el-table-column>
-                                </el-table>
+                                <ul class="marksBox">
+                                    <li v-for="(item,idx) in marksList" :key='idx'>
+                                        <h3 class="head">
+                                            <img src="" :onerror='$headImg.error' alt="头像">
+                                        </h3>
+                                        <div class="r-box">
+                                            <p class="top">
+                                                <small>{{item.userName}}</small>
+                                                <small class="ml10 col">{{formatterStatus(item.businessStatusId)}}</small>
+                                                <small class="ml10">{{item.remarkDate}}</small>
+                                            </p>
+                                            <p class="desc">{{item.remarkContent}}</p>
+                                        </div>
+                                    </li>
+                                </ul>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
-                <!-- //右侧 -->
-                <!-- <el-col :sm="8" :xs="24">
-                    <div class="back-fff pad20 full-height full-height2">
-                        <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' />
-                    </div>
-                </el-col> -->
             </el-row>
         </div>
+        <!-- 修改状态 -->
+        <changeStatus ref='changeStatus' :clueStatueArr='clueStatueArr' @finish='getmarks' />
         <!-- 新增备注 -->
         <addMarks ref='addMarks' :clueStatueArr='clueStatueArr' @finish='getmarks' />
         <!-- 新增提醒 -->
@@ -153,11 +150,11 @@
 <script>
 import { clueDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
-import { addMarks, addTimeTips } from '../_module'
+import { addMarks, addTimeTips, changeStatus } from '../_module'
 
 export default {
     components: {
-        addMarks, addTimeTips
+        addMarks, addTimeTips, changeStatus
     },
     data() {
         return {
@@ -222,9 +219,13 @@ export default {
                 code = code.businessStatusId
             }
 
-            let item = this.clueStatueArr.filter(i => i.code == code)[0]
+            let item = this.clueStatueArr.filter(i => i.id == code)[0]
 
             return (item && item.name) || code
+        },
+        //状态变更
+        handleChange() {
+            this.$refs.changeStatus.show(this.json)
         },
         //增加备注
         handleAddMarks() {
@@ -238,4 +239,36 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.marksBox {
+    overflow: hidden;
+    li {
+        padding: 10px 0;
+        overflow: hidden;
+        .head {
+            float: left;
+            width: 44px;
+            height: 44px;
+            margin-right: 20px;
+            img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+        .r-box {
+            font-size: 12px;
+            color: #515a6e;
+            .top {
+                margin-bottom: 10px;
+                small {
+                    display: inline-block;
+                    min-width: 50px;
+                }
+            }
+            .desc {
+                color: #888;
+            }
+        }
+    }
+}
 </style>

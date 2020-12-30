@@ -56,28 +56,25 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-                    <el-button type="success" size="mini" @click="handleAdd()" v-hasPermi="['share']">批量分配</el-button>
                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="tableData" row-key="id">
-                <el-table-column type='selection'></el-table-column>
+            <el-table v-loading="loading" :data="tableData">
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
                 <el-table-column label="线索状态" align='center' prop="followStatus" :formatter='formatterStatus'></el-table-column>
-                <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column>
+                <!-- <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column>
                 <el-table-column label="资源类型" align='center' prop="resourceType"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocId"></el-table-column>
-                <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
+                <el-table-column label="业务类型" align='center' prop="vocId"></el-table-column> -->
+                <el-table-column label="提醒时间" align='center' prop="remindDate" show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
                 <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['share']" @click="handleUpdate(scope.row)">分配</el-button>
                             <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
@@ -95,7 +92,7 @@
 </template>
 
 <script>
-import { getClueStatusList, clueMyList } from "@/api/center";
+import { getClueStatusList, clueTodayList } from "@/api/center";
 import clubModule from '../_module/clubModule'  //新增和修改用户
 import SwitchForm from "@/components/SwitchForm";
 
@@ -119,7 +116,6 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                myClueoppIsShow: "1",
                 followStatusList: ''
             },
             //线索状态
@@ -144,7 +140,7 @@ export default {
     mounted() {
         this.getList()
 
-        getClueStatusList({ myClueoppIsShow: 1, pageNum: 1, pageSize: 1000 }).then(res => {
+        getClueStatusList().then(res => {
             this.clueStatueArr = res
         })
     },
@@ -153,7 +149,7 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            clueTodayList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;

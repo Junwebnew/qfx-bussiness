@@ -240,33 +240,42 @@ export const asyncAllRoutes = [
         meta: { title: "个人中心", icon: "user", noCache: true },
         children: [
             {
-                name: "clue",
-                path: "clue",
+                name: "clueManage",
+                path: "clueManage",
                 hidden: false,
-                component: "center/clue/index",
-                meta: { title: "我的线索", icon: "post", noCache: true },
-            },
-            {
-                name: "clue-all",
-                path: "clue-all",
-                hidden: false,
-                component: "center/clue-all/index",
-                meta: { title: "所有线索", icon: "post", noCache: true },
-            },
-            {
-                name: "clue-detail",
-                path: "clue/detail",
-                hidden: true,
-                component: "center/clue/detail",
-                meta: { title: "线索详情", icon: "post", noCache: true },
-            },
-            {
-                name: "today",
-                path: "today",
-                hidden: false,
-                component: "center/today/index",
-                meta: { title: "今日待跟进", icon: "post", noCache: true },
-            },
+                component: "ParentView",
+                meta: { title: "线索管理", icon: "post", noCache: true },
+                children: [
+                    {
+                        name: "clue",
+                        path: "clue",
+                        hidden: false,
+                        component: "center/clueManage/clue/index",
+                        meta: { title: "我的线索", noCache: true },
+                    },
+                    {
+                        name: "clue-all",
+                        path: "clue-all",
+                        hidden: false,
+                        component: "center/clueManage/clue-all/index",
+                        meta: { title: "所有线索", noCache: true },
+                    },
+                    {
+                        name: "clue-detail",
+                        path: "clue/detail",
+                        hidden: true,
+                        component: "center/clueManage/clue/detail",
+                        meta: { title: "线索详情", noCache: true },
+                    },
+                    {
+                        name: "today",
+                        path: "today",
+                        hidden: false,
+                        component: "center/clueManage/today/index",
+                        meta: { title: "今日待跟进", noCache: true },
+                    },
+                ]
+            }
         ]
     },
     {

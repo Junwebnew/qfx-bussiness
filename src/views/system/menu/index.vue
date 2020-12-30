@@ -96,7 +96,7 @@
                         <el-form-item label="菜单图标">
                             <el-popover placement="bottom-start" width="460" trigger="click" @show="$refs['iconSelect'].reset()">
                                 <IconSelect ref="iconSelect" @selected="selected" />
-                                <el-input slot="reference" v-model="form.iconClass" placeholder="点击选择图标" readonly>
+                                <el-input slot="reference" v-model="form.iconClass" clearable placeholder="点击选择图标">
                                     <svg-icon v-if="form.iconClass" slot="prefix" :icon-class="form.iconClass" class="el-input__icon" style="height: 32px; width: 16px" />
                                     <i v-else slot="prefix" class="el-icon-search el-input__icon" />
                                 </el-input>
@@ -176,7 +176,7 @@
                 <el-button type="primary" @click="submitForm">确 定</el-button>
             </div>
         </el-dialog>
-        <!-- 添加或修改菜单对话框 -->
+        <!-- 添加或修改按钮对话框 -->
         <el-dialog :title="btnBoxPar.tit" :visible.sync="btnBoxPar.show" :close-on-click-modal="false" width="600px" append-to-body>
             <el-row>
                 <el-col>

@@ -5,10 +5,9 @@
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
                 <el-row :gutter="10" class="mb8">
                     <el-col :span='24'>
-                        <el-form-item label="线索状态" prop="businessStatusId">
-                            <el-select v-model="form.businessStatusId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
-                            </el-select>
+                        <el-form-item label="提醒时间" prop="remindDate">
+                            <el-date-picker v-model="form.remindDate" type="datetime" size='small' style="width:100%" value-format='yyyy-MM-dd HH:mm:ss' :picker-options="pickerOptions0" placeholder="选择日期时间">
+                            </el-date-picker>
                         </el-form-item>
                         <el-form-item label="线索备注" prop="remarkContent">
                             <el-input v-model="form.remarkContent" type="textarea" maxLength='200' placeholder="请输入内容"></el-input>
@@ -26,7 +25,7 @@
 </template>
 <script>
 
-import { clueMarksUpdate } from "@/api/center";
+import { clueMarksUpdate, clueTipsUpdate } from "@/api/center";
 
 export default {
     props: {
@@ -49,12 +48,14 @@ export default {
             form: { businessStatusId: '' },
             // 表单校验
             rules: {
-                businessStatusId: [
-                    { required: true, message: "状态不能为空", trigger: "blur" }
-                ],
                 remarkContent: [
                     { required: true, message: "备注不能为空", trigger: "blur" }
                 ]
+            },
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
+                }
             }
         }
     },
@@ -63,7 +64,8 @@ export default {
 
             this.businessId = obj.id
             this.addTitle = tit || '新增备注'
-            this.form = { businessStatusId: '' }
+
+            this.form = { businessStatusId: obj.followStatus, remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
             this.open = true
 
         },
@@ -75,13 +77,14 @@ export default {
                     this.form.businessId = this.businessId
                     this.form.type = this.type
 
-                    clueMarksUpdate(this.form).then(response => {
-
+                    Promise.all([
+                        clueTipsUpdate(this.form),
+                        clueMarksUpdate(this.form)
+                    ]).then(res => {
                         this.msgSuccess('新增成功');
                         this.open = false;
                         this.$emit('finish');
-
-                    });
+                    })
                 }
             });
         },

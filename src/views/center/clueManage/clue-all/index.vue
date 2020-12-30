@@ -56,12 +56,16 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
+
                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
+                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量分配</el-button>
+                    <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="tableData" row-key="id">
+            <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
+                <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
@@ -75,7 +79,9 @@
                 <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
                             <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
+                            <el-button class="col-del" size="mini" type="text" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
@@ -87,17 +93,19 @@
 
             <!-- 新增和修改    -->
             <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
+            <!-- 分配 -->
+            <distribution ref='distribution' :ids='ids' @finish='handleQuery' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueTodayList } from "@/api/center";
-import clubModule from '../_module/clubModule'  //新增和修改用户
+import { getClueStatusList, clueMyList, clueEliminate } from "@/api/center";
+import { clubModule, distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 
 export default {
-    components: { clubModule, SwitchForm },
+    components: { clubModule, SwitchForm, distribution },
     data() {
         return {
             //显示搜索框
@@ -110,13 +118,14 @@ export default {
             tableData: [],
             //总数
             total: 0,
+            //id集合
+            ids: [],
             // 日期范围
             dateRange: [],
             //搜索条件 
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                myClueoppIsShow: "1",
                 followStatusList: ''
             },
             //线索状态
@@ -141,7 +150,7 @@ export default {
     mounted() {
         this.getList()
 
-        getClueStatusList().then(res => {
+        getClueStatusList({ myClueoppIsShow: 1, pageNum: 1, pageSize: 1000 }).then(res => {
             this.clueStatueArr = res
         })
     },
@@ -150,7 +159,7 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            clueTodayList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;
@@ -178,7 +187,7 @@ export default {
 
             let key = this.$route.name + obj.id
 
-            this.$router.push('/center/clue/detail?id=' + obj.id)
+            this.$router.push('/center/clueManage/clue/detail?id=' + obj.id)
         },
         //新增线索
         handleAdd() {
@@ -188,21 +197,47 @@ export default {
         handleUpdate(row) {
             this.$refs.clubModule.showFunc({}, '修改线索')
         },
-        /** 删除按钮操作 */
-        handleDelete(row) {
-            const ids = row.id
-            this.$confirm('是否删除客户"' + row.customerName + '"的线索?', "警告", {
+        // 多选框选中数据
+        handleSelectionChange(selection) {
+            this.ids = selection.map(item => item.id)
+        },
+        //分配
+        handleDistribution(obj) {
+            let tit = '线索批量分配'
+            if (obj) {
+                this.ids = [obj.id]
+                tit = obj.customerName + "线索分配"
+            }
+            this.$refs.distribution.show({}, tit)
+        },
+        //剔除
+        handleEliminate(obj) {
+
+            let tit = '是否批量剔除线索？'
+
+            if (obj) {
+                this.ids = [obj.id]
+                tit = '是否剔除 ' + obj.customerName + " ？"
+            }
+
+            this.$confirm(tit, "警告", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(function () {
-                return clueDel([ids]);
-            }).then(() => {
-                this.getList();
-                this.msgSuccess("删除成功");
-            })
-        },
 
+                return clueEliminate([ids]);
+
+            }).then(() => {
+
+                this.getList();
+                this.msgSuccess("剔除成功");
+
+            })
+                .catch(msg => {
+                    console.log(11111, msg)
+                })
+        }
     },
     beforeDestroy() {
     }

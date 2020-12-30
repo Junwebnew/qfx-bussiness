@@ -1,6 +1,6 @@
 <!-- @author Shiyn/   huangmx 20200807优化-->
 <template>
-    <el-button size="mini" :icon=" showSwitch ? 'el-icon-upload2' : 'el-icon-download' " @click="toggleSearch()"></el-button>
+    <el-button size="mini" @click="toggleSearch()">{{showSwitch ? '收起' : '展开' }}</el-button>
 </template>
 <script>
 export default {

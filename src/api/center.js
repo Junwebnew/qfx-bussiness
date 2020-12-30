@@ -75,11 +75,7 @@ export function clueList(data) {
 }
 
 
-//批量删除线索管理
 
-export function clueDel(arr) {
-    return $axios.post('clue/clue/batch/del', arr)
-}
 
 
 //根据ID查询线索管理
@@ -113,3 +109,27 @@ export function clueTipsUpdate(data) {
     return $axios.post('clueopp/businessClueoppFollowRemind/saveorupdate', data)
 }
 
+//批量分配  clueIds 线索|商机ID     disTraUserId 分配用户ID
+
+export function clueDistribution(data) {
+    return $axios.post('clue/clue/batch/distribution', data)
+}
+
+// //批量移交 clueIds 线索|商机ID     disTraUserId 分配用户ID
+
+// export function clueTransfer(data) {
+//     return $axios.post('clue/clue/batch/transfer', data)
+// }
+
+
+//批量删除线索管理
+
+export function clueDel(arr) {
+    return $axios.post('clue/clue/batch/del', arr)
+}
+
+//批量剔除 (剔除后还是线索，转到公共库，别人可领取) clueIds
+
+export function clueEliminate(data) {
+    return $axios.post('clue/clue/batch/eliminate', data)
+}

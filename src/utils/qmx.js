@@ -3,6 +3,8 @@ import Vue from "vue"
 
 import { baseImgUrl } from './baseConfig'
 
+import headerImg from '../assets/images/head.png'
+
 
 Vue.prototype.$getImg = (id, type) => {
 
@@ -20,4 +22,9 @@ Vue.prototype.$getImg = (id, type) => {
     }
 
     return ""
+}
+
+Vue.prototype.$headImg = {
+    img: headerImg,
+    error: 'this.src="' + headerImg + '"',
 }

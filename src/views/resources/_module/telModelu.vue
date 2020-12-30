@@ -88,6 +88,9 @@ export default {
 
                     that.$emit('reload')
                 })
+                    .catch(res => {
+                        that.loading = false
+                    })
 
             }).catch(error => {
                 console.log('4534', error)
