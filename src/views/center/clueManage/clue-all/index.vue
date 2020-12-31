@@ -150,7 +150,7 @@ export default {
     mounted() {
         this.getList()
 
-        getClueStatusList({ myClueoppIsShow: 1, pageNum: 1, pageSize: 1000 }).then(res => {
+        this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res
         })
     },

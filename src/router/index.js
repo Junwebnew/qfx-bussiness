@@ -279,6 +279,31 @@ export const asyncAllRoutes = [
         ]
     },
     {
+        name: "pool",
+        path: "/pool",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "Layout",
+        alwaysShow: true,
+        meta: { title: "资源池", icon: "log", noCache: true },
+        children: [
+            {
+                name: "dep",
+                path: "dep",
+                hidden: false,
+                component: "pool/dep/index",
+                meta: { title: "部门池", icon: "form", noCache: true },
+            },
+            {
+                name: "public",
+                path: "public",
+                hidden: false,
+                component: "pool/public/index",
+                meta: { title: "公共池", icon: "form", noCache: true },
+            }
+        ],
+    },
+    {
         name: "resources",
         path: "/resources",
         hidden: false,

@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="back-fff form-box mb10" v-show="showSearch">
 
-            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="80px">
                 <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="客户名称" prop="customerName" class="el-form-item-none">
@@ -12,38 +12,22 @@
 
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="联系电话" prop="contactPhone" class="el-form-item-none">
-                            <el-input v-model="queryParams.contactPhone" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                            <el-input v-model="queryParams.contactPhone" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
-                        <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
-                            <el-select v-model="queryParams.followStatusList" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
+
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
-                            <!-- <el-select v-model="queryParams.resourceType" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in resourceTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select> -->
-                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='queryParams.resourceType' clearable></el-cascader>
+                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="业务类型" prop="vocId" class="el-form-item-none">
-                            <!-- <el-select v-model="queryParams.vocId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in vocIdArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select> -->
-                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='queryParams.vocId' clearable></el-cascader>
+                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
-                        <el-form-item label="创建时间" prop="time" class="el-form-item-none">
-                            <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :lg=" showSwitch ? 12 : 6 " :sm="24" :xs="24" align='right' class="mb20">
+
+                    <el-col :lg=" showSwitch ? 24 : 7 " :sm="24" :xs="24" align='right' class="mb20">
 
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -78,13 +62,10 @@
                 <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
-                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="80" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
-                            <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
-                            <el-button class="col-del" size="mini" type="text" @click="handleEliminate(scope.row)">剔除</el-button>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">领取</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -93,21 +74,17 @@
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
-            <!-- 新增和修改    -->
-            <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
-            <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='handleQuery' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate } from "@/api/center";
-import { clubModule, distribution } from '../_module'
+import { depPoolList } from "@/api/center";
+
 import SwitchForm from "@/components/SwitchForm";
 
 export default {
-    components: { clubModule, SwitchForm, distribution },
+    components: { SwitchForm },
     data() {
         return {
             //显示搜索框
@@ -127,18 +104,15 @@ export default {
             //搜索条件 
             queryParams: {
                 pageNum: 1,
-                pageSize: 10,
-                followStatusList: '',
-                resourceType: "",
-                vocId: ''
+                pageSize: 10
             },
             seProps: { value: 'id', label: "name" },
-            //线索状态
-            clueStatueArr: [],
             //业务类型
             vocIdArr: [],
+            vocId: '',
             //资源类型
             resourceTypeArr: [],
+            resourceType: '',
             //初始时间
             initDate: [],
             //申请人类型
@@ -155,9 +129,6 @@ export default {
     mounted() {
         this.getList()
 
-        this.$store.dispatch('getBussStatus', 2).then(res => {
-            this.clueStatueArr = res
-        })
         this.$store.dispatch('getCenterType', 1).then(res => {
             this.vocIdArr = res
         })
@@ -170,18 +141,21 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+
+            if (this.vocId && this.vocId.length) {
+                this.queryParams.vocId = this.vocId[this.vocId.length - 1]
+            }
+
+            depPoolList(this.queryParams).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
             })
-        },
-        formatterStatus(row) {
-
-            let item = this.clueStatueArr.filter(i => i.code == row.followStatus)[0]
-
-            return (item && item.name) || row.followStatus
         },
         /** 搜索按钮操作 */
         handleQuery() {

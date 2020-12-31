@@ -71,10 +71,10 @@
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
-                <!-- <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
+                <el-table-column label="线索状态" align='center' prop="followStatus" :formatter='formatterStatus'></el-table-column>
+                <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column>
+                <el-table-column label="资源类型" align='center' prop="resourceType"></el-table-column>
+                <el-table-column label="业务类型" align='center' prop="vocId"></el-table-column>
                 <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
@@ -93,21 +93,17 @@
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
-            <!-- 新增和修改    -->
-            <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
-            <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='handleQuery' />
         </div>
     </div>
 </template>
 
 <script>
 import { getClueStatusList, clueMyList, clueEliminate } from "@/api/center";
-import { clubModule, distribution } from '../_module'
+
 import SwitchForm from "@/components/SwitchForm";
 
 export default {
-    components: { clubModule, SwitchForm, distribution },
+    components: { SwitchForm },
     data() {
         return {
             //显示搜索框

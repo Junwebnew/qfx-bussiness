@@ -4,53 +4,17 @@ import Cookies from 'js-cookie'
 
 //获取线索状态列表 （1：线索 2：商机）
 
-export function getClueStatusList(data, type) {
-
-    let statusArr = Cookies.get('clueStatusList')
-    return new Promise(resolve => {
-        if (statusArr && !data) {
-            resolve(JSON.parse(statusArr))
-            return
-        }
-        else {
-            data = data || { pageNum: 1, pageSize: 1000 }
-
-            data.type = 1
-
-            $axios.post('clueopp/businessClueoppFollowStatus/page/list', data)
-                .then(res => {
-
-                    Cookies.set('clueStatusList', res.data)
-                    resolve(res.data)
-                })
-        }
-    })
+export function getClueStatusList(data) {
+    return $axios.post('clueopp/businessClueoppFollowStatus/page/list', data)
 }
 
-//获取商机状态列表 （1：线索 2：商机）
-export function getBussStatusList(data) {
+//获取业务类型
 
-    let statusArr = Cookies.get('bussStatusList')
-    return new Promise(resolve => {
-        if (statusArr && !data) {
-            resolve(JSON.parse(statusArr))
-            return
-        }
-        else {
-
-            data = data || { pageNum: 1, pageSize: 1000 }
-
-            data.type = 2
-
-            $axios.post('clueopp/businessClueoppFollowStatus/page/list', data)
-                .then(res => {
-
-                    Cookies.set('bussStatusList', res.data)
-                    resolve(res.data)
-                })
-        }
-    })
+export function getBussinessStatusList(data) {
+    return $axios.post('clueopp/businessClueoppVocResType/tree', data)
 }
+
+
 
 // clueopp/businessClueoppFollowStatus/page/list/myClueoppIsShow
 
@@ -132,4 +96,26 @@ export function clueDel(arr) {
 
 export function clueEliminate(data) {
     return $axios.post('clue/clue/batch/eliminate', data)
+}
+
+//部门池-分页查询
+
+export function depPoolList(data) {
+    return $axios.post('clue/clue/page/list/dept', data)
+}
+
+//部门领取
+export function depPoolReceive(data) {
+    return $axios.post('clue/clue/dept/receive', data)
+}
+
+//公共池-分页查询
+
+export function publicPoolList(data) {
+    return $axios.post('clueopp/businessClueoppPool/page/list', data)
+}
+
+//公共池-批量领取
+export function publicPoolReceive(data) {
+    return $axios.post('clueopp/businessClueoppPool/batch/receive', data)
 }

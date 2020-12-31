@@ -174,10 +174,9 @@ export default {
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
 
-        getClueStatusList().then(res => {
+        this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res
         })
-
     },
     methods: {
         initPage(id) {
