@@ -15,25 +15,21 @@
                             <el-input v-model="queryParams.contactPhone" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
-                            <el-select v-model="queryParams.followStatusList" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
+                            <el-select v-model="queryParams.followStatusList" multiple clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
-                            <el-select v-model="queryParams.resourceType" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in resourceTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select>
+                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="业务类型" prop="vocId" class="el-form-item-none">
-                            <el-select v-model="queryParams.vocId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in vocIdArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select>
+                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
@@ -41,8 +37,14 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg=" showSwitch ? 12 : 6 " :sm="24" :xs="24" align='right' class="mb20">
-
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
+                        <el-form-item label="所属商务" prop="time" class="el-form-item-none">
+                            <el-select v-model="queryParams.counselorId" multiple clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg=" 6 " :sm="24" :xs="24" align='right' class="mb20">
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                         <SwitchForm :showSwitch.sync="showSwitch" />
@@ -57,8 +59,7 @@
                 </el-col>
                 <el-col :span="20" align='right'>
 
-                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量分配</el-button>
+                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量移交</el-button>
                     <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
@@ -67,20 +68,16 @@
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
-                <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatus" :formatter='formatterStatus'></el-table-column>
-                <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column>
-                <el-table-column label="资源类型" align='center' prop="resourceType"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocId"></el-table-column>
-                <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
+                <el-table-column label="联系电话" align='center' prop='contactPhone'> </el-table-column>
+                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
+                <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
+                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
+                <el-table-column label="所属商务" align='center' prop="counselorName"></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
                 <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
-                            <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
                             <el-button class="col-del" size="mini" type="text" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
@@ -94,15 +91,17 @@
             <!-- 新增和修改    -->
             <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='handleQuery' />
+            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate } from "@/api/center";
+import { getClueStatusList, clueMyList, clueEliminate, clueTransfer } from "@/api/center";
 import { clubModule, distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
+import { deepClone } from '@/utils/index'
+import { mapGetters } from 'vuex'
 
 export default {
     components: { clubModule, SwitchForm, distribution },
@@ -128,37 +127,62 @@ export default {
                 pageSize: 10,
                 followStatusList: ''
             },
+            seProps: { value: 'id', label: "name" },
             //线索状态
             clueStatueArr: [],
-            //资源类型
-            resourceTypeArr: [],
             //业务类型
             vocIdArr: [],
+            vocId: '',
+            //资源类型
+            resourceTypeArr: [],
+            resourceType: '',
             //初始时间
             initDate: [],
-            //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ],
-            userList: []
+            //所属部门人员
+            depUserList: []
         }
     },
+    computed: {
+        ...mapGetters([
+            'whetherAdmin'
+        ])
+    },
     created() {
+
 
     },
     mounted() {
         this.getList()
 
-        this.$store.dispatch('getBussStatus', 1).then(res => {
+        this.$store.dispatch('getBussStatus', 2).then(res => {
             this.clueStatueArr = res
         })
+        this.$store.dispatch('getCenterType', 1).then(res => {
+            this.vocIdArr = res
+        })
+        this.$store.dispatch('getCenterType', 2).then(res => {
+            this.resourceTypeArr = res
+        })
+        if (this.whetherAdmin) {
+            this.$store.dispatch('getDepUser').then(res => {
+                this.depUserList = res.data
+            })
+        }
     },
     methods: {
 
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
+
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+
+            if (this.vocId && this.vocId.length) {
+                this.queryParams.vocId = this.vocId[this.vocId.length - 1]
+            }
+
             clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
@@ -180,6 +204,8 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
+            this.resourceType = []
+            this.vocId = []
             this.resetForm("queryForm");
             this.handleQuery();
         },
@@ -195,7 +221,7 @@ export default {
         },
         /** 修改按钮操作 */
         handleUpdate(row) {
-            this.$refs.clubModule.showFunc({}, '修改线索')
+            this.$refs.clubModule.showFunc(deepClone(row), '修改线索')
         },
         // 多选框选中数据
         handleSelectionChange(selection) {
@@ -237,6 +263,15 @@ export default {
                 .catch(msg => {
                     console.log(11111, msg)
                 })
+        },
+        //选完用户之后
+        seleceUserFinish(userId) {
+            clueTransfer({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+
+                this.msgSuccess('移交成功')
+                this.handleQuery()
+
+            })
         }
     },
     beforeDestroy() {

@@ -41,7 +41,14 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg=" showSwitch ? 12 : 6 " :sm="24" :xs="24" align='right' class="mb20">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
+                        <el-form-item label="所属商务" prop="time" class="el-form-item-none">
+                            <el-select v-model="queryParams.counselorId" multiple clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg=" 6 " :sm="24" :xs="24" align='right' class="mb20">
 
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -63,12 +70,9 @@
 
             <el-table v-loading="loading" :data="tableData">
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
-                <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatus" :formatter='formatterStatus'></el-table-column>
-                <!-- <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column>
-                <el-table-column label="资源类型" align='center' prop="resourceType"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocId"></el-table-column> -->
+                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
+
                 <el-table-column label="提醒时间" align='center' prop="remindDate" show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
@@ -84,20 +88,16 @@
 
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
-
-            <!-- 新增和修改    -->
-            <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueTodayList } from "@/api/center";
-import clubModule from '../_module/clubModule'  //新增和修改用户
+import { clueTodayList } from "@/api/center";
 import SwitchForm from "@/components/SwitchForm";
 
 export default {
-    components: { clubModule, SwitchForm },
+    components: { SwitchForm },
     data() {
         return {
             //显示搜索框
@@ -110,6 +110,8 @@ export default {
             tableData: [],
             //总数
             total: 0,
+            //id集合
+            ids: [],
             // 日期范围
             dateRange: [],
             //搜索条件 
@@ -118,20 +120,20 @@ export default {
                 pageSize: 10,
                 followStatusList: ''
             },
+            seProps: { value: 'id', label: "name" },
             //线索状态
             clueStatueArr: [],
-            //资源类型
-            resourceTypeArr: [],
             //业务类型
             vocIdArr: [],
+            vocId: '',
+            //资源类型
+            resourceTypeArr: [],
+            resourceType: '',
             //初始时间
             initDate: [],
-            //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ],
-            userList: []
+            //所属部门人员
+            depUserList: [],
+            whetherAdmin: false
         }
     },
     created() {
@@ -140,27 +142,43 @@ export default {
     mounted() {
         this.getList()
 
-        getClueStatusList().then(res => {
+        this.$store.dispatch('getBussStatus', 2).then(res => {
             this.clueStatueArr = res
         })
+        this.$store.dispatch('getCenterType', 1).then(res => {
+            this.vocIdArr = res
+        })
+        this.$store.dispatch('getCenterType', 2).then(res => {
+            this.resourceTypeArr = res
+        })
+        if (this.$store.state.user.userInfo.whetherAdmin) {
+            this.whetherAdmin = true
+
+            this.$store.dispatch('getDepUser').then(res => {
+                this.depUserList = res.data
+            })
+        }
     },
     methods: {
 
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
+
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+
+            if (this.vocId && this.vocId.length) {
+                this.queryParams.vocId = this.vocId[this.vocId.length - 1]
+            }
+
             clueTodayList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
             })
-        },
-        formatterStatus(row) {
-
-            let item = this.clueStatueArr.filter(i => i.code == row.followStatus)[0]
-
-            return (item && item.name) || row.followStatus
         },
         /** 搜索按钮操作 */
         handleQuery() {

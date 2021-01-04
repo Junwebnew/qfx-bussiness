@@ -81,9 +81,9 @@ export function clueDistribution(data) {
 
 // //批量移交 clueIds 线索|商机ID     disTraUserId 分配用户ID
 
-// export function clueTransfer(data) {
-//     return $axios.post('clue/clue/batch/transfer', data)
-// }
+export function clueTransfer(data) {
+    return $axios.post('clue/clue/batch/transfer', data)
+}
 
 
 //批量删除线索管理

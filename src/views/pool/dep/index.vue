@@ -42,16 +42,12 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-
-                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量分配</el-button>
-                    <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
-                <el-table-column type='selection'></el-table-column>
+            <el-table v-loading="loading" :data="tableData" row-key="id">
+                <el-table-column type='index'></el-table-column>
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
@@ -65,7 +61,8 @@
                 <el-table-column label="操作" align="left" width="80" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">领取</el-button>
+                            <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">领取</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -79,7 +76,7 @@
 </template>
 
 <script>
-import { depPoolList } from "@/api/center";
+import { depPoolList, depPoolReceive } from "@/api/center";
 
 import SwitchForm from "@/components/SwitchForm";
 
@@ -165,6 +162,8 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
+            this.resourceType = []
+            this.vocId = []
             this.resetForm("queryForm");
             this.handleQuery();
         },
@@ -174,55 +173,26 @@ export default {
 
             this.$router.push('/center/clueManage/clue/detail?id=' + obj.id)
         },
-        //新增线索
-        handleAdd() {
-            this.$refs.clubModule.showFunc({}, '新增线索')
-        },
-        /** 修改按钮操作 */
-        handleUpdate(row) {
-            this.$refs.clubModule.showFunc({}, '修改线索')
-        },
-        // 多选框选中数据
-        handleSelectionChange(selection) {
-            this.ids = selection.map(item => item.id)
-        },
         //分配
         handleDistribution(obj) {
-            let tit = '线索批量分配'
-            if (obj) {
-                this.ids = [obj.id]
-                tit = obj.customerName + "线索分配"
-            }
-            this.$refs.distribution.show({}, tit)
-        },
-        //剔除
-        handleEliminate(obj) {
 
-            let tit = '是否批量剔除线索？'
-
-            if (obj) {
-                this.ids = [obj.id]
-                tit = '是否剔除 ' + obj.customerName + " ？"
-            }
-
-            this.$confirm(tit, "警告", {
+            this.$confirm('是否领取 ' + obj.customerName + ' 此条资源?', "警告", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(function () {
 
-                return clueEliminate([ids]);
+                return depPoolReceive({ id: obj.id });
 
             }).then(() => {
 
                 this.getList();
-                this.msgSuccess("剔除成功");
+                this.msgSuccess("领取成功");
 
+            }).catch(msg => {
+                console.log(11111, msg)
             })
-                .catch(msg => {
-                    console.log(11111, msg)
-                })
-        }
+        },
     },
     beforeDestroy() {
     }

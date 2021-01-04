@@ -15,27 +15,21 @@
                             <el-input v-model="queryParams.contactPhone" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
-                            <el-select v-model="queryParams.followStatusList" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
+                            <el-select v-model="queryParams.followStatusList" multiple clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
-                            <!-- <el-select v-model="queryParams.resourceType" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in resourceTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select> -->
-                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='queryParams.resourceType' clearable></el-cascader>
+                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="业务类型" prop="vocId" class="el-form-item-none">
-                            <!-- <el-select v-model="queryParams.vocId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in vocIdArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select> -->
-                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='queryParams.vocId' clearable></el-cascader>
+                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
@@ -96,15 +90,16 @@
             <!-- 新增和修改    -->
             <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='handleQuery' />
+            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate } from "@/api/center";
+import { getClueStatusList, clueMyList, clueEliminate, clueDistribution } from "@/api/center";
 import { clubModule, distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
+import { deepClone } from '@/utils/index'
 
 export default {
     components: { clubModule, SwitchForm, distribution },
@@ -128,25 +123,19 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                followStatusList: '',
-                resourceType: "",
-                vocId: ''
+                followStatusList: ''
             },
             seProps: { value: 'id', label: "name" },
             //线索状态
             clueStatueArr: [],
             //业务类型
             vocIdArr: [],
+            vocId: '',
             //资源类型
             resourceTypeArr: [],
+            resourceType: '',
             //初始时间
-            initDate: [],
-            //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ],
-            userList: []
+            initDate: []
         }
     },
     created() {
@@ -170,6 +159,15 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
+
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+
+            if (this.vocId && this.vocId.length) {
+                this.queryParams.vocId = this.vocId[this.vocId.length - 1]
+            }
+
             clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
@@ -191,6 +189,8 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
+            this.resourceType = []
+            this.vocId = []
             this.resetForm("queryForm");
             this.handleQuery();
         },
@@ -206,7 +206,7 @@ export default {
         },
         /** 修改按钮操作 */
         handleUpdate(row) {
-            this.$refs.clubModule.showFunc({}, '修改线索')
+            this.$refs.clubModule.showFunc(deepClone(row), '修改线索')
         },
         // 多选框选中数据
         handleSelectionChange(selection) {
@@ -248,6 +248,15 @@ export default {
                 .catch(msg => {
                     console.log(11111, msg)
                 })
+        },
+        //选完用户之后
+        seleceUserFinish(userId) {
+            clueDistribution({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+
+                this.msgSuccess('分配成功')
+                this.handleQuery()
+
+            })
         }
     },
     beforeDestroy() {

@@ -46,8 +46,8 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="角色" prop="roleIds">
-                                <el-select v-model="form.roleIds" multiple placeholder="请选择" style="width:100%">
-                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id" :disabled="item.status == 1"></el-option>
+                                <el-select v-model="form.roleIds" multiple placeholder="请选择" disabled style="width:100%">
+                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -171,7 +171,8 @@ export default {
                 pageSize: 10,
                 name: undefined,
                 mobile: undefined,
-                orgIds: undefined
+                orgIds: '',
+                roleIds: ['11']
             },
             // 表单校验
             rules: {
@@ -243,10 +244,11 @@ export default {
             this.reset()
 
             this.title = tit
-            this.form = obj
+
 
             if (obj.id) {
                 this.getUserRole(obj.id)
+                this.form = obj
             }
 
             this.open = true
@@ -296,7 +298,7 @@ export default {
                 commonStatus: 1,
                 password: 123456,
                 loginName: "",
-                roleIds: []
+                roleIds: ['11']
             };
             this.resetForm("form");
         },

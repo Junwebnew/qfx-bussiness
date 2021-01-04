@@ -1,6 +1,6 @@
 <!-- @author Shiyn/   huangmx 20200807优化-->
 <template>
-    <el-button size="mini" @click="toggleSearch()">{{showSwitch ? '收起' : '展开' }}</el-button>
+    <el-button :icon="showSwitch ?   'el-icon-arrow-up' : 'el-icon-arrow-down' " size="small" type="text" @click="toggleSearch()">{{showSwitch ? '收起' : '展开' }}</el-button>
 </template>
 <script>
 export default {

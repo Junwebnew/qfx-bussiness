@@ -1,6 +1,6 @@
 <template>
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal='false'>
         <div class="pad20">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
@@ -35,39 +35,41 @@
                             <el-input v-model="form.contactWx" placeholder="请输入..." maxlength="50" />
                         </el-form-item>
                     </el-col>
+
                     <el-col :span="12">
-                        <el-form-item label="所属商务" prop="counselorId">
-                            <el-input v-model="form.counselorId" placeholder="请输入..." type="text" maxlength="50" />
+                        <el-form-item label="线索状态" prop="followStatus">
+                            <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="资源类型" prop="resourceType">
-                            <el-select v-model="form.resourceType" clearable size="small" style="width: 100%">
+                            <!-- <el-select v-model="form.resourceType" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select>
+                            </el-select> -->
+                            <el-cascader :props="seProps" :options="resourceTypeArr" :disabled='disabled' style="width:100%;" :size='"small"' v-model='form.resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="业务类型" prop="vocId">
-                            <el-select v-model="form.vocId" clearable size="small" style="width: 100%">
+                            <!-- <el-select v-model="form.vocId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select>
+                            </el-select> -->
+                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='form.vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="20" v-show='whetherAdmin'>
                     <el-col :span="12">
-                        <el-form-item label="线索状态" prop="followStatus">
-                            <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select>
+                        <el-form-item label="所属商务" prop="counselorId">
+                            <el-input v-model="form.counselorId" placeholder="请输入..." type="text" maxlength="50" />
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
-
         </div>
         <div slot="footer" class="dialog-footer">
 
@@ -81,6 +83,7 @@
 
 import { clueUpdate } from "@/api/center"
 import { mapGetters } from 'vuex'
+import { deepClone } from '@/utils/index'
 
 export default {
     props: {
@@ -100,7 +103,8 @@ export default {
     computed: {
         ...mapGetters([
             'organizationId',
-            'userId'
+            'userId',
+            'whetherAdmin'
         ])
     },
     data() {
@@ -129,8 +133,14 @@ export default {
             // 是否显示弹出层
             open: false,
             // 表单参数
-            form: {},
-            // 查询参数
+            form: {
+                resourceType: "",
+                vocId: "",
+                followStatus: ""
+            },
+            //禁用
+            disabled: false,
+            seProps: { value: 'id', label: "name" },
             // 表单校验
             rules: {
                 customerName: [
@@ -170,23 +180,53 @@ export default {
     created() {
 
 
+
+
     },
     methods: {
         showFunc(obj, tit) {
-            //console.log(11,obj)
+
             this.reset()
 
             this.title = tit
 
-            this.form = obj
-
             if (obj.id) {
-                this.getUserRole(obj.id)
+
+                // obj.resourceType = this.findParentAssId(obj.resourceType, this.resourceTypeArr)
+                // obj.vocId = this.findParentAssId(obj.vocId, this.vocIdArr)
+                this.form = obj
+                this.disabled = true
             }
 
             this.open = true
         },
+        //级联查出上级的id
+        findParentAssId(moId, moArr) {
 
+            let assArr = []
+
+            function findItem(id, arr) {
+
+                for (let item of arr) {
+                    if (item.id == id) {
+                        assArr.unshift(id)
+                        return true
+                    }
+                    if (item.children && item.children.length) {
+                        let findBool = findItem(id, item.children)
+
+                        if (findBool) {
+                            assArr.unshift(item.id)
+                            return true
+                        }
+                    }
+                }
+            }
+
+            findItem(moId, moArr)
+
+            return assArr
+        },
         // 取消按钮
         cancel() {
             this.open = false;
@@ -194,7 +234,12 @@ export default {
         },
         // 表单重置
         reset() {
-            this.form = {};
+            this.form = {
+                resourceType: "",
+                vocId: "",
+                followStatus: ""
+            };
+            this.disabled = false
             this.resetForm("form");
         },
 
@@ -204,10 +249,23 @@ export default {
                 if (valid) {
 
                     console.log(1111, this.form)
+                    // resourceType:"",
+                    // vocId:"",
+                    //return
 
-                    let str = !this.form.id ? '修改成功' : '新增成功'
+                    this.newObj = deepClone(this.form)
 
-                    clueUpdate(this.form).then(res => {
+                    if (typeof this.newObj.resourceType != "string") {
+                        this.newObj.resourceType = this.newObj.resourceType[this.newObj.resourceType.length - 1]
+                    }
+
+                    if (typeof this.newObj.vocId != "string") {
+                        this.newObj.vocId = this.newObj.vocId[this.newObj.vocId.length - 1]
+                    }
+
+                    let str = !this.newObj.id ? '修改成功' : '新增成功'
+
+                    clueUpdate(this.newObj).then(res => {
 
                         this.msgSuccess(str)
                         this.open = false

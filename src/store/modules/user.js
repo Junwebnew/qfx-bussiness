@@ -1,6 +1,6 @@
 import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-
+import { qmxUserList } from "@/api/system/user"
 import { assRouter } from '@/api/menu.js'
 
 const user = {
@@ -14,9 +14,9 @@ const user = {
         rolesId: null,
         superAdmin: false,
         menuList: [],
-        userId: ''
+        userId: '',
+        depUser: []
     },
-
     mutations: {
         SET_TOKEN: (state, token) => {
             state.token = token
@@ -45,6 +45,9 @@ const user = {
         },
         SET_USERID: (state, userId) => {
             state.userId = userId
+        },
+        SET_DEPUSER(state, arr) {
+            state.depUser = arr
         }
     },
 
@@ -105,58 +108,33 @@ const user = {
                             commit('SET_USER', user)
 
                             resolve(res)
-
-                            return
-
-
-
-
-                            if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-                                commit('SET_ROLES', res.roles)
-                                commit('SET_PERMISSIONS', res.permissions)
-                            }
-
-                            else {
-                                commit('SET_PERMISSIONS', ["*:*:*"])
-                                commit('SET_ROLES', [user.id])
-
-                                let menuList = assRouter(user.menuList)
-
-                                commit('SET_MENULIST', menuList)
-
-                                if (res[1].roleId < 10) {
-                                    res.menuList = false
-                                }
-                                else {
-                                    res.menuList = menuList
-                                }
-                            }
-                            commit('SET_NAME', user.name)
-                            commit('SET_AVATAR', avatar)
-                            commit('SET_USER', user)
-
-                            resolve(res)
-                            return
                         })
-
-
-                    //   const user = res.user
-                    //   const avatar = user.avatar == "" ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
-                    //   if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-                    //     commit('SET_ROLES', res.roles)
-                    //     commit('SET_PERMISSIONS', res.permissions)
-                    //   } else {
-                    //     commit('SET_ROLES', ['ROLE_DEFAULT'])
-                    //   }
-                    //   commit('SET_NAME', user.userName)
-                    //   commit('SET_AVATAR', avatar)
-                    //   resolve(res)
                 }).catch(error => {
                     reject(error)
                 })
             })
         },
+        //获取同部门人员
+        getDepUser({ commit, state }) {
+            return new Promise((resolve, reject) => {
 
+                if (state.depUser.length) {
+                    resolve(state.depUser)
+                    return
+                }
+                qmxUserList({
+                    pageNum: 1,
+                    pageSize: 1000,
+                    name: undefined,
+                    orgId: state.userInfo.organizationId
+                }).then(res => {
+
+                    commit('SET_DEPUSER', res.data)
+
+                    resolve(res.data)
+                })
+            })
+        },
         // 退出系统
         LogOut({ commit, state }) {
             return new Promise((resolve, reject) => {

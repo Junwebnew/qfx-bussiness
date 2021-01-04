@@ -8,10 +8,17 @@
                 <div class="item" :class="{'active':active == 1}" @click="active = 1">
                     <span>企业微信设置</span>
                 </div>
+                <div class="item" :class="{'active':active == 2}" @click="active = 2">
+                    <span>线索调库设置</span>
+                </div>
+                <div class="item" :class="{'active':active == 3}" @click="active = 3">
+                    <span>商机调库设置</span>
+                </div>
             </div>
             <div class="r">
                 <setPerson v-show=" active == 0 " />
                 <setDep v-show=" active == 1 " />
+                <outstock v-if=" active == 2 || active == 3 " :outType='active == 2 ? 1 : 2' />
             </div>
         </div>
     </div>
@@ -23,10 +30,10 @@ import { mapGetters } from 'vuex'
 
 import setPerson from './module/setPerson'
 import setDep from './module/setDep'
-
+import outstock from './module/outstock'
 export default {
     name: 'msbBox',
-    components: { setPerson, setDep },
+    components: { setPerson, setDep, outstock },
     data() {
         return {
             active: 0

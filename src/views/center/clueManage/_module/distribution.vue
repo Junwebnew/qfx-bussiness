@@ -114,12 +114,8 @@ export default {
         /** 提交按钮 新增用户*/
         handleDistribution(row) {
 
-            clueDistribution({ clueIds: this.ids, disTraUserId: row.id }).then(res => {
-
-                this.msgSuccess('分配成功')
-                this.open = false
-                this.$emit('finish')
-            })
+            this.$emit('finish', row.id)
+            this.open = false
 
         },
     }
