@@ -73,7 +73,7 @@
                 <el-table-column label="操作" width='200' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)" v-hasPermi="['t-detail']">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>

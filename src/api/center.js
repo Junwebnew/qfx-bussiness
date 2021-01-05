@@ -119,3 +119,8 @@ export function publicPoolList(data) {
 export function publicPoolReceive(data) {
     return $axios.post('clueopp/businessClueoppPool/batch/receive', data)
 }
+
+//线索跟进-统计分析
+export function clueStatistics(data) {
+    return $axios.post('clue/clue/statistic/analysis', data)
+}

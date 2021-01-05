@@ -80,7 +80,7 @@
                 <el-col :sm="8" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='3' :resourceId='json.id' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='3' :resourceId='json.id' @reload='initPage' />
                     </div>
                 </el-col>
             </el-row>
@@ -117,8 +117,10 @@ export default {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
-
         initPage(id) {
+
+            id = id || this.json.id
+
             renewalrDetail(id)
                 .then(res => {
                     this.title = (res.data.tmName || '') + ' 续展详情页'

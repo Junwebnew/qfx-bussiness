@@ -43,9 +43,14 @@ export default {
         },
     },
     computed: {
-        typeStr() {
+        urlTypeStr() {
             let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject']
 
+            return arr[this.resourcesModule - 1]
+        },
+        resourcesModuleType() {
+
+            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170']
             return arr[this.resourcesModule - 1]
         }
     },
@@ -74,20 +79,21 @@ export default {
                     phoneId: row.id,
                     phoneNumber: row.phone,
                     resourceId: this.resourceId,
-                    resourcesModule: this.resourcesModule,
+                    resourcesModule: this.resourcesModuleType,
                     type: this.type
                 }
 
-                console.log(this.typeStr, obj)
+                console.log(this.urlTypeStr, obj)
 
-                receiveResource(this.typeStr, obj).then(res => {
+                receiveResource(this.urlTypeStr, obj)
+                    .then(res => {
 
-                    this.msgSuccess('领取成功')
+                        this.msgSuccess('领取成功')
 
-                    that.loading = false
+                        that.loading = false
 
-                    that.$emit('reload')
-                })
+                        that.$emit('reload')
+                    })
                     .catch(res => {
                         that.loading = false
                     })

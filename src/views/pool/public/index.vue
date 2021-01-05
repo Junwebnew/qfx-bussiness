@@ -39,12 +39,15 @@
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
                 <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
                 <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
+                <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
+                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
+                <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="创建时间" align='center' prop="createTime" width='200' show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
                 <el-table-column label="操作" align="left" width="80" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">领取</el-button>
+                            <el-button size="mini" class="col-other" type="text" v-hasPermi="['receive']" @click="handleDistribution(scope.row)">领取</el-button>
                             <!-- <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button> -->
                         </div>
                     </template>
@@ -120,7 +123,7 @@ export default {
 
             let key = this.$route.name + obj.id
 
-            this.$router.push('/center/clueManage/clue/detail?id=' + obj.id)
+            this.$router.push('/center/clueManage/clue/detail?id=' + obj.id + '&btn=none')
         },
         //分配
         handleDistribution(obj) {

@@ -62,7 +62,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' @reload='initPage' />
                     </div>
                 </el-col>
             </el-row>
@@ -100,6 +100,9 @@ export default {
     methods: {
 
         initPage(id) {
+
+            id = id || this.json.id
+
             changeDetail(id)
                 .then(res => {
 

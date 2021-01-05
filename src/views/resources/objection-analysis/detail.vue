@@ -141,7 +141,7 @@
                                 <p>{{selectItem.applicationNameCn}}</p>
                             </div>
                         </div>
-                        <phoneList :phoneList=" selectItem.phoneList " resourcesModule='2' :resourceId='selectItem.id' />
+                        <phoneList :phoneList=" selectItem.phoneList " resourcesModule='2' :resourceId='selectItem.id' @reload='initPage' />
                     </div>
                 </el-col>
             </el-row>
@@ -183,8 +183,9 @@ export default {
 
         initPage(id, num) {
 
-            this.selectItem = {}
+            id = id || this.json.id
 
+            this.selectItem = {}
 
             const loading = this.$loading({
                 lock: true,

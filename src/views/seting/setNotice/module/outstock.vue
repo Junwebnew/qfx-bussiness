@@ -4,32 +4,35 @@
         <el-row>
             <el-col :lg="12" :sm="24" :xs="24">
                 <div class="box">
-                    <h2>配置天数</h2>
+                    <!-- <h2>配置天数</h2> -->
                     <div class="form">
+
                         <el-form ref="form" label-width="80px">
+                            <el-form-item label="开启通知">
+                                <el-switch v-model="form.value" active-color="#13ce66">
+                                </el-switch>
+                            </el-form-item>
+
                             <el-form-item label="天数设置" prop="corpsecret">
                                 <el-input-number v-model="num" :min="1" :max="100" size='mini' label="描述文字"></el-input-number> / 天
+                            </el-form-item>
+
+                            <el-form-item label="提醒内容" prop="corpsecret">
+                                <el-input type='textarea' v-model="form.remindContent" :disabled='!form.value ' />
                             </el-form-item>
                         </el-form>
                     </div>
                     <div class="text-right">
-                        <el-button type="primary" size="mini" @click="submit(1)">更新</el-button>
+                        <el-button type="primary" size="mini" @click="submit">更新</el-button>
                     </div>
                 </div>
-
             </el-col>
-            <el-col :lg="12" :sm="24" :xs="24" class="left">
+            <!-- <el-col :lg="12" :sm="24" :xs="24" class="left">
                 <div class="box">
                     <h2>是否开启通知</h2>
                     <div class="form">
                         <el-form ref="form" :model="form" label-width="80px">
-                            <el-form-item label="通知">
-                                <el-switch v-model="form.value" active-color="#13ce66">
-                                </el-switch>
-                            </el-form-item>
-                            <el-form-item label="提醒内容" prop="corpsecret">
-                                <el-input type='textarea' v-model="form.remindContent" :disabled='!form.value ' />
-                            </el-form-item>
+                            
                         </el-form>
                     </div>
                     <div class="text-right">
@@ -37,7 +40,7 @@
                     </div>
                 </div>
 
-            </el-col>
+            </el-col> -->
         </el-row>
     </div>
 </template>
@@ -66,7 +69,7 @@ export default {
             'userId'
         ]),
         title() {
-            return this.outType == 1 ? '线索调库设置' : '商机调库设置'
+            return this.outType == 1 ? '线索掉库设置' : '商机掉库设置'
         }
     },
     methods: {
@@ -76,19 +79,12 @@ export default {
                 lock: true,
                 target: '#box'
             });
-            let obj = {}
 
-            if (type == 1) {
 
-                obj = { code: 'days_not_followed_up', value: this.num }
-            }
-            else {
-                obj = { code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent }
-
-            }
-            obj.type = this.outType
-
-            outOfStockSet(obj)
+            Promise.all([
+                outOfStockSet({ code: 'days_not_followed_up', value: this.num }),
+                outOfStockSet({ code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent })
+            ])
                 .then(res => {
                     this.msgSuccess('更新成功')
                     loading.close();

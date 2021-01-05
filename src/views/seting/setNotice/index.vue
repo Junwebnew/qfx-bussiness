@@ -9,10 +9,10 @@
                     <span>企业微信设置</span>
                 </div>
                 <div class="item" :class="{'active':active == 2}" @click="active = 2">
-                    <span>线索调库设置</span>
+                    <span>线索掉库设置</span>
                 </div>
                 <div class="item" :class="{'active':active == 3}" @click="active = 3">
-                    <span>商机调库设置</span>
+                    <span>商机掉库设置</span>
                 </div>
             </div>
             <div class="r">

@@ -279,7 +279,7 @@ export default {
                 name: undefined,
                 visible: undefined,
                 pageNum: 1,
-                pageSize: 30
+                pageSize: 100
             },
             //按钮框
             btnBoxPar: {

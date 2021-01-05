@@ -190,20 +190,6 @@ export const asyncAllRoutes = [
                 meta: { title: "参数设置", icon: "edit", noCache: false },
             },
             {
-                name: "Notice",
-                path: "notice",
-                hidden: false,
-                component: "system/notice/index",
-                meta: { title: "通知公告", icon: "message", noCache: true },
-            },
-            {
-                name: "setNotice",
-                path: "setNotice",
-                hidden: false,
-                component: "system/setNotice/index",
-                meta: { title: "消息设置", icon: "message", noCache: true },
-            },
-            {
                 name: "Log",
                 path: "log",
                 hidden: false,
@@ -231,6 +217,25 @@ export const asyncAllRoutes = [
         ],
     },
     {
+        name: "seting",
+        path: "/seting",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "Layout",
+        alwaysShow: true,
+        meta: { title: "配置中心", icon: "message", noCache: true },
+        children: [
+
+            {
+                name: "setNotice",
+                path: "setNotice",
+                hidden: false,
+                component: "seting/setNotice/index",
+                meta: { title: "消息设置", noCache: true },
+            },
+        ]
+    },
+    {
         name: "center",
         path: "/center",
         hidden: false,
@@ -239,6 +244,13 @@ export const asyncAllRoutes = [
         alwaysShow: true,
         meta: { title: "个人中心", icon: "user", noCache: true },
         children: [
+            {
+                name: "clueStatistics",
+                path: "clueStatistics",
+                hidden: false,
+                component: "center/clueStatistics",
+                meta: { title: "线索统计", icon: "chart", noCache: true }
+            },
             {
                 name: "clueManage",
                 path: "clueManage",
@@ -275,6 +287,13 @@ export const asyncAllRoutes = [
                         meta: { title: "今日待跟进", noCache: true },
                     },
                 ]
+            },
+            {
+                name: "Notice",
+                path: "notice",
+                hidden: false,
+                component: "center/notice/index",
+                meta: { title: "通知公告", noCache: true },
             }
         ]
     },

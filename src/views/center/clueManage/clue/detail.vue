@@ -14,7 +14,7 @@
                                     <el-col :lg="3" :sm="3" :xs="12">
                                         <span>基本信息</span>
                                     </el-col>
-                                    <el-col :lg="21" :sm="21" :xs="12">
+                                    <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
                                         <el-button type="warning" size='mini' @click="handleAddTips()">新增提醒</el-button>
                                     </el-col>
                                 </el-row>
@@ -73,25 +73,25 @@
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">线索状态：</span>
                                 <div class="custom-r">
-                                    {{formatterStatus(json.followStatus)}}
+                                    {{json.followStatusName}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <!-- <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源来源：</span>
                                 <div class="custom-r">
                                     {{json.resourceId || '--'}}
                                 </div>
-                            </el-col>
+                            </el-col> -->
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源类型：</span>
                                 <div class="custom-r">
-                                    {{json.resourceType || '--'}}
+                                    {{json.resName || '--'}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">业务类型：</span>
                                 <div class="custom-r">
-                                    {{json.vocId || '--'}}
+                                    {{json.vocName || '--'}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
@@ -109,7 +109,7 @@
                                     <el-col :lg="3" :sm="3" :xs="12">
                                         <span>备注信息</span>
                                     </el-col>
-                                    <el-col :lg="21" :sm="21" :xs="12">
+                                    <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
                                         <el-button type="primary" size='mini' @click="handleChange()">状态变更</el-button>
                                         <el-button type="success" size='mini' @click="handleAddMarks()">新增备注</el-button>
                                         <el-button type="info" size='mini' @click="getmarks()">刷新</el-button>
@@ -168,11 +168,14 @@ export default {
             resourceTypeArr: [],
             //业务类型
             vocIdArr: [],
-            marksList: []
+            marksList: [],
+            showBtns: true
         }
     },
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+
+        this.showBtns = this.$route.query.btn ? false : true
 
         this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res

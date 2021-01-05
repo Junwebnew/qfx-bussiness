@@ -72,14 +72,19 @@
                 <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
                 <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
-
                 <el-table-column label="提醒时间" align='center' prop="remindDate" show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
+                <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <div>
+                            <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
+                            <el-button class="col-update" size="mini" type="text" v-hasPermi="['update']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>

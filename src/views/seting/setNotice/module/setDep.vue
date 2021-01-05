@@ -4,7 +4,10 @@
             <h2>企业微信设置</h2>
             <div class="form">
                 <el-form ref="form" :model="dept" :rules="rules" :label-position="'top'" label-width="130px">
-                    <el-form-item label="企业微信号" prop="corpid">
+                    <el-form-item label="微信应用ID" prop="agentid">
+                        <el-input v-model="dept.agentid" />
+                    </el-form-item>
+                    <el-form-item label="微信公司ID" prop="corpid">
                         <el-input v-model="dept.corpid" />
                     </el-form-item>
                     <el-form-item label="企业微信密钥" prop="corpsecret">
@@ -34,11 +37,14 @@ export default {
         return {
             dept: {},
             rules: {
+                agentid: [
+                    { required: true, message: "企业微信应用ID不能为空", trigger: "blur" }
+                ],
                 corpid: [
-                    { required: true, message: "企业微信密钥名称不能为空", trigger: "blur" }
+                    { required: true, message: "企业微信公司ID不能为空", trigger: "blur" }
                 ],
                 corpsecret: [
-                    { required: true, message: "企业微信密钥不能为空", trigger: "blur" }
+                    { required: true, message: "企业微信公司密钥不能为空", trigger: "blur" }
                 ]
             },
             imgs: [require("@/assets/images/dept.png")]

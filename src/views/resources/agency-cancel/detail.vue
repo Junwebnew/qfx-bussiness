@@ -75,7 +75,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='4' :resourceId='json.id' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='4' :resourceId='json.id' @reload='initPage' />
                     </div>
                 </el-col>
             </el-row>
@@ -100,21 +100,14 @@ export default {
             tableData: []
         }
     },
-    // watch: {
-    //     $route(now) {
-
-    //         if ('agency-cancel-detail' == now.name && this.$route.query.id != now.query.id) {
-
-    //             this.initPage(now.query.id)
-    //         }
-    //     }
-    // },
     created() {
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this.$route.query.id)
+
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
         initPage(id) {
+
+            id = id || this.json.id
 
             agencyCancelDetail(id)
                 .then(res => {
