@@ -15,7 +15,8 @@
                                         <span>基本信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
-                                        <el-button type="warning" size='mini' @click="handleAddTips()">新增提醒</el-button>
+                                        <el-button type="text" size='mini' @click="handleAddTips()">新增提醒</el-button>
+                                        <el-button type="text" size='mini' @click="vocTpyeChange()">转为商机</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
@@ -110,9 +111,9 @@
                                         <span>备注信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
-                                        <el-button type="primary" size='mini' @click="handleChange()">状态变更</el-button>
-                                        <el-button type="success" size='mini' @click="handleAddMarks()">新增备注</el-button>
-                                        <el-button type="info" size='mini' @click="getmarks()">刷新</el-button>
+                                        <el-button type="text" size='mini' @click="handleChange()">状态变更</el-button>
+                                        <el-button type="text" size='mini' @click="handleAddMarks()">新增备注</el-button>
+                                        <el-button type="text" size='mini' @click="getmarks()">刷新</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
@@ -124,11 +125,11 @@
                                         </h3>
                                         <div class="r-box">
                                             <p class="top">
-                                                <small>{{item.userName}}</small>
-                                                <small class="ml10 col">{{formatterStatus(item.businessStatusId)}}</small>
-                                                <small class="ml10">{{item.remarkDate}}</small>
+                                                <small>{{item.remarkDate}}</small>
                                             </p>
-                                            <p class="desc">{{item.remarkContent}}</p>
+                                            <div class="desc">
+                                                <small class="b">{{item.userName}}</small> <small>{{item.remarkContent}}</small>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>
@@ -144,17 +145,19 @@
         <addMarks ref='addMarks' :clueStatueArr='clueStatueArr' @finish='getmarks' />
         <!-- 新增提醒 -->
         <addTimeTips ref='addTimeTips' />
+        <!-- 转为商机 -->
+        <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='initPage' />
     </div>
 </template>
 
 <script>
 import { clueDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
-import { addMarks, addTimeTips, changeStatus } from '../_module'
+import { addMarks, addTimeTips, changeStatus, selectVocTpye } from '../_module'
 
 export default {
     components: {
-        addMarks, addTimeTips, changeStatus
+        addMarks, addTimeTips, changeStatus, selectVocTpye
     },
     data() {
         return {
@@ -172,6 +175,13 @@ export default {
             showBtns: true
         }
     },
+    watch: {
+        $route(now) {
+            if ('clue-detail' == now.name && this.json.id != now.query.id) {
+                this.initPage(now.query.id)
+            }
+        }
+    },
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
 
@@ -180,9 +190,17 @@ export default {
         this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res
         })
+
+        this.$store.dispatch('getCenterType', 1).then(res => {
+            this.vocIdArr = res
+        })
+
     },
     methods: {
         initPage(id) {
+
+            id = id || this.json.id
+
             clueDetail(id)
                 .then(res => {
                     this.title = (res.data.customerName || '') + ' 线索详情页'
@@ -229,6 +247,10 @@ export default {
         handleChange() {
             this.$refs.changeStatus.show(this.json)
         },
+        //业务类型变更.，转为商机
+        vocTpyeChange() {
+            this.$refs.selectVocTpye.show(this.json)
+        },
         //增加备注
         handleAddMarks() {
             this.$refs.addMarks.show(this.json)
@@ -269,6 +291,13 @@ export default {
             }
             .desc {
                 color: #888;
+                small + small {
+                    margin-left: 10px;
+                }
+            }
+            .b {
+                color: #000;
+                font-weight: bolder;
             }
         }
     }

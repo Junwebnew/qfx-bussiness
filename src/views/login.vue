@@ -148,7 +148,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scope>
 .login {
     display: flex;
     justify-content: center;

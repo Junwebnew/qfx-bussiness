@@ -33,17 +33,18 @@
         </div>
         <div class="back-fff pad20">
             <el-row :gutter="10" class="mb20">
-                <el-col :span="4" class="lin32">
-                    <span class="f18">{{$route.meta.title}}</span>
+                <el-col :span="12" class="lin32">
+                    <span class="f18 mr20">{{$route.meta.title}}</span>
+                    <el-checkbox v-model="tableExpand" @change="handleTableExpand">展开/折叠</el-checkbox>
                 </el-col>
-                <el-col :span="20" align='right'>
+                <el-col :span="12" align='right'>
                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
 
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="menuList" row-key="id" default-expand-all :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+            <el-table v-loading="loading" ref='theTable' :data="menuList" row-key="id" :default-expand-all='tableExpand' :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
                 <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="icon" label="图标" align="center" width="80px">
                     <template slot-scope="scope">
@@ -281,6 +282,8 @@ export default {
                 pageNum: 1,
                 pageSize: 100
             },
+            //表单展开/收起
+            tableExpand: true,
             //按钮框
             btnBoxPar: {
                 tit: "按钮列表",
@@ -311,13 +314,6 @@ export default {
     },
     created() {
         this.getList();
-
-        //    try{
-        //        require( "@/views/error")
-        //    }
-        //    catch(msg){
-        //        console.log(msg)
-        //    }
     },
     methods: {
         // 选择图标
@@ -357,6 +353,20 @@ export default {
         cancel() {
             this.open = false;
             this.reset();
+        },
+        //表格收起展开
+        handleTableExpand(bool) {
+            // console.log('00000', bool)
+            this.forArr(this.menuList, bool);
+        },
+        //列表展开和收起
+        forArr(arr, isExpand) {
+            arr.forEach(i => {
+                this.$refs.theTable.toggleRowExpansion(i, isExpand);
+                if (i.children) {
+                    this.forArr(i.children, isExpand);
+                }
+            });
         },
         // 表单重置
         reset() {

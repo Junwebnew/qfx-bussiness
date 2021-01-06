@@ -25,7 +25,7 @@
             </el-form>
         </div>
         <div>
-            <div ref="myChart" style="height: 420px" />
+            <div ref="myChart" class="myChart"></div>
         </div>
     </div>
 </template>
@@ -93,15 +93,16 @@ export default {
             clueStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' })).then(response => {
 
                 this.chartData = response.data;
-
+                let total = 0
                 let chartData = response.data.map(item => {
+                    total += Number(item.totalNum)
                     return {
                         name: item.followStatusName,
                         value: Number(item.totalNum)
                     }
                 })
 
-                this.initCharts(chartData)
+                this.initCharts(chartData, total)
                 loading.close()
             })
                 .catch(res => {
@@ -114,7 +115,7 @@ export default {
             this.sellerId = ''
             this.handleQuery();
         },
-        initCharts(chartData) {
+        initCharts(chartData, total) {
 
             this.myChart.setOption({
                 title: {
@@ -123,22 +124,128 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    formatter: '{a} <br/>{b} : {c}条 ({d}%)'
                 },
                 legend: {
-                    bottom: 10,
-                    left: 'center',
-                    data: chartData.map(i => i.name)
+                    orient: 'vertical', //布局方式，默认水平布局，另可选vertical
+                    top: '100',
+                    left: 'left',
+                    itemWidth: 5,　　　　　　　//图例大小  我这里用的是圆
+                    itemGap: 14,　　　　　　　　//图例之间的间隔
+                    y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
+                    icon: "circle",　　　　　　//图例的形状，选择类型有："circle"（圆形）、"rectangle"（长方形）、"triangle"（三角形）、"diamond"（菱形）、"emptyCircle"（空心圆）、
+                    //　　　　"emptyRectangle"（空心长方形）、"emptyTriangle"（空心三角形）、"emptyDiamon"（空心菱形），还可以放自定义图片，格式为"image://path",
+                    //　　　path为图片路径
+
+                    selectedMode: true,　　　　//选中哪个图例 false后图例不可点击
+                    textStyle: {
+                        fontSize: 12,
+                        fontFamily: "Microsoft YaHei",
+
+                    },
+                    data: chartData,
+                    formatter: function (name) {
+                        let target;
+                        for (let i = 0; i < chartData.length; i++) {
+                            if (chartData[i].name === name) {
+                                target = chartData[i].value
+                            }
+                        }
+                        // let arr = ["{a|" + target + "}", "{b|" + name + "}"]
+                        return "{a|" + name + "}{b||}{c|" + target + "条}{d| " + (target / total).toFixed(2) + "% }"
+                    },
+
+                    textStyle: {
+                        rich: {
+                            a: {
+                                fontSize: 12,
+                                color: '#565656',
+                                padding: 0,
+                                fontWeight: 600,
+                                padding: [0, 2, 0, 0]
+                            },
+                            b: {
+                                fontSize: 12,
+                                color: '#f1f1f1'
+                            },
+                            c: {
+                                fontSize: 12,
+                                color: '#8888',
+                                padding: [0, 2, 0, 2]
+                            },
+                            d: {
+                                fontSize: 12,
+                                color: '#000',
+                                padding: 0,
+                                padding: [0, 0, 0, 2]
+                            }
+                        },
+                    }
+                    /*图例旁边显示数据*/
+                    // formatter: '{b} : {c}条 ({d}%)',
+                    // rich: {
+                    //     a: {
+                    //         color: '#999',
+                    //         lineHeight: 22,
+                    //         align: 'center'
+                    //     },
+                    //     hr: {
+                    //         borderColor: '#aaa',
+                    //         width: '100%',
+                    //         borderWidth: 0.5,
+                    //         height: 0
+                    //     },
+                    //     b: {
+                    //         fontSize: 16,
+                    //         lineHeight: 33
+                    //     },
+                    //     per: {
+                    //         color: '#eee',
+                    //         backgroundColor: '#334455',
+                    //         padding: [2, 4],
+                    //         borderRadius: 2
+                    //     }
+                    // }
                 },
+                graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
+                    type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
+                    left: 'center',
+                    top: '50%',
+                    style: {
+                        text: "总线索数",
+                        textAlign: 'center',
+                        fill: '#888',　　　　　　　　//文字的颜色
+                        width: 30,
+                        height: 30,
+                        fontSize: 16,
+                        fontFamily: "Microsoft YaHei"
+                    }
+                }, {
+                    type: 'text',
+                    left: 'center',
+                    top: '60%',
+                    style: {
+                        text: total + '条',
+                        textAlign: 'center',
+                        fill: '#1890ff',
+                        width: 30,
+                        height: 30,
+                        fontSize: 20,
+                    }
+                }],
                 series: [
                     {
                         name: '线索状态统计',
                         type: 'pie',
-                        radius: '55%',
+                        radius: ['50%', '65%'],
+                        avoidLabelOverlap: false,
                         center: ['50%', '60%'],
                         data: chartData,
                         label: {
                             formatter: '{b} : {c} '
+                        },
+                        labelLine: {
+                            show: true
                         },
                         emphasis: {
                             itemStyle: {
@@ -154,6 +261,14 @@ export default {
     },
     beforeDestroy() { }
 }
-
-
 </script>
+<style lang="scss" scoped>
+.app-container {
+    background: #ffffff;
+}
+.myChart {
+    height: 360px;
+    width: 600px;
+    margin: auto;
+}
+</style>

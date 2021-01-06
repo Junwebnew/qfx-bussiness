@@ -124,3 +124,8 @@ export function publicPoolReceive(data) {
 export function clueStatistics(data) {
     return $axios.post('clue/clue/statistic/analysis', data)
 }
+
+//线索转为商机
+export function clueChangToOpp(data) {
+    return $axios.post('clue/clue/changToOpp', data)
+}

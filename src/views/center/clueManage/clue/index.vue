@@ -68,7 +68,7 @@
                 <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
                 <!-- <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
+                <!-- <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column> -->
                 <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip>
@@ -78,9 +78,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="230" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
+                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
                             <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
                             <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
@@ -97,18 +98,20 @@
             <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
             <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
+            <!-- 转为商机 -->
+            <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='getList' />
         </div>
     </div>
 </template>
 
 <script>
 import { getClueStatusList, clueMyList, clueEliminate, clueDistribution } from "@/api/center";
-import { clubModule, distribution } from '../_module'
+import { clubModule, distribution, selectVocTpye } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 
 export default {
-    components: { clubModule, SwitchForm, distribution },
+    components: { clubModule, SwitchForm, distribution, selectVocTpye },
     data() {
         return {
             //显示搜索框
@@ -264,7 +267,11 @@ export default {
                 this.handleQuery()
 
             })
-        }
+        },
+        //业务类型变更.，转为商机
+        vocTpyeChange(row) {
+            this.$refs.selectVocTpye.show(row)
+        },
     },
     beforeDestroy() {
     }

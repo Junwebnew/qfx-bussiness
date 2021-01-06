@@ -39,7 +39,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
                         <el-form-item label="所属商务" prop="time" class="el-form-item-none">
-                            <el-select v-model="queryParams.counselorId" multiple clearable size="small" style="width: 100%">
+                            <el-select v-model="queryParams.counselorId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
@@ -71,7 +71,7 @@
                 <el-table-column label="联系电话" align='center' prop='contactPhone'> </el-table-column>
                 <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
                 <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
+                <!-- <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="所属商务" align='center' prop="counselorName"></el-table-column>
                 <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip>
@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate, clueTransfer } from "@/api/center";
+import { getClueStatusList, clueList, clueEliminate, clueTransfer } from "@/api/center";
 import { clubModule, distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
@@ -172,7 +172,7 @@ export default {
         })
         if (this.whetherAdmin) {
             this.$store.dispatch('getDepUser').then(res => {
-                this.depUserList = res.data
+                this.depUserList = res
             })
         }
     },
@@ -190,7 +190,7 @@ export default {
                 this.queryParams.vocId = this.vocId[this.vocId.length - 1]
             }
 
-            clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            clueList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;

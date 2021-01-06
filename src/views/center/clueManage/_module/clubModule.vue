@@ -7,7 +7,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
-                            <el-input v-model="form.customerName" placeholder="请输入..." maxlength="50" />
+                            <el-input v-model="form.customerName" :disabled='disabled' placeholder="请输入..." maxlength="50" />
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
@@ -38,7 +38,7 @@
 
                     <el-col :span="12">
                         <el-form-item label="线索状态" prop="followStatus">
-                            <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
+                            <el-select v-model="form.followStatus" :disabled='disabled' clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
@@ -47,17 +47,11 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="资源类型" prop="resourceType">
-                            <!-- <el-select v-model="form.resourceType" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select> -->
                             <el-cascader :props="seProps" :options="resourceTypeArr" :disabled='disabled' style="width:100%;" :size='"small"' v-model='form.resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="业务类型" prop="vocId">
-                            <!-- <el-select v-model="form.vocId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
-                            </el-select> -->
                             <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='form.vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
@@ -65,14 +59,17 @@
                 <el-row :gutter="20" v-show='whetherAdmin'>
                     <el-col :span="12">
                         <el-form-item label="所属商务" prop="counselorId">
-                            <el-input v-model="form.counselorId" placeholder="请输入..." type="text" maxlength="50" />
+                            <!-- <el-input v-model="form.counselorId" :disabled='disabled' placeholder="请输入..." type="text" maxlength="50" /> -->
+                            <el-select v-model="form.counselorId" filterable size='small' :disabled='disabled' clearable>
+                                <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-form>
         </div>
         <div slot="footer" class="dialog-footer">
-
             <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="submitForm">确 定</el-button>
         </div>
@@ -127,7 +124,6 @@ export default {
         return {
             // 遮罩层
             loading: true,
-
             // 弹出层标题
             title: "",
             // 是否显示弹出层
@@ -138,6 +134,8 @@ export default {
                 vocId: "",
                 followStatus: ""
             },
+            //用户列表
+            depUserList: [],
             //禁用
             disabled: false,
             seProps: { value: 'id', label: "name" },
@@ -167,7 +165,6 @@ export default {
                     }
                 ],
                 contactPhone: [
-                    { required: true, message: "联系电话不能为空", trigger: "blur" },
                     {
                         pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
                         message: "请输入正确的手机号码",
@@ -179,9 +176,12 @@ export default {
     },
     created() {
 
+        if (this.whetherAdmin) {
+            this.$store.dispatch('getDepUser').then(res => {
+                this.depUserList = res
+            })
 
-
-
+        }
     },
     methods: {
         showFunc(obj, tit) {
@@ -190,10 +190,10 @@ export default {
 
             this.title = tit
 
+            this.form.counselorId = this.userId
+
             if (obj.id) {
 
-                // obj.resourceType = this.findParentAssId(obj.resourceType, this.resourceTypeArr)
-                // obj.vocId = this.findParentAssId(obj.vocId, this.vocIdArr)
                 this.form = obj
                 this.disabled = true
             }
@@ -248,24 +248,25 @@ export default {
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
-                    console.log(1111, this.form)
-                    // resourceType:"",
-                    // vocId:"",
-                    //return
 
-                    this.newObj = deepClone(this.form)
+                    if (!this.form.contactPhone && !this.form.contactQq && !this.form.contactWx) {
 
-                    if (typeof this.newObj.resourceType != "string") {
-                        this.newObj.resourceType = this.newObj.resourceType[this.newObj.resourceType.length - 1]
+                        this.msgError('电话、QQ、微信需要至少完善一项！')
+                        return
+                    }
+                    let newObj = deepClone(this.form)
+
+                    if (typeof newObj.resourceType != "string") {
+                        newObj.resourceType = newObj.resourceType[newObj.resourceType.length - 1]
                     }
 
-                    if (typeof this.newObj.vocId != "string") {
-                        this.newObj.vocId = this.newObj.vocId[this.newObj.vocId.length - 1]
+                    if (typeof newObj.vocId != "string") {
+                        newObj.vocId = newObj.vocId[newObj.vocId.length - 1]
                     }
 
-                    let str = !this.newObj.id ? '修改成功' : '新增成功'
+                    let str = !newObj.id ? '修改成功' : '新增成功'
 
-                    clueUpdate(this.newObj).then(res => {
+                    clueUpdate(newObj).then(res => {
 
                         this.msgSuccess(str)
                         this.open = false

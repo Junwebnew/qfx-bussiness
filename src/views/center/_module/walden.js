@@ -2,7 +2,7 @@ export default {
     "color": [
         "#3fb1e3",
         "#6be6c1",
-        "#626c91",
+        "#22c3aa",
         "#a0a7e6",
         "#c4ebad",
         "#96dee8"
@@ -111,7 +111,7 @@ export default {
         "color": [
             "#3fb1e3",
             "#6be6c1",
-            "#626c91",
+            "#22c3aa",
             "#a0a7e6",
             "#c4ebad",
             "#96dee8"
@@ -349,27 +349,27 @@ export default {
     },
     "timeline": {
         "lineStyle": {
-            "color": "#626c91",
+            "color": "#22c3aa",
             "width": 1
         },
         "itemStyle": {
             "normal": {
-                "color": "#626c91",
+                "color": "#22c3aa",
                 "borderWidth": 1
             },
             "emphasis": {
-                "color": "#626c91"
+                "color": "#22c3aa"
             }
         },
         "controlStyle": {
             "normal": {
-                "color": "#626c91",
-                "borderColor": "#626c91",
+                "color": "#22c3aa",
+                "borderColor": "#22c3aa",
                 "borderWidth": 0.5
             },
             "emphasis": {
-                "color": "#626c91",
-                "borderColor": "#626c91",
+                "color": "#22c3aa",
+                "borderColor": "#22c3aa",
                 "borderWidth": 0.5
             }
         },
@@ -380,12 +380,12 @@ export default {
         "label": {
             "normal": {
                 "textStyle": {
-                    "color": "#626c91"
+                    "color": "#22c3aa"
                 }
             },
             "emphasis": {
                 "textStyle": {
-                    "color": "#626c91"
+                    "color": "#22c3aa"
                 }
             }
         }
