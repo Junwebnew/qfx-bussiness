@@ -374,10 +374,10 @@ ul::-webkit-scrollbar-thumb {
   }
 }
 .full-height {
-  height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px);
 }
 .full-height2 {
-  height: calc(100vh - 172px);
+  min-height: calc(100vh - 172px);
 }
 .custom-box {
   .tit {

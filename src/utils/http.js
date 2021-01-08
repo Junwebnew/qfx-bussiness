@@ -4,7 +4,7 @@ import { Message, MessageBox, Loading, Notification } from 'element-ui';
 import Cookies from 'js-cookie'
 import { getToken } from '@/utils/auth'
 
-import { publicUrl } from './baseConfig'
+import { publicUrl, qmxOnlineUrl } from './baseConfig'
 import errorCode from '@/utils/errorCode'
 
 
@@ -26,7 +26,7 @@ http.interceptors.request.use(
 
         if (url.indexOf('/API/') >= 0) {   //需要更换根目录地址
 
-            config.baseURL = "https://smart.qmxip.com/";
+            config.baseURL = qmxOnlineUrl
 
             url = url.replace('/API/', '')
         }

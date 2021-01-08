@@ -16,7 +16,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
+                        <el-form-item label="商机状态" prop="followStatusList" class="el-form-item-none">
                             <el-select v-model="queryParams.followStatusList" multiple clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
@@ -52,7 +52,6 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-
                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
                     <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量分配</el-button>
                     <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
@@ -63,13 +62,9 @@
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
-                <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
-                <!-- <el-table-column label="资源来源"  prop="resourceId" show-overflow-tooltip></el-table-column> -->
+                <el-table-column label="商机状态" prop="followStatusName"></el-table-column>
                 <el-table-column label="资源类型" prop="resName"></el-table-column>
-                <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
-                <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
                     <template slot-scope="scope">
@@ -81,7 +76,7 @@
                 <el-table-column label="操作" align="left" width="230" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['finish']" @click="goComplete(scope.row)">转为成单</el-button>
                             <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
                             <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
@@ -95,23 +90,25 @@
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
             <!-- 新增和修改    -->
-            <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
+            <bussModule ref='bussModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
             <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
             <!-- 转为商机 -->
             <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='getList' />
+            <!-- 成单 -->
+            <completeBuss ref='completeBuss' @finish='getList' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate, clueDistribution } from "@/api/center";
-import { clubModule, distribution, selectVocTpye } from '../_module'
+import { getClueStatusList, bussMyList, bussEliminate, bussDistribution } from "@/api/center";
+import { bussModule, distribution, selectVocTpye, completeBuss } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 
 export default {
-    components: { clubModule, SwitchForm, distribution, selectVocTpye },
+    components: { bussModule, SwitchForm, distribution, selectVocTpye, completeBuss },
     data() {
         return {
             //显示搜索框
@@ -135,7 +132,7 @@ export default {
                 followStatusList: ''
             },
             seProps: { value: 'id', label: "name" },
-            //线索状态
+            //商机状态
             clueStatueArr: [],
             //业务类型
             vocIdArr: [],
@@ -153,7 +150,7 @@ export default {
     mounted() {
         this.getList()
 
-        this.$store.dispatch('getBussStatus', 2).then(res => {
+        this.$store.dispatch('getBussStatus', 4).then(res => {
             this.clueStatueArr = res
         })
         this.$store.dispatch('getCenterType', 1).then(res => {
@@ -177,7 +174,7 @@ export default {
                 this.queryParams.vocId = this.vocId[this.vocId.length - 1]
             }
 
-            clueMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            bussMyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
 
                 this.tableData = response.data;
                 this.total = response.total;
@@ -207,15 +204,15 @@ export default {
 
             let key = this.$route.name + obj.id
 
-            this.$router.push('/center/clueManage/clue/detail?id=' + obj.id)
+            this.$router.push('/center/bussManage/buss/detail?id=' + obj.id)
         },
-        //新增线索
+        //新增商机
         handleAdd() {
-            this.$refs.clubModule.showFunc({}, '新增线索')
+            this.$refs.bussModule.showFunc({}, '新增商机')
         },
         /** 修改按钮操作 */
         handleUpdate(row) {
-            this.$refs.clubModule.showFunc(deepClone(row), '修改线索')
+            this.$refs.bussModule.showFunc(deepClone(row), '修改商机')
         },
         // 多选框选中数据
         handleSelectionChange(selection) {
@@ -223,17 +220,17 @@ export default {
         },
         //分配
         handleDistribution(obj) {
-            let tit = '线索批量分配'
+            let tit = '商机批量分配'
             if (obj) {
                 this.ids = [obj.id]
-                tit = obj.customerName + "线索分配"
+                tit = obj.customerName + "商机分配"
             }
             this.$refs.distribution.show({}, tit)
         },
         //剔除
         handleEliminate(obj) {
 
-            let tit = '是否批量剔除线索？'
+            let tit = '是否批量剔除商机？'
             let that = this
 
             if (obj) {
@@ -247,7 +244,7 @@ export default {
                 type: "warning"
             }).then(function () {
 
-                return clueEliminate({ clueIds: that.ids });
+                return bussEliminate({ oppIds: that.ids });
 
             }).then(() => {
 
@@ -261,7 +258,7 @@ export default {
         },
         //选完用户之后
         seleceUserFinish(userId) {
-            clueDistribution({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+            bussDistribution({ oppIds: this.ids, disTraUserId: userId }).then(res => {
 
                 this.msgSuccess('分配成功')
                 this.handleQuery()
@@ -270,8 +267,12 @@ export default {
         },
         //业务类型变更.，转为商机
         vocTpyeChange(row) {
-            this.$refs.selectVocTpye.show(row, '转为商机')
+            this.$refs.selectVocTpye.show(row)
         },
+        //去商机成单
+        goComplete(row) {
+            this.$refs.completeBuss.show(row)
+        }
     },
     beforeDestroy() {
     }

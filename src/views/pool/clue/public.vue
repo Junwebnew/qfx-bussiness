@@ -102,6 +102,10 @@ export default {
 
             this.loading = true;
 
+            // this.queryParam.type = 2
+
+            this.$set(this.queryParams, 'type', 1)
+
             publicPoolList(this.queryParams).then(response => {
 
                 this.tableData = response.data;

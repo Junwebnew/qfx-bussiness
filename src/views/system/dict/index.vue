@@ -145,10 +145,10 @@ export default {
         };
     },
     created() {
-        this.getList();
-        this.getDicts("sys_normal_disable").then(response => {
-            this.statusOptions = response.data;
-        });
+        // this.getList();
+        // this.getDicts("sys_normal_disable").then(response => {
+        //     this.statusOptions = response.data;
+        // });
     },
     methods: {
         /** 查询字典类型列表 */

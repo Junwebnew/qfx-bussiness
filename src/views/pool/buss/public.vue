@@ -101,7 +101,8 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-
+            // this.queryParam.type = 2
+            this.$set(this.queryParams, 'type', 2)
             publicPoolList(this.queryParams).then(response => {
 
                 this.tableData = response.data;

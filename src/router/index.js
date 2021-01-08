@@ -289,6 +289,43 @@ export const asyncAllRoutes = [
                 ]
             },
             {
+                name: "bussManage",
+                path: "bussManage",
+                hidden: false,
+                component: "ParentView",
+                meta: { title: "商机管理", icon: "post", noCache: true },
+                children: [
+                    {
+                        name: "buss",
+                        path: "buss",
+                        hidden: false,
+                        component: "center/bussManage/buss/index",
+                        meta: { title: "我的商机", noCache: true },
+                    },
+                    {
+                        name: "buss-all",
+                        path: "buss-all",
+                        hidden: false,
+                        component: "center/bussManage/buss-all/index",
+                        meta: { title: "所有商机", noCache: true },
+                    },
+                    {
+                        name: "buss-detail",
+                        path: "buss/detail",
+                        hidden: true,
+                        component: "center/bussManage/buss/detail",
+                        meta: { title: "商机详情", noCache: true },
+                    },
+                    {
+                        name: "today",
+                        path: "today",
+                        hidden: false,
+                        component: "center/bussManage/today/index",
+                        meta: { title: "今日待跟进", noCache: true },
+                    },
+                ]
+            },
+            {
                 name: "Notice",
                 path: "notice",
                 hidden: false,
@@ -307,18 +344,50 @@ export const asyncAllRoutes = [
         meta: { title: "资源池", icon: "log", noCache: true },
         children: [
             {
-                name: "dep",
-                path: "dep",
+                name: "cluepool",
+                path: "cluepool",
                 hidden: false,
-                component: "pool/dep/index",
-                meta: { title: "部门池", icon: "form", noCache: true },
+                component: "ParentView",
+                meta: { title: "线索资源池", icon: "post", noCache: true },
+                children: [
+                    {
+                        name: "cluepooldep",
+                        path: "dep",
+                        hidden: false,
+                        component: "pool/clue/dep",
+                        meta: { title: "部门池", noCache: true },
+                    },
+                    {
+                        name: "cluepoolpublic",
+                        path: "public",
+                        hidden: false,
+                        component: "pool/clue/public",
+                        meta: { title: "公共池", noCache: true },
+                    }
+                ]
             },
             {
-                name: "public",
-                path: "public",
+                name: "busspool",
+                path: "busspool",
                 hidden: false,
-                component: "pool/public/index",
-                meta: { title: "公共池", icon: "form", noCache: true },
+                component: "ParentView",
+                meta: { title: "商机资源池", icon: "post", noCache: true },
+                children: [
+                    {
+                        name: "busspooldep",
+                        path: "dep",
+                        hidden: false,
+                        component: "pool/buss/dep",
+                        meta: { title: "部门池", noCache: true },
+                    },
+                    {
+                        name: "busspoolpublic",
+                        path: "public",
+                        hidden: false,
+                        component: "pool/buss/public",
+                        meta: { title: "公共池", noCache: true },
+                    }
+                ]
             }
         ],
     },

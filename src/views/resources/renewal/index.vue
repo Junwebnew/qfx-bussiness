@@ -69,7 +69,7 @@
                         <span>{{scope.row.annDate}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center'> </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewCallPhoneLog'> </el-table-column>
                 <el-table-column label="操作" width='200' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>

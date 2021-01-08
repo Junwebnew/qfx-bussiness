@@ -24,16 +24,12 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
-                            <el-select v-model="queryParams.resourceType" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in resourceTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select>
+                            <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="业务类型" prop="vocId" class="el-form-item-none">
-                            <el-select v-model="queryParams.vocId" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in vocIdArr" :key="dict.value" :label="dict.name" :value="dict.value" />
-                            </el-select>
+                            <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
@@ -63,18 +59,18 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
+                    <!-- <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button> -->
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
             <el-table v-loading="loading" :data="tableData">
-                <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
-                <el-table-column label="提醒时间" align='center' prop="remindDate" show-overflow-tooltip></el-table-column>
+                <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
+                <el-table-column label="提醒时间" prop="remindDate" show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
                             <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
@@ -84,7 +80,8 @@
                 <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-update" size="mini" type="text" v-hasPermi="['update']" @click="handleUpdate(scope.row)">修改</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
+                            <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
@@ -93,6 +90,10 @@
 
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
+            <!-- 新增和修改    -->
+            <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
+            <!-- 转为商机 -->
+            <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='getList' />
         </div>
     </div>
 </template>
@@ -100,9 +101,10 @@
 <script>
 import { clueTodayList } from "@/api/center";
 import SwitchForm from "@/components/SwitchForm";
-
+import { deepClone } from '@/utils/index'
+import { clubModule, selectVocTpye } from '../_module'
 export default {
-    components: { SwitchForm },
+    components: { SwitchForm, clubModule, selectVocTpye },
     data() {
         return {
             //显示搜索框
@@ -200,7 +202,7 @@ export default {
 
             let key = this.$route.name + obj.id
 
-            this.$router.push('/center/clue/detail?id=' + obj.id)
+            this.$router.push('/center/clueManage/clue/detail?id=' + obj.id)
         },
         //新增线索
         handleAdd() {
@@ -208,7 +210,7 @@ export default {
         },
         /** 修改按钮操作 */
         handleUpdate(row) {
-            this.$refs.clubModule.showFunc({}, '修改线索')
+            this.$refs.clubModule.showFunc(row, '修改线索')
         },
         /** 删除按钮操作 */
         handleDelete(row) {
@@ -224,7 +226,10 @@ export default {
                 this.msgSuccess("删除成功");
             })
         },
-
+        //业务类型变更.，转为商机
+        vocTpyeChange(row) {
+            this.$refs.selectVocTpye.show(row, '转为商机')
+        },
     },
     beforeDestroy() {
     }

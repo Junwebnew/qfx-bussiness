@@ -146,10 +146,10 @@ export default {
         };
     },
     created() {
-        this.getList();
-        this.getDicts("sys_yes_no").then(response => {
-            this.typeOptions = response.data;
-        });
+        // this.getList();
+        // this.getDicts("sys_yes_no").then(response => {
+        //     this.typeOptions = response.data;
+        // });
     },
     methods: {
         /** 查询参数列表 */

@@ -68,18 +68,18 @@
                         </a>
                     </template>
                 </el-table-column>
-                <el-table-column label="注册号" align='center' prop="trademarkNumber"></el-table-column>
-                <el-table-column label="国际分类" show-overflow-tooltip>
+                <el-table-column label="注册号" width='90' align='center' prop="trademarkNumber"></el-table-column>
+                <el-table-column label="国际分类" width='90' align='center' show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span>
                             {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName || '暂无'}}
                         </span>
                     </template>
                 </el-table-column>
-                <el-table-column label="申请日期" align='center' prop="trademarkApplicationDate"></el-table-column>
+                <el-table-column label="申请日期" align='center' width='120' prop="trademarkApplicationDate"></el-table-column>
                 <el-table-column label="代理机构" prop="agency" show-overflow-tooltip></el-table-column>
                 <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>

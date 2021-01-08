@@ -44,7 +44,7 @@
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" ref='theTable' :data="menuList" row-key="id" :default-expand-all='tableExpand' :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+            <el-table v-loading="loading" ref='theTable' :data="menuList" row-key="id" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
                 <el-table-column prop="name" label="菜单名称" :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="icon" label="图标" align="center" width="80px">
                     <template slot-scope="scope">
@@ -283,7 +283,7 @@ export default {
                 pageSize: 100
             },
             //表单展开/收起
-            tableExpand: true,
+            tableExpand: false,
             //按钮框
             btnBoxPar: {
                 tit: "按钮列表",

@@ -66,7 +66,7 @@
                 <el-table-column label="申请人地址" prop='userAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="专用权结束日期" width='120px' align='center' prop='annDate' />
-                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' align='center' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>

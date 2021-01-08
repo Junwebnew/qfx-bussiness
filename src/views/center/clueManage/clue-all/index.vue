@@ -67,14 +67,15 @@
 
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type='selection'></el-table-column>
-                <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" align='center' prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
-                <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
-                <!-- <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column> -->
+                <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
+                <el-table-column label="资源类型" prop="resName"></el-table-column>
+                <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="所属商务" align='center' prop="counselorName"></el-table-column>
-                <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="所属商务" prop="counselorName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="所属部门" prop="deptId" show-overflow-tooltip></el-table-column>
+                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
                             <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>

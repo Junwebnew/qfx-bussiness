@@ -163,6 +163,7 @@ export default {
     data() {
         return {
             title: '详情页',
+            noticeNum: '',
             json: {},
             loading: false,
             tableData: [],
@@ -177,7 +178,8 @@ export default {
     //     }
     // },
     created() {
-        this.initPage(this.$route.query.id, this.$route.query.num)
+        this.noticeNum = this.$route.query.num
+        this.initPage(this.$route.query.id)
     },
     methods: {
 
@@ -199,12 +201,12 @@ export default {
                     this.json = res.data || {}
                     loading.close()
                 })
-            this.initList(id, num)
+            this.initList(id)
         },
-        initList(id, num) {
+        initList(id) {
             //获取的是列表
             this.loading = true
-            objectionAnalysisDetailList({ analysisPreliId: id, noticeNumber: num })
+            objectionAnalysisDetailList({ analysisPreliId: id, noticeNumber: this.noticeNum })
                 .then(res => {
                     this.tableData = res.data
                     this.loading = false
