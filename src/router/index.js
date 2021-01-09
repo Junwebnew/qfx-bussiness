@@ -245,19 +245,19 @@ export const asyncAllRoutes = [
         meta: { title: "个人中心", icon: "user", noCache: true },
         children: [
             {
-                name: "clueStatistics",
-                path: "clueStatistics",
-                hidden: false,
-                component: "center/clueStatistics",
-                meta: { title: "线索统计", icon: "chart", noCache: true }
-            },
-            {
                 name: "clueManage",
                 path: "clueManage",
                 hidden: false,
                 component: "ParentView",
                 meta: { title: "线索管理", icon: "post", noCache: true },
                 children: [
+                    {
+                        name: "clueStatistics",
+                        path: "clueStatistics",
+                        hidden: false,
+                        component: "center/clueManage/clueStatistics",
+                        meta: { title: "线索统计", noCache: true }
+                    },
                     {
                         name: "clue",
                         path: "clue",
@@ -296,6 +296,13 @@ export const asyncAllRoutes = [
                 meta: { title: "商机管理", icon: "post", noCache: true },
                 children: [
                     {
+                        name: "bussStatistics",
+                        path: "bussStatistics",
+                        hidden: false,
+                        component: "center/bussManage/bussStatistics",
+                        meta: { title: "商机统计", noCache: true }
+                    },
+                    {
                         name: "buss",
                         path: "buss",
                         hidden: false,
@@ -323,6 +330,29 @@ export const asyncAllRoutes = [
                         component: "center/bussManage/today/index",
                         meta: { title: "今日待跟进", noCache: true },
                     },
+                ]
+            },
+            {
+                name: "finishManage",
+                path: "finishManage",
+                hidden: false,
+                component: "ParentView",
+                meta: { title: "成单管理", icon: "post", noCache: true },
+                children: [
+                    {
+                        name: "finishList",
+                        path: "finishList",
+                        hidden: false,
+                        component: "center/finishManage/list",
+                        meta: { title: "成单列表", noCache: true },
+                    },
+                    {
+                        name: "finishStatistics",
+                        path: "finishStatistics",
+                        hidden: false,
+                        component: "center/finishManage/statistics",
+                        meta: { title: "成单统计", noCache: true },
+                    }
                 ]
             },
             {
@@ -355,14 +385,14 @@ export const asyncAllRoutes = [
                         path: "dep",
                         hidden: false,
                         component: "pool/clue/dep",
-                        meta: { title: "部门池", noCache: true },
+                        meta: { title: "线索部门池", noCache: true },
                     },
                     {
                         name: "cluepoolpublic",
                         path: "public",
                         hidden: false,
                         component: "pool/clue/public",
-                        meta: { title: "公共池", noCache: true },
+                        meta: { title: "线索公共池", noCache: true },
                     }
                 ]
             },
@@ -378,14 +408,14 @@ export const asyncAllRoutes = [
                         path: "dep",
                         hidden: false,
                         component: "pool/buss/dep",
-                        meta: { title: "部门池", noCache: true },
+                        meta: { title: "商机部门池", noCache: true },
                     },
                     {
                         name: "busspoolpublic",
                         path: "public",
                         hidden: false,
                         component: "pool/buss/public",
-                        meta: { title: "公共池", noCache: true },
+                        meta: { title: "商机公共池", noCache: true },
                     }
                 ]
             }

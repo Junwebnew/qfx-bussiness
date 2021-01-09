@@ -162,7 +162,7 @@ export default {
     mounted() {
         this.getList()
 
-        this.$store.dispatch('getBussStatus', 2).then(res => {
+        this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res
         })
         this.$store.dispatch('getCenterType', 1).then(res => {

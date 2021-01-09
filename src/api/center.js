@@ -106,7 +106,7 @@ export function publicPoolList(data) {
     return $axios.post('clueopp/businessClueoppPool/page/list', data)
 }
 
-//公共池-批量领取
+//公共池-批量领取  共用  （ids:[] ,type 1：线索 2：商机）  
 export function publicPoolReceive(data) {
     return $axios.post('clueopp/businessClueoppPool/batch/receive', data)
 }
@@ -183,4 +183,32 @@ export function bussDeptReceive(data) {
 //商机跟进-统计分析
 export function bussStatistics(data) {
     return $axios.post('opportunity/statistic/analysis', data)
+}
+
+// **********************************************商机成单***************************************************
+
+//商机成单-统计分析
+export function bussFinishStatistics(data) {
+    return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount', data)
+}
+
+
+//商机成单分页查询
+export function bussFinishList(data) {
+    return $axios.post('opporderform/opportunityOrderForm/page/list/all', data)
+}
+
+//根据ID查询商机成单详情
+export function bussFinishDetail(id) {
+    return $axios.post('opporderform/opportunityOrderForm/get', '"' + id + '"')
+}
+
+//商机再次成单
+export function bussFinishAgain(data) {
+    return $axios.post('opporderform/opportunityOrderForm/oppIsOrderForm', data)
+}
+
+//作废已成单商机（ 调用更新接口）
+export function bussFinishDiscard(id) {
+    return $axios.post('opporderform/opportunityOrderForm/saveorupdate', { id, commonStatus: 0 })
 }

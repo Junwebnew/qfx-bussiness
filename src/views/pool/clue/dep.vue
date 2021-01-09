@@ -48,21 +48,29 @@
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column type='index'></el-table-column>
-                <el-table-column label="客户名称" align='center' prop="customerName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系电话" prop='contactPhone' align='center'> </el-table-column>
-                <el-table-column label="线索状态" align='center' prop="followStatusName"></el-table-column>
-                <!-- <el-table-column label="资源来源" align='center' prop="resourceId" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="资源类型" align='center' prop="resName"></el-table-column>
-                <el-table-column label="业务类型" align='center' prop="vocName"></el-table-column>
-                <!-- <el-table-column label="申请人名称" align='center' prop="applicantName" show-overflow-tooltip></el-table-column> -->
+                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
+                <!-- <el-table-column label="资源来源"  prop="resourceId" show-overflow-tooltip></el-table-column> -->
+                <el-table-column label="资源类型" prop="resName"></el-table-column>
+                <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" align='center' prop="remarkContent" show-overflow-tooltip></el-table-column>
+                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <div class='operation'>
+                            <span>{{scope.row.createTime}}_{{scope.row.remarkContent}}</span>
+                        </div>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" class="col-other" type="text" v-hasPermi="['receive']" @click="handleDistribution(scope.row)">领取</el-button>
-                            <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                            <template v-if="isReve( scope.row.followStatus )">
+                                <el-button size="mini" class="col-other" type="text" v-hasPermi="['receive']" @click="handleDistribution(scope.row)">领取</el-button>
+                                <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                            </template>
+
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
@@ -118,11 +126,15 @@ export default {
                 { name: '企业', value: "0" },
                 { name: '个人', value: "1" }
             ],
-            userList: []
+            userList: [],
+            //可领取状态集合
+            clueStatueArr: [],
         }
     },
     created() {
-
+        this.$store.dispatch('getBussStatus', 2).then(res => {
+            this.clueStatueArr = res
+        })
     },
     mounted() {
         this.getList()
@@ -194,6 +206,11 @@ export default {
                 console.log(11111, msg)
             })
         },
+        //是否可领取
+        isReve(status) {
+
+            return this.clueStatueArr.filter(i => i.id == status).length != 0
+        }
     },
     beforeDestroy() {
     }

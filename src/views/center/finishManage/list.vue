@@ -15,13 +15,13 @@
                             <el-input v-model="queryParams.contactPhone" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <!-- <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
                             <el-select v-model="queryParams.followStatusList" multiple clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
-                    </el-col>
+                    </el-col> -->
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
                             <el-cascader :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' v-model='resourceType' clearable></el-cascader>
@@ -39,7 +39,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
                         <el-form-item label="所属商务" prop="time" class="el-form-item-none">
-                            <el-select v-model="queryParams.counselorId" clearable size="small" style="width: 100%">
+                            <el-select v-model="queryParams.orderformUserId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
@@ -58,36 +58,48 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-
-                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量移交</el-button>
-                    <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
+                    <!-- <el-button type="warning" size="mini" @click="handleDiscard()" v-hasPermi="['discard']" :disabled="!ids.length">批量作废</el-button> -->
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
-                <el-table-column type='selection'></el-table-column>
+                <el-table-column type='index'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
                 <el-table-column label="资源类型" prop="resName"></el-table-column>
-                <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
-                <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="所属商务" prop="counselorName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="业务类型" prop="vocName"></el-table-column>
+                <el-table-column label="所属商务" prop="orderformUserName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="所属部门" prop="deptId" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="成单价格" width="120" prop="orderformPrice" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
-                            <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
+                            <span>￥{{scope.row.orderformPrice}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="成单合同" width="120" prop="orderformPrice" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <div>
+                            <el-button v-if='scope.row.orderformContract' class="col-other" size="mini" type="text" @click="finishOrderAgain(scope.row)">下载合同</el-button>
+                            <p v-else>--</p>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="成单时间" prop="orderformTime" show-overflow-tooltip></el-table-column>
+                <el-table-column label="状态" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <div>
+                            <el-tag v-if="scope.row.commonStatus" type="success" size='mini'>正常</el-tag>
+                            <el-tag v-else type="danger" size='mini'>作废</el-tag>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
-                            <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <el-button class="col-other" size="mini" type="text" @click="finishOrderAgain(scope.row)">再次成单</el-button>
+                            <el-button v-if="scope.row.commonStatus" class="col-del" size="mini" type="text" v-hasPermi="['discard']" @click="handleDiscard(scope.row)">作废</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -95,22 +107,22 @@
 
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
-
-            <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
+            <!-- 再次成单 -->
+            <finishModule ref='finishModule' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @finish='getList' />
         </div>
     </div>
 </template>
 
 <script>
-import { getClueStatusList, bussAllList, bussEliminate, bussTransfer } from "@/api/center";
-import { distribution } from '../_module'
+import { bussFinishDiscard, bussFinishList } from "@/api/center";
+
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 import { mapGetters } from 'vuex'
+import { finishModule } from './_module'
 
 export default {
-    components: { SwitchForm, distribution },
+    components: { SwitchForm, finishModule },
     data() {
         return {
             //显示搜索框
@@ -130,12 +142,9 @@ export default {
             //搜索条件 
             queryParams: {
                 pageNum: 1,
-                pageSize: 10,
-                followStatusList: ''
+                pageSize: 10
             },
             seProps: { value: 'id', label: "name" },
-            //线索状态
-            clueStatueArr: [],
             //业务类型
             vocIdArr: [],
             vocId: '',
@@ -160,12 +169,11 @@ export default {
     mounted() {
         this.getList()
 
-        this.$store.dispatch('getBussStatus', 3).then(res => {
-            this.clueStatueArr = res
-        })
+        //业务类型
         this.$store.dispatch('getCenterType', 1).then(res => {
             this.vocIdArr = res
         })
+        //资源类型
         this.$store.dispatch('getCenterType', 2).then(res => {
             this.resourceTypeArr = res
         })
@@ -188,11 +196,26 @@ export default {
             if (this.vocId && this.vocId.length) {
                 this.queryParams.vocId = this.vocId[this.vocId.length - 1]
             }
+            /**
+             * deptIdList 所属部门ID    applicantId 申请人ID
+             * 
+             * 两个都不传，获取当前登录人的数据
+             * 传部门不传申请人 获取部门所有人数据
+             * 
+             * **/
+            if (this.whetherAdmin) {
 
-            bussAllList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            }
+            else {
+                this.queryParams.deptIdList = ''
+                this.queryParams.applicantId = ''
+            }
 
-                this.tableData = response.data;
-                this.total = response.total;
+            bussFinishList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+
+                this.tableData = response.pageList.data;
+                this.total = response.pageList.total;
+                this.totalMoney = response.totalMoney
                 this.loading = false;
             })
         },
@@ -221,9 +244,9 @@ export default {
 
             this.$router.push('/center/bussManage/buss/detail?id=' + obj.id)
         },
-        /** 修改按钮操作 */
-        handleUpdate(row) {
-            this.$refs.clubModule.showFunc(deepClone(row), '修改线索')
+        /** 再次成单按钮操作 */
+        finishOrderAgain(row) {
+            this.$refs.finishModule.showFunc(deepClone(row), '再次成单')
         },
         // 多选框选中数据
         handleSelectionChange(selection) {
@@ -239,15 +262,10 @@ export default {
             this.$refs.distribution.show({}, tit)
         },
         //剔除
-        handleEliminate(obj) {
+        handleDiscard(obj) {
 
-            let tit = '是否批量剔除线索？'
+            let tit = '确定作废 ' + obj.customerName + " ？"
             let that = this
-
-            if (obj) {
-                this.ids = [obj.id]
-                tit = '是否剔除 ' + obj.customerName + " ？"
-            }
 
             this.$confirm(tit, "警告", {
                 confirmButtonText: "确定",
@@ -255,26 +273,17 @@ export default {
                 type: "warning"
             }).then(function () {
 
-                return bussEliminate({ oppIds: that.ids });
+                return bussFinishDiscard(obj.id);
 
             }).then(() => {
 
                 this.getList();
-                this.msgSuccess("剔除成功");
+                this.msgSuccess("作废成功");
 
             })
                 .catch(msg => {
                     console.log(11111, msg)
                 })
-        },
-        //选完用户之后
-        seleceUserFinish(userId) {
-            bussTransfer({ oppIds: this.ids, disTraUserId: userId }).then(res => {
-
-                this.msgSuccess('移交成功')
-                this.handleQuery()
-
-            })
         }
     },
     beforeDestroy() {

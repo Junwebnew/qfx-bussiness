@@ -6,7 +6,7 @@
                 <el-form ref="form" :model="{}" label-width="90px">
                     <el-row :gutter="10">
                         <!--部门数据-->
-                        <el-col :lg='6' :md='6' :sm="13" :xs="24" v-if="whetherAdmin">
+                        <el-col :lg='6' :md='6' :sm="24" :xs="24" v-if="whetherAdmin">
                             <el-form-item label="商务名称：">
                                 <el-select v-model="queryParams.counselorId" clearable filterable size='small'>
                                     <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
@@ -31,11 +31,11 @@
 
             <!-- //图标 -->
             <el-row :gutter="20" class="chartBox">
-                <el-col :sm="12" :xs="24" class="l">
+                <el-col :md='12' :sm="24" :xs="24" class="l">
                     <p class="text-center f16 mb20">线索状态统计</p>
                     <div ref="myChart" class="myChart"></div>
                 </el-col>
-                <el-col :sm="12" :xs="24" class='r'>
+                <el-col :md='12' :sm="24" :xs="24" class='r'>
                     <p class="text-center f16 mb20">资源类型统计</p>
                 </el-col>
             </el-row>
@@ -47,8 +47,6 @@
 import echarts from "echarts";
 import { clueStatistics } from "@/api/center";
 import { mapGetters } from 'vuex'
-import walden from './_module/walden.js'
-
 export default {
     data() {
         return {
@@ -89,8 +87,7 @@ export default {
     },
     mounted() {
 
-        echarts.registerTheme('walden', walden)
-        this.myChart = echarts.init(this.$refs.myChart, 'walden');
+        this.myChart = echarts.init(this.$refs.myChart, null, { devicePixelRatio: 2.5 });
 
         this.handleQuery()
     },
@@ -131,14 +128,10 @@ export default {
         initCharts(chartData, total) {
 
             this.myChart.setOption({
-                // title: {
-                //     text: '线索状态统计',
-                //     left: 'center'
-                // },
                 title: {
                     text: '线索总数',
                     subtext: total + '条',
-                    left: '37%',
+                    left: '26%',
                     top: '40%',
                     textAlign: 'center',
                     textStyle: {
@@ -156,13 +149,13 @@ export default {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c}条 ({d}%)'
                 },
-                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b'],
+                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 legend: {
                     orient: 'vertical', //布局方式，默认水平布局，另可选vertical
                     top: '50',
-                    left: '70%',
-                    itemWidth: 5,　　　　　　　//图例大小  我这里用的是圆
-                    itemGap: 14,　　　　　　　　//图例之间的间隔
+                    left: '58%',
+                    itemWidth: 8,　　　　　　　//图例大小  我这里用的是圆
+                    itemGap: 16,　　　　　　　　//图例之间的间隔
                     y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
                     icon: "circle",　　　　　　//图例的形状，选择类型有："circle"（圆形）、"rectangle"（长方形）、"triangle"（三角形）、"diamond"（菱形）、"emptyCircle"（空心圆）、
                     //　　　　"emptyRectangle"（空心长方形）、"emptyTriangle"（空心三角形）、"emptyDiamon"（空心菱形），还可以放自定义图片，格式为"image://path",
@@ -182,67 +175,48 @@ export default {
                                 target = chartData[i].value
                             }
                         }
-                        return " {a|" + name + "}{b||}{c|" + target + "条}{d| " + (target / total * 100).toFixed(2) + "% }"
+                        // return " {a|" + name + "}{b||}{c|" + target + "条}"
+                        return " {a|" + name + "}{b||}{c|" + (target ? (target / total * 100).toFixed(2) : '0') + "% }{d| " + target + "条  }"
                     },
-
                     textStyle: {
+                        fontWeight: 400,
                         rich: {
                             a: {
-                                fontSize: 12,
-                                color: '#565656',
+                                fontSize: 14,
+                                color: '#000000d9',
                                 padding: 0,
-                                fontWeight: 600,
-                                padding: [0, 2, 0, 0]
+                                width: 60,
+                                fontWeight: 400,
                             },
                             b: {
-                                fontSize: 12,
-                                color: '#f1f1f1'
+                                fontSize: 14,
+                                color: '#0000000f',
+                                padding: [0, 4, 0, 4],
+                                fontWeight: 400,
                             },
                             c: {
-                                fontSize: 12,
-                                color: '#8888',
-                                padding: [0, 2, 0, 2]
+                                fontSize: 14,
+                                color: '#00000073',
+                                padding: [0, 4, 0, 4],
+                                width: 50,
+                                fontWeight: 400,
                             },
                             d: {
-                                fontSize: 12,
-                                color: '#000',
+                                fontSize: 14,
+                                color: '#000000d9',
                                 padding: 0,
-                                padding: [0, 0, 0, 2]
+                                fontWeight: 400,
                             },
-                            e: {
-                                width: 120
-                            }
                         },
                     }
                 },
-                // graphic: [{　　　　　　　　　　　　　　　　//环形图中间添加文字
-                //     type: 'text',　　　　　　　　　　　　//通过不同top值可以设置上下显示
-                //     left: '33%',
-                //     top: '40%',
-                //     style: {
-                //         text: "线索总数",
-                //         textAlign: 'center',
-                //         fill: '#888',　　　　　　　　//文字的颜色
-                //         fontSize: 16
-                //     }
-                // }, {
-                //     type: 'text',
-                //     left: '34.5%',
-                //     top: '50%',
-                //     style: {
-                //         text: total + '条',
-                //         textAlign: 'center',
-                //         fill: '#1890ff',
-                //         fontSize: 20,
-                //     }
-                // }],
                 series: [
                     {
                         name: '线索状态统计',
                         type: 'pie',
-                        radius: ['50%', '65%'],
+                        radius: ['45%', '65%'],
                         avoidLabelOverlap: false,
-                        center: ['38%', '50%'],
+                        center: ['27%', '50%'],
                         data: chartData,
                         label: {
                             formatter: '{b} : {c} ',
@@ -251,11 +225,16 @@ export default {
                         labelLine: {
                             show: true
                         },
+                        itemStyle: {
+                            borderWidth: 2, //设置border的宽度有多大
+                            borderColor: '#ffffff',
+                        },
                         emphasis: {
                             itemStyle: {
                                 shadowBlur: 10,
                                 shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                shadowColor: 'rgba(0, 0, 0, 0.5)',
+                                borderWidth: 0
                             }
                         }
                     }
@@ -269,7 +248,8 @@ export default {
 <style lang="scss" scoped>
 .myChart {
     height: 360px;
-    width: 100%;
-    margin: auto;
+    width: 530px;
+    margin: 0 auto;
+    // border: 1px solid #eaeaea;
 }
 </style>
