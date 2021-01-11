@@ -212,3 +212,8 @@ export function bussFinishAgain(data) {
 export function bussFinishDiscard(id) {
     return $axios.post('opporderform/opportunityOrderForm/saveorupdate', { id, commonStatus: 0 })
 }
+
+//只有管理员能使用修改已成单
+export function bussFinishUpdate(data) {
+    return $axios.post('opporderform/opportunityOrderForm/saveorupdate', data)
+}

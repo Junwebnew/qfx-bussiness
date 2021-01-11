@@ -81,7 +81,7 @@
                 <el-table-column label="成单合同" width="120" prop="orderformPrice" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
-                            <el-button v-if='scope.row.orderformContract' class="col-other" size="mini" type="text" @click="finishOrderAgain(scope.row)">下载合同</el-button>
+                            <el-button v-if='scope.row.orderformContract' icon="el-icon-download" class="col-other" size="mini" type="text" @click="downLoadFile(scope.row)">下载</el-button>
                             <p v-else>--</p>
                         </div>
                     </template>
@@ -95,9 +95,10 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['edit']" @click="finishOrderEdit(scope.row)">编辑</el-button>
                             <el-button class="col-other" size="mini" type="text" @click="finishOrderAgain(scope.row)">再次成单</el-button>
                             <el-button v-if="scope.row.commonStatus" class="col-del" size="mini" type="text" v-hasPermi="['discard']" @click="handleDiscard(scope.row)">作废</el-button>
                         </div>
@@ -115,7 +116,7 @@
 
 <script>
 import { bussFinishDiscard, bussFinishList } from "@/api/center";
-
+import { qmxOnlineUrl } from '@/utils/baseConfig'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 import { mapGetters } from 'vuex'
@@ -154,7 +155,9 @@ export default {
             //初始时间
             initDate: [],
             //所属部门人员
-            depUserList: []
+            depUserList: [],
+            //下载地址
+            qmxOnlineUrl: qmxOnlineUrl,
         }
     },
     computed: {
@@ -248,6 +251,10 @@ export default {
         finishOrderAgain(row) {
             this.$refs.finishModule.showFunc(deepClone(row), '再次成单')
         },
+        /**编辑成单**/
+        finishOrderEdit(row) {
+            this.$refs.finishModule.showFunc(deepClone(row), '编辑成单')
+        },
         // 多选框选中数据
         handleSelectionChange(selection) {
             this.ids = selection.map(item => item.id)
@@ -284,6 +291,10 @@ export default {
                 .catch(msg => {
                     console.log(11111, msg)
                 })
+        },
+        //下载文件
+        downLoadFile(row) {
+            location.href = qmxOnlineUrl + 'api-f/files/downloadFile?fileSource=ALIYUN&id=' + row.orderformContract
         }
     },
     beforeDestroy() {

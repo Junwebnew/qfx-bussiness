@@ -108,3 +108,7 @@ export function qmxdDeptMsgSet(data) {
     return $axios.post('msg/msgConfigWechat/saveorupdate', data)
 }
 
+//获取公司列表
+export function qmxCompanyList() {
+    return $axios.post('baseData/organization/query/org/level', { level: 2 })
+}

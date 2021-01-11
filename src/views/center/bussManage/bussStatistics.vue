@@ -224,7 +224,7 @@ export default {
                             show: false
                         },
                         labelLine: {
-                            show: true
+                            show: false
                         },
                         itemStyle: {
                             borderWidth: 2, //设置border的宽度有多大

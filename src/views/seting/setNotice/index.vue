@@ -5,13 +5,13 @@
                 <div class="item" :class="{'active':active == 0}" @click="active = 0">
                     <span>个人企业微信号设置</span>
                 </div>
-                <div class="item" :class="{'active':active == 1}" @click="active = 1">
+                <div class="item" :class="{'active':active == 1}" @click="active = 1" v-if="mainAccount">
                     <span>企业微信设置</span>
                 </div>
-                <div class="item" :class="{'active':active == 2}" @click="active = 2">
+                <div class="item" :class="{'active':active == 2}" @click="active = 2" v-if="mainAccount">
                     <span>线索掉库设置</span>
                 </div>
-                <div class="item" :class="{'active':active == 3}" @click="active = 3">
+                <div class="item" :class="{'active':active == 3}" @click="active = 3" v-if="mainAccount">
                     <span>商机掉库设置</span>
                 </div>
             </div>
@@ -42,7 +42,8 @@ export default {
     computed: {
         ...mapGetters([
             'organizationId',
-            'userId'
+            'userId',
+            'mainAccount'
         ])
     },
     created() {

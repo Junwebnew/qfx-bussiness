@@ -79,7 +79,7 @@
 
 <script>
 
-import { bussUpdate } from "@/api/center"
+import { bussFinishAgain, bussFinishUpdate } from "@/api/center"
 import { mapGetters } from 'vuex'
 import { deepClone } from '@/utils/index'
 import { qmxOnlineUrl } from '@/utils/baseConfig'
@@ -120,6 +120,8 @@ export default {
             }
         }
         return {
+            // 1 再次成单 2 编辑成单
+            type: 1,
             // 弹出层标题
             title: "",
             // 是否显示弹出层
@@ -181,6 +183,8 @@ export default {
 
             this.title = tit
 
+            this.type = tit == '编辑成单' ? 2 : 1
+
             this.form.counselorId = this.userId
 
             if (obj.id) {
@@ -189,6 +193,7 @@ export default {
             }
 
             this.open = true
+
         },
         //级联查出上级的id
         findParentAssId(moId, moArr) {
@@ -238,9 +243,6 @@ export default {
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
-                    console.log(1111, this.form)
-                    return
-
                     if (!this.form.contactPhone && !this.form.contactQq && !this.form.contactWx) {
 
                         this.msgError('电话、QQ、微信需要至少完善一项！')
@@ -256,15 +258,28 @@ export default {
                         newObj.vocId = newObj.vocId[newObj.vocId.length - 1]
                     }
 
-                    let str = '成单成功！'
+                    let str = this.type == 1 ? '成单成功！' : '编辑成功'
+
+                    if (this.type == 2) {
+
+                        bussFinishUpdate(newObj).then(res => {
+
+                            this.msgSuccess(str)
+                            this.open = false
+                            this.$emit('finish')
+
+                        })
+
+                        return
+                    }
 
                     this.form.dataSoure = 2
 
-                    bussUpdate(newObj).then(res => {
+                    bussFinishAgain(newObj).then(res => {
 
                         this.msgSuccess(str)
                         this.open = false
-                        this.$emit('backGetList')
+                        this.$emit('finish')
 
                     })
                 }
