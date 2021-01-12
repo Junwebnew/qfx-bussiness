@@ -69,7 +69,7 @@
                         <div class='operation'>
                             <template v-if="isReve( scope.row.followStatus )">
                                 <el-button size="mini" class="col-other" type="text" v-hasPermi="['receive']" @click="handleDistribution(scope.row)">领取</el-button>
-                                <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                                <!-- <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button> -->
                             </template>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>

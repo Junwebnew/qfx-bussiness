@@ -16,7 +16,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
+                        <el-form-item label="商机状态" prop="followStatusList" class="el-form-item-none">
                             <el-select v-model="queryParams.followStatusList" multiple clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
@@ -69,7 +69,7 @@
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
+                <el-table-column label="商机状态" prop="followStatusName"></el-table-column>
                 <el-table-column label="资源类型" prop="resName"></el-table-column>
                 <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
@@ -134,7 +134,7 @@ export default {
                 followStatusList: ''
             },
             seProps: { value: 'id', label: "name" },
-            //线索状态
+            //商机状态
             clueStatueArr: [],
             //业务类型
             vocIdArr: [],
@@ -223,7 +223,7 @@ export default {
         },
         /** 修改按钮操作 */
         handleUpdate(row) {
-            this.$refs.clubModule.showFunc(deepClone(row), '修改线索')
+            this.$refs.clubModule.showFunc(deepClone(row), '修改商机')
         },
         // 多选框选中数据
         handleSelectionChange(selection) {
@@ -231,17 +231,17 @@ export default {
         },
         //分配
         handleDistribution(obj) {
-            let tit = '线索批量分配'
+            let tit = '商机批量分配'
             if (obj) {
                 this.ids = [obj.id]
-                tit = obj.customerName + "线索分配"
+                tit = obj.customerName + "商机分配"
             }
             this.$refs.distribution.show({}, tit)
         },
         //剔除
         handleEliminate(obj) {
 
-            let tit = '是否批量剔除线索？'
+            let tit = '是否批量剔除商机？'
             let that = this
 
             if (obj) {

@@ -207,11 +207,18 @@ export default {
 
                 this.deptListTree = deepClone(arr)
 
-                this.deptList = arr
+                this.deptList = this.depArrfilter(deepClone(this.deptListTree), this.queryParams.name)
 
                 this.loading = false;
 
             })
+        },
+        /** 搜索按钮操作 */
+        handleQuery() {
+
+            // this.deptList = this.depArrfilter(deepClone(this.deptListTree), this.queryParams.name)
+
+            this.getList();
         },
         //数据子集切换和删除
         changeDate(arr) {
@@ -304,13 +311,7 @@ export default {
             };
             this.resetForm("form");
         },
-        /** 搜索按钮操作 */
-        handleQuery() {
 
-            this.deptList = this.depArrfilter(deepClone(this.deptListTree), this.queryParams.name)
-
-            //this.getList();
-        },
         /** 重置按钮操作 */
         resetQuery() {
             this.resetForm("queryForm");

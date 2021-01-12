@@ -217,6 +217,45 @@ export const asyncAllRoutes = [
         ],
     },
     {
+        name: "cost",
+        path: "/cost",
+        hidden: false,
+        redirect: "noRedirect",
+        component: "Layout",
+        alwaysShow: true,
+        meta: { title: "费用模块", icon: "system", noCache: false },
+        children: [
+            {
+                name: "accountList",
+                path: "accountList",
+                hidden: false,
+                component: "cost/accountList",
+                meta: { title: "账号列表", noCache: true },
+            },
+            {
+                name: "accountRecharge",
+                path: "accountRecharge",
+                hidden: false,
+                component: "cost/accountRecharge",
+                meta: { title: "账号充值", noCache: true },
+            },
+            {
+                name: "accountRechargeList",
+                path: "accountRechargeList",
+                hidden: false,
+                component: "cost/accountRechargeList",
+                meta: { title: "充值明细", noCache: true },
+            },
+            {
+                name: "accountDeductionList",
+                path: "accountDeductionList",
+                hidden: false,
+                component: "cost/accountDeductionList",
+                meta: { title: "抵扣明细", noCache: true },
+            }
+        ]
+    },
+    {
         name: "seting",
         path: "/seting",
         hidden: false,

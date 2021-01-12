@@ -68,9 +68,8 @@
                         <div class='operation'>
                             <template v-if="isReve( scope.row.followStatus )">
                                 <el-button size="mini" class="col-other" type="text" v-hasPermi="['receive']" @click="handleDistribution(scope.row)">领取</el-button>
-                                <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                                <!-- <el-button size="mini" class="col-other" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button> -->
                             </template>
-
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
@@ -79,7 +78,8 @@
 
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
-
+            <!-- 分配 -->
+            <!-- <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' /> -->
         </div>
     </div>
 </template>
@@ -88,7 +88,7 @@
 import { depPoolList, depPoolReceive } from "@/api/center";
 
 import SwitchForm from "@/components/SwitchForm";
-
+// import { distribution } from '../_module'
 export default {
     components: { SwitchForm },
     data() {
@@ -185,6 +185,26 @@ export default {
             let key = this.$route.name + obj.id
 
             this.$router.push('/center/clueManage/clue/detail?id=' + obj.id + '&btn=none')
+        },
+        //领取
+        handleDistribution(obj) {
+
+            this.$confirm('是否领取 ' + obj.customerName + ' 此条资源?', "警告", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(function () {
+
+                return depPoolReceive({ id: obj.id });
+
+            }).then(() => {
+
+                this.getList();
+                this.msgSuccess("领取成功");
+
+            }).catch(msg => {
+                console.log(11111, msg)
+            })
         },
         //分配
         handleDistribution(obj) {

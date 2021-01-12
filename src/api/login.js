@@ -60,6 +60,12 @@ export function qmxgetInfo() {
     return $axios.post('back/user/get/current')
 }
 
+//获取用户所在部门、所在机构
+export function qmxgetOrgAndDep() {
+
+    return $axios.post('back/user/getUserOrgAndDeptId')
+}
+
 // 获取用户角色 列表
 export function qmxgetRoleList(key) {
 

@@ -82,8 +82,8 @@ export default {
 
 
             Promise.all([
-                outOfStockSet({ code: 'days_not_followed_up', value: this.num }),
-                outOfStockSet({ code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent })
+                outOfStockSet({ code: 'days_not_followed_up', value: this.num, type: this.outType }),
+                outOfStockSet({ code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent, type: this.outType })
             ])
                 .then(res => {
                     this.msgSuccess('更新成功')

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 import $axios from '@/utils/http'
-
+import qs from "qs";
 // 查询部门列表
 export function listDept(query) {
     return request({
@@ -108,7 +108,12 @@ export function qmxdDeptMsgSet(data) {
     return $axios.post('msg/msgConfigWechat/saveorupdate', data)
 }
 
-//获取公司列表
-export function qmxCompanyList() {
-    return $axios.post('baseData/organization/query/org/level', { level: 2 })
+//获取公司列表分页和名字查询
+export function qmxCompanyList(data) {
+    data = data || {
+        pageNum: 1,
+        pageSize: 1000,
+        level: 2
+    }
+    return $axios.post('baseData/organization/queryCompanyPageList', data)
 }

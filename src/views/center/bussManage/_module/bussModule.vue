@@ -37,7 +37,7 @@
                     </el-col>
 
                     <el-col :span="12">
-                        <el-form-item label="线索状态" prop="followStatus">
+                        <el-form-item label="商机状态" prop="followStatus">
                             <el-select v-model="form.followStatus" :disabled='disabled' clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
@@ -148,10 +148,10 @@ export default {
                     { required: true, validator: validateUseName, trigger: "blur" },
                 ],
                 followStatus: [
-                    { required: true, message: "线索状态不能为空", trigger: "blur" }
+                    { required: true, message: "商机状态不能为空", trigger: "blur" }
                 ],
                 resourceType: [
-                    { required: true, message: "线索类型不能为空", trigger: "blur" }
+                    { required: true, message: "商机类型不能为空", trigger: "blur" }
                 ],
                 vocId: [
                     { required: true, message: "业务类型不能为空", trigger: "blur" }

@@ -72,7 +72,7 @@
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">线索状态：</span>
+                                <span class="custom-label">商机状态：</span>
                                 <div class="custom-r">
                                     {{json.followStatusName}}
                                 </div>
@@ -96,7 +96,7 @@
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">线索说明：</span>
+                                <span class="custom-label">商机说明：</span>
                                 <div class="custom-r">
                                     {{json.busexplain || '--'}}
                                 </div>
@@ -161,11 +161,11 @@ export default {
     },
     data() {
         return {
-            title: '线索详情页',
+            title: '商机详情页',
             json: {},
             markLoading: false,
             tableData: [],
-            //线索状态
+            //商机状态
             clueStatueArr: [],
             //资源类型
             resourceTypeArr: [],
@@ -203,7 +203,7 @@ export default {
 
             bussDetail(id)
                 .then(res => {
-                    this.title = (res.data.customerName || '') + ' 线索详情页'
+                    this.title = (res.data.customerName || '') + ' 商机详情页'
                     this.json = res.data
                 })
             this.getmarks(id)
@@ -211,7 +211,7 @@ export default {
         getmarks(id) {
             id = id || this.json.id
             this.markLoading = true
-            //可选type : 1线索，2商机
+            //可选type : 1商机，2商机
             clueMarksList({ businessId: id, pageNum: 1, pageSize: 100 }).then(res => {
                 this.marksList = res.data
                 this.markLoading = false

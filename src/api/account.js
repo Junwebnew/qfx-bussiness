@@ -1,5 +1,5 @@
 import $axios from '@/utils/http'
-
+import qs from "qs";
 
 //充值
 export function rechargeAccount(data) {
@@ -12,8 +12,8 @@ export function rechargeAccountList(data) {
 }
 
 //公司帐号消费记录分页查询
-export function costAccountList(id) {
-    return $axios.post('cost/consume/costOrgConsume/page/list', '"' + id + '"')
+export function costAccountList(data) {
+    return $axios.post('cost/consume/costOrgConsume/page/list', data)
 }
 
 //根据ID查询公司帐号消费记录

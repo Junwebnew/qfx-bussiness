@@ -13,16 +13,16 @@ const getters = {
     permission_routes: state => state.permission.routes,
     //用户信息
     userInfo: state => state.user.userInfo,
-    //是否有管理权限
-    whetherAdmin: state => state.user.userInfo.whetherAdmin === 1,
     //部门ID
     organizationId: state => state.user.userInfo.userOrganizationId || '',
     //角色ID
     rolesId: state => state.user.rolesId,
     //用户ID
     userId: state => state.user.userId,
+    //是否有管理权限
+    whetherAdmin: state => state.user.userInfo.whetherAdmin === 1,
     //是否主账号
-    mainAccount: state => state.user.userInfo.accountType === 0,
+    mainAccount: state => (state.user.userInfo.accountType === 0 || state.user.superAdmin),
     //是否管理员
     superAdmin: state => state.user.superAdmin,
     myMenuList: state => state.user.menuList

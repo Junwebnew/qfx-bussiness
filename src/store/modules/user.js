@@ -1,4 +1,4 @@
-import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList } from '@/api/login'
+import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList, qmxgetOrgAndDep } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { qmxUserList } from "@/api/system/user"
 import { assRouter } from '@/api/menu.js'
@@ -15,7 +15,8 @@ const user = {
         superAdmin: false,
         menuList: [],
         userId: '',
-        depUser: []
+        depUser: [],
+        orgAndDep: {}
     },
     mutations: {
         SET_TOKEN: (state, token) => {
@@ -48,6 +49,9 @@ const user = {
         },
         SET_DEPUSER(state, arr) {
             state.depUser = arr
+        },
+        SET_ORGANDDEP(state, obj) {
+            state.orgAndDep = obj
         }
     },
 
@@ -114,7 +118,23 @@ const user = {
                 })
             })
         },
-        //获取同部门人员
+        //获取用户所在的部门和机构
+        getUserOrgAndDep({ commit, state }) {
+            return new Promise((resolve, reject) => {
+
+                if (state.orgAndDep.orgId) {
+                    resolve(state.orgAndDep)
+                    return
+                }
+                qmxgetOrgAndDep().then(res => {
+
+                    commit('SET_ORGANDDEP', res.data)
+
+                    resolve(res.data)
+                })
+            })
+        },
+        //获取部门人员
         getDepUser({ commit, state }) {
             return new Promise((resolve, reject) => {
 
