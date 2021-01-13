@@ -39,7 +39,7 @@
                 <el-table-column label="申请人" prop='companyName' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="申请人地址" prop='companyAddress' align='center' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="社会信用代码或身份证号" prop='creditCode' align='center' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewRemark' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='200' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>

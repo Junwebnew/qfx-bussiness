@@ -94,7 +94,7 @@ export default {
         if (process.env.NODE_ENV != 'production') {
             this.loginForm = {
                 username: "admin",
-                password: "a123456",
+                password: "123456",
             }
         }
     },

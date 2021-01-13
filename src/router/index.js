@@ -190,6 +190,31 @@ export const asyncAllRoutes = [
                 meta: { title: "参数设置", icon: "edit", noCache: false },
             },
             {
+                name: "Phone",
+                path: "phone",
+                hidden: false,
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "电话管理", icon: "log", noCache: false },
+                children: [
+                    {
+                        name: "phoneSet",
+                        path: "phoneSet",
+                        hidden: false,
+                        component: "system/phone/index",
+                        meta: { title: "电话设置", noCache: false },
+                    },
+                    {
+                        name: "Logininfor",
+                        path: "logininfor",
+                        hidden: false,
+                        component: "system/phone/companyPhone",
+                        meta: { title: "公司与电话设置", noCache: false },
+                    },
+                ],
+            },
+            {
                 name: "Log",
                 path: "log",
                 hidden: false,
@@ -252,6 +277,13 @@ export const asyncAllRoutes = [
                 hidden: false,
                 component: "cost/accountDeductionList",
                 meta: { title: "抵扣明细", noCache: true },
+            },
+            {
+                name: "accountConsume",
+                path: "accountConsume",
+                hidden: false,
+                component: "cost/accountConsume",
+                meta: { title: "抵扣统计", noCache: true },
             }
         ]
     },
@@ -264,13 +296,19 @@ export const asyncAllRoutes = [
         alwaysShow: true,
         meta: { title: "配置中心", icon: "message", noCache: true },
         children: [
-
             {
                 name: "setNotice",
                 path: "setNotice",
                 hidden: false,
                 component: "seting/setNotice/index",
                 meta: { title: "消息设置", noCache: true },
+            },
+            {
+                name: "setResources",
+                path: "setResources",
+                hidden: false,
+                component: "seting/setResources",
+                meta: { title: "资源设置", noCache: true },
             },
         ]
     },

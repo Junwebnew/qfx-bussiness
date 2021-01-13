@@ -79,7 +79,7 @@
                 <el-table-column label="申请日期" align='center' width='120' prop="trademarkApplicationDate"></el-table-column>
                 <el-table-column label="代理机构" prop="agency" show-overflow-tooltip></el-table-column>
                 <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop='bestNewCallPhoneLog' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="最新备注" prop='bestNewRemark' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>

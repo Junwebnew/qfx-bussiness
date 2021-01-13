@@ -26,7 +26,7 @@ export function costAccountUnpate(data) {
     return $axios.post('cost/consume/costOrgConsume/saveorupdate', data)
 }
 
-//统计账号扣除总次数
+//抵扣统计分析
 export function costAccountStatit(data) {
     return $axios.post('cost/orgTimes/costOrgTimes/statistical/analysis', data)
 }

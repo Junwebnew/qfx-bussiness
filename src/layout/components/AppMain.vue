@@ -2,9 +2,10 @@
 <template>
     <section class="app-main">
         <transition name="fade-transform" mode="out-in">
-            <keep-alive :max="20" :exclude="notCacheName">
+            <!-- <keep-alive :max="20" :exclude="notCacheName">
                 <router-view :key="key" />
-            </keep-alive>
+            </keep-alive> -->
+            <router-view :key="key" />
         </transition>
     </section>
 </template>

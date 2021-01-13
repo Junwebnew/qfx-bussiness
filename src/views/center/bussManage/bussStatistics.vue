@@ -6,20 +6,25 @@
                 <el-form ref="form" :model="{}" label-width="90px">
                     <el-row :gutter="10">
                         <!--部门数据-->
-                        <el-col :lg='6' :md='6' :sm="24" :xs="24" v-if="whetherAdmin">
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
+                            <el-form-item label="部门名称：">
+                                <treeselect v-model="orgAndDept" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
+                            </el-form-item>
+                        </el-col>
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                             <el-form-item label="商务名称：">
-                                <el-select v-model="queryParams.counselorId" clearable filterable size='small'>
+                                <el-select v-model="queryParams.counselorId" style="width:100%" clearable filterable size='small'>
                                     <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :lg='8' :md='12' :sm="24" :xs="24">
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24">
                             <el-form-item label="时间筛选：">
                                 <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                             </el-form-item>
                         </el-col>
-                        <el-col :lg='8' :md='6' :sm="10" :xs="24">
+                        <el-col :lg='6' :md='10' :sm="10" :xs="24">
                             <el-form-item label="">
                                 <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -47,10 +52,21 @@
 import echarts from "echarts";
 import { bussStatistics } from "@/api/center";
 import { mapGetters } from 'vuex'
+import { qmxDept } from "@/api/system/dept";
+import { qmxUserList } from "@/api/system/user";
+
+// import walden from '../_module/walden.js'
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
+    components: { Treeselect },
     data() {
         return {
+            //组织机构树
+            deptListTree: [],
+            orgAndDept: undefined,
+            //用户列表
             depUserList: [],
             queryParams: {},
             pickerOptions: {
@@ -78,8 +94,23 @@ export default {
             'whetherAdmin'
         ])
     },
+    watch: {
+        orgAndDept(key) {
+            if (!key) {
+                this.queryParams.deptId = ''
+                this.queryParams.orgId = ''
+            }
+        }
+    },
     created() {
+        //管理员可以选择机构，选择人员
         if (this.whetherAdmin) {
+
+            qmxDept({}).then(res => {
+
+                this.deptListTree = this.changeDate(res.data)
+            })
+
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
             })
@@ -119,6 +150,56 @@ export default {
                 .catch(res => {
                     loading.close()
                 })
+        },
+        depTtreeChange(e) {
+
+            this.queryParams.orderformUserId = ''
+            this.depUserList = []
+
+            if (e.level <= 2) {
+                this.queryParams.orgId = e.id
+                this.queryParams.deptId = ''
+            } else {
+                this.queryParams.orgId = ''
+                this.queryParams.deptId = e.id
+            }
+            this.getUserList(e.id)
+        },
+        //获取部门的人员
+        getUserList(id) {
+
+            let params = {
+                pageNum: 1,
+                pageSize: 1000,
+                orgId: id || ''
+            }
+
+            qmxUserList(params).then(response => {
+                this.depUserList = response.data;
+            })
+
+        },
+        //数据子集切换和删除
+        changeDate(arr) {
+            arr.map(i => {
+                if (i.treeVoList && i.treeVoList.length > 0) {
+                    let newArr = this.changeDate(i.treeVoList)
+                    i.children = newArr
+                }
+                delete i.treeVoList
+            })
+            return arr
+        },
+        /** selectTree 转换部门数据结构 */
+        normalizer(node) {
+            if (node.children && !node.children.length) {
+                delete node.children;
+            }
+            return {
+                id: node.id,
+                label: node.name,
+                children: node.children
+            };
         },
         //重置表单
         resetQuery() {
@@ -177,7 +258,7 @@ export default {
                             }
                         }
                         // return " {a|" + name + "}{b||}{c|" + target + "条}"
-                        return " {a|" + name + "}{b||}{c|" + (target ? (target / total * 100).toFixed(2) : '0') + "% }{d| " + target + "条  }"
+                        return " {a|" + name + "}{b||}{c|" + parseFloat((target / (total || 10) * 100).toFixed(2)) + "% }{d| " + target + "条  }"
                     },
                     textStyle: {
                         fontWeight: 400,

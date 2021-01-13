@@ -39,6 +39,7 @@
                     <template slot-scope="scope">
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">账号充值</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
+                        <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -46,6 +47,26 @@
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
         </div>
+        <el-dialog title="机构人员数量限制" :visible.sync="open" width="500px">
+            <el-form ref="form" :model="form" label-width="100px">
+                <el-row>
+                    <el-col :span='24'>
+                        <el-form-item label="客户名称" prop="customerName">
+                            <el-input v-model="form.name" disabled />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='24'>
+                        <el-form-item label="最大人员数量" prop="num">
+                            <el-input-number v-model="form.num" :min="1" :max="100000" label="数量"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="open = false">取 消</el-button>
+                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -74,6 +95,12 @@ export default {
                 name: undefined,
                 level: 2
             },
+            //表单
+            open: false,
+            form: {
+                name: "",
+                num: 1,
+            }
         };
     },
     computed: {
@@ -89,11 +116,7 @@ export default {
         getList() {
             this.loading = true;
 
-            console.log(1114444444)
-
             qmxCompanyList(this.queryParams).then(res => {
-
-
                 this.deptList = res.data
 
                 this.total = res.total
@@ -120,6 +143,16 @@ export default {
                 label: node.name,
                 children: node.children
             };
+        },
+        //人员数量限制
+        handleLimit(row) {
+            this.open = true
+            this.form.id = row.id
+            this.form.name = row.name
+        },
+        //提交
+        submitFileForm() {
+            this.open = false
         },
         //前端进行名称搜索
         depArrfilter(arr, name) {

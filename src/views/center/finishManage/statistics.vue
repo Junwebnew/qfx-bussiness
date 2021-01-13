@@ -6,32 +6,31 @@
                 <el-form ref="form" :model="{}" label-width="90px">
                     <el-row :gutter="10">
                         <!--部门数据-->
-                        <el-col :lg='8' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
-                            <el-form-item label="机构名称：">
-                                <treeselect v-model="queryParams.parentId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @input='depTtreeChange' />
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
+                            <el-form-item label="部门名称：">
+                                <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
                             </el-form-item>
                         </el-col>
 
-                        <el-col :lg='6' :md='6' :sm="24" :xs="24" v-if="whetherAdmin">
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                             <el-form-item label="商务名称：">
-                                <el-select v-model="queryParams.orderformUserId" clearable filterable size='small'>
+                                <el-select v-model="queryParams.orderformUserId" style="width:100%" clearable filterable size='small'>
                                     <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :lg='8' :md='12' :sm="24" :xs="24">
+                        <!-- <el-col :lg='8' :md='12' :sm="24" :xs="24">
                             <el-form-item label="价格区间：">
-                                <!-- <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker> -->
                                 <priceRange />
                             </el-form-item>
-                        </el-col>
-                        <el-col :lg='8' :md='12' :sm="24" :xs="24">
+                        </el-col> -->
+                        <el-col :lg='6' :md='10' :sm="24" :xs="24">
                             <el-form-item label="时间筛选：">
                                 <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                             </el-form-item>
                         </el-col>
-                        <el-col :lg='8' :md='6' :sm="10" :xs="24">
+                        <el-col :lg='6' :md='10' :sm="10" :xs="24">
                             <el-form-item label="">
                                 <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -40,15 +39,36 @@
                     </el-row>
                 </el-form>
             </el-row>
-
             <!-- //图标 -->
             <el-row :gutter="20" class="chartBox">
-                <el-col :md='12' :sm="24" :xs="24" class="l">
-                    <p class="text-center f16 mb20">线索状态统计</p>
-                    <div ref="myChart" class="myChart"></div>
+                <el-col :md='12' :sm="24" :xs="24" class="mb20">
+                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
+                    <div ref="myChart1" class="myChart"></div>
                 </el-col>
-                <el-col :md='12' :sm="24" :xs="24" class='r'>
-                    <p class="text-center f16 mb20">资源类型统计</p>
+                <el-col :md='12' :sm="24" :xs="24" class="mb20">
+                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
+                    <div ref="myChart2" class="myChart"></div>
+                </el-col>
+                <el-col :md='12' :sm="24" :xs="24">
+                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
+                    <div ref="myChart3" class="myChart"></div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" class="chartBox" v-if="whetherAdmin">
+                <el-col :md='18' :sm="18" :xs="24">
+                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
+                    <div ref="myChart4" style="width:100%;height:500px"></div>
+                </el-col>
+                <el-col :md='6' :sm="6" :xs="24">
+                    <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+                    <ul class="sellList">
+                        <li v-for="(item,idx) in sellerSortArr" :key='idx'>
+                            <span :class="'circle cir'+idx  ">{{idx+1}}</span>
+                            <span class="name">{{item.name}} </span>
+                            <span class="per">{{item.percentage}} </span>
+                            <span class="num">{{item.value}}条 </span>
+                        </li>
+                    </ul>
                 </el-col>
             </el-row>
         </div>
@@ -61,14 +81,13 @@ import { clueStatistics, bussFinishStatistics } from "@/api/center";
 import { qmxUserList } from "@/api/system/user";
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
-import priceRange from '@/components/PriceRange'
 
 
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
-    components: { Treeselect, priceRange },
+    components: { Treeselect },
     data() {
         return {
             //组织机构树
@@ -95,7 +114,10 @@ export default {
             //时间段
             dateRange: [],
             chartData: [],
-            myChart: null,
+            myChartObj: {},
+            //排序后的人员销售
+            sellerSortArr: [],
+            sellerNum: 0
         }
     },
     computed: {
@@ -121,7 +143,10 @@ export default {
     },
     mounted() {
 
-        this.myChart = echarts.init(this.$refs.myChart, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
 
         this.handleQuery()
     },
@@ -136,22 +161,48 @@ export default {
 
             bussFinishStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'orderformTimeStart', end: 'orderformTimeEnd' })).then(response => {
 
-                this.chartData = response.data;
-                let total = 0
-                let chartData = response.data.map(item => {
-                    total += Number(item.totalNum)
-                    return {
-                        name: item.followStatusName,
-                        value: Number(item.totalNum)
-                    }
-                })
+                let dataObj = this.chartData = response.data;
 
-                this.initCharts(chartData, total)
+                this.initCharts(this.myChartObj.a, '客户总数', [{ name: '新客户', value: dataObj.newCustomerNum }, { name: '老客户', value: dataObj.oldCustomerNum }], dataObj.newCustomerNum + dataObj.oldCustomerNum)
+                this.initCharts(this.myChartObj.b, '资源总数', dataObj.reourceTypeCountList, this.assTotal(dataObj.reourceTypeCountList))
+                this.initCharts(this.myChartObj.c, '业务总数', dataObj.businessTypeCountList, this.assTotal(dataObj.businessTypeCountList))
+
+                //人员的统计,增加总数，增加百分比
+                if (this.whetherAdmin) {
+                    let sellerNum = this.sellerNum = this.assTotal(dataObj.businessPeopleCountList)
+
+                    this.sellerSortArr = dataObj.businessPeopleCountList.map(i => {
+                        if (sellerNum) {
+                            i.percentage = parseFloat((i.value / sellerNum * 100).toFixed(2)) + '%'
+
+                        }
+                        else {
+                            i.percentage = '0%'
+                        }
+                        return i
+                    }).sort((a, b) => b.value - a.value)
+
+                    //柱状图
+                    this.initHistogram(this.myChartObj.d, dataObj.businessPeopleCountList, sellerNum)
+
+                }
                 loading.close()
             })
                 .catch(res => {
                     loading.close()
                 })
+        },
+        //统计总数
+        assTotal(arr) {
+
+            let total = 0
+            arr.map(item => {
+                item.value = Number(item.value)
+                if (item) {
+                    total += Number(item.value || 0)
+                }
+            })
+            return total
         },
         //获取部门的人员
         getUserList(id) {
@@ -191,7 +242,9 @@ export default {
         },
         depTtreeChange(e) {
             // console.log('9999', e)
-            this.getUserList(e)
+            this.queryParams.orderformUserId = ''
+            this.depUserList = []
+            this.getUserList(e.id)
         },
         //重置表单
         resetQuery() {
@@ -199,15 +252,16 @@ export default {
             this.sellerId = ''
             this.handleQuery();
         },
-        initCharts(chartData, total) {
+        initCharts(myChart, nameStr, chartData, total) {
 
-            this.myChart.setOption({
+            myChart.setOption({
                 title: {
-                    text: '线索总数',
+                    text: nameStr,
                     subtext: total + '条',
-                    left: '26%',
-                    top: '40%',
+                    left: '50%',
+                    top: '33%',
                     textAlign: 'center',
+                    padding: [5, 0],
                     textStyle: {
                         color: '#888',
                         fontSize: 16,
@@ -221,16 +275,13 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c}条 ({d}%)'
+                    formatter: '{b} : {c}条 ({d}%)'
                 },
                 color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 legend: {
-                    orient: 'vertical', //布局方式，默认水平布局，另可选vertical
-                    top: '50',
-                    left: '58%',
                     itemWidth: 8,　　　　　　　//图例大小  我这里用的是圆
-                    itemGap: 16,　　　　　　　　//图例之间的间隔
-                    y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
+                    itemGap: 12,　　　　　　　　//图例之间的间隔
+                    y: 'bottom',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
                     icon: "circle",　　　　　　//图例的形状，选择类型有："circle"（圆形）、"rectangle"（长方形）、"triangle"（三角形）、"diamond"（菱形）、"emptyCircle"（空心圆）、
                     //　　　　"emptyRectangle"（空心长方形）、"emptyTriangle"（空心三角形）、"emptyDiamon"（空心菱形），还可以放自定义图片，格式为"image://path",
                     //　　　path为图片路径
@@ -250,51 +301,42 @@ export default {
                             }
                         }
                         // return " {a|" + name + "}{b||}{c|" + target + "条}"
-                        return " {a|" + name + "}{b||}{c|" + (target ? (target / total * 100).toFixed(2) : '0') + "% }{d| " + target + "条  }"
+                        return " {a|" + name + "}{b||}{c| " + target + "条  }"
                     },
                     textStyle: {
                         fontWeight: 400,
                         rich: {
                             a: {
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: '#000000d9',
                                 padding: 0,
-                                width: 60,
                                 fontWeight: 400,
                             },
                             b: {
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: '#0000000f',
-                                padding: [0, 4, 0, 4],
+                                padding: [0, 2, 0, 2],
                                 fontWeight: 400,
                             },
                             c: {
-                                fontSize: 14,
+                                fontSize: 12,
                                 color: '#00000073',
-                                padding: [0, 4, 0, 4],
-                                width: 50,
                                 fontWeight: 400,
-                            },
-                            d: {
-                                fontSize: 14,
-                                color: '#000000d9',
-                                padding: 0,
-                                fontWeight: 400,
-                            },
+                            }
                         },
                     }
                 },
                 series: [
                     {
-                        name: '线索状态统计',
+                        // name: '线索状态统计',
                         type: 'pie',
                         radius: ['45%', '65%'],
                         avoidLabelOverlap: false,
-                        center: ['27%', '50%'],
+                        center: ['50%', '45%'],
                         data: chartData,
                         label: {
                             formatter: '{b} : {c} ',
-                            show: false
+                            show: true
                         },
                         labelLine: {
                             show: true
@@ -314,6 +356,93 @@ export default {
                     }
                 ]
             });
+        },
+        initHistogram(myChart, chartData, totalNum) {
+            let option = {
+                xAxis: {
+                    data: chartData.map(i => i.name),
+                    axisLabel: {
+                        //inside: true,
+                        textStyle: {
+                            fontSize: '10'
+                        },
+                        rotate: 40
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#999'
+                        }
+                    },
+                    max: function (value) {
+                        return value.max > 10 ? (value.max + 6) : (value.max + 1);
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    formatter: function (params) {
+                        var result = ''
+                        var dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:#1890ff"></span>'
+                        params.forEach(function (item) {
+                            // console.log(item) item.marker
+                            result += dotHtml + item.name + ' : ' + item.value + '条 '
+                        })
+                        return result
+                    },
+                    backgroundColor: "rgba(255,255,255,0.8)", //设置背景图片 rgba格式
+                    color: "black",
+                    borderWidth: "1", //边框宽度设置1
+                    borderColor: "#f1f1f1", //设置边框颜色
+                    textStyle: {
+                        color: "black" //设置文字颜色
+                    },
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                series: [{
+                    data: chartData.map(i => (i.value)),
+                    type: 'bar',
+                    showBackground: true,
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 0, 1,
+                            [
+                                { offset: 0, color: '#83bff6' },
+                                { offset: 0.5, color: '#188df0' },
+                                { offset: 1, color: '#188df0' }
+                            ]
+                        )
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    { offset: 0, color: '#2378f7' },
+                                    { offset: 0.7, color: '#2378f7' },
+                                    { offset: 1, color: '#83bff6' }
+                                ]
+                            )
+                        }
+                    },
+                }]
+            };
+
+            myChart.setOption(option)
         }
     },
     beforeDestroy() { }
@@ -325,5 +454,58 @@ export default {
     width: 530px;
     margin: 0 auto;
     // border: 1px solid #eaeaea;
+}
+.sellList {
+    overflow-y: auto;
+    height: 450px;
+    margin-top: 50px;
+    padding-right: 10px;
+    span {
+        vertical-align: top;
+    }
+    li {
+        margin-bottom: 10px;
+        line-height: 16px;
+        .circle {
+            display: inline-block;
+            line-height: 20px;
+            height: 20px;
+            text-align: center;
+            width: 20px;
+            font-size: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            &.cir0 {
+                background-color: #3aa1ff;
+                color: #fff;
+            }
+            &.cir1 {
+                background-color: #36cbcb;
+                color: #fff;
+            }
+            &.cir2 {
+                background-color: #4ecb73;
+                color: #fff;
+            }
+        }
+        .name {
+            display: inline-block;
+            min-width: 80px;
+            font-weight: 500;
+            color: #000;
+            margin-right: 10px;
+        }
+
+        .per {
+            display: inline-block;
+            padding-left: 10px;
+            border-left: 1px solid #f1f1f1;
+        }
+        .num {
+            float: right;
+            font-weight: 600;
+            color: #000;
+        }
+    }
 }
 </style>
