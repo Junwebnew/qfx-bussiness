@@ -301,14 +301,14 @@ export const asyncAllRoutes = [
                 path: "setNotice",
                 hidden: false,
                 component: "seting/setNotice/index",
-                meta: { title: "消息设置", noCache: true },
+                meta: { title: "消息配置", noCache: true },
             },
             {
                 name: "setResources",
                 path: "setResources",
                 hidden: false,
                 component: "seting/setResources",
-                meta: { title: "资源设置", noCache: true },
+                meta: { title: "资源配置", noCache: true },
             },
         ]
     },

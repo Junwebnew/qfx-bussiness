@@ -66,8 +66,15 @@ export function addDateRange(params, dateRange, propName) {
         }
     }
     else {
-        delete params.startCreateTime
-        delete params.endCreateTime
+
+        if (typeof (propName) === "undefined") {
+            delete params.startCreateTime
+            delete params.endCreateTime
+        } else {
+            delete params[propName.start]
+            delete params[propName.end]
+        }
+
     }
     return params;
 }

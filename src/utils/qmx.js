@@ -5,8 +5,7 @@ import { baseImgUrl } from './baseConfig'
 
 import headerImg from '../assets/images/head.png'
 
-
-Vue.prototype.$getImg = (id, type) => {
+export const $getImg = (id, type) => {
 
     if (id && id != 'null') {
 
@@ -23,6 +22,9 @@ Vue.prototype.$getImg = (id, type) => {
 
     return ""
 }
+
+Vue.prototype.$getImg = $getImg
+
 
 Vue.prototype.$headImg = {
     img: headerImg,

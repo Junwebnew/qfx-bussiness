@@ -1,5 +1,6 @@
 import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList, qmxgetOrgAndDep } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { $getImg } from '@/utils/qmx'
 import { qmxUserList } from "@/api/system/user"
 import { assRouter } from '@/api/menu.js'
 
@@ -88,7 +89,7 @@ const user = {
 
                             commit('SET_ROLEID', res[1].roleId) //角色
 
-                            const avatar = user.avatar ? process.env.VUE_APP_BASE_API + user.avatar : require("@/assets/images/profile.jpg");
+                            const avatar = user.headImg ? $getImg(user.headImg) : require("@/assets/images/profile.jpg");
 
 
                             // commit('SET_PERMISSIONS', ["*:*:*"])

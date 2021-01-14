@@ -38,11 +38,16 @@
             <!-- //图标 -->
             <el-row :gutter="20" class="chartBox">
                 <el-col :md='12' :sm="24" :xs="24" class="l">
-                    <p class="text-center f16 mb20">线索状态统计</p>
-                    <div ref="myChart" class="myChart"></div>
+                    <p class=" f16 mb20"><i class="el-icon-info col"></i> 线索状态统计</p>
+                    <div ref="myChart1" class="myChart"></div>
                 </el-col>
                 <el-col :md='12' :sm="24" :xs="24" class='r'>
-                    <p class="text-center f16 mb20">资源类型统计</p>
+                    <p class="f16 mb20"><i class="el-icon-info col"></i> 资源类型统计</p>
+                    <div ref="myChart2" class="myChart"></div>
+                </el-col>
+                <el-col :md='24' :sm="24" :xs="24" class='r'>
+                    <p class="f16 mb20"><i class="el-icon-info col"></i> 转化率统计</p>
+                    <div ref="myChart3" class="myChart"></div>
                 </el-col>
             </el-row>
         </div>
@@ -51,7 +56,7 @@
 
 <script>
 import echarts from "echarts";
-import { clueStatistics } from "@/api/center";
+import { clueStatistics, clueResourseStatistics, clueTransStatistics } from "@/api/center";
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
 import { qmxUserList } from "@/api/system/user";
@@ -71,15 +76,34 @@ export default {
             depUserList: [],
             queryParams: {},
             pickerOptions: {
-                shortcuts: [{
-                    text: '最近一周',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', [start, end]);
+                shortcuts: [
+                    {
+                        text: '今天',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 31);
+                            picker.$emit('pick', [start, end]);
+                        }
                     }
-                }],
+                ],
                 disabledDate: time => {
                     let _now = Date.now()
                     return time.getTime() > _now
@@ -87,7 +111,7 @@ export default {
             },
             dateRange: [],
             chartData: [],
-            myChart: null,
+            myChart: {},
         }
     },
     computed: {
@@ -122,7 +146,8 @@ export default {
     mounted() {
 
         // echarts.registerTheme('walden', walden)
-        this.myChart = echarts.init(this.$refs.myChart, null, { devicePixelRatio: 2.5 });
+        this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
+        this.myChart.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
 
         this.handleQuery()
     },
@@ -136,6 +161,41 @@ export default {
             });
 
             clueStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' })).then(response => {
+
+                let chartData = response.data;
+
+
+                this.initCharts(this.myChart.a, '线索总数', chartData, this.assTotal(chartData, { 'k1': 'followStatusName', 'k2': 'totalNum' }))
+                loading.close()
+            })
+                .catch(res => {
+                    console.log(123, res)
+                    loading.close()
+                })
+
+            this.getclueResourseStatistics()
+            this.getclueTransStatistics()
+        },
+        //资源类型的统计
+        getclueResourseStatistics() {
+            clueResourseStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' })).then(response => {
+
+                let chartData = response.data;
+
+                this.initCharts(this.myChart.b, '资源总数', chartData, this.assTotal(chartData))
+
+            })
+                .catch(res => {
+                    console.log('出我', res)
+                    // loading.close()
+                })
+        },
+        //线索转化率的统计
+        getclueTransStatistics() {
+            clueTransStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' })).then(response => {
+
+                console.log('转化率', response)
+                return
 
                 this.chartData = response.data;
                 let total = 0
@@ -153,6 +213,22 @@ export default {
                 .catch(res => {
                     loading.close()
                 })
+        },
+        //统计总数
+        assTotal(arr, keyObj) {
+
+            let total = 0
+            arr.map(item => {
+                if (keyObj && keyObj.k1) {
+                    item.name = item[keyObj.k1]
+                    item.value = item[keyObj.k2]
+                }
+                item.value = Number(item.value)
+                if (item) {
+                    total += Number(item.value || 0)
+                }
+            })
+            return total
         },
         depTtreeChange(e) {
 
@@ -210,11 +286,11 @@ export default {
             this.sellerId = ''
             this.handleQuery();
         },
-        initCharts(chartData, total) {
+        initCharts(myChart, titStr, chartData, total) {
 
-            this.myChart.setOption({
+            myChart.setOption({
                 title: {
-                    text: '线索总数',
+                    text: titStr,
                     subtext: total + '条',
                     left: '27%',
                     top: '40%',

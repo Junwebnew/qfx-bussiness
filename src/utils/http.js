@@ -83,6 +83,13 @@ http.interceptors.response.use(
             Notification.error({
                 title: msg
             })
+            if (msg == '该账号已经重新登录,Token信息已失效') {
+                setTimeout(() => {
+                    Cookies.remove('TOKEN');
+                    Cookies.remove('userInfo');
+                    window.location.replace('/')
+                }, 1000)
+            }
             return Promise.reject('error')
         } else {
 

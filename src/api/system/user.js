@@ -156,3 +156,9 @@ export function qmxUserCheck(data) {
 export function qmxUpdateUserPwd(data) {
     return $axios.post('back/user/modify/password', data)
 }
+
+
+//修改当前登录用户个人信息
+export function updateLoginUserInfo(data) {
+    return $axios.post('back/user/modify/userInfo', data)
+}

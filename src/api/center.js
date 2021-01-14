@@ -115,6 +115,14 @@ export function publicPoolReceive(data) {
 export function clueStatistics(data) {
     return $axios.post('clue/clue/statistic/analysis', data)
 }
+//线索资源类型-统计分析
+export function clueResourseStatistics(data) {
+    return $axios.post('clue/clue/statistic/analysis/resource', data)
+}
+//线索转化率-统计分析
+export function clueTransStatistics(data) {
+    return $axios.post('clue/clue/statistic/analysis', data)
+}
 
 //线索转为商机
 export function clueChangToOpp(data) {

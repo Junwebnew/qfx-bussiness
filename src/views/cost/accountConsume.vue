@@ -1,8 +1,8 @@
 <template>
     <div class="app-container">
         <div class="back-fff form-box mb10" v-show="showSearch">
-            <el-row :gutter="20" class="mb20">
-                <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
+                <el-row :gutter="20" class="mb20">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="公司名称" prop="name" class="el-form-item-none" v-if="superAdmin">
                             <el-select v-model="queryParams.orgId" clearable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
@@ -12,8 +12,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="时间段" prop="time" class="el-form-item-none">
-                            <el-input v-model="queryParams.name" placeholder="请输入部门名称" maxLength='100' clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
+                            <el-cascader v-model='resourceType' :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
@@ -21,12 +21,12 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-form-item>
+                    <el-col :lg="6" :sm="12" :xs="24">
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-row>
+                    </el-col>
+                </el-row>
+            </el-form>
         </div>
         <div class="back-fff pad20">
             <el-row :gutter="10" class="mb8">
@@ -39,19 +39,19 @@
             </el-row>
 
             <el-table v-loading="loading" :data="dataList">
-                <el-table-column prop="orgName" label="公司名称"></el-table-column>
-                <el-table-column label="模块名称" prop="moduleName" width="200"></el-table-column>
-                <el-table-column label="电话号码" prop="phone" width="200"></el-table-column>
-                <el-table-column label="用户名称" prop="userId" width="200"></el-table-column>
-                <el-table-column label="抵扣次数" prop="deductionNumber" width="200"></el-table-column>
-                <el-table-column label="剩余次数" prop="createTime" width="200"></el-table-column>
-                <el-table-column label="抵扣时间" prop="createTime" width="200"></el-table-column>
+                <el-table-column label="公司名称" prop="orgName"></el-table-column>
+                <el-table-column label="月份" prop="month"></el-table-column>
+                <el-table-column label="日期" prop="day"></el-table-column>
+                <el-table-column label="资源类型" prop="moduleName"></el-table-column>
+                <el-table-column label="抵扣次数" prop="deductionNumber">
+                    <div slot-scope="scope" class="col">
+                        <b>{{scope.row.deductionNumber}}次</b>
+                    </div>
+                </el-table-column>
             </el-table>
 
-            <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>
-
     </div>
 </template>
 
@@ -78,10 +78,14 @@ export default {
             total: 0,
             //时间段
             dateRange: '',
+            seProps: { value: 'id', label: "name" },
+            //资源类型
+            resourceTypeArr: [],
+            resourceType: '',
             // 查询参数
             queryParams: {
                 pageNum: 1,
-                pageSize: 10,
+                pageSize: 20,
                 orgId: '',
             },
             pickerOptions: {
@@ -95,20 +99,32 @@ export default {
                         }
                     },
                     {
-                        text: '最近一周',
+                        text: '本周',
                         onClick(picker) {
+
                             const end = new Date();
                             const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * (start.getDay() - 1));
                             picker.$emit('pick', [start, end]);
                         }
                     },
                     {
-                        text: '最近一个月',
+                        text: '本月',
                         onClick(picker) {
                             const end = new Date();
                             const start = new Date();
-                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 31);
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * (start.getDate() - 1));
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '本年',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            let day = Math.ceil((new Date() - new Date(new Date().getFullYear().toString())) / (24 * 60 * 60 * 1000)) - 1;
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * day);
                             picker.$emit('pick', [start, end]);
                         }
                     }
@@ -127,20 +143,17 @@ export default {
     },
     created() {
 
-        let optId = this.$route.query.id
-
-        if (optId) {
-            this.queryParams.orgId = optId
-        }
-
         /** 查询所有机构列表 */
         qmxCompanyList().then(res => {
             this.deptList = res.data
 
         })
 
+        this.$store.dispatch('getCenterType', 2).then(res => {
+            this.resourceTypeArr = res
+        })
 
-        // this.getList();
+        this.getList();
 
     },
     methods: {
@@ -148,7 +161,14 @@ export default {
         getList() {
             this.loading = true;
 
-            costAccountStatit(this.queryParams).then(res => {
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+            else {
+                this.queryParams.resourceType = ''
+            }
+
+            costAccountStatit(this.addDateRange(this.queryParams, this.dateRange, { 'start': 'startDate', 'end': 'endDate' })).then(res => {
 
                 this.dataList = res.data
                 this.total = res.total
@@ -158,10 +178,12 @@ export default {
         },
         /** 搜索按钮操作 */
         handleQuery() {
-
+            this.queryParams.pageNum = 1
             this.getList();
         },
         resetQuery() {
+            this.dateRange = ''
+            this.resourceType = ''
             this.resetForm("queryForm");
             this.handleQuery();
         },
