@@ -193,11 +193,26 @@ export function bussStatistics(data) {
     return $axios.post('opportunity/statistic/analysis', data)
 }
 
+//商机资源类型-统计分析
+export function bussResourseStatistics(data) {
+    return $axios.post('opportunity/statistic/analysis/resource', data)
+}
+//商机转化率-统计分析
+export function bussTransStatistics(data) {
+    return $axios.post('clue/clue/statistic/analysis', data)
+}
+
+
 // **********************************************商机成单***************************************************
 
 //商机成单-统计分析
 export function bussFinishStatistics(data) {
     return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount', data)
+}
+
+//商机成单-资源类型统计
+export function finishResourseStatistics(data) {
+    return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount/resourceTypeCount', data)
 }
 
 

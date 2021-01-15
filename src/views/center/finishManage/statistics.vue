@@ -60,7 +60,7 @@
                     <div ref="myChart4" style="width:100%;height:500px"></div>
                 </el-col>
                 <el-col :md='6' :sm="6" :xs="24">
-                    <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+                    <!-- <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
                     <ul class="sellList">
                         <li v-for="(item,idx) in sellerSortArr" :key='idx'>
                             <span :class="'circle cir'+idx  ">{{idx+1}}</span>
@@ -68,7 +68,26 @@
                             <span class="per">{{item.percentage}} </span>
                             <span class="num">{{item.value}}条 </span>
                         </li>
-                    </ul>
+                    </ul> -->
+
+                    <p class="f16 mb20" style="margin-bottom:20px"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+
+                    <el-table :data="sellerSortArr" style="width: 100%" height='500'>
+                        <el-table-column align='center' label="序号" width='50'>
+                            <div slot-scope="scope" class="sellList">
+                                <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
+                            </div>
+                        </el-table-column>
+                        <el-table-column prop="name" label="人员">
+                        </el-table-column>
+                        <el-table-column prop="value" align='center' width='70' label="成单数">
+                        </el-table-column>
+                        <el-table-column prop="per" align='center' width='70' label="百分比">
+                            <div slot-scope="scope" class="sellList">
+                                <span class="num">{{scope.row.percentage}}</span>
+                            </div>
+                        </el-table-column>
+                    </el-table>
                 </el-col>
             </el-row>
         </div>
@@ -166,6 +185,13 @@ export default {
         this.myChartObj.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
         this.myChartObj.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
         this.myChartObj.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
+
+        window.addEventListener("resize", () => {
+            for (let key in this.myChartObj) {
+                this.myChartObj[key].resize()
+            }
+
+        });
 
         this.handleQuery()
     },
@@ -268,17 +294,18 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
-            this.sellerId = ''
+            this.orgAndDept = undefined
             this.handleQuery();
         },
-        initCharts(myChart, nameStr, chartData, total) {
+        //饼图
+        initCharts(myChart, titStr, chartData, total) {
 
             myChart.setOption({
                 title: {
-                    text: nameStr,
+                    text: titStr,
                     subtext: total + '条',
-                    left: '50%',
-                    top: '33%',
+                    left: '27%',
+                    top: '40%',
                     textAlign: 'center',
                     padding: [5, 0],
                     textStyle: {
@@ -298,9 +325,12 @@ export default {
                 },
                 color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 legend: {
+                    orient: 'vertical', //布局方式，默认水平布局，另可选vertical
+                    top: '50',
+                    left: '58%',
                     itemWidth: 8,　　　　　　　//图例大小  我这里用的是圆
-                    itemGap: 12,　　　　　　　　//图例之间的间隔
-                    y: 'bottom',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
+                    itemGap: 16,　　　　　　　　//图例之间的间隔
+                    y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
                     icon: "circle",　　　　　　//图例的形状，选择类型有："circle"（圆形）、"rectangle"（长方形）、"triangle"（三角形）、"diamond"（菱形）、"emptyCircle"（空心圆）、
                     //　　　　"emptyRectangle"（空心长方形）、"emptyTriangle"（空心三角形）、"emptyDiamon"（空心菱形），还可以放自定义图片，格式为"image://path",
                     //　　　path为图片路径
@@ -320,7 +350,7 @@ export default {
                             }
                         }
                         // return " {a|" + name + "}{b||}{c|" + target + "条}"
-                        return " {a|" + name + "}{b||}{c| " + target + "条  }"
+                        return " {a|" + name + "}{b||}{c|" + parseFloat((target / (total || 10) * 100).toFixed(2)) + "% }{d| " + target + "条  }"
                     },
                     textStyle: {
                         fontWeight: 400,
@@ -329,57 +359,70 @@ export default {
                                 fontSize: 12,
                                 color: '#000000d9',
                                 padding: 0,
+                                width: 60,
                                 fontWeight: 400,
                             },
                             b: {
                                 fontSize: 12,
                                 color: '#0000000f',
-                                padding: [0, 2, 0, 2],
+                                padding: [0, 4, 0, 4],
                                 fontWeight: 400,
                             },
                             c: {
                                 fontSize: 12,
                                 color: '#00000073',
+                                padding: [0, 4, 0, 4],
+                                width: 50,
                                 fontWeight: 400,
-                            }
+                            },
+                            d: {
+                                fontSize: 12,
+                                color: '#000000d9',
+                                padding: 0,
+                                fontWeight: 400,
+                            },
                         },
                     }
                 },
                 series: [
                     {
-                        // name: '线索状态统计',
                         type: 'pie',
                         radius: ['45%', '65%'],
                         avoidLabelOverlap: false,
-                        center: ['50%', '45%'],
+                        center: ['27%', '50%'],
                         data: chartData,
                         label: {
                             formatter: '{b} : {c} ',
-                            show: true
+                            show: false
                         },
                         labelLine: {
-                            show: true
+                            show: false
                         },
                         itemStyle: {
                             borderWidth: 2, //设置border的宽度有多大
                             borderColor: '#ffffff',
                         },
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)',
-                                borderWidth: 0
-                            }
-                        }
+                        // emphasis: {
+                        //     itemStyle: {
+                        //         shadowBlur: 0,
+                        //         shadowOffsetX: 0,
+                        //         shadowColor: 'rgba(0, 0, 0, 0.5)',
+                        //         borderWidth: 0
+                        //     }
+                        // }
                     }
                 ]
             });
+
+            myChart.resize();
         },
         initHistogram(myChart, chartData, totalNum) {
             let option = {
                 xAxis: {
                     data: chartData.map(i => i.name),
+                    axisPointer: {
+                        type: 'shadow'
+                    },
                     axisLabel: {
                         //inside: true,
                         textStyle: {
@@ -411,57 +454,44 @@ export default {
                         return value.max > 10 ? (value.max + 6) : (value.max + 1);
                     }
                 },
+                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 tooltip: {
                     trigger: 'axis',
-                    formatter: function (params) {
-                        var result = ''
-                        var dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:#1890ff"></span>'
-                        params.forEach(function (item) {
-                            // console.log(item) item.marker
-                            result += dotHtml + item.name + ' : ' + item.value + '条 '
-                        })
-                        return result
+                    axisPointer: {
+                        type: 'cross',
+                        crossStyle: {
+                            color: '#999'
+                        }
                     },
-                    backgroundColor: "rgba(255,255,255,0.8)", //设置背景图片 rgba格式
-                    color: "black",
-                    borderWidth: "1", //边框宽度设置1
-                    borderColor: "#f1f1f1", //设置边框颜色
-                    textStyle: {
-                        color: "black" //设置文字颜色
-                    },
-                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    // formatter: function (params) {
+                    //     var result = ''
+                    //     var dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:#1890ff"></span>'
+                    //     params.forEach(function (item) {
+                    //         // console.log(item) item.marker
+                    //         result += dotHtml + item.name + ' : ' + item.value + '条 '
+                    //     })
+                    //     return result
+                    // },
+                    // backgroundColor: "rgba(255,255,255,0.8)", //设置背景图片 rgba格式
+                    // color: "black",
+                    // borderWidth: "1", //边框宽度设置1
+                    // borderColor: "#f1f1f1", //设置边框颜色
+                    // textStyle: {
+                    //     color: "black" //设置文字颜色
+                    // },
+                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
                 },
                 series: [{
+                    name: '成单数',
                     data: chartData.map(i => (i.value)),
                     type: 'bar',
                     showBackground: true,
                     barMaxWidth: 30,
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 0, 1,
-                            [
-                                { offset: 0, color: '#83bff6' },
-                                { offset: 0.5, color: '#188df0' },
-                                { offset: 1, color: '#188df0' }
-                            ]
-                        )
-                    },
-                    emphasis: {
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 0, 1,
-                                [
-                                    { offset: 0, color: '#2378f7' },
-                                    { offset: 0.7, color: '#2378f7' },
-                                    { offset: 1, color: '#83bff6' }
-                                ]
-                            )
-                        }
-                    },
                 }]
             };
 
             myChart.setOption(option)
+            myChart.resize();
         }
     },
     beforeDestroy() { }
@@ -475,56 +505,45 @@ export default {
     // border: 1px solid #eaeaea;
 }
 .sellList {
-    overflow-y: auto;
-    height: 450px;
-    margin-top: 50px;
-    padding-right: 10px;
-    span {
-        vertical-align: top;
+    .circle {
+        display: inline-block;
+        line-height: 20px;
+        height: 20px;
+        text-align: center;
+        width: 20px;
+        font-size: 12px;
+        border-radius: 50%;
+        margin-right: 10px;
+        &.cir0 {
+            background-color: #3aa1ff;
+            color: #fff;
+        }
+        &.cir1 {
+            background-color: #36cbcb;
+            color: #fff;
+        }
+        &.cir2 {
+            background-color: #4ecb73;
+            color: #fff;
+        }
     }
-    li {
-        margin-bottom: 10px;
-        line-height: 16px;
-        .circle {
-            display: inline-block;
-            line-height: 20px;
-            height: 20px;
-            text-align: center;
-            width: 20px;
-            font-size: 12px;
-            border-radius: 50%;
-            margin-right: 10px;
-            &.cir0 {
-                background-color: #3aa1ff;
-                color: #fff;
-            }
-            &.cir1 {
-                background-color: #36cbcb;
-                color: #fff;
-            }
-            &.cir2 {
-                background-color: #4ecb73;
-                color: #fff;
-            }
-        }
-        .name {
-            display: inline-block;
-            min-width: 80px;
-            font-weight: 500;
-            color: #000;
-            margin-right: 10px;
-        }
+    .name {
+        display: inline-block;
+        min-width: 80px;
+        font-weight: 500;
+        color: #000;
+        margin-right: 10px;
+    }
 
-        .per {
-            display: inline-block;
-            padding-left: 10px;
-            border-left: 1px solid #f1f1f1;
-        }
-        .num {
-            float: right;
-            font-weight: 600;
-            color: #000;
-        }
+    .per {
+        display: inline-block;
+        padding-left: 10px;
+        border-left: 1px solid #f1f1f1;
+    }
+    .num {
+        float: right;
+        font-weight: 600;
+        color: #000;
     }
 }
 </style>
