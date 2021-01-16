@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { resourceBuyList } from "@/api/resources";
+import { resourceBuyList ,receiveResource} from "@/api/resources";
 export default {
     name: "recentApply",
     data() {
