@@ -1,66 +1,76 @@
 <template>
     <div class="app-container" id='box'>
-        <div class="full-height back-fff pad20">
+        <div class="full-height">
             <!-- 搜索框 -->
-            <el-row :gutter="20" class="mb20">
-                <el-form ref="form" :model="{}" label-width="90px">
-                    <el-row :gutter="10">
-                        <!--部门数据-->
-                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
-                            <el-form-item label="部门名称：">
-                                <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
-                            </el-form-item>
-                        </el-col>
+            <div class="back-fff pad20-20-10 mb10">
+                <el-row :gutter="10">
+                    <el-form ref="form" :model="{}" label-width="90px">
+                        <el-row :gutter="10">
+                            <!--部门数据-->
+                            <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
+                                <el-form-item label="部门名称：">
+                                    <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
+                                </el-form-item>
+                            </el-col>
 
-                        <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
-                            <el-form-item label="商务名称：">
-                                <el-select v-model="queryParams.orderformUserId" style="width:100%" clearable filterable size='small'>
-                                    <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                        <!-- <el-col :lg='8' :md='12' :sm="24" :xs="24">
+                            <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
+                                <el-form-item label="商务名称：">
+                                    <el-select v-model="queryParams.orderformUserId" style="width:100%" clearable filterable size='small'>
+                                        <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
+                                        </el-option>
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <!-- <el-col :lg='8' :md='12' :sm="24" :xs="24">
                             <el-form-item label="价格区间：">
                                 <priceRange />
                             </el-form-item>
                         </el-col> -->
-                        <el-col :lg='6' :md='10' :sm="24" :xs="24">
-                            <el-form-item label="时间筛选：">
-                                <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-                            </el-form-item>
-                        </el-col>
-                        <el-col :lg='6' :md='10' :sm="10" :xs="24">
-                            <el-form-item label="">
-                                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                </el-form>
-            </el-row>
+                            <el-col :lg='6' :md='10' :sm="24" :xs="24">
+                                <el-form-item label="时间筛选：">
+                                    <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :lg='6' :md='10' :sm="10" :xs="24">
+                                <el-form-item label="">
+                                    <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                                    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-row>
+            </div>
             <!-- //图标 -->
-            <el-row :gutter="20" class="chartBox">
-                <el-col :md='12' :sm="24" :xs="24" class="mb20">
-                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
-                    <div ref="myChart1" class="myChart"></div>
-                </el-col>
-                <el-col :md='12' :sm="24" :xs="24" class="mb20">
-                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
-                    <div ref="myChart2" class="myChart"></div>
+
+            <el-row :gutter="10" class="chartBox">
+                <el-col :md='12' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
+                        <div ref="myChart1" class="myChart"></div>
+                    </div>
                 </el-col>
                 <el-col :md='12' :sm="24" :xs="24">
-                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
-                    <div ref="myChart3" class="myChart"></div>
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
+                        <div ref="myChart2" class="myChart"></div>
+                    </div>
+                </el-col>
+                <el-col :md='24' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
+                        <div ref="myChart3" class="myChart"></div>
+                    </div>
                 </el-col>
             </el-row>
-            <el-row :gutter="20" class="chartBox" v-if="whetherAdmin">
-                <el-col :md='18' :sm="18" :xs="24">
-                    <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
-                    <div ref="myChart4" style="width:100%;height:500px"></div>
-                </el-col>
-                <el-col :md='6' :sm="6" :xs="24">
-                    <!-- <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+            <div class="back-fff pad20">
+                <el-row :gutter="10" class="chartBox" v-if="whetherAdmin">
+                    <el-col :md='18' :sm="18" :xs="24">
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
+                        <div ref="myChart4" style="width:100%;height:500px"></div>
+                    </el-col>
+                    <el-col :md='6' :sm="6" :xs="24">
+                        <!-- <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
                     <ul class="sellList">
                         <li v-for="(item,idx) in sellerSortArr" :key='idx'>
                             <span :class="'circle cir'+idx  ">{{idx+1}}</span>
@@ -70,26 +80,27 @@
                         </li>
                     </ul> -->
 
-                    <p class="f16 mb20" style="margin-bottom:20px"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+                        <p class="f16 mb20" style="margin-bottom:20px"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
 
-                    <el-table :data="sellerSortArr" style="width: 100%" height='500'>
-                        <el-table-column align='center' label="序号" width='50'>
-                            <div slot-scope="scope" class="sellList">
-                                <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
-                            </div>
-                        </el-table-column>
-                        <el-table-column prop="name" label="人员">
-                        </el-table-column>
-                        <el-table-column prop="value" align='center' width='70' label="成单数">
-                        </el-table-column>
-                        <el-table-column prop="per" align='center' width='70' label="百分比">
-                            <div slot-scope="scope" class="sellList">
-                                <span class="num">{{scope.row.percentage}}</span>
-                            </div>
-                        </el-table-column>
-                    </el-table>
-                </el-col>
-            </el-row>
+                        <el-table :data="sellerSortArr" style="width: 100%" height='500'>
+                            <el-table-column align='center' label="序号" width='50'>
+                                <div slot-scope="scope" class="sellList">
+                                    <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
+                                </div>
+                            </el-table-column>
+                            <el-table-column prop="name" label="人员">
+                            </el-table-column>
+                            <el-table-column prop="value" align='center' width='70' label="成单数">
+                            </el-table-column>
+                            <el-table-column prop="per" align='center' width='70' label="百分比">
+                                <div slot-scope="scope" class="sellList">
+                                    <span class="num">{{scope.row.percentage}}</span>
+                                </div>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                </el-row>
+            </div>
         </div>
     </div>
 </template>
@@ -181,10 +192,13 @@ export default {
     },
     mounted() {
 
+
+
+
         this.myChartObj.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.myChartObj.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
         this.myChartObj.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
-        this.myChartObj.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
+
 
         window.addEventListener("resize", () => {
             for (let key in this.myChartObj) {
@@ -214,6 +228,9 @@ export default {
 
                 //人员的统计,增加总数，增加百分比
                 if (this.whetherAdmin) {
+
+                    this.myChartObj.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
+
                     let sellerNum = this.sellerNum = this.assTotal(dataObj.businessPeopleCountList)
 
                     this.sellerSortArr = dataObj.businessPeopleCountList.map(i => {
@@ -295,6 +312,7 @@ export default {
         resetQuery() {
             this.dateRange = []
             this.orgAndDept = undefined
+            this.queryParams.counselorId = ''
             this.handleQuery();
         },
         //饼图

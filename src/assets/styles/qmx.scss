@@ -138,8 +138,11 @@ th > .cell {
 .pad20 {
   padding: 20px;
 }
+.pad20-20-10 {
+  padding: 20px 20px 10px;
+}
 .pad10 {
-  padding: 20px;
+  padding: 10px;
 }
 .pad10-20 {
   padding: 10px 20px;
@@ -400,6 +403,7 @@ ul::-webkit-scrollbar-thumb {
     overflow: hidden;
     line-height: 2;
     color: #515a6e;
+    margin-bottom: 10px;
     .imgBox {
       width: 180px;
       height: 160px;
@@ -473,6 +477,9 @@ ul::-webkit-scrollbar-thumb {
 .el-table th.is-leaf,
 .el-table td {
   border-color: #f0f0f0;
+}
+.el-form-item-none-0 {
+  margin-bottom: 0px;
 }
 .el-form-item-none {
   margin-bottom: 16px;

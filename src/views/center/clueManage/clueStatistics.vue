@@ -2,18 +2,16 @@
     <div class="app-container" id='box'>
         <div class="full-height">
             <!-- 搜索框 -->
-            <div class="back-fff pad20 mb10">
+            <div class="back-fff pad20-20-10 mb10">
                 <el-row :gutter="10">
 
-                    <el-form ref="form" :model="{}" label-width="90px">
+                    <el-form ref="queryForm" :model="queryParams" label-width="90px">
                         <el-row :gutter="10">
-
                             <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                                 <el-form-item label="部门名称：">
                                     <treeselect v-model="orgAndDept" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
                                 </el-form-item>
                             </el-col>
-
                             <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                                 <el-form-item label="商务名称：">
                                     <el-select v-model="queryParams.counselorId" clearable filterable size='small' style="width:100%">
@@ -85,9 +83,7 @@
                                 </div>
                             </el-table-column>
                         </el-table>
-
                     </el-col>
-
                 </el-row>
             </div>
         </div>
@@ -114,7 +110,9 @@ export default {
             orgAndDept: undefined,
             //用户列表
             depUserList: [],
-            queryParams: {},
+            queryParams: {
+                counselorId: undefined
+            },
             pickerOptions: {
                 shortcuts: [
                     {
@@ -331,6 +329,8 @@ export default {
         resetQuery() {
             this.dateRange = []
             this.orgAndDept = undefined
+
+            this.queryParams.counselorId = ''
             this.handleQuery();
         },
         //饼图

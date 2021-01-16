@@ -57,7 +57,7 @@
                     </el-col>
                     <el-col :span='24'>
                         <el-form-item label="最大人员数量" prop="num">
-                            <el-input-number v-model="form.num" :min="1" :max="100000" label="数量"></el-input-number>
+                            <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量"></el-input-number>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { qmxCompanyList } from "@/api/system/dept";
+import { qmxCompanyList, qmxUpdateDept } from "@/api/system/dept";
 import { deepClone } from '@/utils/index'
 
 import { mapGetters } from 'vuex'
@@ -99,7 +99,7 @@ export default {
             open: false,
             form: {
                 name: "",
-                num: 1,
+                subAccountNumber: 1,
             }
         };
     },
@@ -147,11 +147,16 @@ export default {
         //人员数量限制
         handleLimit(row) {
             this.open = true
-            this.form.id = row.id
-            this.form.name = row.name
+            this.form = row
         },
         //提交
         submitFileForm() {
+
+            qmxUpdateDept(this.form).then(response => {
+                this.msgSuccess("修改成功");
+                this.open = false;
+                this.getList();
+            });
             this.open = false
         },
         //前端进行名称搜索

@@ -2,8 +2,8 @@
     <div class="app-container" id='box'>
         <div class="full-height">
             <!-- 搜索框 -->
-            <div class="back-fff pad20 mb10">
-                <el-row :gutter="10" class="mb20">
+            <div class="back-fff pad20-20-10 mb10">
+                <el-row :gutter="10">
                     <el-form ref="form" :model="{}" label-width="90px">
                         <el-row :gutter="10">
 
@@ -50,18 +50,55 @@
                         <div ref="myChart2" class="myChart"></div>
                     </div>
                 </el-col>
+                <el-col :md='24' :sm="24" :xs="24" class='r'>
+                    <div class="back-fff pad20 mb10">
+                        <p class="f16 mb20"><i class="el-icon-info col"></i> 业务类型统计</p>
+                        <div ref="myChart3" class="myChart"></div>
+                    </div>
+                </el-col>
             </el-row>
             <!-- 柱状图 -->
             <div class="back-fff pad20 mb10">
                 <el-row :gutter="10" class="chartBox">
                     <el-col :md='16' :sm="24" :xs="24">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 转化率统计</p>
-                        <div ref="myChart3" style="width:100%;height:500px"></div>
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源转化率统计</p>
+                        <div ref="myChart4" style="width:100%;height:500px"></div>
                     </el-col>
                     <el-col :md='8' :sm="24" :xs="24">
-                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 转化率排名</p>
+                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 资源转化率排名</p>
 
                         <el-table :data="transSortArr" style="width: 100%">
+                            <el-table-column align='center' label="序号" width='50'>
+                                <div slot-scope="scope" class="sellList">
+                                    <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
+                                </div>
+                            </el-table-column>
+                            <el-table-column prop="name" label="类型">
+                            </el-table-column>
+                            <el-table-column prop="bussNum" align='center' width='70' label="商机数">
+                            </el-table-column>
+                            <el-table-column prop="finishNum" align='center' width='70' label="成单数">
+                            </el-table-column>
+                            <el-table-column prop="per" align='center' width='70' label="转化率">
+                                <div slot-scope="scope" class="sellList">
+                                    <span class="num">{{scope.row.per}}%</span>
+                                </div>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                </el-row>
+            </div>
+            <!-- 柱状图 -->
+            <div class="back-fff pad20">
+                <el-row :gutter="10" class="chartBox">
+                    <el-col :md='16' :sm="24" :xs="24">
+                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务转化率统计</p>
+                        <div ref="myChart5" style="width:100%;height:500px"></div>
+                    </el-col>
+                    <el-col :md='8' :sm="24" :xs="24">
+                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 业务转化率排名</p>
+
+                        <el-table :data="oppsTransSortArr" style="width: 100%">
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
                                     <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
@@ -88,7 +125,7 @@
 
 <script>
 import echarts from "echarts";
-import { bussStatistics, bussResourseStatistics, finishResourseStatistics } from "@/api/center";
+import { bussStatistics, bussResourseStatistics, finishResourseStatistics, bussOppsStatistics, finishOppsStatistics } from "@/api/center";
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
 import { qmxUserList } from "@/api/system/user";
@@ -145,7 +182,10 @@ export default {
             dateRange: [],
             chartData: [],
             myChart: {},
-            transSortArr: []
+            //资源类型转化率
+            transSortArr: [],
+            //业务类型转化率
+            oppsTransSortArr: []
         }
     },
     computed: {
@@ -183,6 +223,8 @@ export default {
         this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.myChart.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
         this.myChart.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
+        this.myChart.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
+        this.myChart.e = echarts.init(this.$refs.myChart5, null, { devicePixelRatio: 2.5 });
 
         this.handleQuery()
     },
@@ -208,26 +250,48 @@ export default {
                     loading.close()
                 })
 
+
+            this.getBussOppsStatistics()
+
             this.getbussResourseStatistics()
+
+        },
+        //业务类型的统计
+        getBussOppsStatistics() {
+
+            let requre = this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' });
+
+            Promise.all([
+                bussOppsStatistics(requre),
+                finishOppsStatistics(this.assFinishQuery(requre)),
+            ]).then(response => {
+
+
+
+                console.log(123, response)
+                // let chartData = response.data;
+                // this.initCharts(this.myChart.c, '业务总数', chartData, this.assTotal(chartData))
+
+                this.initCharts(this.myChart.c, '业务总数', response[0].data, this.assTotal(response[0].data))
+
+                this.oppsTransSortArr = this.asstransSortArr(response[0].data, response[1].data.businessTypeCountList)
+
+                this.initHistogram(this.myChart.e, this.oppsTransSortArr)
+
+            })
+                .catch(res => {
+                    console.log(222, res)
+                })
+
         },
         //资源类型的统计
         getbussResourseStatistics() {
 
-            let requre = this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' }),
-                finishObj = deepClone(requre);
-
-            finishObj.orderformUserId = finishObj.orderformUserId
-            finishObj.orderformTimeStart = finishObj.startFollowTime
-            finishObj.orderformTimeEnd = finishObj.endFollowTime
-
-            if (finishObj.deptId) {
-                finishObj.deptIdList = [finishObj.deptId]
-            }
-
+            let requre = this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' });
 
             Promise.all([
                 bussResourseStatistics(requre),
-                finishResourseStatistics(finishObj),
+                finishResourseStatistics(this.assFinishQuery(requre))
             ]).then(response => {
 
 
@@ -235,7 +299,7 @@ export default {
 
                 this.transSortArr = this.asstransSortArr(response[0].data, response[1].data.reourceTypeCountList)
 
-                this.initHistogram(this.myChart.c, this.transSortArr)
+                this.initHistogram(this.myChart.d, this.transSortArr)
             })
                 .catch(res => {
                     console.log('出我', res)
@@ -275,9 +339,24 @@ export default {
             })
             return total
         },
+        //重新组装参数，已成单商机使用
+        assFinishQuery(obj) {
+            var finishObj = deepClone(obj);
+
+            finishObj.orderformUserId = finishObj.orderformUserId
+            finishObj.orderformTimeStart = finishObj.startFollowTime
+            finishObj.orderformTimeEnd = finishObj.endFollowTime
+
+            if (finishObj.deptId) {
+                finishObj.deptIdList = [finishObj.deptId]
+            }
+
+            return finishObj
+        },
         depTtreeChange(e) {
 
-            this.queryParams.counselorId = ''
+
+
             this.depUserList = []
 
             if (e.level <= 2) {
@@ -328,6 +407,7 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
+            this.queryParams.counselorId = ''
             this.orgAndDept = undefined
             this.handleQuery();
         },

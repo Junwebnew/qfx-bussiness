@@ -37,20 +37,20 @@ export default {
             default: 2
         },
 
-        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:商标驳回*/
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:商标驳回,7:企业白名单*/
         resourcesModule: {
             type: String | Number
         },
     },
     computed: {
         urlTypeStr() {
-            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject']
+            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList/']
 
             return arr[this.resourcesModule - 1]
         },
         resourcesModuleType() {
 
-            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170']
+            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170', '1344241701484670977']
             return arr[this.resourcesModule - 1]
         }
     },

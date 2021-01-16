@@ -19,7 +19,7 @@
                         <el-input v-model="form.remark" type='textarea' placeholder="..." maxLength='250' style="width:100%" clearable size="small" />
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" size="mini" @click="rechargeAcc">充值</el-button>
+                        <el-button type="primary" size="mini" v-hasPermi="['recharge']" @click="rechargeAcc">充值</el-button>
                     </el-form-item>
                 </el-form>
             </div>

@@ -197,6 +197,12 @@ export function bussStatistics(data) {
 export function bussResourseStatistics(data) {
     return $axios.post('opportunity/statistic/analysis/resource', data)
 }
+
+//商机业务类型-统计分析
+export function bussOppsStatistics(data) {
+    return $axios.post('opportunity/statistic/analysis/businesstype', data)
+}
+
 //商机转化率-统计分析
 export function bussTransStatistics(data) {
     return $axios.post('clue/clue/statistic/analysis', data)
@@ -215,6 +221,10 @@ export function finishResourseStatistics(data) {
     return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount/resourceTypeCount', data)
 }
 
+//商机业务类型-统计分析
+export function finishOppsStatistics(data) {
+    return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount/businessTypeCount', data)
+}
 
 //商机成单分页查询
 export function bussFinishList(data) {

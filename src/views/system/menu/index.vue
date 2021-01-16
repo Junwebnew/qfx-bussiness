@@ -16,15 +16,15 @@
                         </el-form-item>
                     </el-col>
                 </el-row> -->
-            <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch">
+            <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" @submit.native.prevent>
                 <el-form-item label="菜单名称" prop="name" class="el-form-item-none">
                     <el-input v-model="queryParams.name" placeholder="请输入菜单名称" clearable size="small" @keyup.enter.native="handleQuery" />
                 </el-form-item>
-                <el-form-item label="状态" prop="status">
+                <!-- <el-form-item label="状态" prop="status">
                     <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
                         <el-option v-for="dict in statusOptions" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
                     </el-select>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item>
                     <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                     <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -280,7 +280,7 @@ export default {
                 name: undefined,
                 visible: undefined,
                 pageNum: 1,
-                pageSize: 100
+                pageSize: 1000
             },
             //表单展开/收起
             tableExpand: false,

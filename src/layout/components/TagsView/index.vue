@@ -147,6 +147,7 @@ export default {
                     this.toLastView(visitedViews, view)
                 }
             })
+            return
             Global.$emit("removeCache", "closeSelectedTag", view);
         },
         closeOthersTags() {
