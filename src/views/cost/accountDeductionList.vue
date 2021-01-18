@@ -1,17 +1,50 @@
 <template>
     <div class="app-container">
-        <div class="back-fff form-box mb10" v-show="showSearch && superAdmin">
-            <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" @submit.native.prevent>
+        <div class="back-fff pad20-20-0 mb10" v-show="showSearch && superAdmin">
+            <!-- <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" @submit.native.prevent>
                 <el-form-item label="公司名称" prop="name">
                     <el-select v-model="queryParams.orgId" clearable placeholder="请选择" @keyup.enter.native="handleQuery">
                         <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
+                
+                <el-col :lg="6" :sm="12" :xs="24">
+                    <el-form-item label="抵扣时间" prop="time" >
+                        <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                    </el-form-item>
+                </el-col>
                 <el-form-item>
                     <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                     <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                 </el-form-item>
+            </el-form> -->
+
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
+                <el-row :gutter="20" class="mb20">
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="公司名称" prop="name" v-if="superAdmin">
+                            <el-select v-model="queryParams.orgId" size="small" clearable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
+                                <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="资源类型" prop="resourceType">
+                            <el-cascader v-model='resourceType' :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' clearable></el-cascader>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="抵扣时间" prop="time">
+                            <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                    </el-col>
+                </el-row>
             </el-form>
         </div>
         <div class="back-fff pad20">
@@ -62,13 +95,65 @@ export default {
             deptList: [],
             //总数
             total: 0,
+            //时间段
+            dateRange: '',
+            seProps: { value: 'id', label: "name" },
+            //资源类型
+            resourceTypeArr: [],
+            resourceType: '',
             // 查询参数
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
                 orgId: '',
             },
-        };
+            pickerOptions: {
+                shortcuts: [
+                    {
+                        text: '今天',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '本周',
+                        onClick(picker) {
+
+                            const end = new Date();
+                            const start = new Date();
+
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * (start.getDay() - 1));
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '本月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * (start.getDate() - 1));
+                            picker.$emit('pick', [start, end]);
+                        }
+                    },
+                    {
+                        text: '本年',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            let day = Math.ceil((new Date() - new Date(new Date().getFullYear().toString())) / (24 * 60 * 60 * 1000)) - 1;
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * day);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }
+                ],
+                disabledDate: time => {
+                    let _now = Date.now()
+                    return time.getTime() > _now
+                }
+            }
+        }
     },
     computed: {
         ...mapGetters([
@@ -89,6 +174,9 @@ export default {
 
         })
 
+        this.$store.dispatch('getCenterType', 2).then(res => {
+            this.resourceTypeArr = res
+        })
 
         this.getList();
 
@@ -98,7 +186,14 @@ export default {
         getList() {
             this.loading = true;
 
-            costAccountList(this.queryParams).then(res => {
+            if (this.resourceType && this.resourceType.length) {
+                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            }
+            else {
+                this.queryParams.resourceType = ''
+            }
+
+            costAccountList(this.addDateRange(this.queryParams, this.dateRange, { 'start': 'startDate', 'end': 'endDate' })).then(res => {
 
                 this.dataList = res.data
                 this.total = res.total
@@ -112,6 +207,8 @@ export default {
             this.getList();
         },
         resetQuery() {
+            this.dateRange = []
+            this.resourceType = ''
             this.resetForm("queryForm");
             this.handleQuery();
         },

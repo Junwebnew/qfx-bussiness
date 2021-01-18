@@ -11,3 +11,8 @@ import $axios from '@/utils/http'
 export function outOfStockSet(data) {
     return $axios.post('clueopp/businessClueoppOutOfStock/saveorupdate', data)
 }
+
+//公告数据清洗
+export function clearNoticeData(num) {
+    return $axios.get('api-qfxpdc/resourceManagement/cleaningPreliminaryNotice?noticeNum=' + num)
+}

@@ -11,7 +11,9 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="求购类别" prop="intclass" class="el-form-item-none">
-                            <el-input v-model="queryParams.intclass" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                            <el-select v-model="queryParams.intclassmu" clearable multiple size="small" style="width: 100%">
+                                <el-option v-for="dict in intclassArr" :key="dict.value" :label="dict.name" :value="dict.value" />
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span='12' align='right'>
@@ -80,7 +82,7 @@
 </template>
 
 <script>
-import { resourceBuyList ,receiveResource} from "@/api/resources";
+import { resourceBuyList, receiveResource } from "@/api/resources";
 export default {
     name: "recentApply",
     data() {
@@ -113,11 +115,23 @@ export default {
             detailMsg: {}
         }
     },
+    computed: {
+        intclassArr() {
+            let arr = [], idx = 1;
+            while (idx <= 45) {
+                arr.push({
+                    name: idx + '类',
+                    value: idx
+                })
+                idx++
+            }
+            return arr
+        }
+    },
     created() {
 
     },
     mounted() {
-
         this.getList()
     },
     methods: {
@@ -125,6 +139,11 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
+
+            if (this.queryParams.intclassmu && this.queryParams.intclassmu.length) {
+                this.queryParams.intclass = this.queryParams.intclassmu.join(',')
+            }
+
             resourceBuyList(this.queryParams).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
@@ -138,6 +157,7 @@ export default {
         },
         //重置表单
         resetQuery() {
+            this.queryParams.intclass = ''
             this.dateRange = []
             this.resetForm("queryForm");
             this.handleQuery();
@@ -147,7 +167,41 @@ export default {
             this.detailMsg = obj
         },
         //领取
-        receiveInfo(obj) {
+        receiveInfo(row) {
+
+            let that = this
+            this.$confirm('确定是否领取此资源?', "警告", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(() => {
+
+                that.loading = true
+
+                let obj = {
+                    businessBelong: 1,
+                    phoneId: '999', //无电话ID，不为空就行
+                    phoneNumber: '999', //无电话，不为空就行
+                    resourceId: row.id,
+                    resourcesModule: '1344241701547585538',
+                    type: 2
+                }
+                receiveResource('resource/buy/resourceBuy', obj)
+                    .then(res => {
+
+                        this.msgSuccess('领取成功')
+
+                        that.loading = false
+
+                        this.getList()
+                    })
+                    .catch(res => {
+                        that.loading = false
+                    })
+
+            }).catch(error => {
+                console.log('4534', error)
+            })
 
         }
     },
@@ -177,10 +231,10 @@ export default {
     }
 }
 .flag {
-    padding: 1px;
+    padding: 1px 2px;
     background-color: #ff0000;
     color: #fff;
     font-size: 12px;
-    border-radius: 4px;
+    border-radius: 2px;
 }
 </style>

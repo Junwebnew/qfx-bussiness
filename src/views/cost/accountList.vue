@@ -29,7 +29,12 @@
                         <el-tag v-else type="danger" size='mini'>取消</el-tag>
                     </div>
                 </el-table-column>
-                <el-table-column label="剩余次数" prop="accountNum" width="200">
+                <el-table-column prop="subAccountNumber" label="人员限制" width="120">
+                    <div slot-scope="scope">
+                        <span>{{scope.row.subAccountNumber || '--'}}人</span>
+                    </div>
+                </el-table-column>
+                <el-table-column label="剩余次数" prop="accountNum" width="120">
                     <div slot-scope="scope">
                         <span>{{scope.row.accountNum || '--'}}次</span>
                     </div>
@@ -37,7 +42,7 @@
                 <el-table-column label="最近充值时间" prop="rechargeTime" width="200"></el-table-column>
                 <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='220px' fixed="right">
                     <template slot-scope="scope">
-                        <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">账号充值</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
                         <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
                     </template>
@@ -48,7 +53,7 @@
 
         </div>
         <el-dialog title="机构人员数量限制" :visible.sync="open" width="500px">
-            <el-form ref="form" :model="form" label-width="100px">
+            <el-form ref="form" :model="form" label-width="110px" :rules='rules'>
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="customerName">
@@ -56,7 +61,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span='24'>
-                        <el-form-item label="最大人员数量" prop="num">
+                        <el-form-item label="最大人员数量" prop="subAccountNumber">
                             <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量"></el-input-number>
                         </el-form-item>
                     </el-col>
@@ -100,7 +105,12 @@ export default {
             form: {
                 name: "",
                 subAccountNumber: 1,
-            }
+            },
+            rules: {
+                subAccountNumber: [
+                    { required: true, trigger: "blur", message: "数量不能为空" }
+                ]
+            },
         };
     },
     computed: {
@@ -152,12 +162,17 @@ export default {
         //提交
         submitFileForm() {
 
-            qmxUpdateDept(this.form).then(response => {
-                this.msgSuccess("修改成功");
-                this.open = false;
-                this.getList();
-            });
-            this.open = false
+            let that = this
+
+            this.$refs.form.validate(valid => {
+                if (valid) {
+                    qmxUpdateDept(this.form).then(response => {
+                        that.msgSuccess("修改成功");
+                        that.open = false;
+                        that.getList();
+                    })
+                }
+            })
         },
         //前端进行名称搜索
         depArrfilter(arr, name) {
@@ -177,9 +192,13 @@ export default {
             })
 
         },
+        //去充值
+        costRecharge(row) {
+            this.$router.push('/cost/accountRecharge?id=' + row.id)
+        },
         /** 修改按钮操作 */
         costDetail(row) {
-            this.$router.push('/cost/accountRecharge?id=' + row.id)
+            this.$router.push('/cost/accountRechargeList?id=' + row.id)
         }
     }
 };

@@ -1,5 +1,11 @@
 import $axios from '@/utils/http'
 
+//统计总线索|总商机|总成单数量
+
+export function getDataStatic(data) {
+    return $axios.post('opporderform/opportunityOrderForm/backend/orgResourceCount', data)
+}
+
 //获取线索状态列表 （1：线索 2：商机）
 
 export function getClueStatusList(data) {
@@ -224,6 +230,11 @@ export function finishResourseStatistics(data) {
 //商机业务类型-统计分析
 export function finishOppsStatistics(data) {
     return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount/businessTypeCount', data)
+}
+
+//业务类型-成单金额比例统计
+export function finishOppsStatisticsMoney(data) {
+    return $axios.post('opporderform/opportunityOrderForm/backend/orderFormCount/businessTypeMoneyCount', data)
 }
 
 //商机成单分页查询

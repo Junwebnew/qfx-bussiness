@@ -1,23 +1,23 @@
 <template>
     <div class="app-container">
-        <div class="back-fff form-box mb10" v-show="showSearch">
+        <div class="back-fff pad20-20-0 mb10" v-show="showSearch">
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
                 <el-row :gutter="20" class="mb20">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="公司名称" prop="name" class="el-form-item-none" v-if="superAdmin">
-                            <el-select v-model="queryParams.orgId" clearable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
+                        <el-form-item label="公司名称" prop="name" v-if="superAdmin">
+                            <el-select v-model="queryParams.orgId" clearable placeholder="请选择" @keyup.enter.native="handleQuery" size="small" style="width:100%">
                                 <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="资源类型" prop="resourceType" class="el-form-item-none">
+                        <el-form-item label="资源类型" prop="resourceType">
                             <el-cascader v-model='resourceType' :props="seProps" :options="resourceTypeArr" style="width:100%;" :size='"small"' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="时间段" prop="time" class="el-form-item-none">
+                        <el-form-item label="抵扣时间" prop="time">
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>

@@ -21,7 +21,7 @@
                                 </el-form-item>
                             </el-col>
                             <el-col :lg='6' :md='10' :sm="24" :xs="24">
-                                <el-form-item label="时间筛选：">
+                                <el-form-item label="领取时间：">
                                     <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                                 </el-form-item>
                             </el-col>
@@ -40,32 +40,32 @@
             <el-row :gutter="10" class="chartBox mb10 ">
                 <el-col :md='12' :sm="24" :xs="24" class="l">
                     <div class="back-fff pad20">
-                        <p class=" f16 mb20"><i class="el-icon-info col"></i> 线索状态统计</p>
+                        <p class=" f16 mb20 part-tit"> 线索状态统计</p>
                         <div ref="myChart1" class="myChart"></div>
                     </div>
                 </el-col>
                 <el-col :md='12' :sm="24" :xs="24" class='r'>
                     <div class="back-fff pad20">
-                        <p class="f16 mb20"><i class="el-icon-info col"></i> 资源类型统计</p>
+                        <p class="f16 mb20 part-tit"> 资源类型统计</p>
                         <div ref="myChart2" class="myChart"></div>
                     </div>
                 </el-col>
             </el-row>
             <!-- 柱状图 -->
-            <div class="back-fff pad20">
-                <el-row :gutter="10" class="chartBox">
 
-                    <el-col :md='16' :sm="24" :xs="24">
+            <el-row :gutter="10" class="chartBox">
 
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 转化率统计</p>
+                <el-col :md='16' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20 part-tit"> 转化率统计</p>
                         <div ref="myChart3" style="width:100%;height:500px"></div>
+                    </div>
 
-                    </el-col>
-                    <el-col :md='8' :sm="24" :xs="24">
-
-                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 转化率排名</p>
-
-                        <el-table :data="transSortArr" style="width: 100%">
+                </el-col>
+                <el-col :md='8' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class="f16 mb20 part-tit"> 转化率排名</p>
+                        <el-table :data="transSortArr" style="width: 100%" height='500px'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
                                     <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
@@ -83,10 +83,11 @@
                                 </div>
                             </el-table-column>
                         </el-table>
-                    </el-col>
-                </el-row>
-            </div>
+                    </div>
+                </el-col>
+            </el-row>
         </div>
+    </div>
     </div>
 </template>
 

@@ -7,7 +7,7 @@
                     <!-- <h2>配置天数</h2> -->
                     <div class="form">
 
-                        <el-form ref="form" label-width="80px">
+                        <el-form ref="form" :label-position="'top'" label-width="130px">
                             <el-form-item label="开启通知">
                                 <el-switch v-model="form.value" active-color="#13ce66">
                                 </el-switch>
@@ -22,7 +22,7 @@
                             </el-form-item>
                         </el-form>
                     </div>
-                    <div class="text-right">
+                    <div class="text-left">
                         <el-button type="primary" size="mini" @click="submit">更新</el-button>
                     </div>
                 </div>
@@ -108,9 +108,7 @@ h1 {
     border-left: 1px solid #f0f0f0;
 }
 .box {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
+    width: 400px;
     h2 {
         margin: 0 0 12px;
         color: rgba(0, 0, 0, 0.85);

@@ -25,6 +25,12 @@
                                     {{json.companyAddress || '--'}}
                                 </div>
                             </el-col>
+                            <el-col :lg="24" :sm="24" :xs="24">
+                                <span class="custom-label">社会信用代码或身份证号：</span>
+                                <div class="custom-r">
+                                    {{json.creditCode || '--'}}
+                                </div>
+                            </el-col>
                         </el-row>
                     </div>
                     <div class="mt10 back-fff pad20 custom-box">

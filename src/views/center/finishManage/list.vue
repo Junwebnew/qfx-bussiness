@@ -33,7 +33,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
-                        <el-form-item label="创建时间" prop="time" class="el-form-item-none">
+                        <el-form-item label="成单时间" prop="time" class="el-form-item-none">
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
@@ -71,7 +71,7 @@
                 <el-table-column label="业务类型" prop="vocName"></el-table-column>
                 <el-table-column label="所属商务" prop="orderformUserName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="所属部门" prop="deptId" show-overflow-tooltip></el-table-column>
-                <el-table-column label="成单价格" width="120" prop="orderformPrice" show-overflow-tooltip>
+                <el-table-column label="成单金额" width="120" prop="orderformPrice" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
                             <span>￥{{scope.row.orderformPrice}}</span>

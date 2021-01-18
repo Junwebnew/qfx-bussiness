@@ -4,13 +4,13 @@
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
                 <el-row :gutter="20" class="mb20-20-0">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="电话号码" prop="name" class="el-form-item-none" v-if="superAdmin">
+                        <el-form-item label="电话号码" prop="phone" class="el-form-item-none" v-if="superAdmin">
                             <el-input v-model="queryParams.phone" placeholder="请输入电话号码" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="公司名称" prop="name" class="el-form-item-none" v-if="superAdmin">
-                            <el-input v-model="queryParams.phone" placeholder="请输入电话号码" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="公司名称" prop="peopleOrEnterpriseName" class="el-form-item-none" v-if="superAdmin">
+                            <el-input v-model="queryParams.peopleOrEnterpriseName" placeholder="请输入电话号码" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
@@ -31,11 +31,18 @@
             </el-row>
 
             <el-table v-loading="loading" :data="dataList">
-                <el-table-column label="电话号码" prop="orgName"></el-table-column>
-                <el-table-column label="公司名称" prop="moduleName" width="200"></el-table-column>
+                <el-table-column label="电话号码" prop="phone"></el-table-column>
+                <el-table-column label="公司名称" prop="peopleOrEnterpriseName" width="200"></el-table-column>
                 <el-table-column label="状态" align="center">
                     <template slot-scope="scope">
-                        <el-switch v-model="scope.row.commonStatus" :active-value="1" :inactive-value="0" @change="handleStatusChange(scope.row)"></el-switch>
+                        <el-tag v-if="scope.row.commonStatus == 1" type='success' size="mini">正常</el-tag>
+                        <el-tag v-else type="danger" size="mini">已禁用</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" align="center">
+                    <template slot-scope="scope">
+                        <el-button class="col-update" v-if="scope.row.commonStatus == 1" size="mini" type="text" @click="handleUpdateStatus(scope.row,0)">禁用</el-button>
+                        <el-button class="col-del" v-else size="mini" type="text" @click="handleUpdateStatus(scope.row,1)">启用</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -48,8 +55,8 @@
 </template>
 
 <script>
-import { costAccountList } from "@/api/account";
-import { qmxCompanyList } from "@/api/system/dept";
+
+import { phoneRelationList, phoneRelationUpdate } from "@/api/system/phone";
 import { deepClone } from '@/utils/index'
 
 import { mapGetters } from 'vuex'
@@ -86,7 +93,7 @@ export default {
         getList() {
             this.loading = true;
 
-            costAccountList(this.queryParams).then(res => {
+            phoneRelationList(this.queryParams).then(res => {
 
                 this.dataList = res.data
                 this.total = res.total
@@ -103,19 +110,21 @@ export default {
             this.resetForm("queryForm");
             this.handleQuery();
         },
-        // 用户状态修改
-        handleStatusChange(row) {
-            let text = row.status === "0" ? "启用" : "停用";
-            this.$confirm('确认要"' + text + '""' + row.name + '"电话吗?', "警告", {
+        // 公司电话状态修改
+        handleUpdateStatus(row, status) {
+
+            let text = status == 0 ? "启用" : "停用";
+            this.$confirm('确认要"' + text + '""' + row.phone + '"此关联?', "警告", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(function () {
-                return changeUserStatus(row.id, row.status);
+                return phoneRelationUpdate({ id: row.id, commonStatus: status });
             }).then(() => {
+                this.getList()
                 this.msgSuccess(text + "成功");
             }).catch(function () {
-                row.status = row.status === "0" ? "1" : "0";
+
             });
         },
     }

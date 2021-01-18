@@ -39,35 +39,37 @@
             <!-- //图标 -->
             <el-row :gutter="10" class="chartBox">
                 <el-col :md='12' :sm="24" :xs="24" class="l">
-                    <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20"><i class="el-icon-info col"></i> 商机状态统计</p>
+                    <div class="back-fff pad20 mb10 ">
+                        <p class=" f16 mb20 part-tit"> 商机状态统计</p>
                         <div ref="myChart1" class="myChart"></div>
                     </div>
                 </el-col>
                 <el-col :md='12' :sm="24" :xs="24" class='r'>
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20"><i class="el-icon-info col"></i> 资源类型统计</p>
+                        <p class="f16 mb20 part-tit"> 资源类型统计</p>
                         <div ref="myChart2" class="myChart"></div>
                     </div>
                 </el-col>
                 <el-col :md='24' :sm="24" :xs="24" class='r'>
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20"><i class="el-icon-info col"></i> 业务类型统计</p>
+                        <p class="f16 mb20 part-tit"> 业务类型统计</p>
                         <div ref="myChart3" class="myChart"></div>
                     </div>
                 </el-col>
             </el-row>
             <!-- 柱状图 -->
-            <div class="back-fff pad20 mb10">
-                <el-row :gutter="10" class="chartBox">
-                    <el-col :md='16' :sm="24" :xs="24">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源转化率统计</p>
+            <el-row :gutter="10" class="chartBox">
+                <el-col :md='16' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20 part-tit"> 资源转化率统计</p>
                         <div ref="myChart4" style="width:100%;height:500px"></div>
-                    </el-col>
-                    <el-col :md='8' :sm="24" :xs="24">
-                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 资源转化率排名</p>
+                    </div>
+                </el-col>
+                <el-col :md='8' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class="f16 mb20 part-tit"> 资源转化率排名</p>
 
-                        <el-table :data="transSortArr" style="width: 100%">
+                        <el-table :data="transSortArr" style="width: 100%" height='500px'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
                                     <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
@@ -85,20 +87,22 @@
                                 </div>
                             </el-table-column>
                         </el-table>
-                    </el-col>
-                </el-row>
-            </div>
+                    </div>
+                </el-col>
+            </el-row>
             <!-- 柱状图 -->
-            <div class="back-fff pad20">
-                <el-row :gutter="10" class="chartBox">
-                    <el-col :md='16' :sm="24" :xs="24">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务转化率统计</p>
-                        <div ref="myChart5" style="width:100%;height:500px"></div>
-                    </el-col>
-                    <el-col :md='8' :sm="24" :xs="24">
-                        <p class="f16 mb20" style="margin-bottom:66px"> <i class="el-icon-info col"></i> 业务转化率排名</p>
 
-                        <el-table :data="oppsTransSortArr" style="width: 100%">
+            <el-row :gutter="10" class="chartBox">
+                <el-col :md='16' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20"> 业务转化率统计</p>
+                        <div ref="myChart5" style="width:100%;height:500px"></div>
+                    </div>
+                </el-col>
+                <el-col :md='8' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class="f16 mb20"> 业务转化率排名</p>
+                        <el-table :data="oppsTransSortArr" style="width: 100%" height='500px'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
                                     <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
@@ -116,9 +120,9 @@
                                 </div>
                             </el-table-column>
                         </el-table>
-                    </el-col>
-                </el-row>
-            </div>
+                    </div>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>

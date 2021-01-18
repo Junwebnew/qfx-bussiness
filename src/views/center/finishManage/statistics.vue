@@ -27,7 +27,7 @@
                             </el-form-item>
                         </el-col> -->
                             <el-col :lg='6' :md='10' :sm="24" :xs="24">
-                                <el-form-item label="时间筛选：">
+                                <el-form-item label="成单时间：">
                                     <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                                 </el-form-item>
                             </el-col>

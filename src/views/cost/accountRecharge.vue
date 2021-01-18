@@ -69,7 +69,7 @@ export default {
                 name: undefined,
                 orgId: '',
                 commonStatus: undefined,
-                money: 1000
+                money: 1
             },
             rules: {
                 name: [
