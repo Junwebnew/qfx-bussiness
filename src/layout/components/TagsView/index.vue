@@ -139,7 +139,7 @@ export default {
                     })
                 })
             })
-            Global.$emit("removeCache", "refreshSelectedTag", this.selectedTag);
+            // Global.$emit("removeCache", "refreshSelectedTag", this.selectedTag);
         },
         closeSelectedTag(view) {
             this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {

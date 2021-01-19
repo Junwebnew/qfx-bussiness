@@ -23,7 +23,7 @@
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
                 <el-row :gutter="20" class="mb20">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="公司名称" prop="name" v-if="superAdmin">
+                        <el-form-item label="公司名称" prop="orgId" v-if="superAdmin">
                             <el-select v-model="queryParams.orgId" size="small" clearable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
                                 <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>

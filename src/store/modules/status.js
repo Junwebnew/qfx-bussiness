@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 import { getClueStatusList, getBussinessStatusList } from "@/api/center";
+import { getDictData } from "@/api/system/dict/data";
 const status = {
     state: {
         /*所有的线索状态*/
@@ -13,7 +14,9 @@ const status = {
         //获取业务类型
         bussinessType: [],
         //获取资源类型
-        resourcesType: []
+        resourcesType: [],
+        //资源的价格
+        resoursePrice: []
     },
     mutations: {
         SET_ALLCLUESTATUS: (state, arr) => {
@@ -33,6 +36,9 @@ const status = {
         },
         SET_RESOURCE: (state, arr) => {
             state.resourcesType = arr
+        },
+        SET_PRICE: (state, arr) => {
+            state.resoursePrice = arr
         }
     },
     actions: {
@@ -128,6 +134,28 @@ const status = {
                         resolve(arr)
                     })
 
+                return
+            })
+        },
+        //获取不同资源的扣费标准
+        getResoursePrice({ commit, state }, id) {
+
+            return new Promise(resolve => {
+                if (state.resoursePrice.length) {
+
+                    let obj = state.resoursePrice.filter(i => i.id == id)[0]
+                    resolve(obj)
+                    return
+                }
+                getDictData({ pageNum: 1, pageSize: 500 })
+                    .then(res => {
+
+                        let arr = res.data
+                        let obj = arr.filter(i => i.id == id)[0]
+
+                        commit('SET_PRICE', arr)
+                        resolve(obj)
+                    })
                 return
             })
         }

@@ -61,7 +61,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-form-item label="合同上传">
-                            <el-upload class="upload-demo" :action="qmxOnlineUrl" :on-exceed="handleExceed" :limit='1' :disabled="isUploading" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleFileSuccess" :data="{'fileSource':'ALIYUN'}">
+                            <el-upload ref='uploadBox' class="upload-demo" :action="qmxOnlineUrl" :on-exceed="handleExceed" :limit='1' :disabled="isUploading" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleFileSuccess" :data="{'fileSource':'ALIYUN'}">
                                 <el-button size="small" type="primary">点击上传</el-button>
                                 <div slot="tip" class="el-upload__tip">(可选，可上传图片、word、excel等文件)</div>
                             </el-upload>
@@ -145,7 +145,7 @@ export default {
                     { required: true, validator: validateUseName, trigger: "blur" },
                 ],
                 orderformPrice: [
-                    { required: true, validator: validateUseName, trigger: "blur" },
+                    { required: true, message: "金额不能为空", trigger: "blur" },
                 ],
                 resourceType: [
                     { required: true, message: "线索类型不能为空", trigger: "blur" }
@@ -187,10 +187,8 @@ export default {
 
             this.form.counselorId = this.userId
 
-            if (obj.id) {
-                this.form = obj
-                this.disabled = true
-            }
+            this.form = obj
+            this.disabled = true
 
             this.open = true
 
@@ -225,6 +223,7 @@ export default {
         // 取消按钮
         cancel() {
             this.open = false;
+            this.$refs.uploadBox.clearFiles();
             this.reset();
         },
         // 表单重置

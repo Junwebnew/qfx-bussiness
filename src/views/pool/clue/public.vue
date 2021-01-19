@@ -36,7 +36,7 @@
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column type='index'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone' :formatter='formatterPhone'> </el-table-column>
                 <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="资源类型" prop="resName"></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
@@ -68,6 +68,8 @@
 import { publicPoolList, publicPoolReceive } from "@/api/center";
 
 import SwitchForm from "@/components/SwitchForm";
+
+import { phoneStartCode } from "@/utils";
 
 export default {
     components: { SwitchForm },
@@ -125,6 +127,11 @@ export default {
         resetQuery() {
             this.resetForm("queryForm");
             this.handleQuery();
+        },
+        //电话加码
+        formatterPhone(row) {
+
+            return phoneStartCode(row.contactPhone)
         },
         checkDetail(obj) {
 

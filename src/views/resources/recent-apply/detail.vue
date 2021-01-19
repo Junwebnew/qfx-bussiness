@@ -112,7 +112,8 @@ export default {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            price: ''
         }
     },
     // watch: {
@@ -124,6 +125,9 @@ export default {
     // },
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+
+
+
     },
     methods: {
         initPage(id) {
@@ -136,7 +140,16 @@ export default {
                     this.title = (res.data.trademarkName || '') + ' 近日申请'
 
                     this.json = res.data
+
+                    this.getPrice(res.data.applicationType)
                 })
+        },
+        getPrice(applicationType) {
+            //今日申请  企业5，个人 13
+            this.$store.dispatch('getResoursePrice', applicationType ? '13' : '5').then(res => {
+                // console.log('0000', res)
+                this.price = res.value
+            })
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")

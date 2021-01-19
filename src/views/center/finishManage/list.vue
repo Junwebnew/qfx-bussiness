@@ -249,10 +249,18 @@ export default {
         },
         /** 再次成单按钮操作 */
         finishOrderAgain(row) {
-            this.$refs.finishModule.showFunc(deepClone(row), '再次成单')
+
+            let newObj = deepClone(row)
+
+            delete newObj.id
+
+            delete newObj.orderformPrice
+
+            this.$refs.finishModule.showFunc(newObj, '再次成单')
         },
         /**编辑成单**/
         finishOrderEdit(row) {
+
             this.$refs.finishModule.showFunc(deepClone(row), '编辑成单')
         },
         // 多选框选中数据

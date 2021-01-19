@@ -249,7 +249,7 @@ export function bussFinishDetail(id) {
 
 //商机再次成单
 export function bussFinishAgain(data) {
-    return $axios.post('opporderform/opportunityOrderForm/oppIsOrderForm', data)
+    return $axios.post('opporderform/opportunityOrderForm/saveorupdate', data)
 }
 
 //作废已成单商机（ 调用更新接口）

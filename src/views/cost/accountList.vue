@@ -29,22 +29,35 @@
                         <el-tag v-else type="danger" size='mini'>取消</el-tag>
                     </div>
                 </el-table-column>
-                <el-table-column prop="subAccountNumber" label="人员限制" width="120">
+                <el-table-column prop="subAccountNumber" label="人员限制" width="80">
                     <div slot-scope="scope">
                         <span>{{scope.row.subAccountNumber || '--'}}人</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="剩余次数" prop="accountNum" width="120">
+                <el-table-column label="剩余次数" prop="accountNum" width="80">
                     <div slot-scope="scope">
                         <span>{{scope.row.accountNum || '--'}}次</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="最近充值时间" prop="rechargeTime" width="200"></el-table-column>
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='220px' fixed="right">
+                <el-table-column label="试用次数" prop="accountNum" width="80">
+                    <div slot-scope="scope">
+                        <span>{{scope.row.accountNum || '--'}}次</span>
+                    </div>
+                </el-table-column>
+                <el-table-column label="试用天数" prop="accountNum" width="80">
+                    <div slot-scope="scope">
+                        <span>{{scope.row.accountNum || '--'}}次</span>
+                    </div>
+                </el-table-column>
+                <el-table-column label="充值时间" prop="rechargeTime" width="180"></el-table-column>
+                <el-table-column label="到期日期" prop="rechargeTime" width="180"></el-table-column>
+                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='420px' fixed="right">
                     <template slot-scope="scope">
                         <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
                         <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">修改试用天数</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">修改试用次数</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -52,6 +65,7 @@
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
         </div>
+        <!-- //人员限制 -->
         <el-dialog title="机构人员数量限制" :visible.sync="open" width="500px">
             <el-form ref="form" :model="form" label-width="110px" :rules='rules'>
                 <el-row>
@@ -72,11 +86,74 @@
                 <el-button type="primary" @click="submitFileForm">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- //人员限制 -->
+        <el-dialog title="人员数量设置" :visible.sync="form.open" width="500px">
+            <el-form ref="form" :model="form" label-width="110px" :rules='rules'>
+                <el-row>
+                    <el-col :span='24'>
+                        <el-form-item label="客户名称" prop="name">
+                            <el-input v-model="form.name" disabled />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='24'>
+                        <el-form-item label="最大人员数量" prop="subAccountNumber">
+                            <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="clearForm">取 消</el-button>
+                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!-- //试用天数 -->
+        <el-dialog title="试用天数设置" :visible.sync="formDays.open" width="500px">
+            <el-form ref="form" :model="formDays" label-width="110px" :rules='rules'>
+                <el-row>
+                    <el-col :span='24'>
+                        <el-form-item label="客户名称" prop="name">
+                            <el-input v-model="formDays.name" disabled />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='24'>
+                        <el-form-item label="试用天数" prop="days">
+                            <el-input-number v-model="formDays.days" :min="1" :max="100000" label="数量"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="clearForm">取 消</el-button>
+                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!-- //试用次数设置 -->
+        <el-dialog title="试用次数设置" :visible.sync="formNum.open" width="500px">
+            <el-form ref="form" :model="formNum" label-width="110px" :rules='rules'>
+                <el-row>
+                    <el-col :span='24'>
+                        <el-form-item label="客户名称" prop="name">
+                            <el-input v-model="formNum.name" disabled />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span='24'>
+                        <el-form-item label="试用次数" prop="num">
+                            <el-input-number v-model="formNum.num" :min="1" :max="100000" label="数量"></el-input-number>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="clearForm">取 消</el-button>
+                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { qmxCompanyList, qmxUpdateDept } from "@/api/system/dept";
+import { qmxCompanyList, qmxUpdateDept, setDeptDaysAndNum } from "@/api/system/dept";
 import { deepClone } from '@/utils/index'
 
 import { mapGetters } from 'vuex'
@@ -101,14 +178,30 @@ export default {
                 level: 2
             },
             //表单
-            open: false,
             form: {
+                open: false,
                 name: "",
                 subAccountNumber: 1,
             },
+            formDays: {
+                open: false,
+                name: "",
+                days: 1,
+            },
+            formNum: {
+                open: false,
+                name: "",
+                num: 1,
+            },
             rules: {
                 subAccountNumber: [
-                    { required: true, trigger: "blur", message: "数量不能为空" }
+                    { required: true, trigger: "blur", message: "数量不能为空" },
+                ],
+                days: [
+                    { required: true, trigger: "blur", message: "数量不能为空" },
+                ],
+                num: [
+                    { required: true, trigger: "blur", message: "数量不能为空" },
                 ]
             },
         };
@@ -154,6 +247,12 @@ export default {
                 children: node.children
             };
         },
+        //关闭
+        clearForm() {
+            this.form = { open: false }
+            this.formDays = { open: false }
+            this.formNum = { open: false }
+        },
         //人员数量限制
         handleLimit(row) {
             this.open = true
@@ -173,6 +272,18 @@ export default {
                     })
                 }
             })
+        },
+        //显示设置
+        showSetBox(row, key) {
+            this[key] = {
+                name: row.name,
+                costId: row.id,
+                open: true
+            }
+        },
+        //设置公司试用信息
+        setDeptMsg() {
+            setDeptDaysAndNum
         },
         //前端进行名称搜索
         depArrfilter(arr, name) {

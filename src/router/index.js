@@ -196,7 +196,7 @@ export const asyncAllRoutes = [
                 redirect: "noRedirect",
                 component: "ParentView",
                 alwaysShow: true,
-                meta: { title: "电话管理", icon: "log", noCache: false },
+                meta: { title: "电话管理", noCache: false },
                 children: [
                     {
                         name: "phoneSet",
@@ -221,7 +221,7 @@ export const asyncAllRoutes = [
                 redirect: "noRedirect",
                 component: "ParentView",
                 alwaysShow: true,
-                meta: { title: "日志管理", icon: "log", noCache: false },
+                meta: { title: "日志管理", noCache: false },
                 children: [
                     {
                         name: "Operlog",
@@ -340,6 +340,7 @@ export const asyncAllRoutes = [
                 path: "clueManage",
                 hidden: false,
                 component: "ParentView",
+                redirect: "clueStatistics",
                 meta: { title: "线索管理", noCache: true },
                 children: [
                     {
@@ -384,7 +385,8 @@ export const asyncAllRoutes = [
                 path: "bussManage",
                 hidden: false,
                 component: "ParentView",
-                meta: { title: "商机管理", icon: "post", noCache: true },
+                redirect: "bussStatistics",
+                meta: { title: "商机管理", noCache: true },
                 children: [
                     {
                         name: "bussStatistics",
@@ -428,7 +430,8 @@ export const asyncAllRoutes = [
                 path: "finishManage",
                 hidden: false,
                 component: "ParentView",
-                meta: { title: "成单管理", icon: "post", noCache: true },
+                redirect: "finishList",
+                meta: { title: "成单管理", noCache: true },
                 children: [
                     {
                         name: "finishList",

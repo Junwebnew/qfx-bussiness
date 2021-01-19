@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span='24'>
                     <el-form-item label="合同上传">
-                        <el-upload class="upload-demo" :action="qmxOnlineUrl+'zuul/api-f/files/upload'" :on-exceed="handleExceed" :limit='1' :disabled="isUploading" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleFileSuccess" :data="{'fileSource':'ALIYUN'}">
+                        <el-upload ref='uploadBox' class="upload-demo" :action="qmxOnlineUrl+'zuul/api-f/files/upload'" :on-exceed="handleExceed" :limit='1' :disabled="isUploading" :on-preview="handlePreview" :on-remove="handleRemove" :on-success="handleFileSuccess" :data="{'fileSource':'ALIYUN'}">
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">(可选，可上传图片、word、excel等文件)</div>
                         </el-upload>
@@ -24,7 +24,7 @@
             </el-row>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="open = false">取 消</el-button>
+            <el-button @click="close">取 消</el-button>
             <el-button type="primary" @click="submitFileForm">确 定</el-button>
         </div>
     </el-dialog>
@@ -53,7 +53,7 @@ export default {
             title: '恭喜成单',
             qmxOnlineUrl: qmxOnlineUrl,
             customerName: '', //商机名称
-            form: { oppId: '', orderformContract: '', orderformPrice: 10000 },
+            form: { oppId: '', orderformContract: '', orderformPrice: 1 },
             // 表单校验
             rules: {
                 orderformPrice: [
@@ -77,11 +77,17 @@ export default {
         submitFileForm() {
 
             bussFinishSuccess(this.form).then(res => {
-                this.open = false
+
                 this.msgSuccess("操作成功");
                 this.$emit('finish')
+                this.close()
             })
 
+        },
+        //关闭
+        close() {
+            this.$refs.uploadBox.clearFiles();
+            this.open = false
         },
         //文件上传
         handleRemove(file, fileList) {
@@ -102,6 +108,7 @@ export default {
         // 文件上传成功处理
         handleFileSuccess(response, file, fileList) {
             // console.log(111, response)
+
             this.isUploading = false
             this.form.orderformContract = response.id
         },

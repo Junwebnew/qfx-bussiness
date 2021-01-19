@@ -117,3 +117,8 @@ export function qmxCompanyList(data) {
     }
     return $axios.post('baseData/organization/queryCompanyPageList', data)
 }
+
+//设置添加或更新公司帐号次数，天数配置
+export function setDeptDaysAndNum(data) {
+    return $axios.post('cost/orgTimes/costOrgTimes/saveorupdate', data)
+}
