@@ -88,7 +88,6 @@
             </el-row>
         </div>
     </div>
-    </div>
 </template>
 
 <script>
@@ -97,6 +96,7 @@ import { clueStatistics, clueResourseStatistics, bussResourseStatistics, clueTra
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
 import { qmxUserList } from "@/api/system/user";
+import { initChartsDonut } from '../_module/tools.js'
 
 // import walden from '../_module/walden.js'
 import Treeselect from "@riophae/vue-treeselect";
@@ -212,7 +212,9 @@ export default {
                 let chartData = response.data;
 
 
-                this.initCharts(this.myChart.a, '线索总数', chartData, this.assTotal(chartData, { 'k1': 'followStatusName', 'k2': 'totalNum' }))
+                //this.initCharts(this.myChart.a, '线索总数', chartData, this.assTotal(chartData, { 'k1': 'followStatusName', 'k2': 'totalNum' }))
+
+                initChartsDonut(this.myChart.a, '线索总数', chartData, this.assTotal(chartData, { 'k1': 'followStatusName', 'k2': 'totalNum' }))
                 loading.close()
             })
                 .catch(res => {
@@ -232,7 +234,9 @@ export default {
                 bussResourseStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' }))
             ]).then(response => {
 
-                this.initCharts(this.myChart.b, '资源总数', response[0].data, this.assTotal(response[0].data))
+                // this.initCharts(this.myChart.b, '资源总数', response[0].data, this.assTotal(response[0].data))
+
+                initChartsDonut(this.myChart.b, '资源总数', response[0].data, this.assTotal(response[0].data))
 
                 this.transSortArr = this.asstransSortArr(response[0].data, response[1].data)
 

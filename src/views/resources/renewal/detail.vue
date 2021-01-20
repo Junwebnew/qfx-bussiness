@@ -7,7 +7,8 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24">
-                    <div class="back-fff pad20 ">
+                    <div class="back-fff pad20 posRelative">
+                        <resoursePrice :resourcesModule='3' :applicationType='json.applicationType' />
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
@@ -91,12 +92,12 @@
 <script>
 import { renewalrDetail } from "@/api/resources";
 
-import phoneList from '../_module/telModelu'
+import { phoneList, resoursePrice } from '../_module'
 
 export default {
     name: 'renewal-detail',
     components: {
-        phoneList
+        phoneList, resoursePrice
     },
     data() {
         return {

@@ -8,7 +8,8 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 custom-box">
+                    <div class="back-fff pad20 custom-box posRelative">
+                        <resoursePrice :resourcesModule='5' :applicationType='json.applicationType' />
                         <el-row :gutter="20">
                             <el-col :span="24" class="mb16">
                                 <p class=" tit">申请人信息</p>
@@ -78,18 +79,19 @@
 
 <script>
 import { changeDetail } from "@/api/resources";
-import phoneList from '../_module/telModelu'
+import { phoneList, resoursePrice } from '../_module'
 export default {
     name: 'change-detail',
     components: {
-        phoneList
+        phoneList, resoursePrice
     },
     data() {
         return {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            price: ""
         }
     },
     // watch: {

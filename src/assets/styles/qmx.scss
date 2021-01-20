@@ -367,6 +367,9 @@ ul::-webkit-scrollbar-thumb {
 }
 
 /*自定义类似详情页面布局*/
+.posRelative {
+  position: relative;
+}
 .head-parts {
   padding: 16px 32px 0 32px;
   background: #fff;

@@ -8,7 +8,8 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 custom-box full-height2">
+                    <div class="back-fff pad20 custom-box full-height2 posRelative">
+                        <resoursePrice :resourcesModule='8' :applicationType='json.applicationType' />
                         <el-row :gutter="20">
                             <el-col :span="24" class="mb16">
                                 <p class=" tit">企业信息</p>
@@ -67,12 +68,12 @@
 
 <script>
 import { companyWhiteDetail } from "@/api/resources";
-import phoneList from '../_module/telModelu'
+import { phoneList, resoursePrice } from '../_module'
 
 export default {
     name: 'recent-apply-detail',
     components: {
-        phoneList
+        phoneList, resoursePrice
     },
     data() {
         return {

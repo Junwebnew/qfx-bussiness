@@ -4,7 +4,8 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 " id='detail'>
+                    <div class="back-fff pad20 posRelative" id='detail'>
+                        <resoursePrice :resourcesModule='2' :applicationType='json.applicationType' />
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
@@ -152,13 +153,12 @@
 
 <script>
 import { objectionAnalysisDetail, objectionAnalysisDetailList } from "@/api/resources";
-import phoneList from '../_module/telModelu'
-import contrast from '../_module/contrast'
+import { phoneList, contrast, resoursePrice } from '../_module/telModelu'
 
 export default {
     name: 'objection-analysis-detail',
     components: {
-        phoneList, contrast
+        phoneList, contrast, resoursePrice
     },
     data() {
         return {

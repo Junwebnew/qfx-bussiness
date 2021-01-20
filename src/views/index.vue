@@ -167,7 +167,7 @@ export default {
                 legend: {
                     orient: 'vertical', //布局方式，默认水平布局，另可选vertical
                     top: '50',
-                    left: '58%',
+                    left: '57%',
                     itemWidth: 8,　　　　　　　//图例大小  我这里用的是圆
                     itemGap: 16,　　　　　　　　//图例之间的间隔
                     y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
@@ -199,7 +199,7 @@ export default {
                                 fontSize: 12,
                                 color: '#000000d9',
                                 padding: 0,
-                                width: 90,
+                                width: 80,
                                 fontWeight: 400,
                             },
                             b: {
@@ -212,7 +212,7 @@ export default {
                                 fontSize: 12,
                                 color: '#00000073',
                                 padding: [0, 4, 0, 4],
-                                width: 30,
+                                width: 40,
                                 fontWeight: 400,
                             },
                             d: {

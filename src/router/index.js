@@ -468,6 +468,13 @@ export const asyncAllRoutes = [
         meta: { title: "资源池", icon: "log", noCache: true },
         children: [
             {
+                name: "resourseStatistics",
+                path: "resourseStatistics",
+                hidden: false,
+                component: "pool/statistics",
+                meta: { title: "资源统计", noCache: true },
+            },
+            {
                 name: "cluepool",
                 path: "cluepool",
                 hidden: false,

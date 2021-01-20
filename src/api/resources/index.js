@@ -152,6 +152,27 @@ export function resourceBuyList(data) {
     return $axios.post('resource/buy/resourceBuy/page/list', data)
 }
 
+// ******************************************** 送达公告 ************************************
+
+
+/**
+ * 送达公告 详情
+ */
+export function noticeArriveDetail(id) {
+    return $axios.post('notice/arrive/noticeArrive/get', '"' + id + '"')
+}
+
+/**
+ * 送达公告分页查询
+*/
+export function noticeArriveList(data) {
+    return $axios.post('notice/arrive/noticeArrive/page/list', data)
+}
+
+
+
+
+
 
 // ******************************************** 资源领取 ************************************
 

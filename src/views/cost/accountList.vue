@@ -39,25 +39,25 @@
                         <span>{{scope.row.accountNum || '--'}}次</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="试用次数" prop="accountNum" width="80">
+                <el-table-column label="试用次数" prop="originalTimes" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.accountNum || '--'}}次</span>
+                        <span>{{scope.row.originalTimes || '--'}}次</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="试用天数" prop="accountNum" width="80">
+                <!-- <el-table-column label="试用天数" prop="days" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.accountNum || '--'}}次</span>
+                        <span>{{scope.row.days || '--'}}天</span>
                     </div>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="充值时间" prop="rechargeTime" width="180"></el-table-column>
-                <el-table-column label="到期日期" prop="rechargeTime" width="180"></el-table-column>
+                <el-table-column label="到期日期" prop="termOfValidityDate" width="180"></el-table-column>
                 <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='420px' fixed="right">
                     <template slot-scope="scope">
                         <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
                         <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">修改试用天数</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">修改试用次数</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用次数</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">修改试用天数</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -65,27 +65,6 @@
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
 
         </div>
-        <!-- //人员限制 -->
-        <el-dialog title="机构人员数量限制" :visible.sync="open" width="500px">
-            <el-form ref="form" :model="form" label-width="110px" :rules='rules'>
-                <el-row>
-                    <el-col :span='24'>
-                        <el-form-item label="客户名称" prop="customerName">
-                            <el-input v-model="form.name" disabled />
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span='24'>
-                        <el-form-item label="最大人员数量" prop="subAccountNumber">
-                            <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量"></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="open = false">取 消</el-button>
-                <el-button type="primary" @click="submitFileForm">确 定</el-button>
-            </div>
-        </el-dialog>
         <!-- //人员限制 -->
         <el-dialog title="人员数量设置" :visible.sync="form.open" width="500px">
             <el-form ref="form" :model="form" label-width="110px" :rules='rules'>
@@ -109,7 +88,7 @@
         </el-dialog>
         <!-- //试用天数 -->
         <el-dialog title="试用天数设置" :visible.sync="formDays.open" width="500px">
-            <el-form ref="form" :model="formDays" label-width="110px" :rules='rules'>
+            <el-form ref="formDays" :model="formDays" label-width="110px" :rules='rules'>
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="name">
@@ -125,12 +104,12 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="clearForm">取 消</el-button>
-                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                <el-button type="primary" @click="setDeptMsg('formDays')">确 定</el-button>
             </div>
         </el-dialog>
         <!-- //试用次数设置 -->
         <el-dialog title="试用次数设置" :visible.sync="formNum.open" width="500px">
-            <el-form ref="form" :model="formNum" label-width="110px" :rules='rules'>
+            <el-form ref="formNum" :model="formNum" label-width="110px" :rules='rules'>
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="name">
@@ -146,7 +125,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="clearForm">取 消</el-button>
-                <el-button type="primary" @click="submitFileForm">确 定</el-button>
+                <el-button type="primary" @click="setDeptMsg('formNum')">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -255,19 +234,18 @@ export default {
         },
         //人员数量限制
         handleLimit(row) {
-            this.open = true
-            this.form = row
+
+            this.form = deepClone(row)
+            this.form.open = true
         },
         //提交
         submitFileForm() {
-
             let that = this
-
             this.$refs.form.validate(valid => {
                 if (valid) {
                     qmxUpdateDept(this.form).then(response => {
                         that.msgSuccess("修改成功");
-                        that.open = false;
+                        that.clearForm();
                         that.getList();
                     })
                 }
@@ -277,13 +255,23 @@ export default {
         showSetBox(row, key) {
             this[key] = {
                 name: row.name,
-                costId: row.id,
+                id: row.costId,
                 open: true
             }
         },
         //设置公司试用信息
-        setDeptMsg() {
-            setDeptDaysAndNum
+        setDeptMsg(key) {
+
+            let that = this
+            this.$refs[key].validate(valid => {
+                if (valid) {
+                    setDeptDaysAndNum(this[key]).then(response => {
+                        that.msgSuccess("修改成功");
+                        that.clearForm();
+                        that.getList();
+                    })
+                }
+            })
         },
         //前端进行名称搜索
         depArrfilter(arr, name) {

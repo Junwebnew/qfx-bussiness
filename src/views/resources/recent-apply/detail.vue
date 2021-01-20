@@ -5,9 +5,11 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 ">
+                    <div class="back-fff pad20 posRelative">
+                        <resoursePrice :resourcesModule='1' :applicationType='json.applicationType' />
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
+
                                 <p class="tit">基本信息</p>
                             </el-col>
                         </el-row>
@@ -100,12 +102,12 @@
 
 <script>
 import { recentApplyDetail } from "@/api/resources";
-import phoneList from '../_module/telModelu'
+import { phoneList, resoursePrice } from '../_module'
 
 export default {
     name: 'recent-apply-detail',
     components: {
-        phoneList
+        phoneList, resoursePrice
     },
     data() {
         return {
@@ -125,9 +127,6 @@ export default {
     // },
     created() {
         this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
-
-
-
     },
     methods: {
         initPage(id) {
@@ -140,16 +139,7 @@ export default {
                     this.title = (res.data.trademarkName || '') + ' 近日申请'
 
                     this.json = res.data
-
-                    this.getPrice(res.data.applicationType)
                 })
-        },
-        getPrice(applicationType) {
-            //今日申请  企业5，个人 13
-            this.$store.dispatch('getResoursePrice', applicationType ? '13' : '5').then(res => {
-                // console.log('0000', res)
-                this.price = res.value
-            })
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")

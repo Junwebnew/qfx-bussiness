@@ -5,7 +5,13 @@
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 ">
+                    <div class="back-fff pad20 posRelative">
+                        <div class="resourse-flag">
+                            <div class="flag-topright"></div>
+                            <div class="coin"><span>{{price}}</span>
+                                <br> 权/次
+                            </div>
+                        </div>
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
@@ -112,7 +118,8 @@ export default {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            price: ""
         }
     },
     // watch: {
@@ -134,9 +141,17 @@ export default {
                 .then(res => {
 
                     this.title = (res.data.trademarkName || '') + ' 近日申请'
-
                     this.json = res.data
+                    this.getPrice(res.data.applicationType)
                 })
+        },
+        //获取扣费
+        getPrice(applicationType) {
+            //续展  企业7，个人 15
+            this.$store.dispatch('getResoursePrice', applicationType ? '15' : '7').then(res => {
+                // console.log('0000', res)
+                this.price = res.value
+            })
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")

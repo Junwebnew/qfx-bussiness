@@ -3,12 +3,12 @@
         <div class="head-parts mb10">
             <div class="words">{{title}}</div>
         </div>
-
         <div class="mb10 custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 ">
+                    <div class="back-fff pad20 posRelative">
+                        <resoursePrice :resourcesModule='4' :applicationType='json.applicationType' />
                         <el-row :gutter="20" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
@@ -85,19 +85,20 @@
 
 <script>
 import { agencyCancelDetail } from "@/api/resources";
-import phoneList from '../_module/telModelu'
+import { phoneList, resoursePrice } from '../_module'
 
 export default {
     name: 'renewal-detail',
     components: {
-        phoneList
+        phoneList, resoursePrice
     },
     data() {
         return {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            price: ""
         }
     },
     created() {
@@ -113,7 +114,16 @@ export default {
                 .then(res => {
                     this.title = (res.data.tmName || '') + ' 机构注销详情'
                     this.json = res.data
+                    this.getPrice(res.data.applicationType)
                 })
+        },
+        //获取扣费
+        getPrice(applicationType) {
+            //续展  企业9，个人 17
+            this.$store.dispatch('getResoursePrice', applicationType ? '17' : '9').then(res => {
+                // console.log('0000', res)
+                this.price = res.value
+            })
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")

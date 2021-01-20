@@ -101,6 +101,9 @@ export default {
                 this.msgSuccess("更新成功!");
                 item.value = item.newValue
                 this.$set(item, 'isEdit', false)
+
+                this.$store.commit('SET_PRICE', [])
+
                 loading.close()
             })
                 .catch(res => {

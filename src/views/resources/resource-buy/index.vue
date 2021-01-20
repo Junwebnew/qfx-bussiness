@@ -37,10 +37,8 @@
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column label="求购信息" prop="buyInfo" show-overflow-tooltip>
-                    <div slot-scope="scope" class="col buyInfo">
-                        <p @click="showDetail(scope.row)">
-                            <span v-if='scope.row.isEmergency' class='flag'>急</span> <span>{{scope.row.buyInfo}}</span>
-                        </p>
+                    <div slot-scope="scope">
+                        <span v-if='scope.row.isEmergency' class='flag'>急</span> <span>{{scope.row.buyInfo}}</span>
                     </div>
                 </el-table-column>
                 <el-table-column label="求购类别" width='200' prop="intclass" show-overflow-tooltip></el-table-column>
@@ -49,7 +47,7 @@
                 <el-table-column label="操作" width='220'>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" @click="receiveInfo(scope.row)">领取</el-button>
+                            <el-button size="mini" type="text" @click=" showDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -65,17 +63,25 @@
                     <p><span v-if='detailMsg.isEmergency' class='flag'>急</span> {{detailMsg.buyInfo ||'--'}}</p>
                 </div>
                 <div class="item">
-                    <label>类别</label>
+                    <label>国际分类</label>
                     <p>{{detailMsg.intclass ||'--'}}</p>
                 </div>
                 <div class="item">
                     <label>联系人</label>
                     <p>{{detailMsg.contact ||'--'}}</p>
                 </div>
+                <div class="item">
+                    <label>联系QQ</label>
+                    <p>{{phoneStartCode(detailMsg.qq ||'--')}}</p>
+                </div>
+                <div class="item">
+                    <label>资源抵扣</label>
+                    <p class="col b">{{price ||'--'}}星/次</p>
+                </div>
             </div>
             <div slot="footer" class="dialog-footer">
                 <el-button @click=" detailShow =  false">取 消</el-button>
-                <el-button type="primary mr5" @click="receiveInfo">领取</el-button>
+                <el-button type="primary mr5" @click="receiveInfo">领 取</el-button>
             </div>
         </el-dialog>
     </div>
@@ -83,6 +89,7 @@
 
 <script>
 import { resourceBuyList, receiveResource } from "@/api/resources";
+import { phoneStartCode } from "@/utils";
 export default {
     name: "recentApply",
     data() {
@@ -104,6 +111,8 @@ export default {
                 hasPhone: true,
                 applicationType: ""
             },
+            //扣除价格
+            price: '',
             //初始时间
             initDate: [],
             //申请人类型
@@ -148,6 +157,14 @@ export default {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
+                this.getPrice()
+            })
+        },
+        //获取扣费次数
+        getPrice() {
+            this.$store.dispatch('getResoursePrice', '11').then(res => {
+                // console.log('0000', res)
+                this.price = res.value
             })
         },
         /** 搜索按钮操作 */
@@ -165,6 +182,10 @@ export default {
         showDetail(obj) {
             this.detailShow = true
             this.detailMsg = obj
+        },
+        //联系方式加密
+        phoneStartCode(qq) {
+            return phoneStartCode(qq)
         },
         //领取
         receiveInfo(row) {

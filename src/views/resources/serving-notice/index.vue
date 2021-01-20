@@ -16,31 +16,32 @@
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="商标名称" prop="preliNoticeTrademarkName" class="el-form-item-none">
-                            <el-input v-model="queryParams.preliNoticeTrademarkName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="商标名称" prop="tmName" class="el-form-item-none">
+                            <el-input v-model="queryParams.tmName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="申请人" prop="preliNoticeApplicationNameCn" class="el-form-item-none">
-                            <el-input v-model="queryParams.preliNoticeApplicationNameCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="国际分类" prop="intclass" class="el-form-item-none">
+                            <el-select v-model="queryParams.intclass" clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in intclassArr" :key="dict.value" :label="dict.name" :value="dict.value" />
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="申请人地址" prop="preliNoticeApplicationDddrCn" class="el-form-item-none">
-                            <el-input v-model="queryParams.applicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="申请人" prop="applicationNameCn" class="el-form-item-none">
+                            <el-input v-model="queryParams.applicationNameCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="代理机构" prop="preliNoticeAgencyName" class="el-form-item-none">
-                            <el-input v-model="queryParams.preliNoticeAgencyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="申请人地址" prop="userAddress" class="el-form-item-none">
+                            <el-input v-model="queryParams.userAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="机构地址" prop="preliNoticeAgencyNameDddrCn" class="el-form-item-none">
-                            <el-input v-model="queryParams.agencyAddr" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="代理机构" prop="agency" class="el-form-item-none">
+                            <el-input v-model="queryParams.agency" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-
                     <el-col :lg="18" :sm="12" :xs="24" align='right'>
                         <el-form-item class="el-form-item-none ml20">
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -66,31 +67,31 @@
             </el-row>
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
-                <el-table-column prop="name" label="商标图样">
+                <!-- <el-table-column prop="name" label="商标图样">
                     <template slot-scope="scope">
                         <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col">
-                            <img class="table-img" :src="$getImg(scope.row.preliNoticeTrademarkPic,2) || scope.row.originalGraphicStyle || ''">
+                            <img class="table-img" :src="$getImg(scope.row.noticeFile,2) || ''">
                         </a>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="商标名称" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span>{{scope.row.preliNoticeTrademarkName || '--'}}</span>
+                        <span>{{scope.row.tmName || '--'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='110px' align='center'>
+                <el-table-column label="注册号" prop="regNum" width='110px' align='center'>
                 </el-table-column>
                 <el-table-column label="国际分类" width='130px' align='center'>
                     <template slot-scope="scope">
-                        <span>{{scope.row.preliNoticeTypeOfTrademarkCode}}类-{{scope.row.preliNoticeTypeOfTrademarkName}}</span>
+                        <span>{{scope.row.intClass}}类</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="申请人" show-overflow-tooltip>
                     <template slot-scope="scope">
-                        <span>{{scope.row.preliNoticeApplicationNameCn}}</span>
+                        <span>{{scope.row.applicationNameCn}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align='center' width='100'>
+                <!-- <el-table-column align='center' width='100'>
                     <template slot="header" slot-scope="scope">
                         <span class='mr5'>可异议</span>
                         <el-tooltip class="item" effect="dark" content="公告商标与以往注册商标相同+近似对比后的可异议数据结果" placement="top-start">
@@ -100,7 +101,7 @@
                     <template slot-scope="scope">
                         <span>{{scope.row.objectionCountNum || '--'}}个</span>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column label="最新备注" prop='bestNewRemark' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='220' align='center'>
                     <template slot-scope="scope">
@@ -117,7 +118,7 @@
 </template>
 
 <script>
-import { objectionAnalysisList } from "@/api/resources";
+import { noticeArriveList } from "@/api/resources";
 import { noticeNumList } from "@/api";
 export default {
 
@@ -131,17 +132,12 @@ export default {
             tableData: [],
             //总数
             total: 0,
-            // 日期范围
-            dateRange: [],
             //搜索条件 
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                hasPhone: true,
-                applicationType: ""
+                hasPhone: true
             },
-            //初始时间
-            initDate: [],
             //申请人类型
             aplicationTypeArr: [
                 { name: '企业', value: "0" },
@@ -149,6 +145,19 @@ export default {
             ],
             noticeNUm: [], //************* */
             activeNum: 0, //第多少期
+        }
+    },
+    computed: {
+        intclassArr() {
+            let arr = [], idx = 1;
+            while (idx <= 45) {
+                arr.push({
+                    name: idx + '类',
+                    value: idx
+                })
+                idx++
+            }
+            return arr
         }
     },
     created() {
@@ -177,9 +186,9 @@ export default {
 
             this.loading = true;
 
-            this.queryParams.preliminaryNoticeNumber = this.activeNum
+            // this.queryParams.noticeNumber = this.activeNum
 
-            objectionAnalysisList(this.queryParams).then(response => {
+            noticeArriveList(this.queryParams).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
@@ -197,14 +206,13 @@ export default {
         },
         //重置表单
         resetQuery() {
-            this.dateRange = []
             this.resetForm("queryForm");
             this.handleQuery();
         },
         checkDetail(obj) {
 
             let key = this.$route.name + obj.preliNoticeTrademarkId
-            this.$router.push('/resources/objection-analysis/detail?id=' + obj.id + "&num=" + this.activeNum)
+            this.$router.push('/resources/serving-notice/detail?id=' + obj.id + "&num=" + this.activeNum)
 
         },
         lastTime(e) {

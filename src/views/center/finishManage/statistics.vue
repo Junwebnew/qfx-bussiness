@@ -46,42 +46,34 @@
             <el-row :gutter="10" class="chartBox">
                 <el-col :md='12' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
                         <div ref="myChart1" class="myChart"></div>
                     </div>
                 </el-col>
                 <el-col :md='12' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
                         <div ref="myChart2" class="myChart"></div>
                     </div>
                 </el-col>
                 <el-col :md='24' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
                         <div ref="myChart3" class="myChart"></div>
                     </div>
                 </el-col>
             </el-row>
-            <div class="back-fff pad20">
-                <el-row :gutter="10" class="chartBox" v-if="whetherAdmin">
-                    <el-col :md='18' :sm="18" :xs="24">
-                        <p class=" f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
+
+            <el-row :gutter="10" class="chartBox" v-if="whetherAdmin">
+                <el-col :md='18' :sm="18" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
                         <div ref="myChart4" style="width:100%;height:500px"></div>
-                    </el-col>
-                    <el-col :md='6' :sm="6" :xs="24">
-                        <!-- <p class="f16 mb20"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
-                    <ul class="sellList">
-                        <li v-for="(item,idx) in sellerSortArr" :key='idx'>
-                            <span :class="'circle cir'+idx  ">{{idx+1}}</span>
-                            <span class="name">{{item.name}} </span>
-                            <span class="per">{{item.percentage}} </span>
-                            <span class="num">{{item.value}}条 </span>
-                        </li>
-                    </ul> -->
-
-                        <p class="f16 mb20" style="margin-bottom:20px"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
-
+                    </div>
+                </el-col>
+                <el-col :md='6' :sm="6" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class="f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
                         <el-table :data="sellerSortArr" style="width: 100%" height='500'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
@@ -98,9 +90,9 @@
                                 </div>
                             </el-table-column>
                         </el-table>
-                    </el-col>
-                </el-row>
-            </div>
+                    </div>
+                </el-col>
+            </el-row>
         </div>
     </div>
 </template>
@@ -111,7 +103,7 @@ import { clueStatistics, bussFinishStatistics } from "@/api/center";
 import { qmxUserList } from "@/api/system/user";
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
-
+import { initChartsDonut } from '../_module/tools.js'
 
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -222,9 +214,9 @@ export default {
 
                 let dataObj = this.chartData = response.data;
 
-                this.initCharts(this.myChartObj.a, '客户总数', [{ name: '新客户', value: dataObj.newCustomerNum }, { name: '老客户', value: dataObj.oldCustomerNum }], dataObj.newCustomerNum + dataObj.oldCustomerNum)
-                this.initCharts(this.myChartObj.b, '资源总数', dataObj.reourceTypeCountList, this.assTotal(dataObj.reourceTypeCountList))
-                this.initCharts(this.myChartObj.c, '业务总数', dataObj.businessTypeCountList, this.assTotal(dataObj.businessTypeCountList))
+                initChartsDonut(this.myChartObj.a, '客户总数', [{ name: '新客户', value: dataObj.newCustomerNum }, { name: '老客户', value: dataObj.oldCustomerNum }], dataObj.newCustomerNum + dataObj.oldCustomerNum)
+                initChartsDonut(this.myChartObj.b, '资源总数', dataObj.reourceTypeCountList, this.assTotal(dataObj.reourceTypeCountList))
+                initChartsDonut(this.myChartObj.c, '业务总数', dataObj.businessTypeCountList, this.assTotal(dataObj.businessTypeCountList))
 
                 //人员的统计,增加总数，增加百分比
                 if (this.whetherAdmin) {

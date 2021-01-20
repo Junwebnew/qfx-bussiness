@@ -6,23 +6,28 @@
                 <el-row :gutter="10">
                     <el-form ref="form" :model="{}" label-width="90px">
                         <el-row :gutter="10">
-
+                            <!--部门数据-->
                             <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                                 <el-form-item label="部门名称：">
-                                    <treeselect v-model="orgAndDept" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
+                                    <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
                                 </el-form-item>
                             </el-col>
 
                             <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                                 <el-form-item label="商务名称：">
-                                    <el-select v-model="queryParams.counselorId" clearable filterable size='small' style="width:100%">
+                                    <el-select v-model="queryParams.orderformUserId" style="width:100%" clearable filterable size='small'>
                                         <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
                                         </el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-col>
+                            <!-- <el-col :lg='8' :md='12' :sm="24" :xs="24">
+                            <el-form-item label="价格区间：">
+                                <priceRange />
+                            </el-form-item>
+                        </el-col> -->
                             <el-col :lg='6' :md='10' :sm="24" :xs="24">
-                                <el-form-item label="时间筛选：">
+                                <el-form-item label="成单时间：">
                                     <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                                 </el-form-item>
                             </el-col>
@@ -37,86 +42,51 @@
                 </el-row>
             </div>
             <!-- //图标 -->
+
             <el-row :gutter="10" class="chartBox">
-                <el-col :md='12' :sm="24" :xs="24" class="l">
-                    <div class="back-fff pad20 mb10 ">
-                        <p class=" f16 mb20 part-tit"> 商机状态统计</p>
+                <el-col :md='12' :sm="24" :xs="24">
+                    <div class="back-fff pad20 mb10">
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 新老客户比例统计</p>
                         <div ref="myChart1" class="myChart"></div>
                     </div>
                 </el-col>
-                <el-col :md='12' :sm="24" :xs="24" class='r'>
+                <el-col :md='12' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 资源类型统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 资源类型比例统计</p>
                         <div ref="myChart2" class="myChart"></div>
                     </div>
                 </el-col>
-                <el-col :md='24' :sm="24" :xs="24" class='r'>
+                <el-col :md='24' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 业务类型统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务类型比例统计</p>
                         <div ref="myChart3" class="myChart"></div>
                     </div>
                 </el-col>
             </el-row>
-            <!-- 柱状图 -->
-            <el-row :gutter="10" class="chartBox">
-                <el-col :md='16' :sm="24" :xs="24">
+
+            <el-row :gutter="10" class="chartBox" v-if="whetherAdmin">
+                <el-col :md='18' :sm="18" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20 part-tit"> 资源转化率统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
                         <div ref="myChart4" style="width:100%;height:500px"></div>
                     </div>
                 </el-col>
-                <el-col :md='8' :sm="24" :xs="24">
+                <el-col :md='6' :sm="6" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 资源转化率排名</p>
-
-                        <el-table :data="transSortArr" style="width: 100%" height='500px'>
+                        <p class="f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单排名</p>
+                        <el-table :data="sellerSortArr" style="width: 100%" height='500'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
                                     <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
                                 </div>
                             </el-table-column>
-                            <el-table-column prop="name" label="类型">
+                            <el-table-column prop="name" label="人员">
                             </el-table-column>
-                            <el-table-column prop="bussNum" align='center' width='70' label="商机数">
+                            <el-table-column prop="value" align='center' width='70' label="成单数">
                             </el-table-column>
-                            <el-table-column prop="finishNum" align='center' width='70' label="成单数">
-                            </el-table-column>
-                            <el-table-column prop="per" align='center' width='70' label="转化率">
+                            <el-table-column prop="per" align='center' width='70' label="百分比">
                                 <div slot-scope="scope" class="sellList">
-                                    <span class="num">{{scope.row.per}}%</span>
-                                </div>
-                            </el-table-column>
-                        </el-table>
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 柱状图 -->
-
-            <el-row :gutter="10" class="chartBox">
-                <el-col :md='16' :sm="24" :xs="24">
-                    <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20 part-tit"> 业务转化率统计</p>
-                        <div ref="myChart5" style="width:100%;height:500px"></div>
-                    </div>
-                </el-col>
-                <el-col :md='8' :sm="24" :xs="24">
-                    <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 业务转化率排名</p>
-                        <el-table :data="oppsTransSortArr" style="width: 100%" height='500px'>
-                            <el-table-column align='center' label="序号" width='50'>
-                                <div slot-scope="scope" class="sellList">
-                                    <span :class="'circle cir'+ scope.$index">{{scope.$index + 1}}</span>
-                                </div>
-                            </el-table-column>
-                            <el-table-column prop="name" label="类型">
-                            </el-table-column>
-                            <el-table-column prop="bussNum" align='center' width='70' label="商机数">
-                            </el-table-column>
-                            <el-table-column prop="finishNum" align='center' width='70' label="成单数">
-                            </el-table-column>
-                            <el-table-column prop="per" align='center' width='70' label="转化率">
-                                <div slot-scope="scope" class="sellList">
-                                    <span class="num">{{scope.row.per}}%</span>
+                                    <span class="num">{{scope.row.percentage}}</span>
                                 </div>
                             </el-table-column>
                         </el-table>
@@ -129,14 +99,11 @@
 
 <script>
 import echarts from "echarts";
-import { bussStatistics, bussResourseStatistics, finishResourseStatistics, bussOppsStatistics, finishOppsStatistics } from "@/api/center";
+import { clueStatistics, bussFinishStatistics } from "@/api/center";
+import { qmxUserList } from "@/api/system/user";
 import { mapGetters } from 'vuex'
 import { qmxDept } from "@/api/system/dept";
-import { qmxUserList } from "@/api/system/user";
-import { deepClone } from '@/utils/index'
-import { initChartsDonut } from '../_module/tools.js'
 
-// import walden from '../_module/walden.js'
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -146,9 +113,9 @@ export default {
         return {
             //组织机构树
             deptListTree: [],
-            orgAndDept: undefined,
             //用户列表
             depUserList: [],
+            //搜索参数
             queryParams: {},
             pickerOptions: {
                 shortcuts: [
@@ -184,13 +151,13 @@ export default {
                     return time.getTime() > _now
                 }
             },
+            //时间段
             dateRange: [],
             chartData: [],
-            myChart: {},
-            //资源类型转化率
-            transSortArr: [],
-            //业务类型转化率
-            oppsTransSortArr: []
+            myChartObj: {},
+            //排序后的人员销售
+            sellerSortArr: [],
+            sellerNum: 0
         }
     },
     computed: {
@@ -198,20 +165,12 @@ export default {
             'whetherAdmin'
         ])
     },
-    watch: {
-        orgAndDept(key) {
-            if (!key) {
-                this.queryParams.deptId = ''
-                this.queryParams.orgId = ''
-            }
-        }
-    },
     created() {
 
         //管理员可以选择机构，选择人员
         if (this.whetherAdmin) {
 
-            qmxDept({}).then(res => {
+            qmxDept(this.queryParams).then(res => {
 
                 this.deptListTree = this.changeDate(res.data)
             })
@@ -224,14 +183,18 @@ export default {
     },
     mounted() {
 
-        // echarts.registerTheme('walden', walden)
-        this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
-        this.myChart.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
-        this.myChart.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
-        this.myChart.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
-        this.myChart.e = echarts.init(this.$refs.myChart5, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
+        this.myChartObj.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
 
-        this.handleQuery()
+        window.addEventListener("resize", () => {
+            for (let key in this.myChartObj) {
+                this.myChartObj[key].resize()
+            }
+
+        });
+
+        // this.handleQuery()
     },
     methods: {
 
@@ -242,137 +205,53 @@ export default {
                 target: '#box'
             });
 
-            bussStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' })).then(response => {
+            bussFinishStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'orderformTimeStart', end: 'orderformTimeEnd' })).then(response => {
 
-                let chartData = response.data;
+                let dataObj = this.chartData = response.data;
 
+                initChartsDonut(this.myChartObj.a, '客户总数', [{ name: '新客户', value: dataObj.newCustomerNum }, { name: '老客户', value: dataObj.oldCustomerNum }], dataObj.newCustomerNum + dataObj.oldCustomerNum)
+                initChartsDonut(this.myChartObj.b, '资源总数', dataObj.reourceTypeCountList, this.assTotal(dataObj.reourceTypeCountList))
+                initChartsDonut(this.myChartObj.c, '业务总数', dataObj.businessTypeCountList, this.assTotal(dataObj.businessTypeCountList))
 
-                initChartsDonut(this.myChart.a, '商机总数', chartData, this.assTotal(chartData, { 'k1': 'followStatusName', 'k2': 'totalNum' }))
+                //人员的统计,增加总数，增加百分比
+                if (this.whetherAdmin) {
 
+                    this.myChartObj.d = echarts.init(this.$refs.myChart4, null, { devicePixelRatio: 2.5 });
+
+                    let sellerNum = this.sellerNum = this.assTotal(dataObj.businessPeopleCountList)
+
+                    this.sellerSortArr = dataObj.businessPeopleCountList.map(i => {
+                        if (sellerNum) {
+                            i.percentage = parseFloat((i.value / sellerNum * 100).toFixed(2)) + '%'
+
+                        }
+                        else {
+                            i.percentage = '0%'
+                        }
+                        return i
+                    }).sort((a, b) => b.value - a.value)
+
+                    //柱状图
+                    this.initHistogram(this.myChartObj.d, dataObj.businessPeopleCountList, sellerNum)
+
+                }
                 loading.close()
             })
                 .catch(res => {
-                    console.log(123, res)
                     loading.close()
                 })
-
-
-            this.getBussOppsStatistics()
-
-            this.getbussResourseStatistics()
-
-        },
-        //业务类型的统计
-        getBussOppsStatistics() {
-
-            let requre = this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' });
-
-            Promise.all([
-                bussOppsStatistics(requre),
-                finishOppsStatistics(this.assFinishQuery(requre)),
-            ]).then(response => {
-
-
-
-                console.log(123, response)
-                // let chartData = response.data;
-                // this.initCharts(this.myChart.c, '业务总数', chartData, this.assTotal(chartData))
-
-                initChartsDonut(this.myChart.c, '业务总数', response[0].data, this.assTotal(response[0].data))
-
-                this.oppsTransSortArr = this.asstransSortArr(response[0].data, response[1].data.businessTypeCountList)
-
-                this.initHistogram(this.myChart.e, this.oppsTransSortArr)
-
-            })
-                .catch(res => {
-                    console.log(222, res)
-                })
-
-        },
-        //资源类型的统计
-        getbussResourseStatistics() {
-
-            let requre = this.addDateRange(this.queryParams, this.dateRange, { start: 'startFollowTime', end: 'endFollowTime' });
-
-            Promise.all([
-                bussResourseStatistics(requre),
-                finishResourseStatistics(this.assFinishQuery(requre))
-            ]).then(response => {
-
-
-                initChartsDonut(this.myChart.b, '资源总数', response[0].data, this.assTotal(response[0].data))
-
-                this.transSortArr = this.asstransSortArr(response[0].data, response[1].data.reourceTypeCountList)
-
-                this.initHistogram(this.myChart.d, this.transSortArr)
-            })
-                .catch(res => {
-                    console.log('出我', res)
-                })
-        },
-        //线索转化率的统计
-        asstransSortArr(clueArr, bussArr) {
-            let transSortArr = clueArr.map(mo => {
-                mo.value = Number(mo.value)
-                let bussItem = bussArr.filter(i => {
-                    i.value = Number(i.value)
-                    return i.name == mo.name
-                })[0]
-                return {
-                    name: mo.name,
-                    bussNum: mo.value,
-                    finishNum: bussItem.value,
-                    per: parseFloat((bussItem.value / (mo.value || 10) * 100).toFixed(2))
-                }
-            })
-
-            return transSortArr.sort((a, b) => b.per - a.per)
         },
         //统计总数
-        assTotal(arr, keyObj) {
+        assTotal(arr) {
 
             let total = 0
             arr.map(item => {
-                if (keyObj && keyObj.k1) {
-                    item.name = item[keyObj.k1]
-                    item.value = item[keyObj.k2]
-                }
                 item.value = Number(item.value)
                 if (item) {
                     total += Number(item.value || 0)
                 }
             })
             return total
-        },
-        //重新组装参数，已成单商机使用
-        assFinishQuery(obj) {
-            var finishObj = deepClone(obj);
-
-            finishObj.orderformUserId = finishObj.orderformUserId
-            finishObj.orderformTimeStart = finishObj.startFollowTime
-            finishObj.orderformTimeEnd = finishObj.endFollowTime
-
-            if (finishObj.deptId) {
-                finishObj.deptIdList = [finishObj.deptId]
-            }
-
-            return finishObj
-        },
-        depTtreeChange(e) {
-
-
-
-            this.depUserList = []
-
-            if (e.level <= 2) {
-                this.queryParams.orgId = e.id
-                this.queryParams.deptId = ''
-            } else {
-                this.queryParams.orgId = ''
-                this.queryParams.deptId = e.id
-            }
-            this.getUserList(e.id)
         },
         //获取部门的人员
         getUserList(id) {
@@ -410,13 +289,20 @@ export default {
                 children: node.children
             };
         },
+        depTtreeChange(e) {
+            // console.log('9999', e)
+            this.queryParams.orderformUserId = ''
+            this.depUserList = []
+            this.getUserList(e.id)
+        },
         //重置表单
         resetQuery() {
             this.dateRange = []
-            this.queryParams.counselorId = ''
             this.orgAndDept = undefined
+            this.queryParams.counselorId = ''
             this.handleQuery();
         },
+        //饼图
         initCharts(myChart, titStr, chartData, total) {
 
             myChart.setOption({
@@ -440,7 +326,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c}条 ({d}%)'
+                    formatter: '{b} : {c}条 ({d}%)'
                 },
                 color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 legend: {
@@ -505,7 +391,6 @@ export default {
                 },
                 series: [
                     {
-                        name: '商机状态统计',
                         type: 'pie',
                         radius: ['45%', '65%'],
                         avoidLabelOverlap: false,
@@ -524,7 +409,7 @@ export default {
                         },
                         // emphasis: {
                         //     itemStyle: {
-                        //         shadowBlur: 10,
+                        //         shadowBlur: 0,
                         //         shadowOffsetX: 0,
                         //         shadowColor: 'rgba(0, 0, 0, 0.5)',
                         //         borderWidth: 0
@@ -533,9 +418,48 @@ export default {
                     }
                 ]
             });
+
+            myChart.resize();
         },
-        initHistogram(myChart, assData) {
+        initHistogram(myChart, chartData, totalNum) {
             let option = {
+                xAxis: {
+                    data: chartData.map(i => i.name),
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    axisLabel: {
+                        //inside: true,
+                        textStyle: {
+                            fontSize: '10'
+                        },
+                        rotate: 40
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#999'
+                        }
+                    },
+                    max: function (value) {
+                        return value.max > 10 ? (value.max + 6) : (value.max + 1);
+                    }
+                },
+                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -543,65 +467,32 @@ export default {
                         crossStyle: {
                             color: '#999'
                         }
-                    }
-                },
-                //画布的大小，位置
-                grid: {
-                    top: "100px",
-                    left: "50px",
-                    right: "10px",
-                    bottom: "50px",
-                    width: "auto", //图例宽度
-                },
-                toolbox: {
-                    feature: {
-                        // dataView: { show: true, readOnly: false },
-                        magicType: { show: true, type: ['line', 'bar'] },
-                        // restore: { show: true },
-                        // saveAsImage: { show: true }
-                    }
-                },
-                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
-                legend: {
-                    data: ['商机数', '成单数']
-                },
-                xAxis: [
-                    {
-                        // type: 'category',
-                        axisLabel: {
-                            interval: 0
-                        },
-                        data: assData.map(i => i.name),
-                        axisPointer: {
-                            type: 'shadow'
-                        }
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name: '数量',
-                        min: 0,
-                        max: function (value) {
-                            return value.max > 10 ? (value.max + 6) : (value.max + 1);
-                        },
-                        axisLabel: {
-                            formatter: '{value}条'
-                        }
-                    }
-                ],
-                series: [
-                    {
-                        name: '商机数',
-                        type: 'bar',
-                        data: assData.map(i => i.bussNum)
                     },
-                    {
-                        name: '成单数',
-                        type: 'bar',
-                        data: assData.map(i => i.finishNum)
-                    }
-                ]
+                    // formatter: function (params) {
+                    //     var result = ''
+                    //     var dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:#1890ff"></span>'
+                    //     params.forEach(function (item) {
+                    //         // console.log(item) item.marker
+                    //         result += dotHtml + item.name + ' : ' + item.value + '条 '
+                    //     })
+                    //     return result
+                    // },
+                    // backgroundColor: "rgba(255,255,255,0.8)", //设置背景图片 rgba格式
+                    // color: "black",
+                    // borderWidth: "1", //边框宽度设置1
+                    // borderColor: "#f1f1f1", //设置边框颜色
+                    // textStyle: {
+                    //     color: "black" //设置文字颜色
+                    // },
+                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
+                },
+                series: [{
+                    name: '成单数',
+                    data: chartData.map(i => (i.value)),
+                    type: 'bar',
+                    showBackground: true,
+                    barMaxWidth: 30,
+                }]
             };
 
             myChart.setOption(option)
@@ -655,6 +546,7 @@ export default {
         border-left: 1px solid #f1f1f1;
     }
     .num {
+        float: right;
         font-weight: 600;
         color: #000;
     }
