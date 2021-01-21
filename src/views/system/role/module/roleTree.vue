@@ -1,25 +1,24 @@
 <template>
     <el-drawer :title="title" :visible.sync="show" :direction="direction" :size='"400px"' style="overflow:auto" :append-to-body="true">
         <div class="draw_con">
-            <el-form ref="form" label-width="80px">
-                <el-form-item label="菜单权限">
-                    <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
-                    <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
-                    <!-- <el-checkbox v-model="form.menuCheckStrictly" @change="handleCheckedTreeConnect($event, 'menu')">父子联动</el-checkbox> -->
-
-                </el-form-item>
-            </el-form>
+            <div class="mb10">
+                <el-checkbox v-model="menuNodeAll" @change="handleCheckedTreeNodeAll($event, 'menu')">全选/全不选</el-checkbox>
+                <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event, 'menu')">展开/折叠</el-checkbox>
+            </div>
             <div class="middle">
                 <el-tree class="tree-border" :data="menuOptions" show-checkbox ref="menu" node-key="id" :check-strictly="menuCheckStrictly" :default-expand-all='showAll' empty-text="加载中，请稍后" :props="defaultProps">
                     <span class="custom-tree-node" slot-scope="{ node,data }">
-                        <span class="f12">{{data.isFunction == 1 ? '按钮_' : ''}} {{node.label }}</span>
+
+                        <span class="f12"><i :class="data.isFunction == 1 ? 'f14 ' : 'f14 el-icon-menu'  "></i> {{node.label }}</span>
+
+                        <!-- <span class="f12">{{data.isFunction == 1 ? '按钮_' : ''}} {{node.label }}</span> -->
                     </span>
                 </el-tree>
             </div>
         </div>
-        <div class="fix-foot">
-            <el-button class="btn" @click="show = false">取 消</el-button>
-            <el-button class="btn" type="primary" @click="submitForm">保 存</el-button>
+        <div class="fix-foot text-right">
+            <el-button @click="show = false">取 消</el-button>
+            <el-button class="ml20" type="primary" @click="submitForm">保 存</el-button>
         </div>
     </el-drawer>
 </template>
@@ -59,7 +58,7 @@ export default {
     methods: {
         showFunc(row) {
 
-            this.title = row.name + ' 权限'
+            this.title = row.name + ' 菜单权限'
             this.roleId = row.id
             this.menuCheckStrictly = true
 
@@ -153,7 +152,7 @@ export default {
     height: 100%;
 }
 .middle {
-    height: calc(100vh - 220px);
+    height: calc(100vh - 144px);
     overflow: auto;
     border: 1px solid #e5e6e7;
 
@@ -168,12 +167,23 @@ export default {
     width: 100%;
     bottom: 0;
     right: 0;
-    padding: 20px 0;
+    padding: 10px 20px 10px 0;
     text-align: center;
     background: #ffffff;
     z-index: 3;
     .btn {
         margin: 0 30px;
+    }
+}
+
+::v-deep .el-drawer__header {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    span {
+        outline: none;
+        font-size: 16px;
+        font-weight: bolder;
+        color: #333;
     }
 }
 </style>

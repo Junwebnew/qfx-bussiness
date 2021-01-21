@@ -4,12 +4,12 @@
         <div class="pad0-30">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-form-item label="线索状态" prop="businessStatusId">
-                    <!-- <el-select v-model="form.businessStatusId" clearable size="small" style="width: 100%">
+                <el-form-item label="线索状态" prop="followStatus">
+                    <!-- <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.businessStatusId == dict.id}" @click=" form.businessStatusId = dict.id">
+                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click=" form.followStatus = dict.id">
                             {{dict.name}}
                         </li>
                     </ul>
@@ -26,7 +26,7 @@
 </template>
 <script>
 
-import { clueMarksUpdate, clueTipsUpdate } from "@/api/center";
+import { clueUpdate } from "@/api/center";
 
 export default {
     props: {
@@ -58,10 +58,9 @@ export default {
     methods: {
         show(obj, tit) {
 
-            this.businessId = obj.id
             this.addTitle = tit || '跟进状态'
 
-            this.form = { businessStatusId: obj.followStatus }
+            this.form = obj
             this.open = true
 
         },
@@ -70,11 +69,7 @@ export default {
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
-                    this.form.businessId = this.businessId
-                    this.form.type = this.type
-                    this.form.remarkContent = '状态变更'
-
-                    clueMarksUpdate(this.form).then(response => {
+                    clueUpdate(this.form).then(response => {
                         this.msgSuccess('变更成功');
                         this.open = false;
                         this.$emit('finish');

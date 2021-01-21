@@ -19,8 +19,8 @@
 
                         <div class="btns">
                             <div @click="readAllfunc">全部已读</div>
-                            <div class='col'>
-                                <router-link to="/system/notice">查看全部</router-link>
+                            <div class='col' @click='goNotice'>
+                                查看全部
                             </div>
                         </div>
                     </el-tab-pane>
@@ -41,8 +41,8 @@
 
                         <div class="btns">
                             <div @click="readAllfunc">全部已读</div>
-                            <div class='col'>
-                                <router-link to="/system/notice">查看全部</router-link>
+                            <div class='col' @click='goNotice'>
+                                查看全部
                             </div>
                         </div>
                     </el-tab-pane>
@@ -155,13 +155,22 @@ export default {
         handleClick() {
 
         },
+        goNotice() {
+            this.$router.push('/center/notice')
+            this.visibleShow = false
+        },
         readAllfunc() {
-            let a = this.noticeArr.map(i => i.id)
-            let ids = this.messageArr.map(i => i.id).concat(a)
-            qmxMsgRead({ ids: ids, status: 1 })
-                .then(res => {
-                    this.initList()
-                })
+
+            if (this.noticeArr && this.noticeArr.length) {
+                let a = this.noticeArr.map(i => i.id)
+                let ids = this.messageArr.map(i => i.id).concat(a)
+                qmxMsgRead({ ids: ids, status: 1 })
+                    .then(res => {
+                        this.initList()
+                    })
+            }
+
+
         }
     }
 }

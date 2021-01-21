@@ -66,11 +66,11 @@
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type='index'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="资源类型" prop="resName"></el-table-column>
-                <el-table-column label="业务类型" prop="vocName"></el-table-column>
-                <el-table-column label="所属商务" prop="orderformUserName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="所属部门" prop="deptId" show-overflow-tooltip></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
+                <el-table-column label="业务类型" prop="vocName" width='120'></el-table-column>
+                <el-table-column label="所属商务" prop="orderformUserName" width='100' show-overflow-tooltip></el-table-column>
+                <el-table-column label="所属部门" prop="deptName" width='100' show-overflow-tooltip></el-table-column>
                 <el-table-column label="成单金额" width="120" prop="orderformPrice" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div>
@@ -86,8 +86,8 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="成单时间" prop="orderformTime" show-overflow-tooltip></el-table-column>
-                <el-table-column label="状态" show-overflow-tooltip>
+                <el-table-column label="成单时间" prop="orderformTime" width='150' show-overflow-tooltip></el-table-column>
+                <el-table-column label="状态" width='60'>
                     <template slot-scope="scope">
                         <div>
                             <el-tag v-if="scope.row.commonStatus" type="success" size='mini'>正常</el-tag>
@@ -95,7 +95,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="160" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button class="col-other" size="mini" type="text" v-hasPermi="['edit']" @click="finishOrderEdit(scope.row)">编辑</el-button>

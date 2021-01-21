@@ -65,22 +65,23 @@
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="tableData" row-key="id">
-                <el-table-column prop="name" label="商标图样">
+            <el-table v-loading="loading" :data="tableData" row-key="id" empty-text='数据处理中，请稍候'>
+
+                <el-table-column prop="name" label="商标图样" width='120'>
                     <template slot-scope="scope">
                         <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col">
-                            <img class="table-img" :src="$getImg(scope.row.preliNoticeTrademarkPic,2) || scope.row.originalGraphicStyle || ''">
+                            <img :src="$getImg(scope.row.preliNoticeTrademarkPic,2) || ''" width="110px">
                         </a>
                     </template>
                 </el-table-column>
-                <el-table-column label="商标名称" show-overflow-tooltip>
+                <el-table-column label="商标名称" width='100' show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTrademarkName || '--'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='110px' align='center'>
+                <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='90px'>
                 </el-table-column>
-                <el-table-column label="国际分类" width='130px' align='center'>
+                <el-table-column label="国际分类" width='90px'>
                     <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTypeOfTrademarkCode}}类-{{scope.row.preliNoticeTypeOfTrademarkName}}</span>
                     </template>
@@ -90,7 +91,7 @@
                         <span>{{scope.row.preliNoticeApplicationNameCn}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column align='center' width='100'>
+                <el-table-column width='100'>
                     <template slot="header" slot-scope="scope">
                         <span class='mr5'>可异议</span>
                         <el-tooltip class="item" effect="dark" content="公告商标与以往注册商标相同+近似对比后的可异议数据结果" placement="top-start">
@@ -101,8 +102,14 @@
                         <span>{{scope.row.objectionCountNum || '--'}}个</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="最新备注" prop='bestNewRemark' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="操作" width='220' align='center'>
+                <el-table-column label="最新备注" prop='bestNewRemark'>
+                    <template slot-scope="scope">
+                        <div class='operation'>
+                            <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width='70' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>

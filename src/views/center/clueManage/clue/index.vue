@@ -52,9 +52,8 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-
                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量分配</el-button>
+                    <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量移交</el-button>
                     <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
@@ -64,17 +63,17 @@
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
                 <!-- <el-table-column label="资源来源"  prop="resourceId" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="资源类型" prop="resName"></el-table-column>
+                <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
                 <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
                 <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="最新备注" prop="remarkContent">
                     <template slot-scope="scope">
                         <div>
-                            <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
+                            <span class="f12">{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
                         </div>
                     </template>
                 </el-table-column>
@@ -82,7 +81,7 @@
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
                             <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
@@ -105,7 +104,7 @@
 </template>
 
 <script>
-import { getClueStatusList, clueMyList, clueEliminate, clueDistribution } from "@/api/center";
+import { getClueStatusList, clueMyList, clueEliminate, clueTransfer } from "@/api/center";
 import { clubModule, distribution, selectVocTpye } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
@@ -261,9 +260,9 @@ export default {
         },
         //选完用户之后
         seleceUserFinish(userId) {
-            clueDistribution({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+            clueTransfer({ clueIds: this.ids, disTraUserId: userId }).then(res => {
 
-                this.msgSuccess('分配成功')
+                this.msgSuccess('移交成功')
                 this.handleQuery()
 
             })

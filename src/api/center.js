@@ -261,3 +261,15 @@ export function bussFinishDiscard(id) {
 export function bussFinishUpdate(data) {
     return $axios.post('opporderform/opportunityOrderForm/saveorupdate', data)
 }
+
+//******************************************************资源统计****************************************
+
+//各个资源总数统计-有电话的
+export function resourceTotalCount(data) {
+    return $axios.post('resource/statistic/alanalysis/resourceTotalCount', data)
+}
+
+//各个资源领取总数统计-有电话的
+export function receiveResourceTotalCount(data) {
+    return $axios.post('resource/statistic/alanalysis/receiveResourceTotalCount', data)
+}

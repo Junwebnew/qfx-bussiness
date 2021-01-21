@@ -75,16 +75,16 @@ export function agencyCancelDetail(id) {
     return $axios.post('resource/agencyCancel/get', '"' + id + '"')
 }
 
-// ********************************************商标驳回 ************************************
+// ********************************************疑似驳回 ************************************
 /**
- * 商标驳回 关联电话分页查询
+ * 疑似驳回 关联电话分页查询
  */
 export function rejectList(data) {
     return $axios.post('resource/reject/page/listForPhone', data)
 }
 
 /**
- * 商标驳回  详情
+ * 疑似驳回  详情
  */
 export function rejectDetail(id) {
     return $axios.post('resource/reject/get', '"' + id + '"')

@@ -76,6 +76,7 @@ export default {
 
                     this.form.businessId = this.businessId
                     this.form.type = this.type
+                    this.form.remindContent = this.form.remarkContent
 
                     Promise.all([
                         clueTipsUpdate(this.form),

@@ -69,6 +69,9 @@ th > .cell {
 .f13 {
   font-size: 13px !important;
 }
+.f14 {
+  font-size: 14px !important;
+}
 .f16 {
   font-size: 16px !important;
 }
@@ -182,7 +185,6 @@ th > .cell {
   color: #fff !important;
   background: red !important;
 }
-pad
 //滚动盒子,设置滚动条样式
 .scroll-box {
   overflow: auto;
@@ -392,6 +394,11 @@ ul::-webkit-scrollbar-thumb {
 .full-height2 {
   min-height: calc(100vh - 172px);
 }
+.backLine {
+  background-color: #edf0f4;
+  height: 10px;
+  width: 100%;
+}
 .custom-box {
   .tit {
     border-bottom: 1px solid #f0f0f0;
@@ -514,4 +521,7 @@ ul::-webkit-scrollbar-thumb {
 }
 .el-form-item--medium .el-form-item__content {
   line-height: 32px;
+}
+.el-image-viewer__close .el-icon-circle-close {
+  color: #fff;
 }

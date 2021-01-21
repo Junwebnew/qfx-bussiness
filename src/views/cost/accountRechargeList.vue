@@ -5,7 +5,7 @@
                 <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="公司名称" prop="orgId">
-                            <el-select v-model="queryParams.orgId" clearable placeholder="请选择" size="small" @keyup.enter.native="handleQuery">
+                            <el-select v-model="queryParams.orgId" style="width:100%" clearable placeholder="请选择" size="small" @keyup.enter.native="handleQuery">
                                 <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
@@ -16,7 +16,7 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="24" :xs="24" align='right'>
                         <el-form-item>
                             <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                             <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -160,7 +160,7 @@ export default {
         getList() {
             this.loading = true;
 
-            rechargeAccountList(this.addDateRange(this.queryParams, this.dateRange, { 'start': 'startDate', 'end': 'endDate' })).then(res => {
+            rechargeAccountList(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
 
                 this.dataList = res.data
                 this.total = res.total
@@ -174,6 +174,7 @@ export default {
             this.getList();
         },
         resetQuery() {
+            this.dateRange = ''
             this.resetForm("queryForm");
             this.handleQuery();
         },

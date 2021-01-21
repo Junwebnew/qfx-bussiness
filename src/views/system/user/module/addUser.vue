@@ -71,7 +71,7 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="管理员">
+                            <el-form-item label="人员类型">
                                 <el-radio-group v-model="form.whetherAdmin">
                                     <el-radio v-for="dict in adminArr" :key="dict.key" :label="dict.value">{{dict.key}}</el-radio>
                                 </el-radio-group>
@@ -168,7 +168,7 @@ export default {
             // 角色选项
             roleOptions: [],
             // 是否管理员选项
-            adminArr: [{ 'key': '是', value: 1 }, { 'key': '否', value: 0 }],
+            adminArr: [{ 'key': '管理员', value: 1 }, { 'key': '普通员工', value: 0 }],
             // 表单参数
             form: {
                 'password': 123456,

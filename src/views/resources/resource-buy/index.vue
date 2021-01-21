@@ -41,10 +41,10 @@
                         <span v-if='scope.row.isEmergency' class='flag'>急</span> <span>{{scope.row.buyInfo}}</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="求购类别" width='200' prop="intclass" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系人" width='200' prop="contact" show-overflow-tooltip></el-table-column>
-                <el-table-column label="创建时间" width='200' prop='createTime' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="操作" width='220'>
+                <el-table-column label="求购类别" width='150' prop="intclass" show-overflow-tooltip></el-table-column>
+                <el-table-column label="联系人" width='250' prop="contact" show-overflow-tooltip></el-table-column>
+                <el-table-column label="创建时间" width='120' prop='createTime' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="操作" width='70' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click=" showDetail(scope.row)">详情</el-button>

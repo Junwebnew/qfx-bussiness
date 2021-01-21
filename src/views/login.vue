@@ -3,12 +3,12 @@
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
             <h3 class="title">权发现商机管理系统</h3>
             <el-form-item prop="username">
-                <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
+                <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号" maxLength='11'>
                     <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
                 </el-input>
             </el-form-item>
             <el-form-item prop="password">
-                <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin">
+                <el-input v-model="loginForm.password" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin" maxLength='31'>
                     <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
                 </el-input>
             </el-form-item>
@@ -58,6 +58,22 @@ import { encrypt, decrypt } from '@/utils/jsencrypt'
 export default {
     name: "Login",
     data() {
+
+        var validateUseName = (rule, value, callback) => {
+
+            let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
+
+            if (value === '') {
+                callback(new Error('用户名不能为空'))
+            }
+            else if (emojiTest.test(value)) {
+                callback(new Error('不能输入表情符号'))
+            }
+            else {
+                callback()
+            }
+        }
+
         return {
             codeUrl: "",
             cookiePassword: "",
@@ -70,7 +86,7 @@ export default {
             },
             loginRules: {
                 username: [
-                    { required: true, trigger: "blur", message: "用户名不能为空" }
+                    { validator: validateUseName, trigger: "blur" },
                 ],
                 password: [
                     { required: true, trigger: "blur", message: "密码不能为空" }

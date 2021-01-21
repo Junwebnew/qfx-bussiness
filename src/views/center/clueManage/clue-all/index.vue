@@ -68,25 +68,27 @@
             <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName"></el-table-column>
-                <el-table-column label="资源类型" prop="resName"></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
+                <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
                 <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="所属商务" prop="counselorName" show-overflow-tooltip></el-table-column>
-                <el-table-column label="所属部门" prop="deptId" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="所属商务" prop="counselorName" width='100' show-overflow-tooltip></el-table-column>
+                <el-table-column label="所属部门" prop="deptName" width='100' show-overflow-tooltip></el-table-column>
+                <el-table-column label="最新备注" prop="remarkContent">
                     <template slot-scope="scope">
                         <div>
-                            <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
+                            <span class="f12">{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
-                            <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
+                            <template v-if="whetherAdmin">
+                                <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                                <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
+                            </template>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
                     </template>
@@ -105,7 +107,7 @@
 </template>
 
 <script>
-import { getClueStatusList, clueList, clueEliminate, clueTransfer } from "@/api/center";
+import { getClueStatusList, clueList, clueEliminate, clueDistribution } from "@/api/center";
 import { clubModule, distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
@@ -275,9 +277,9 @@ export default {
         },
         //选完用户之后
         seleceUserFinish(userId) {
-            clueTransfer({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+            clueDistribution({ clueIds: this.ids, disTraUserId: userId }).then(res => {
 
-                this.msgSuccess('移交成功')
+                this.msgSuccess('分配成功')
                 this.handleQuery()
 
             })

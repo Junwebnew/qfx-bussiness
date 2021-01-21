@@ -47,6 +47,8 @@
                                     {{json.contactQq || '--'}}
                                 </div>
                             </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系微信：</span>
                                 <div class="custom-r">
@@ -71,6 +73,8 @@
                                     {{json.deptId || '--'}}
                                 </div>
                             </el-col>
+                        </el-row>
+                        <el-row :gutter="20">
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">线索状态：</span>
                                 <div class="custom-r">
@@ -154,6 +158,7 @@
 import { clueDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
 import { addMarks, addTimeTips, changeStatus, selectVocTpye } from '../_module'
+import { deepClone } from '@/utils/index'
 
 export default {
     components: {
@@ -245,19 +250,19 @@ export default {
         },
         //状态变更
         handleChange() {
-            this.$refs.changeStatus.show(this.json)
+            this.$refs.changeStatus.show(deepClone(this.json))
         },
         //业务类型变更.，转为商机
         vocTpyeChange() {
-            this.$refs.selectVocTpye.show(this.json)
+            this.$refs.selectVocTpye.show(deepClone(this.json))
         },
         //增加备注
         handleAddMarks() {
-            this.$refs.addMarks.show(this.json)
+            this.$refs.addMarks.show(deepClone(this.json))
         },
         //新增时间提醒
         handleAddTips() {
-            this.$refs.addTimeTips.show(this.json)
+            this.$refs.addTimeTips.show(deepClone(this.json))
         }
     }
 }

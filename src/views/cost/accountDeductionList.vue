@@ -1,30 +1,11 @@
 <template>
     <div class="app-container">
         <div class="back-fff pad20-20-0 mb10" v-show="showSearch && superAdmin">
-            <!-- <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" @submit.native.prevent>
-                <el-form-item label="公司名称" prop="name">
-                    <el-select v-model="queryParams.orgId" clearable placeholder="请选择" @keyup.enter.native="handleQuery">
-                        <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                
-                <el-col :lg="6" :sm="12" :xs="24">
-                    <el-form-item label="抵扣时间" prop="time" >
-                        <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-                    </el-form-item>
-                </el-col>
-                <el-form-item>
-                    <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                </el-form-item>
-            </el-form> -->
-
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
-                <el-row :gutter="20" class="mb20">
+                <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="公司名称" prop="orgId" v-if="superAdmin">
-                            <el-select v-model="queryParams.orgId" size="small" clearable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
+                            <el-select v-model="queryParams.orgId" size="small" clearable filterable placeholder="请选择" @keyup.enter.native="handleQuery" style="width:100%">
                                 <el-option v-for="item in deptList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
@@ -59,12 +40,12 @@
 
             <el-table v-loading="loading" :data="dataList">
                 <el-table-column prop="orgName" label="公司名称"></el-table-column>
-                <el-table-column label="模块名称" prop="moduleName" width="200"></el-table-column>
-                <el-table-column label="电话号码" prop="phone" width="200"></el-table-column>
-                <el-table-column label="用户名称" prop="userId" width="200"></el-table-column>
-                <el-table-column label="抵扣次数" prop="deductionNumber" width="200"></el-table-column>
-                <el-table-column label="剩余次数" prop="createTime" width="200"></el-table-column>
-                <el-table-column label="抵扣时间" prop="createTime" width="200"></el-table-column>
+                <el-table-column label="资源类型" prop="moduleName" width="120"></el-table-column>
+                <el-table-column label="电话号码" prop="phone" width="120"></el-table-column>
+                <el-table-column label="用户名称" prop="name" width="100"></el-table-column>
+                <el-table-column label="抵扣次数" prop="deductionNumber" width="100"></el-table-column>
+                <el-table-column label="剩余次数" prop="accountNumber" width="140"></el-table-column>
+                <el-table-column label="抵扣时间" prop="createTime" width="180"></el-table-column>
             </el-table>
 
             <!-- 分页 -->
@@ -187,13 +168,13 @@ export default {
             this.loading = true;
 
             if (this.resourceType && this.resourceType.length) {
-                this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+                this.queryParams.moduleCode = this.resourceType[this.resourceType.length - 1]
             }
             else {
-                this.queryParams.resourceType = ''
+                this.queryParams.moduleCode = ''
             }
 
-            costAccountList(this.addDateRange(this.queryParams, this.dateRange, { 'start': 'startDate', 'end': 'endDate' })).then(res => {
+            costAccountList(this.addDateRange(this.queryParams, this.dateRange)).then(res => {
 
                 this.dataList = res.data
                 this.total = res.total

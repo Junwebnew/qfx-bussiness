@@ -50,21 +50,21 @@
                 <el-table-column type='index'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系电话" prop='contactPhone'> </el-table-column>
-                <el-table-column label="商机状态" prop="followStatusName"></el-table-column>
+                <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="商机状态" prop="followStatusName" width='120'></el-table-column>
                 <!-- <el-table-column label="资源来源"  prop="resourceId" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="资源类型" prop="resName"></el-table-column>
-                <el-table-column label="业务类型" prop="vocName"></el-table-column>
+                <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
+                <el-table-column label="业务类型" prop="vocName" width='120'></el-table-column>
                 <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <span>{{scope.row.createTime}}_{{scope.row.remarkContent}}</span>
+                            <span class="f12">{{scope.row.createTime}}_{{scope.row.remarkContent}}</span>
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="center" width="70" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
                             <template v-if="isReve( scope.row.followStatus )">

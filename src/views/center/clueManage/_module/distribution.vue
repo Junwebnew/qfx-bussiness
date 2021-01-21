@@ -38,7 +38,6 @@
 <script>
 
 import { qmxUserList } from "@/api/system/user";
-import { clueDistribution } from "@/api/center";
 import { mapGetters } from 'vuex'
 
 export default {

@@ -57,7 +57,7 @@
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
                         <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用次数</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">修改试用天数</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">增加试用天数</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -71,12 +71,12 @@
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="name">
-                            <el-input v-model="form.name" disabled />
+                            <el-input v-model="form.name" disabled style="width:250px" />
                         </el-form-item>
                     </el-col>
                     <el-col :span='24'>
                         <el-form-item label="最大人员数量" prop="subAccountNumber">
-                            <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量"></el-input-number>
+                            <el-input-number v-model="form.subAccountNumber" :min="1" :max="100000" label="数量" style="width:250px"></el-input-number>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -92,12 +92,12 @@
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="name">
-                            <el-input v-model="formDays.name" disabled />
+                            <el-input v-model="formDays.name" disabled style="width:250px" />
                         </el-form-item>
                     </el-col>
                     <el-col :span='24'>
                         <el-form-item label="试用天数" prop="days">
-                            <el-input-number v-model="formDays.days" :min="1" :max="100000" label="数量"></el-input-number>
+                            <el-input-number v-model="formDays.days" :min="1" :max="100000" label="数量" style="width:250px"></el-input-number>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -113,12 +113,12 @@
                 <el-row>
                     <el-col :span='24'>
                         <el-form-item label="客户名称" prop="name">
-                            <el-input v-model="formNum.name" disabled />
+                            <el-input v-model="formNum.name" disabled style="width:250px" />
                         </el-form-item>
                     </el-col>
                     <el-col :span='24'>
                         <el-form-item label="试用次数" prop="num">
-                            <el-input-number v-model="formNum.num" :min="1" :max="100000" label="数量"></el-input-number>
+                            <el-input-number v-model="formNum.num" :min="1" :max="100000" label="数量" style="width:250px"></el-input-number>
                         </el-form-item>
                     </el-col>
                 </el-row>

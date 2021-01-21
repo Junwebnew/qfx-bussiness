@@ -125,7 +125,7 @@
                         </el-table-column>
                         <el-table-column label="部门" align="center" prop="organizationName" :show-overflow-tooltip="true" />
                         <el-table-column label="手机号码" align="center" prop="mobile" width="120" />
-                        <el-table-column label="审核状态" align="center">
+                        <el-table-column label="审核状态" align="center" width="80">
                             <template slot-scope="scope">
                                 <!-- <span>{{returnStatusName(scope.row.checkStatus)}}</span> -->
                                 <el-tag v-if="scope.row.checkStatus == 0" type='warning' size="mini">审核中</el-tag>
@@ -133,9 +133,10 @@
                                 <el-tag v-else-if="scope.row.checkStatus == 2" type="danger" size="mini">审核失败</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column label="状态" align="center">
+                        <el-table-column label="状态" align="left" width="80">
                             <template slot-scope="scope">
-                                <el-switch disabled v-model="scope.row.commonStatus" :active-value="1" :inactive-value="0" @change="handleStatusChange(scope.row)"></el-switch>
+                                <!-- <el-switch disabled v-model="scope.row.commonStatus" :active-value="1" :inactive-value="0" @change="handleStatusChange(scope.row)"></el-switch> -->
+                                <span :class=" scope.row.commonStatus ? 'status-flag status-success' :  'status-flag status-err' "> {{ scope.row.commonStatus　? '正常' : '禁用'}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="创建时间" align="center" prop="createTime" width="160">
@@ -143,7 +144,7 @@
                                 <span>{{ parseTime(scope.row.createTime) }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                        <el-table-column label="操作" align="left" width="170" class-name="small-padding fixed-width" fixed="right">
                             <template slot-scope="scope">
                                 <el-button class="col-update" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
                                 <el-button class="col-del" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
@@ -709,5 +710,33 @@ export default {
 }
 .l-b {
     padding: 0 20px 20px;
+}
+.status-flag {
+    position: relative;
+    display: inline-block;
+    padding-left: 12px;
+    font-size: 13px;
+    &::before {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 6px;
+        height: 6px;
+        margin-top: -3px;
+        background: #d9d9d9;
+        border-radius: 50%;
+        content: " ";
+        color: rgba(0, 0, 0, 0.65);
+    }
+    &.status-success {
+        &::before {
+            background: #52c41a;
+        }
+    }
+    &.status-err {
+        &::before {
+            background: #f5222d;
+        }
+    }
 }
 </style>
