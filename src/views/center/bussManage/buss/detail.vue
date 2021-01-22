@@ -56,7 +56,7 @@
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属商务：</span>
                                 <div class="custom-r">
-                                    {{json.counselorId || '--'}}
+                                    {{json.counselorName || '--'}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">

@@ -96,7 +96,7 @@
             <!-- 新增和修改    -->
             <clubModule ref='clubModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
+            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' showStr='移交' />
             <!-- 转为商机 -->
             <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='getList' />
         </div>
@@ -220,12 +220,12 @@ export default {
         handleSelectionChange(selection) {
             this.ids = selection.map(item => item.id)
         },
-        //分配
+        //移交
         handleDistribution(obj) {
-            let tit = '线索批量分配'
+            let tit = '线索批量移交'
             if (obj) {
                 this.ids = [obj.id]
-                tit = obj.customerName + "线索分配"
+                tit = obj.customerName + "线索移交"
             }
             this.$refs.distribution.show({}, tit)
         },

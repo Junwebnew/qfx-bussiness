@@ -56,7 +56,7 @@
             </el-row>
 
             <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-                <el-table-column type="type" width="55" align="center" />
+                <el-table-column type="index" width="55" align="center" />
                 <el-table-column label="系统模块" align="center" prop="eventModule" />
                 <el-table-column label="事件类型" align="center" prop="eventType" :formatter="eventFormat" />
                 <!-- <el-table-column label="请求方式" align="center" prop="requestMethod" /> -->
@@ -127,7 +127,7 @@
                     </el-col>
 
                     <el-col :span="24">
-                        <el-form-item label="错误信息：">{{ form.error_msg ||'无'}}</el-form-item>
+                        <el-form-item label="错误信息：">{{ form.errorMsg ||'无'}}</el-form-item>
                     </el-col>
 
                 </el-row>

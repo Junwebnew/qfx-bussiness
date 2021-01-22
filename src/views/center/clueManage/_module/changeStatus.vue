@@ -9,7 +9,7 @@
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click=" form.followStatus = dict.id">
+                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="form.followStatus = dict.id">
                             {{dict.name}}
                         </li>
                     </ul>
@@ -47,10 +47,12 @@ export default {
             open: false,
             addTitle: '跟进状态',
             form: { businessStatusId: '' },
+            followStatus: '',//选中的状态
             // 表单校验
             rules: {
-                businessStatusId: [
-                    { required: true, message: "状态不能为空", trigger: "blur" }
+                followStatus: [
+                    // { required: true, message: "状态不能为空", trigger: "blur" }
+                    { required: true, validator: this.validStatus, trigger: "blur" },
                 ]
             }
         }
@@ -61,11 +63,24 @@ export default {
             this.addTitle = tit || '跟进状态'
 
             this.form = obj
+            this.followStatus = obj.followStatus
+
             this.open = true
 
         },
+        validStatus(rule, value, callback) {
+
+            if (value == this.followStatus) {
+                callback(new Error('请先改变线索状态'))
+            }
+            else {
+
+                callback()
+            }
+        },
         /** 提交按钮 */
         submitForm: function () {
+
             this.$refs["form"].validate(valid => {
                 if (valid) {
 

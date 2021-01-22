@@ -118,7 +118,7 @@
                 <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width="150" fixed="right">
                     <template slot-scope="scope">
                         <el-button class="col-update" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
-                        <el-button class="col-del" v-if="scope.row.id != '1' && scope.row.id != '2' " size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
+                        <el-button class="col-del" v-if=" scope.row.id != '1' && scope.row.id != '11' " size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
                         <el-button class="col-other" size="mini" type="text" @click="showSideMenu(scope.row)" v-hasPermi="['t-auts']">授权</el-button>
                     </template>
                 </el-table-column>

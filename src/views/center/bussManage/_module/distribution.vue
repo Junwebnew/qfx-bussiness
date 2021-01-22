@@ -1,6 +1,6 @@
 <template>
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="600px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
         <div class="pad0-20">
             <div>
                 <el-form label-width="80px" @submit.native.prevent>

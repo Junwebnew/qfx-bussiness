@@ -27,7 +27,7 @@
                                 </div>
                             </el-col>
                             <el-col :lg="24" :sm="24" :xs="24">
-                                <span class="custom-label">社会信用代码或身份证号：</span>
+                                <span class="custom-label">社会信用代码：</span>
                                 <div class="custom-r">
                                     {{json.creditCode || '--'}}
                                 </div>

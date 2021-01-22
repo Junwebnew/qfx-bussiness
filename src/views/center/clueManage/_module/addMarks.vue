@@ -65,12 +65,15 @@ export default {
             this.businessId = obj.id
             this.addTitle = tit || '新增备注'
 
-            this.form = { businessStatusId: obj.followStatus, remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
+            // this.form = { businessStatusId: obj.followStatus, remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
             this.open = true
 
         },
         /** 提交按钮 */
         submitForm: function () {
+
+            let that = this
+
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
@@ -78,10 +81,17 @@ export default {
                     this.form.type = this.type
                     this.form.remindContent = this.form.remarkContent
 
+                    function isNeedTips() {
+                        if (that.form.remindDate) {
+                            return clueTipsUpdate(that.form)
+                        }
+                        return []
+                    }
                     Promise.all([
-                        clueTipsUpdate(this.form),
+                        isNeedTips(),
                         clueMarksUpdate(this.form)
                     ]).then(res => {
+                        console.log('9999', res)
                         this.msgSuccess('新增成功');
                         this.open = false;
                         this.$emit('finish');

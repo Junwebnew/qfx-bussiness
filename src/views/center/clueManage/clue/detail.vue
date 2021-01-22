@@ -22,7 +22,7 @@
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="12" :xs="24" class="mb16">
                                 <span class="custom-label">客户名称：</span>
                                 <div class="custom-r">
                                     {{json.customerName || '--'}}
@@ -41,14 +41,14 @@
                                     {{json.contactPhone}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">联系QQ：</span>
-                                <div class="custom-r">
-                                    {{json.contactQq || '--'}}
-                                </div>
-                            </el-col>
                         </el-row>
                         <el-row :gutter="20">
+                            <el-col :sm="12" :xs="24" class="mb16">
+                                <span class="custom-label">申请人名称：</span>
+                                <div class="custom-r">
+                                    {{json.applicantName || '--'}}
+                                </div>
+                            </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系微信：</span>
                                 <div class="custom-r">
@@ -56,25 +56,24 @@
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">所属商务：</span>
+                                <span class="custom-label">联系QQ：</span>
                                 <div class="custom-r">
-                                    {{json.counselorId || '--'}}
+                                    {{json.contactQq || '--'}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">申请人名称：</span>
+                                <span class="custom-label">所属商务：</span>
                                 <div class="custom-r">
-                                    {{json.applicantName || '--'}}
+                                    {{json.counselorName || '--'}}
                                 </div>
                             </el-col>
+
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属部门：</span>
                                 <div class="custom-r">
                                     {{json.deptId || '--'}}
                                 </div>
                             </el-col>
-                        </el-row>
-                        <el-row :gutter="20">
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">线索状态：</span>
                                 <div class="custom-r">
@@ -93,13 +92,16 @@
                                     {{json.resName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                        </el-row>
+                        <el-row :gutter="20">
+
+                            <!-- <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">业务类型：</span>
                                 <div class="custom-r">
                                     {{json.vocName || '--'}}
                                 </div>
-                            </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            </el-col> -->
+                            <el-col :sm="24" :xs="24" class="mb16">
                                 <span class="custom-label">线索说明：</span>
                                 <div class="custom-r">
                                     {{json.busexplain || '--'}}
@@ -132,11 +134,16 @@
                                                 <small>{{item.remarkDate}}</small>
                                             </p>
                                             <div class="desc">
-                                                <small class="b">{{item.userName}}</small> <small>{{item.remarkContent}}</small>
+                                                <small class="b">{{item.userName}}</small>
+                                                <small class="col">{{returnType(item.operationValue)}}</small>
+                                                <small>{{item.remarkContent}}</small>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
+
+                                <!-- 分页 -->
+                                <pagination v-show="total>0" :total="total" :page.sync="marksQuery.pageNum" :limit.sync="marksQuery.pageSize" layout='total, prev, pager, next' @pagination="getmarks" :autoScroll='false' />
                             </el-col>
                         </el-row>
                     </div>
@@ -176,19 +183,37 @@ export default {
             resourceTypeArr: [],
             //业务类型
             vocIdArr: [],
+            //备注查询
+            marksQuery: {
+                businessId: '',
+                pageNum: 1,
+                pageSize: 10,
+                type: 1
+            },
+            //备注的类型
+            marksTypeArr: [],
+            //备注列表
             marksList: [],
+            //备注总数
+            total: 0,
             showBtns: true
         }
     },
     watch: {
         $route(now) {
             if ('clue-detail' == now.name && this.json.id != now.query.id) {
+
+                this.marksQuery.businessId = now.query.id
+
                 this.initPage(now.query.id)
             }
         }
     },
     created() {
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+
+        this.marksQuery.businessId = this.$route.query.id
+
+        this.initPage()
 
         this.showBtns = this.$route.query.btn ? false : true
 
@@ -200,26 +225,30 @@ export default {
             this.vocIdArr = res
         })
 
+        this.qmxDataKey().then(res => {
+            // console.log('0000', res)
+            this.marksTypeArr = res['followRecordOperValueEnumList']
+        })
+
     },
     methods: {
-        initPage(id) {
-
-            id = id || this.json.id
-
-            clueDetail(id)
+        initPage() {
+            clueDetail(this.marksQuery.businessId)
                 .then(res => {
                     this.title = (res.data.customerName || '') + ' 线索详情页'
                     this.json = res.data
                 })
-            this.getmarks(id)
+            this.getmarks()
         },
-        getmarks(id) {
-            id = id || this.json.id
+        getmarks() {
+
             this.markLoading = true
-            clueMarksList({ businessId: id, pageNum: 1, pageSize: 100, type: 1 }).then(res => {
+            clueMarksList(this.marksQuery).then(res => {
                 this.marksList = res.data
+                this.total = res.total
                 this.markLoading = false
             })
+
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")
@@ -228,12 +257,12 @@ export default {
             }
             return str ? str.split(",") : ["--"];
         },
-        //替换del标签
-        replaceDel(item) {
-            if (item) {
-                return item.replace(/<(del|\/del).*?>/g, '')
+        //操作类型
+        returnType(id) {
+            if (this.marksTypeArr && this.marksTypeArr.length) {
+                return (this.marksTypeArr.filter(i => i.value == id))[0].key
             }
-            return ''
+
         },
         getResourse(row) {
 

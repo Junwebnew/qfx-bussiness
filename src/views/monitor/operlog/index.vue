@@ -8,9 +8,9 @@
                 <el-form-item label="操作人员" prop="creatorName">
                     <el-input v-model="queryParams.creatorName" placeholder="请输入操作人员" clearable style="width: 240px;" size="small" @keyup.enter.native="handleQuery" />
                 </el-form-item>
-                <el-form-item label="操作类型" prop="eventTypeList">
-                    <el-select v-model="queryParams.eventTypeList" placeholder="操作类型" multiple clearable size="small" style="width: 240px">
-                        <el-option v-for="dict in typeOptions" :key="dict.value" :label="dict.key" :value="dict.value" />
+                <el-form-item label="系统模块" prop="eventModuleList">
+                    <el-select v-model="queryParams.eventModuleList" placeholder="操作类型" multiple clearable size="small" style="width: 240px">
+                        <el-option v-for="dict in typeOptions" :key="dict.key" :label="dict.key" :value="dict.key" />
                     </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="状态" prop="status">
@@ -46,7 +46,7 @@
             </el-row>
 
             <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-                <el-table-column type="type" width="55" align="center" />
+                <el-table-column type="index" width="55" align="center" />
                 <el-table-column label="系统模块" align="center" prop="eventModule" />
                 <el-table-column label="事件类型" align="center" prop="eventType" :formatter="eventFormat" />
                 <!-- <el-table-column label="请求方式" align="center" prop="requestMethod" /> -->
@@ -117,7 +117,7 @@
                     </el-col>
 
                     <el-col :span="24">
-                        <el-form-item label="错误信息：">{{ form.error_msg ||'无'}}</el-form-item>
+                        <el-form-item label="错误信息：">{{ form.errorMsg ||'无'}}</el-form-item>
                     </el-col>
 
                 </el-row>
@@ -174,14 +174,16 @@ export default {
     created() {
 
         this.qmxDataKey().then(res => {
-            // console.log(123, res)
+            console.log(123, res)
             let none = ['登录', '退出登录', '退出']
 
             this.typeOptions = res['businessModuleList'].filter(i => !none.includes(i.key))
 
-            this.eventTypeStatus = res['businessModuleList']
+            this.eventTypeStatus = res['businessTypeList']
 
             this.statusOptions = res['businessStatusList']
+
+            // businessTypeList
 
             this.getList();
 
