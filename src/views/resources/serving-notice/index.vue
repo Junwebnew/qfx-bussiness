@@ -181,7 +181,7 @@ export default {
 
             this.loading = true;
 
-            // this.queryParams.noticeNumber = this.activeNum
+            this.queryParams.noticeNumber = this.activeNum
 
             noticeArriveList(this.queryParams).then(response => {
                 this.tableData = response.data;

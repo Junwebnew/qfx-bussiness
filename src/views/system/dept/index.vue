@@ -53,14 +53,14 @@
             <el-table v-loading="loading" :data="deptList" row-key="id" default-expand-all :tree-props="treePros">
                 <el-table-column prop="name" label="部门名称"></el-table-column>
                 <!-- <el-table-column prop="orderNum" label="排序" width="200"></el-table-column> -->
-                <el-table-column prop="status" label="状态" :formatter="statusFormat"></el-table-column>
-                <el-table-column prop="type" label="类型" :formatter="typeFormat"></el-table-column>
-                <el-table-column label="创建时间" align="center" prop="createTime" width="200">
+                <el-table-column prop="status" label="状态" width='70' :formatter="statusFormat"></el-table-column>
+                <el-table-column prop="type" label="类型" width='70' :formatter="typeFormat"></el-table-column>
+                <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                     <template slot-scope="scope">
                         <span>{{ scope.row.createTime }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='220px' fixed="right">
+                <el-table-column label="操作" align="left" class-name="small-padding fixed-width" width='180' fixed="right">
                     <template slot-scope="scope">
                         <el-button class="col-add" size="mini" type="text" @click="handleAdd(scope.row)" v-hasPermi="['t-add']">新增下级部门</el-button>
                         <el-button class="col-update" v-if="isShowUpdate(scope.row,scope.$index)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>

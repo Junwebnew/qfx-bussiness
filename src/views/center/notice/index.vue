@@ -16,7 +16,7 @@
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
-                                    <p @click="getMore('n1')" class="col more text-center" v-if='pageNum.n1 * pageSize < total.n1'>加载更多</p>
+                                    <p @click="getMore('n1')" class="col more text-center mt20" v-if='pageNum.n1 * pageSize < total.n1'>加载更多 <i class="el-icon-more"></i></p>
                                     <p class="more text-center" v-else>加载完毕</p>
                                 </div>
 
@@ -38,7 +38,7 @@
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
-                                    <p @click="getMore('n2')" class="col more text-center" v-if='pageNum.n2 * pageSize < total.n2'>加载更多</p>
+                                    <p @click="getMore('n2')" class="col more text-center mt20" v-if='pageNum.n2 * pageSize < total.n2'>加载更多 <i class="el-icon-more"></i> </p>
                                     <p class="more text-center" v-else>加载完毕</p>
                                 </div>
 
@@ -184,6 +184,7 @@ export default {
             line-height: 22px;
             color: rgba(0, 0, 0, 0.7);
             font-size: 14px;
+            margin: 10px 0;
         }
         small {
             color: rgba(0, 0, 0, 0.25);

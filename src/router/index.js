@@ -30,9 +30,11 @@ export const constantRoutes = [
         path: "/redirect",
         component: Layout,
         hidden: true,
+        meta: { noCache: true },
         children: [
             {
                 path: "/redirect/:path(.*)",
+                meta: { noCache: true },
                 component: (resolve) => require(["@/views/redirect"], resolve),
             },
         ],
@@ -641,14 +643,14 @@ export const asyncAllRoutes = [
                 path: "resource-buy",
                 hidden: false,
                 component: "resources/resource-buy/index",
-                meta: { title: "客户求购", noCache: true },
+                meta: { title: "客户求购", noCache: false },
             },
             {
                 name: "serving-notice",
                 path: "serving-notice",
                 hidden: false,
                 component: "resources/serving-notice/index",
-                meta: { title: "送达公告", noCache: true },
+                meta: { title: "送达公告", noCache: false },
             },
             {
                 name: "serving-notice-detail",

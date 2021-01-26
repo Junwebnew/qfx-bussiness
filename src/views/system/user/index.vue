@@ -7,7 +7,7 @@
                     <div class="head-container">
                         <el-input ref='tree' v-model="deptName" placeholder="请输入部门名称" clearable size="small" prefix-icon="el-icon-search" style="margin-bottom: 20px" />
                     </div>
-                    <div class="head-container">
+                    <div class="tree-box">
                         <el-tree highlight-current :data="deptOptions" :props="defaultProps" :expand-on-click-node="false" :filter-node-method="filterNode" ref="tree" default-expand-all @node-click="handleNodeClick">
                             <div class="custom-tree-node text-delic" slot-scope="{ node}">
                                 <span :title="node.label ">{{ node.label }}</span>
@@ -703,6 +703,10 @@ export default {
     min-height: calc(100vh - 94px);
     padding: 20px 10px;
     margin-right: 10px;
+    .tree-box {
+        height: calc(100% - 54px);
+        overflow-y: auto;
+    }
 }
 .l-m,
 .l-t {

@@ -1,12 +1,20 @@
 <!-- @author ruoyi 20201128 支持三级以上菜单缓存 -->
 <template>
     <section class="app-main">
-        <transition name="fade-transform" mode="out-in">
-            <!-- <keep-alive :max="20" :exclude="notCacheName">
+        <!-- <transition name="fade-transform" mode="out-in">
+            <keep-alive :max="20" :exclude="notCacheName">
                 <router-view :key="key" />
-            </keep-alive> -->
+            </keep-alive>
             <router-view :key="key" />
+        </transition> -->
+
+        <transition name="fade-transform" mode="out-in">
+            <keep-alive v-if="!$route.meta.noCache">
+                <router-view :key="key" />
+            </keep-alive>
+            <router-view v-else :key="key" />
         </transition>
+
     </section>
 </template>
 
@@ -41,9 +49,8 @@ export default {
         getVnode() {
             // 判断子集非空
             if (this.$children.length == 0) return false;
-
-            // console.log('9999子组件9999', this.$children)
             let vnode;
+
             for (let item of this.$children) {
                 // 如果data中有key则代表找到了keep-alive下面的子集，这个key就是router-view上的key
                 if (item.$vnode.data.key) {
@@ -51,6 +58,7 @@ export default {
                     break;
                 }
             }
+            console.log('9999子组件9999', vnode)
             return vnode ? vnode : false;
         },
         // 移除keep-alive缓存

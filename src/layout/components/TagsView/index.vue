@@ -1,9 +1,9 @@
 <template>
     <div id="tags-view-container" class="tags-view-container">
         <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-            <router-link to='/index' :class="{'active': isActive('index'),'tags-view-item':true}" @contextmenu.prevent.native="openTabShow(indexItem,$event)">
+            <!-- <router-link to='/index' :class="{'active': isActive('index'),'tags-view-item':true}" @contextmenu.prevent.native="openTabShow(indexItem,$event)">
                 首页
-            </router-link>
+            </router-link> -->
             <router-link v-for="(item,index) in tagsList" :to="item.fullPath" :class="{'active': isActive(item.name),'tags-view-item':true}" :key="index" @contextmenu.prevent.native="openTabShow(item,$event)">
                 {{ item.title }}
                 <span class="el-icon-close" @click.prevent.stop="closeTags(index)" />
@@ -99,7 +99,7 @@ export default {
                 ? this.tagsList[index]
                 : this.tagsList[index - 1];
             if (item) {
-                delItem.path === this.$route.fullPath && this.$router.push(item.path);
+                delItem.fullPath === this.$route.fullPath && this.$router.push(item.fullPath);
             } else {
                 this.$router.push("/");
             }
@@ -123,7 +123,7 @@ export default {
                 }
             }
             this.tagsList = arr
-            this.$router.push(this.selectedTag.path);
+            this.$router.push(this.selectedTag.fullPath);
         },
         // 关闭其他标签
         closeOther() {

@@ -1,58 +1,59 @@
 <template>
-    <div class="messPart">
-        <el-popover placement="bottom-end" trigger="click" @show='initList' v-model="visibleShow">
-            <div class="messBox">
-                <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane :label="noticeStr" name="n1">
-                        <div class="listBox">
-                            <ul v-show='noticeNum > 0 '>
-                                <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
-                                    <h3>{{item.title}}</h3>
-                                    <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
-                                    <small>{{item.createTime}}</small>
-                                </li>
-                            </ul>
-                            <div v-show='noticeNum == 0 ' class="noneMsg">
-                                暂无相关公告
-                            </div>
-                        </div>
 
-                        <div class="btns">
-                            <div @click="readAllfunc">全部已读</div>
-                            <div class='col' @click='goNotice'>
-                                查看全部
-                            </div>
+    <el-popover placement="bottom-end" trigger="click" @show='initList' v-model="visibleShow">
+        <div class="messBox">
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane :label="noticeStr" name="n1">
+                    <div class="listBox">
+                        <ul v-show='noticeNum > 0 '>
+                            <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                <h3>{{item.title}}</h3>
+                                <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
+                                <small>{{item.createTime}}</small>
+                            </li>
+                        </ul>
+                        <div v-show='noticeNum == 0 ' class="noneMsg">
+                            暂无相关公告
                         </div>
-                    </el-tab-pane>
-                    <el-tab-pane :label="messageStr" name="n2">
+                    </div>
 
-                        <div class="listBox">
-                            <ul v-show='messageNum > 0 '>
-                                <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
-                                    <h3> {{item.title}}</h3>
-                                    <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
-                                    <small>{{item.createTime}}</small>
-                                </li>
-                            </ul>
-                            <div v-show='messageNum == 0 ' class="noneMsg">
-                                暂无相关消息
-                            </div>
+                    <div class="btns">
+                        <div @click="readAllfunc">全部已读</div>
+                        <div class='col' @click='goNotice'>
+                            查看全部
                         </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane :label="messageStr" name="n2">
+                    <div class="listBox">
+                        <ul v-show='messageNum > 0 '>
+                            <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                <h3> {{item.title}}</h3>
+                                <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
+                                <small>{{item.createTime}}</small>
+                            </li>
+                        </ul>
+                        <div v-show='messageNum == 0 ' class="noneMsg">
+                            暂无相关消息
+                        </div>
+                    </div>
 
-                        <div class="btns">
-                            <div @click="readAllfunc">全部已读</div>
-                            <div class='col' @click='goNotice'>
-                                查看全部
-                            </div>
+                    <div class="btns">
+                        <div @click="readAllfunc">全部已读</div>
+                        <div class='col' @click='goNotice'>
+                            查看全部
                         </div>
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
-            <el-badge :value="msgNum" class="item-num" slot="reference">
-                <svg-icon icon-class="email" />
-            </el-badge>
-        </el-popover>
-    </div>
+                    </div>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+        <el-badge :value="msgNum" class="item-num" slot="reference">
+            <!-- <svg-icon icon-class="email" /> -->
+            <!-- <i class="el-icon-message"></i> -->
+            <i class="el-icon-chat-dot-round"></i>
+        </el-badge>
+    </el-popover>
+
 </template>
 
 <script>
@@ -169,18 +170,15 @@ export default {
                         this.initList()
                     })
             }
-
-
         }
     }
 }
 </script>
 <style lang="scss" scoped>
-.messPart {
-    display: inline-block;
-}
 .item-num {
-    line-height: 1.5em;
+    // line-height: 1.5em;
+    vertical-align: revert;
+    line-height: 1.5;
 }
 .messBox {
     width: 300px;

@@ -1,7 +1,7 @@
 <template>
     <div class="navbar">
         <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
+        <div class="refresh hamburger-container" style="padding: 0 10px;" @click="refreshFunc"> <i class="el-icon-refresh-right"></i> </div>
         <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
         <div class="right-menu">
@@ -92,6 +92,13 @@ export default {
     methods: {
         toggleSideBar() {
             this.$store.dispatch('app/toggleSideBar')
+        },
+        refreshFunc() {
+            this.$nextTick(() => {
+                this.$router.replace({
+                    path: '/redirect' + this.$route.fullPath
+                })
+            })
         },
         async logout() {
             this.$confirm('确定注销并退出系统吗？', '提示', {
@@ -195,6 +202,14 @@ export default {
                 }
             }
         }
+    }
+}
+//刷新
+.refresh {
+    i {
+        font-size: 22px;
+        display: inline-block;
+        vertical-align: middle;
     }
 }
 </style>

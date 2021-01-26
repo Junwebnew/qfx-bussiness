@@ -1,6 +1,7 @@
 <template>
     <div>
-        <svg-icon icon-class="international" @click="goto" />
+        <!-- <svg-icon icon-class="international" @click="goto" /> -->
+        <i class="el-icon-position" @click="goto"></i>
     </div>
 </template>
 
