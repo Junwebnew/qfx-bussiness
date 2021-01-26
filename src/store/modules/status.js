@@ -46,6 +46,7 @@ const status = {
         getBussStatus({ commit, state }, type) {
             return new Promise(resolve => {
 
+                //全部线索状态
                 if (type == 1) {
                     if (state.allclueStatus.length) {
                         resolve(state.allclueStatus)
@@ -60,6 +61,7 @@ const status = {
 
                     return
                 }
+                //只展示我的线索状态
                 if (type == 2) {
                     if (state.partsclueStatus.length) {
                         resolve(state.partsclueStatus)
@@ -74,6 +76,7 @@ const status = {
 
                     return
                 }
+                //全部商机状态
                 if (type == 3) {
                     if (state.allbussStatus.length) {
                         resolve(state.allbussStatus)
@@ -88,6 +91,7 @@ const status = {
 
                     return
                 }
+                //只展示我的商机状态
                 if (type == 4) {
                     if (state.partsbussStatus.length) {
                         resolve(state.partsbussStatus)

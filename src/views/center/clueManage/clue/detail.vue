@@ -199,16 +199,6 @@ export default {
             showBtns: true
         }
     },
-    watch: {
-        $route(now) {
-            if ('clue-detail' == now.name && this.json.id != now.query.id) {
-
-                this.marksQuery.businessId = now.query.id
-
-                this.initPage(now.query.id)
-            }
-        }
-    },
     created() {
 
         this.marksQuery.businessId = this.$route.query.id

@@ -4,7 +4,7 @@
         <div class="pad0-30">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-form-item label="线索状态" prop="businessStatusId">
+                <el-form-item label="商机状态" prop="businessStatusId">
                     <!-- <el-select v-model="form.businessStatusId" clearable size="small" style="width: 100%">
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
@@ -71,8 +71,8 @@ export default {
                 if (valid) {
 
                     this.form.businessId = this.businessId
-                    this.form.type = this.type
-                    this.form.remarkContent = '状态变更'
+                    this.form.type = 2
+                    this.form.remarkContent = '状态变更为 ' + this.returnStatusName(this.form.businessStatusId)
 
                     clueMarksUpdate(this.form).then(response => {
                         this.msgSuccess('变更成功');
@@ -81,6 +81,9 @@ export default {
                     });
                 }
             });
+        },
+        returnStatusName(businessStatusId) {
+            return this.clueStatueArr.filter(i => i.id == businessStatusId)[0].name
         }
     }
 }

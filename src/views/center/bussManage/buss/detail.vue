@@ -128,11 +128,15 @@
                                                 <small>{{item.remarkDate}}</small>
                                             </p>
                                             <div class="desc">
-                                                <small class="b">{{item.userName}}</small> <small>{{item.remarkContent}}</small>
+                                                <small class="b">{{item.userName}}</small>
+                                                <small class="col">{{returnType(item.operationValue)}}</small>
+                                                <small>{{item.remarkContent}}</small>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
+                                <!-- 分页 -->
+                                <pagination v-show="total>0" :total="total" :page.sync="marksQuery.pageNum" :limit.sync="marksQuery.pageSize" layout='total, prev, pager, next' @pagination="getmarks" :autoScroll='false' />
                             </el-col>
                         </el-row>
                     </div>
@@ -154,6 +158,7 @@
 import { bussDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
 import { addMarks, addTimeTips, changeStatus, completeBuss } from '../_module'
+import { deepClone } from '@/utils/index'
 
 export default {
     components: {
@@ -171,23 +176,32 @@ export default {
             resourceTypeArr: [],
             //业务类型
             vocIdArr: [],
+            //备注查询
+            marksQuery: {
+                businessId: '',
+                pageNum: 1,
+                pageSize: 10,
+                type: 1
+            },
+            //备注的类型
+            marksTypeArr: [],
+            //备注列表
             marksList: [],
+            //备注总数
+            total: 0,
             showBtns: true
         }
     },
-    watch: {
-        $route(now) {
-            if ('clue-detail' == now.name && this.json.id != now.query.id) {
-                this.initPage(now.query.id)
-            }
-        }
-    },
+
     created() {
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+
+        this.marksQuery.businessId = this.$route.query.id
+
+        this.initPage()
 
         this.showBtns = this.$route.query.btn ? false : true
 
-        this.$store.dispatch('getBussStatus', 1).then(res => {
+        this.$store.dispatch('getBussStatus', 3).then(res => {
             this.clueStatueArr = res
         })
 
@@ -195,27 +209,34 @@ export default {
             this.vocIdArr = res
         })
 
+        this.qmxDataKey().then(res => {
+            // console.log('0000', res)
+            this.marksTypeArr = res['followRecordOperValueEnumList']
+        })
+
     },
     methods: {
-        initPage(id) {
+        initPage() {
 
-            id = id || this.json.id
+            let id = this.marksQuery.businessId
 
             bussDetail(id)
                 .then(res => {
                     this.title = (res.data.customerName || '') + ' 商机详情页'
                     this.json = res.data
                 })
-            this.getmarks(id)
+            this.getmarks()
         },
-        getmarks(id) {
-            id = id || this.json.id
+        getmarks() {
+
             this.markLoading = true
-            //可选type : 1商机，2商机
-            clueMarksList({ businessId: id, pageNum: 1, pageSize: 100 }).then(res => {
+
+            clueMarksList(this.marksQuery).then(res => {
                 this.marksList = res.data
+                this.total = res.total
                 this.markLoading = false
             })
+
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")
@@ -244,21 +265,28 @@ export default {
 
             return (item && item.name) || code
         },
+        //操作类型
+        returnType(id) {
+            if (this.marksTypeArr && this.marksTypeArr.length) {
+                return (this.marksTypeArr.filter(i => i.value == id))[0].key
+            }
+
+        },
         //状态变更
         handleChange() {
-            this.$refs.changeStatus.show(this.json)
+            this.$refs.changeStatus.show(deepClone(this.json))
         },
         //增加备注
         handleAddMarks() {
-            this.$refs.addMarks.show(this.json)
+            this.$refs.addMarks.show(deepClone(this.json))
         },
         //新增时间提醒
         handleAddTips() {
-            this.$refs.addTimeTips.show(this.json)
+            this.$refs.addTimeTips.show(deepClone(this.json))
         },
         //去商机成单
         goComplete(row) {
-            this.$refs.completeBuss.show(this.json)
+            this.$refs.completeBuss.show(deepClone(this.json))
         }
     }
 }

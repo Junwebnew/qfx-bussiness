@@ -203,7 +203,7 @@ export default {
                     businessBelong: 1,
                     phoneId: '999', //无电话ID，不为空就行
                     phoneNumber: '999', //无电话，不为空就行
-                    resourceId: row.id,
+                    resourceId: this.detailMsg.id,
                     resourcesModule: '1344241701547585538',
                     type: 2
                 }

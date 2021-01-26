@@ -2,8 +2,8 @@
     <div class="app-container">
         <el-row>
             <!--部门数据-->
-            <el-col :span="5" :xs="24">
-                <div class="r back-fff">
+            <el-col :span="5" :xs="24" class="mb10">
+                <div class="r back-fff full-height">
                     <div class="head-container">
                         <el-input ref='tree' v-model="deptName" placeholder="请输入部门名称" clearable size="small" prefix-icon="el-icon-search" style="margin-bottom: 20px" />
                     </div>
@@ -15,12 +15,11 @@
                         </el-tree>
                     </div>
                 </div>
-
             </el-col>
             <!--用户数据-->
-            <el-col :span="19" :xs="24">
+            <el-col :span="19" :xs="24" class="">
                 <div class="l-t back-fff pad20 mb10" v-show="showSearch">
-                    <el-form :model="queryParams" ref="queryForm" label-width="120px">
+                    <el-form :model="queryParams" ref="queryForm" label-width="80px">
                         <el-row :gutter="20">
                             <el-col :lg="8" :sm="12" :xs="24">
                                 <el-form-item label="用户名称" prop="name" class="el-form-item-none">
@@ -700,7 +699,7 @@ export default {
     line-height: 29px;
 }
 .r {
-    min-height: calc(100vh - 94px);
+    height: calc(100vh - 94px);
     padding: 20px 10px;
     margin-right: 10px;
     .tree-box {

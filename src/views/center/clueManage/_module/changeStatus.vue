@@ -4,12 +4,12 @@
         <div class="pad0-30">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-form-item label="线索状态" prop="followStatus">
-                    <!-- <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
+                <el-form-item label="线索状态" prop="businessStatusId">
+                    <!-- <el-select v-model="form.businessStatusId" clearable size="small" style="width: 100%">
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="form.followStatus = dict.id">
+                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.businessStatusId == dict.id}" @click=" form.businessStatusId = dict.id">
                             {{dict.name}}
                         </li>
                     </ul>
@@ -26,14 +26,14 @@
 </template>
 <script>
 
-import { clueUpdate } from "@/api/center";
+import { clueMarksUpdate, clueTipsUpdate } from "@/api/center";
 
 export default {
     props: {
         /*类型  1：线索必传 2：商机不传）*/
         type: {
             type: String | Number,
-            default: 1
+            default: 2
         },
         clueStatueArr: {
             type: Array,
@@ -47,12 +47,10 @@ export default {
             open: false,
             addTitle: '跟进状态',
             form: { businessStatusId: '' },
-            followStatus: '',//选中的状态
             // 表单校验
             rules: {
-                followStatus: [
-                    // { required: true, message: "状态不能为空", trigger: "blur" }
-                    { required: true, validator: this.validStatus, trigger: "blur" },
+                businessStatusId: [
+                    { required: true, message: "状态不能为空", trigger: "blur" }
                 ]
             }
         }
@@ -60,37 +58,32 @@ export default {
     methods: {
         show(obj, tit) {
 
+            this.businessId = obj.id
             this.addTitle = tit || '跟进状态'
 
-            this.form = obj
-            this.followStatus = obj.followStatus
-
+            this.form = { businessStatusId: obj.followStatus }
             this.open = true
 
         },
-        validStatus(rule, value, callback) {
-
-            if (value == this.followStatus) {
-                callback(new Error('请先改变线索状态'))
-            }
-            else {
-
-                callback()
-            }
-        },
         /** 提交按钮 */
         submitForm: function () {
-
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
-                    clueUpdate(this.form).then(response => {
+                    this.form.businessId = this.businessId
+                    this.form.type = 1
+                    this.form.remarkContent = '状态变更为 ' + this.returnStatusName(this.form.businessStatusId)
+
+                    clueMarksUpdate(this.form).then(response => {
                         this.msgSuccess('变更成功');
                         this.open = false;
                         this.$emit('finish');
                     });
                 }
             });
+        },
+        returnStatusName(businessStatusId) {
+            return this.clueStatueArr.filter(i => i.id == businessStatusId)[0].name
         }
     }
 }
