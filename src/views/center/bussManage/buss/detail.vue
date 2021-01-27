@@ -181,7 +181,7 @@ export default {
                 businessId: '',
                 pageNum: 1,
                 pageSize: 10,
-                type: 1
+                type: 2
             },
             //备注的类型
             marksTypeArr: [],

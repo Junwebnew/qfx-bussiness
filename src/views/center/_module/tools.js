@@ -12,7 +12,7 @@ export var initChartsDonut = (myChart, titStr, chartData, total) => {
     myChart.setOption({
         title: {
             text: titStr,
-            subtext: "￥" + total,
+            subtext: total + '条',
             left: '27%',
             top: '40%',
             textAlign: 'center',
