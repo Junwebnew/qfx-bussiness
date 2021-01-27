@@ -6,7 +6,7 @@
                 <el-row :gutter="10" class="mb8">
                     <el-col :span='24'>
                         <el-form-item label="提醒时间" prop="remindDate">
-                            <el-date-picker v-model="form.remindDate" type="datetime" size='small' style="width:100%" value-format='yyyy-MM-dd HH:mm:ss' :picker-options="pickerOptions0" placeholder="选择日期时间">
+                            <el-date-picker v-model="form.remindDate" type="datetime" size='small' style="width:100%" value-format='yyyy-MM-dd HH' :picker-options="pickerOptions0" placeholder="选择日期时间">
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="线索备注" prop="remarkContent">
@@ -55,7 +55,8 @@ export default {
             pickerOptions0: {
                 disabledDate(time) {
                     return time.getTime() < Date.now() - 8.64e7;//如果没有后面的-8.64e7就是不可以选择今天的 
-                }
+                },
+                selectableRange: '08:00:00 - 22:00:00'
             }
         }
     },
@@ -83,6 +84,7 @@ export default {
 
                     function isNeedTips() {
                         if (that.form.remindDate) {
+                            that.form.remindDate = that.form.remindDate + ':00:00'
                             return clueTipsUpdate(that.form)
                         }
                         return []
@@ -91,7 +93,7 @@ export default {
                         isNeedTips(),
                         clueMarksUpdate(this.form)
                     ]).then(res => {
-                        console.log('9999', res)
+                        // console.log('9999', res)
                         this.msgSuccess('新增成功');
                         this.open = false;
                         this.$emit('finish');

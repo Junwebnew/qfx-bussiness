@@ -66,7 +66,7 @@
                 <el-table-column label="申请人地址" prop='userAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="专用权结束日期" width='120px' prop='annDate' />
-                <el-table-column label="最新备注" prop='bestNewRemark'>
+                <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>

@@ -72,7 +72,7 @@
                             <span>{{scope.row.annDate}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="最新备注" prop='bestNewRemark'>
+                    <el-table-column label="最新领取记录" prop='bestNewRemark'>
                         <template slot-scope="scope">
                             <div class='operation'>
                                 <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>

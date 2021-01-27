@@ -36,7 +36,7 @@
                 <el-table-column label="企业名称" prop="applicantName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="企业地址" prop="address" show-overflow-tooltip></el-table-column>
                 <el-table-column label="经营状态" prop="businessState" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop='bestNewRemark'>
+                <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>
@@ -118,7 +118,6 @@ export default {
             this.handleQuery();
         },
         checkDetail(obj) {
-            let key = this.$route.name + obj.id
             this.$router.push('/resources/white-list/detail?id=' + obj.id)
         }
     },

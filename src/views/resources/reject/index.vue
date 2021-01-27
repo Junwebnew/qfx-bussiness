@@ -77,7 +77,7 @@
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="注册日期" width='120px' prop='trademarkApplicationDate' />
                 <el-table-column label="驳回日期" width='120px' prop='rejectDate' />
-                <el-table-column label="最新备注" prop='bestNewRemark'>
+                <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>

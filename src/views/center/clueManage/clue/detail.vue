@@ -38,7 +38,7 @@
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系电话：</span>
                                 <div class="custom-r">
-                                    {{json.contactPhone}}
+                                    {{json.contactPhone || '--'}}
                                 </div>
                             </el-col>
                         </el-row>

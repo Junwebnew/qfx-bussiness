@@ -43,7 +43,7 @@
                 </el-table-column>
                 <el-table-column label="求购类别" width='150' prop="intclass" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系人" width='250' prop="contact" show-overflow-tooltip></el-table-column>
-                <el-table-column label="创建时间" width='120' prop='createTime' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="创建时间" width='150' prop='createTime' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="操作" width='70' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
@@ -109,7 +109,6 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
             },
             //扣除价格
             price: '',
@@ -185,7 +184,10 @@ export default {
         },
         //联系方式加密
         phoneStartCode(qq) {
-            return phoneStartCode(qq)
+            if (qq) {
+                return qq.replace(/\d{4}/, '****')
+            }
+            return '****'
         },
         //领取
         receiveInfo(row) {
@@ -211,6 +213,8 @@ export default {
                     .then(res => {
 
                         this.msgSuccess('领取成功')
+
+                        this.detailShow = false
 
                         that.loading = false
 

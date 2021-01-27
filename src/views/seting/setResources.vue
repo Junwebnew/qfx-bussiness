@@ -5,11 +5,14 @@
                 <el-col>
                     <p class="tit">{{value[0].typeName}}</p>
                 </el-col>
-                <el-col :lg="8" :sm="12" :xs="24" v-for="item in value" :key="item.id">
+                <el-col :lg="12" :sm="12" :xs="24" v-for="item in value" :key="item.id">
                     <div class="item">
                         <div class="editBox">
                             <span class="mr10">{{item.name}} :</span>
-                            <el-input-number v-if='item.isEdit' v-model="item.newValue" :min="1" :max="100000" size="mini" label="比例"></el-input-number>
+                            <template v-if='item.isEdit'>
+                                <el-input v-if="istext(item.typeId)" v-model="item.newValue" class="ipt" size="mini"></el-input>
+                                <el-input-number v-else v-model="item.newValue" :min="1" :max="100000" size="mini" label="比例"></el-input-number>
+                            </template>
                             <span v-else class="num">{{item.value}}</span>
                         </div>
                         <template v-if='item.isEdit'>
@@ -87,6 +90,11 @@ export default {
 
             return loading
         },
+        //文本框
+        istext(typeId) {
+            let textArr = ['8', '9', '10', '13']
+            return textArr.includes(typeId)
+        },
         //编辑
         bandleEdit(item) {
             this.$set(item, 'newValue', item.value)
@@ -130,18 +138,22 @@ export default {
         font-size: 16px;
         line-height: 30px;
         height: 44px;
+        margin-bottom: 10px;
     }
     .item {
         padding: 10px 0px 0 0;
         margin-bottom: 10px;
         .editBox {
-            display: inline-block;
-            min-width: 280px;
+            display: inline;
+            // min-width: 280px;
             margin-right: 10px;
         }
         .num {
             color: $col;
             font-weight: bolder;
+        }
+        .ipt {
+            width: 260px;
         }
     }
     .desc {

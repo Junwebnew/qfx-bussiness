@@ -63,7 +63,11 @@
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="联系方式" prop='contactPhone' width='130'>
+                    <template slot-scope="scope">
+                        <span>{{scope.row.contactPhone || scope.row.contactQq || scope.row.contactWx}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
                 <!-- <el-table-column label="资源来源"  prop="resourceId" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>

@@ -102,7 +102,7 @@
                         <span>{{scope.row.objectionCountNum || '--'}}个</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="最新备注" prop='bestNewRemark'>
+                <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>
@@ -239,11 +239,13 @@ export default {
     text-align: center;
     .num-conut {
         margin: 0 auto;
-        min-width: 1200px;
+        // min-width: 1200px;
+        white-space: nowrap;
     }
     .num_i {
         display: inline-block;
         text-align: center;
+        min-width: 100px;
         width: 8.33%;
         padding: 4px;
         box-sizing: border-box;

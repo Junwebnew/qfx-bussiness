@@ -110,7 +110,7 @@ export default {
                 this.bussTodayArr = res[0].data
 
 
-                console.log('99', res[1])
+                // console.log('99', res[1])
                 this.initCharts(this.myChart.a, '总金额', res[1].data.businessTypeCountList, this.assTotal(res[1].data.businessTypeCountList))
             })
 

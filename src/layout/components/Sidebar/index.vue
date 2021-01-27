@@ -43,7 +43,7 @@ export default {
         }
     },
     mounted() {
-        console.log('侧边路由数组', this.permission_routes)
+        // console.log('侧边路由数组', this.permission_routes)
     },
 
 };

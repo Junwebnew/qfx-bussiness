@@ -3,6 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { $getImg } from '@/utils/qmx'
 import { qmxUserList } from "@/api/system/user"
 import { assRouter } from '@/api/menu.js'
+import Cookies from 'js-cookie'
 
 const user = {
     state: {
@@ -64,7 +65,7 @@ const user = {
 
             return new Promise((resolve, reject) => {
                 qmxLogin(username, password).then(res => {
-
+                    Cookies.remove('tagsList')
                     setToken(res.data)
                     commit('SET_TOKEN', res.data)
                     resolve()

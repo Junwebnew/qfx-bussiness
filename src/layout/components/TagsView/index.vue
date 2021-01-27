@@ -6,7 +6,7 @@
             </router-link> -->
             <router-link v-for="(item,index) in tagsList" :to="item.fullPath" :class="{'active': isActive(item.name),'tags-view-item':true}" :key="index" @contextmenu.prevent.native="openTabShow(item,$event)">
                 {{ item.title }}
-                <span class="el-icon-close" @click.prevent.stop="closeTags(index)" />
+                <span v-if="item.name != '首页'" class="el-icon-close" @click.prevent.stop="closeTags(index)" />
             </router-link>
         </scroll-pane>
         <!-- <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -19,14 +19,13 @@
             <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
             <li @click="closeOther" v-show=' selectedTag.name == $route.name'>关闭其他</li>
             <li @click="closeRight">关闭右侧</li>
-            <li @click="closeAll">关闭所有</li>
+            <li @click="closeAll" v-show="selectedTag.name != '首页'">关闭所有</li>
         </ul>
     </div>
 </template>
 
 <script>
 import ScrollPane from './ScrollPane'
-import path from 'path'
 import Global from "@/layout/components/global.js";
 import Cookies from 'js-cookie'
 import { deepClone } from '@/utils/index'
@@ -61,6 +60,8 @@ export default {
         }
     },
     created() {
+
+        console.log(this.$route)
 
         if (Cookies.get('tagsList')) {
             this.tagsList = JSON.parse(Cookies.get('tagsList'))
@@ -128,12 +129,16 @@ export default {
         // 关闭其他标签
         closeOther() {
 
-            this.tagsList = [this.selectedTag];
+            if (this.selectedTag.name == '首页') {
+                this.tagsList = [this.selectedTag];
+            }
+            else
+                this.tagsList = [this.tagsList[0], this.selectedTag];
         },
         // 关闭全部标签
         closeAll() {
             this.tagsList = [];
-            this.$router.push("/");
+            this.$router.replace("/");
         },
         // 设置标签
         setTags(route) {
@@ -193,10 +198,10 @@ export default {
             margin-top: 4px;
             border-radius: 3px;
             &:first-of-type {
-                margin-left: 15px;
+                margin-left: 10px;
             }
             &:last-of-type {
-                margin-right: 15px;
+                margin-right: 10px;
             }
             &.active {
                 background-color: #ffffff;

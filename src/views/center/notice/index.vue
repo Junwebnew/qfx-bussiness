@@ -95,8 +95,9 @@ export default {
         initList(key, cb) {
 
             let params = {
-                companyId: this.organizationId,
-                userId: this.userId,
+                // companyId: this.organizationId,
+                //userId: this.userId,
+                isRelease: 1,
                 pageSize: this.pageSize,
                 pageNum: this.pageNum[key],
                 type: key == 'n1' ? 0 : 1
@@ -128,7 +129,9 @@ export default {
 
             if (obj.isRead == 0) {
                 obj.isRead = 1
-                qmxMsgRead({ ids: [obj.id], status: 1 })
+                qmxMsgRead({ ids: [obj.id], status: 1 }).then(res => {
+                    this.$store.commit('SET_REDUCE_MSGNUM')
+                })
             }
         },
         readAllfunc() {
@@ -143,6 +146,9 @@ export default {
             this.pageNum[key] = this.pageNum[key] + 1
 
             this.initList(key)
+        },
+        setMsgMum(num) {
+            this.$store.commit('SET_MSGNUM', num)
         }
     }
 }

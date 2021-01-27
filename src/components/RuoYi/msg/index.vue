@@ -6,7 +6,7 @@
                 <el-tab-pane :label="noticeStr" name="n1">
                     <div class="listBox">
                         <ul v-show='noticeNum > 0 '>
-                            <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                            <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'noticeNum')">
                                 <h3>{{item.title}}</h3>
                                 <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
                                 <small>{{item.createTime}}</small>
@@ -27,7 +27,7 @@
                 <el-tab-pane :label="messageStr" name="n2">
                     <div class="listBox">
                         <ul v-show='messageNum > 0 '>
-                            <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                            <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'messageNum')">
                                 <h3> {{item.title}}</h3>
                                 <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
                                 <small>{{item.createTime}}</small>
@@ -47,7 +47,7 @@
                 </el-tab-pane>
             </el-tabs>
         </div>
-        <el-badge :value="msgNum" class="item-num" slot="reference">
+        <el-badge :value="msgNum || '' " class="item-num" slot="reference">
             <!-- <svg-icon icon-class="email" /> -->
             <!-- <i class="el-icon-message"></i> -->
             <i class="el-icon-chat-dot-round"></i>
@@ -84,7 +84,7 @@ export default {
             noticeArr: [],
             noticeNum: 0,
             messageArr: [],
-            messageNum: 0
+            messageNum: 0,
         }
     },
     computed: {
@@ -92,14 +92,14 @@ export default {
             'organizationId',
             'userId'
         ]),
-        msgNum() {
-            return (this.noticeNum + this.messageNum) || ''
-        },
         noticeStr() {
             return this.noticeNum == 0 ? '公告' : ('公告(' + this.noticeNum + ')')
         },
         messageStr() {
             return this.messageNum == 0 ? '消息' : ('消息(' + this.messageNum + ')')
+        },
+        msgNum() {
+            return this.$store.state.otherData.msgNum
         }
 
     },
@@ -113,41 +113,41 @@ export default {
 
 
             let params = {
-                companyId: this.organizationId,
-                userId: this.userId,
+                // companyId: this.organizationId,
+                // userId: this.userId,
                 isRead: 0, //0 未读 1已读
                 pageSize: 10,
                 pageNum: 1,
             }
-            // type:0 //0：通知 1：公告
-            qmxMsgList(Object.assign({ type: 1 }, params)).then(res => {
-                this.noticeArr = res.data
-                this.noticeNum = res.total
 
-                // if (res.total > 0) {
-                //     this.visibleShow = true
-                //     this.activeName = 'n1'
-                // }
-            })
+            Promise.all([
+                qmxMsgList(Object.assign({ type: 1 }, params)),
+                qmxMsgList(Object.assign({ type: 0 }, params))
+            ]).then(res => {
 
-            qmxMsgList(Object.assign({ type: 0 }, params)).then(res => {
+                this.noticeArr = res[0].data
+                this.noticeNum = res[0].total
 
-                this.messageArr = res.data
-                this.messageNum = res.total
+                this.messageArr = res[1].data
+                this.messageNum = res[1].total
 
-                // if (res.total > 0) {
-                //     this.visibleShow = true
-                //     this.activeName = 'n2'
-                // }
+                this.setMsgMum(res[0].total + res[1].total)
             })
         },
-        readFunc(item) {
+        readFunc(item, key) {
 
             this.$set(item, 'show', !item.show)
 
             if (item.isRead == 0) {
                 item.isRead = 1
                 qmxMsgRead({ ids: [item.id], status: 1 })
+                    .then(res => {
+
+                        this[key] -= 1
+
+                        this.setMsgMum(this.msgNum - 1)
+                    })
+
             }
         },
         goto() {
@@ -170,6 +170,9 @@ export default {
                         this.initList()
                     })
             }
+        },
+        setMsgMum(num) {
+            this.$store.commit('SET_MSGNUM', num)
         }
     }
 }
@@ -177,7 +180,7 @@ export default {
 <style lang="scss" scoped>
 .item-num {
     // line-height: 1.5em;
-    vertical-align: revert;
+    vertical-align: inherit;
     line-height: 1.5;
 }
 .messBox {

@@ -15,6 +15,11 @@ body {
   font-style: normal;
   color: rgba(0, 0, 0, 0.85);
 }
+//360浏览器自定义了一块下边框
+// body > div:not(#app) {
+//   font-size: 0;
+// }
+
 li {
   list-style: none;
 }

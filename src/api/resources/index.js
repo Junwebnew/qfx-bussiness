@@ -131,7 +131,7 @@ export function companyWhiteDetail(id) {
  * 白名单列表
 */
 export function companyWhiteList(data) {
-    return $axios.post('resource/whiteList/page/list', data)
+    return $axios.post('resource/whiteList/page/listForPhone', data)
 }
 
 
@@ -166,7 +166,7 @@ export function noticeArriveDetail(id) {
  * 送达公告分页查询
 */
 export function noticeArriveList(data) {
-    return $axios.post('notice/arrive/noticeArrive/page/list', data)
+    return $axios.post('notice/arrive/noticeArrive/page/listForPhone', data)
 }
 
 
