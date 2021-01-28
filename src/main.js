@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import Cookies from 'js-cookie'
 
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
+// import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
@@ -20,7 +20,7 @@ import http from './utils/http' //引入封装的请求
 
 import './assets/icons' // icon
 import './permission' // permission control
-import { getDicts,qmxDataKey } from "@/api/system/dict/data";
+import { getDicts, qmxDataKey } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, handleTree } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
@@ -42,15 +42,15 @@ Vue.prototype.$axios = http
 Vue.prototype.qmxDataKey = qmxDataKey
 
 Vue.prototype.msgSuccess = function (msg) {
-  this.$message({ showClose: true, message: msg, type: "success" });
+    this.$message({ showClose: true, message: msg, type: "success" });
 }
 
 Vue.prototype.msgError = function (msg) {
-  this.$message({ showClose: true, message: msg, type: "error" });
+    this.$message({ showClose: true, message: msg, type: "error" });
 }
 
 Vue.prototype.msgInfo = function (msg) {
-  this.$message.info(msg);
+    this.$message.info(msg);
 }
 
 // 全局组件挂载
@@ -69,14 +69,14 @@ Vue.use(permission)
  */
 
 Vue.use(Element, {
-  size: Cookies.get('size') || 'medium' // set element-ui default size
+    size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })
