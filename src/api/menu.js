@@ -43,7 +43,7 @@ export const assRouter = (arr) => {
             path: item.url,
             hidden: !item.isShow,
             component: item.viewName,
-            meta: { title: item.name, icon: item.iconClass, noCache: item.isSaveCache, btns: item.functionList.map(i => i.functionKey) }
+            meta: { title: item.name, icon: item.iconClass, noCache: !item.isSaveCache, btns: item.functionList.map(i => i.functionKey) }
         }
         children && (newObj.children = children)
         newArr.push(newObj)

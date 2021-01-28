@@ -6,14 +6,14 @@
                 <el-tab-pane :label="noticeStr" name="n1">
                     <div class="listBox">
                         <ul v-show='noticeNum > 0 '>
-                            <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'noticeNum')">
-                                <h3>{{item.title}}</h3>
+                            <li v-for="(item,idx) in noticeArr" :key='idx' @click="readFunc(item,'noticeNum')">
+                                <h3 :class="{'read':item.isRead}">{{item.title}}</h3>
                                 <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
                                 <small>{{item.createTime}}</small>
                             </li>
                         </ul>
                         <div v-show='noticeNum == 0 ' class="noneMsg">
-                            暂无相关公告
+                            暂无未读公告
                         </div>
                     </div>
 
@@ -27,14 +27,14 @@
                 <el-tab-pane :label="messageStr" name="n2">
                     <div class="listBox">
                         <ul v-show='messageNum > 0 '>
-                            <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'messageNum')">
-                                <h3> {{item.title}}</h3>
+                            <li v-for="(item,idx) in messageArr" :key='idx' @click="readFunc(item,'messageNum')">
+                                <h3 :class="{'read':item.isRead}"> {{item.title}}</h3>
                                 <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
                                 <small>{{item.createTime}}</small>
                             </li>
                         </ul>
                         <div v-show='messageNum == 0 ' class="noneMsg">
-                            暂无相关消息
+                            暂无未读消息
                         </div>
                     </div>
 
@@ -58,7 +58,7 @@
 
 <script>
 
-import { qmxMsgList, qmxMsgRead } from '@/api/system/msg.js'
+import { qmxMsgListRead, qmxMsgRead, conMsgList, conMsgRead } from '@/api/system/msg.js'
 import { mapGetters } from 'vuex'
 
 
@@ -104,7 +104,7 @@ export default {
 
     },
     mounted() {
-        // qmxMsgList({})
+        // qmxMsgListRead({})
 
         this.initList(true)
     },
@@ -115,23 +115,26 @@ export default {
             let params = {
                 // companyId: this.organizationId,
                 // userId: this.userId,
-                isRead: 0, //0 未读 1已读
+                // isRead: 0, //0 未读 1已读
+                isRelease: 1,
                 pageSize: 10,
                 pageNum: 1,
             }
 
             Promise.all([
-                qmxMsgList(Object.assign({ type: 1 }, params)),
-                qmxMsgList(Object.assign({ type: 0 }, params))
+                qmxMsgListRead(params),
+                conMsgList(params)
             ]).then(res => {
 
-                this.noticeArr = res[0].data
-                this.noticeNum = res[0].total
+                // console.log('9999', res)
+
+                this.noticeArr = res[0].allData.data
+                this.noticeNum = res[0].notReadNum
 
                 this.messageArr = res[1].data
                 this.messageNum = res[1].total
 
-                this.setMsgMum(res[0].total + res[1].total)
+                this.setMsgMum(res[0].notReadNum + res[1].total)
             })
         },
         readFunc(item, key) {
@@ -140,13 +143,24 @@ export default {
 
             if (item.isRead == 0) {
                 item.isRead = 1
-                qmxMsgRead({ ids: [item.id], status: 1 })
-                    .then(res => {
+                if (key == 'noticeNum') {
+                    qmxMsgRead({ ids: [item.id], status: 1 })
+                        .then(res => {
 
-                        this[key] -= 1
+                            this[key] -= 1
 
-                        this.setMsgMum(this.msgNum - 1)
-                    })
+                            this.setMsgMum(this.msgNum - 1)
+                        })
+                }
+                else {
+                    conMsgRead({ ids: [item.id], status: 1 })
+                        .then(res => {
+
+                            this[key] -= 1
+
+                            this.setMsgMum(this.msgNum - 1)
+                        })
+                }
 
             }
         },
@@ -162,14 +176,39 @@ export default {
         },
         readAllfunc() {
 
-            if (this.noticeArr && this.noticeArr.length) {
-                let a = this.noticeArr.map(i => i.id)
-                let ids = this.messageArr.map(i => i.id).concat(a)
-                qmxMsgRead({ ids: ids, status: 1 })
-                    .then(res => {
-                        this.initList()
-                    })
+            function redNotice() {
+                if (this.noticeArr && this.noticeArr.length) {
+                    let ids = this.noticeArr.map(i => i.id)
+                    return qmxMsgRead({ ids: ids, status: 1 })
+                }
+                return {}
             }
+
+            function redComMsg() {
+                if (this.messageArr && this.messageArr.length) {
+
+                    let ids = this.messageArr.map(i => i.id)
+                    return conMsgRead({ ids: ids, status: 1 })
+                }
+
+                return {}
+            }
+
+            Promise.all([
+                redNotice(),
+                redComMsg()
+            ]).then(res => {
+                this.initList()
+            })
+
+            // if (this.noticeArr && this.noticeArr.length) {
+            //     let a = this.noticeArr.map(i => i.id)
+            //     let ids = this.messageArr.map(i => i.id).concat(a)
+            //     qmxMsgRead({ ids: ids, status: 1 })
+            //         .then(res => {
+
+            //         })
+            // }
         },
         setMsgMum(num) {
             this.$store.commit('SET_MSGNUM', num)
@@ -208,13 +247,31 @@ export default {
         &:last-child {
             border-bottom: none;
         }
-        &.read {
-            background: #f8f8f9;
-        }
         h3 {
             margin: 4px 0;
             font-size: 12px;
             position: relative;
+            padding-left: 10px;
+            color: #333;
+            &::before {
+                content: " ";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 6px;
+                height: 6px;
+                margin-top: -3px;
+                border-radius: 20px;
+                background-color: #ff0000;
+            }
+            &.read {
+                color: #888;
+                padding-left: 0;
+                &::before {
+                    content: "";
+                    display: none;
+                }
+            }
         }
         p {
             color: #888;

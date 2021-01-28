@@ -10,14 +10,14 @@
                             <div class="listBox">
                                 <div v-show='total.n1 > 0 '>
                                     <ul>
-                                        <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                        <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'n1')">
                                             <h3 class="head"> {{item.title}}</h3>
                                             <p class="desc">{{item.content}}</p>
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
                                     <p @click="getMore('n1')" class="col more text-center mt20" v-if='pageNum.n1 * pageSize < total.n1'>加载更多 <i class="el-icon-more"></i></p>
-                                    <p class="more text-center" v-else>加载完毕</p>
+                                    <p class="more text-center mt20" v-else>加载完毕</p>
                                 </div>
 
                                 <div v-show='total.n1 == 0 ' class="noneMsg">
@@ -32,14 +32,14 @@
                             <div class="listBox">
                                 <div v-show='total.n2 > 0 '>
                                     <ul>
-                                        <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item)">
+                                        <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'n2')">
                                             <h3 class="head"> {{item.title}}</h3>
                                             <p class="desc">{{item.content}}</p>
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
                                     <p @click="getMore('n2')" class="col more text-center mt20" v-if='pageNum.n2 * pageSize < total.n2'>加载更多 <i class="el-icon-more"></i> </p>
-                                    <p class="more text-center" v-else>加载完毕</p>
+                                    <p class="more text-center mt20" v-else>加载完毕</p>
                                 </div>
 
                                 <div v-show='total.n2 == 0 ' class="noneMsg">
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { qmxMsgList, qmxMsgRead, qmxMsgUpdate } from '@/api/system/msg.js'
+import { qmxMsgList, qmxMsgRead, conMsgList, conMsgRead, qmxMsgUpdate } from '@/api/system/msg.js'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -86,26 +86,26 @@ export default {
         ])
     },
     created() {
-        this.initList('n1', () => {
-            this.initList('n2')
-        })
+        // this.initList('n1', () => {
+        //     this.initList('n2')
+        // })
+        this.initNoticeList()
+        this.initMsgList()
     },
     methods: {
-
-        initList(key, cb) {
+        //获取公告
+        initNoticeList(key) {
 
             let params = {
                 // companyId: this.organizationId,
                 //userId: this.userId,
                 isRelease: 1,
                 pageSize: this.pageSize,
-                pageNum: this.pageNum[key],
-                type: key == 'n1' ? 0 : 1
+                pageNum: this.pageNum.n1
             }
-
             qmxMsgList(params).then(res => {
 
-                let arrKey = key == 'n1' ? 'noticeArr' : 'messageArr'
+                let arrKey = 'noticeArr'
 
                 if (params.pageNum > 1) {
                     this[arrKey] = this[arrKey].concat(res.data)
@@ -115,40 +115,71 @@ export default {
                     this[arrKey] = res.data
 
                 }
+                this.total.n1 = res.total
+            })
 
-                this.total[key] = res.total
-                cb && cb()
+        },
+        //获取消息
+        initMsgList() {
 
+            let params = {
+                // companyId: this.organizationId,
+                //userId: this.userId,
+                isRelease: 1,
+                pageSize: this.pageSize,
+                pageNum: this.pageNum.n2
+            }
+            conMsgList(params).then(res => {
+                let arrKey = 'messageArr'
+                if (params.pageNum > 1) {
+                    this[arrKey] = this[arrKey].concat(res.data)
+                }
+                else {
+                    this[arrKey] = res.data
+                }
+                this.total.n2 = res.total
             })
 
         },
         handleClick() {
 
         },
-        readFunc(obj) {
+        readFunc(item, key) {
 
-            if (obj.isRead == 0) {
-                obj.isRead = 1
-                qmxMsgRead({ ids: [obj.id], status: 1 }).then(res => {
-                    this.$store.commit('SET_REDUCE_MSGNUM')
-                })
+            if (item.isRead == 0) {
+                item.isRead = 1
+                if (key == 'n1') {
+                    qmxMsgRead({ ids: [item.id], status: 1 })
+                        .then(res => {
+                            this.setMsgMum(this.msgNum)
+                        })
+                }
+                else {
+                    conMsgRead({ ids: [item.id], status: 1 })
+                        .then(res => {
+                            this.setMsgMum(this.msgNum)
+                        })
+                }
+
             }
         },
-        readAllfunc() {
-            let a = this.noticeArr.map(i => i.id)
-            let ids = this.messageArr.map(i => i.id).concat(a)
-            qmxMsgRead({ ids: ids, status: 1 })
-                .then(res => {
-                    this.initList()
-                })
-        },
         getMore(key) {
-            this.pageNum[key] = this.pageNum[key] + 1
+            if (key == 'n1') {
+                if (this.noticeArr.length < this.total.n1) {
+                    this.pageNum[key] = this.pageNum[key] + 1
+                    this.initNoticeList()
+                }
+            }
+            else {
+                if (this.messageArr.length < this.total.n2) {
+                    this.pageNum[key] = this.pageNum[key] + 1
+                    this.initMsgList()
+                }
+            }
 
-            this.initList(key)
         },
-        setMsgMum(num) {
-            this.$store.commit('SET_MSGNUM', num)
+        setMsgMum() {
+            this.$store.commit('SET_REDUCE_MSGNUM')
         }
     }
 }
@@ -179,12 +210,32 @@ export default {
         cursor: pointer;
         &.read {
             opacity: 0.8;
+            .head {
+                padding: 0;
+                &::before {
+                    content: " ";
+                    display: none;
+                }
+            }
         }
         .head {
             width: 100%;
             color: rgba(0, 0, 0, 0.85);
             font-size: 16px;
             font-weight: normal;
+            position: relative;
+            padding-left: 10px;
+            &::before {
+                content: " ";
+                position: absolute;
+                left: 0;
+                top: 50%;
+                width: 6px;
+                height: 6px;
+                margin-top: -3px;
+                border-radius: 20px;
+                background-color: #ff0000;
+            }
         }
         .desc {
             line-height: 22px;

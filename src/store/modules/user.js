@@ -97,6 +97,8 @@ const user = {
                             commit('SET_ROLES', [user.id])
                             commit('SET_USERID', user.id)
 
+                            console.log(123, assRouter(user.menuList))
+
                             let menuList = assRouter(user.menuList)
 
                             commit('SET_MENULIST', menuList)

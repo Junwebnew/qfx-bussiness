@@ -217,6 +217,38 @@ export const asyncAllRoutes = [
                 ],
             },
             {
+                name: "Message",
+                path: "message",
+                hidden: false,
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "消息管理", noCache: false },
+                children: [
+                    {
+                        name: "release",
+                        path: "release",
+                        hidden: false,
+                        component: "system/message/release",
+                        meta: { title: "发布消息", noCache: false },
+                    },
+                    {
+                        name: "noticeList",
+                        path: "noticeList",
+                        hidden: false,
+                        component: "system/message/noticeList",
+                        meta: { title: "公告消息", noCache: false },
+                    },
+                    {
+                        name: "siteList",
+                        path: "siteList",
+                        hidden: false,
+                        component: "system/message/siteList",
+                        meta: { title: "站内消息", noCache: false },
+                    },
+                ],
+            },
+            {
                 name: "Log",
                 path: "log",
                 hidden: false,
