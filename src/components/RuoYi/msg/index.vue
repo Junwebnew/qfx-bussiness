@@ -117,13 +117,13 @@ export default {
                 // userId: this.userId,
                 // isRead: 0, //0 未读 1已读
                 isRelease: 1,
-                pageSize: 10,
+                pageSize: 30,
                 pageNum: 1,
             }
 
             Promise.all([
                 qmxMsgListRead(params),
-                conMsgList(params)
+                conMsgList(Object.assign({ isRead: 0, params }))
             ]).then(res => {
 
                 // console.log('9999', res)

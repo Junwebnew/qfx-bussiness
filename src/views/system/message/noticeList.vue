@@ -1,132 +1,225 @@
 <template>
     <div class="app-container">
-        <div class="back-fff full-height pad20" id='content'>
+        <div class="back-fff form-box mb10" v-show="showSearch">
 
-            <div class="formBox" v-if='active == 1'>
-                <!-- <el-steps :active="active" align-center simple>
-                    <el-step title="填写信息" icon="el-icon-edit"></el-step>
-                    <el-step title="充值完成" icon="el-icon-circle-check"></el-step>
-                </el-steps> -->
-                <p class="tit">公司账号充值</p>
-                <el-form :model="form" :rules="rules" ref="form" @submit.native.prevent label-width="100px">
-                    <el-form-item label="公司名称:" prop="name" class="el-form-item-j">
-                        <el-input v-model="form.name" placeholder="请输入部门名称" maxLength='100' style="width:%" clearable size="small" disabled />
-                    </el-form-item>
-                    <el-form-item label="充值金额:" prop="money" class="el-form-item-j">
-                        <el-input-number style="width:100%;" v-model="form.money" :min="1" :max="100000000" label="金额"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="充值备注:" prop="remark" class="el-form-item-j">
-                        <el-input v-model="form.remark" type='textarea' placeholder="..." maxLength='250' style="width:100%" clearable size="small" />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" size="mini" v-hasPermi="['recharge']" @click="rechargeAcc">充值</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div class="successBox" v-if='active == 2'>
-                <div class="icon">
-                    <i class="el-icon-success"></i>
-                </div>
-                <p class="h2">充值成功</p>
-                <p class="mini">提交结果页用于反馈一系列操作任务的处理结果， 如果仅是简单操作，使用 Message 全局提示反馈即可。 本文字区域可以展示简单的补充说明，如果有类似展示 “单据”的需求，下面这个灰色区域可以呈现比较复杂的内容。</p>
-                <div class="mxbox">
-                    <el-button type="primary" size="mini" @click="goListDetail">查看明细</el-button>
-                </div>
-            </div>
-            <div class="tipsBox">
-                <p class="info">说明</p>
-                <p>转账到支付宝账户</p>
-                <p>
-                    如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。
-                </p>
+            <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
+                <el-row :gutter="20">
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="公告标题" prop="title" class="el-form-item-none">
+                            <el-input v-model="queryParams.title" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="公告类型" prop="type" class="el-form-item-none">
+                            <el-select v-model="queryParams.type" clearable style="width: 100%">
+                                <el-option v-for="dict in typeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="公告状态" prop="isRelease" class="el-form-item-none">
+                            <el-select v-model="queryParams.isRelease" clearable style="width: 100%">
+                                <el-option v-for="dict in releaseArr" :key="dict.value" :label="dict.name" :value="dict.value" />
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                        <el-form-item class="el-form-item-none ml20">
+                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
 
-            </div>
+                <!-- <el-form-item label="申请/共有人" prop="applicationNameAndGyr" class="el-form-item-none">
+                    <el-input v-model="queryParams.applicationNameAndGyr" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                </el-form-item> -->
+
+            </el-form>
         </div>
+        <div class="back-fff pad20">
+            <el-row :gutter="10" class="mb8">
+                <el-col :span="4" class="lin32">
+                    <span class="f18">{{$route.meta.title}}</span>
+                </el-col>
+                <el-col :span="20" align='right'>
+                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()">新增</el-button>
+                    <el-button type="warning" size="mini" @click="handleEliminate()" :disabled="!ids.length">批量剔除</el-button>
+                    <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                </el-col>
+            </el-row>
+
+            <el-table v-loading="loading" :data="tableData" row-key="id" @selection-change="handleSelectionChange">
+                <el-table-column type='selection'></el-table-column>
+                <el-table-column label="公告标题" width='100' prop='title'> </el-table-column>
+                <el-table-column label="公告类型" width='90px' prop='type'> </el-table-column>
+                <el-table-column label="公告状态" width='90px' prop='isRelease'> </el-table-column>
+                <el-table-column label="创建时间" prop='applicationName'> </el-table-column>
+                <el-table-column label="操作" width='70' align='center'>
+                    <template slot-scope="scope">
+                        <div class='operation'>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">删除</el-button>
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">修改</el-button>
+                        </div>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <!-- 分页 -->
+            <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
+        </div>
+
+        <!-- 添加或修改公告对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body :close-on-click-modal='false'>
+            <el-form ref="form" :model="form" :rules="rules" label-width="90px">
+                <el-row>
+                    <el-col :span="24">
+                        <el-form-item label="公告标题" prop="title">
+                            <el-input v-model="form.title" placeholder="请输入公告标题" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="公告类型" prop="type">
+                            <el-radio-group v-model="form.type">
+                                <el-radio v-for="dict in typeArr" :key="dict.value" :label="dict.value">{{dict.name}}</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="公告状态" prop='isRelease'>
+                            <el-radio-group v-model="form.isRelease">
+                                <el-radio v-for="dict in releaseArr" :key="dict.value" :label="dict.value">{{dict.name}}</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="24">
+                        <el-form-item label="内容" prop='content'>
+                            <editor v-model="form.content" :min-height="192" />
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm">确 定</el-button>
+                <el-button @click="cancel">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import { qmxCompanyList, qmxDetailDept } from "@/api/system/dept";
-import { rechargeAccount } from "@/api/account";
-import { deepClone } from '@/utils/index'
-import { mapGetters } from 'vuex'
+import { qmxMsgList, qmxMsgDel, qmxMsgUpdate } from '@/api/system/msg.js'
 
+import Editor from '@/components/Editor';
 export default {
-    name: "Dept",
-    components: {},
+    name: "recentApply",
+    components: {
+        Editor
+    },
     data() {
         return {
-            //步骤
-            active: 1,
-            // 遮罩层
-            loading: true,
-            // 显示搜索条件
+            //显示搜索框
             showSearch: true,
-            //列表数据
-            deptList: [],
-            // 查询参数
-            form: {
-                name: undefined,
-                orgId: '',
-                commonStatus: undefined,
-                money: 1
+            //显示loading
+            loading: false,
+            //数据列表 
+            tableData: [],
+            //总数
+            total: 0,
+            //查询参数
+            queryParams: {
+                pageNum: 1,
+                pageSize: 10,
             },
+            // 弹出层标题
+            title: "",
+            // 是否显示弹出层
+            open: false,
+            //发布状态
+            releaseArr: [{ name: "暂存", value: 0 }, { name: "发布", value: 1 }],
+            //类型
+            typeArr: [{ name: "通知", value: 0 }, { name: "公告", value: 1 }],
+            //添加消息
+            form: {
+                type: 1,
+                isRelease: 1
+            },
+            //表单规则
             rules: {
-                name: [
-                    { required: true, message: "不能为空", trigger: "blur" }
+                title: [
+                    { required: true, message: "公告标题不能为空", trigger: "blur" }
                 ],
-                money: [
-                    { required: true, message: "不能为空", trigger: "blur" }
+                type: [
+                    { required: true, message: "公告标题不能为空", trigger: "blur" }
+                ],
+                isRelease: [
+                    { required: true, message: "公告标题不能为空", trigger: "blur" }
+                ],
+                content: [
+                    { required: true, message: "公告内容不能为空", trigger: "blur" }
                 ]
-            }
-        };
-    },
-    computed: {
-        ...mapGetters([
-            'superAdmin'
-        ])
+            },
+            //选中的
+            ids: []
+        }
     },
     created() {
-        let optId = this.$route.query.id
 
-        //列表跳转过来
-        if (optId) {
-            qmxDetailDept(optId).then(res => {
-                this.form.name = res.data.name
-                this.form.orgId = optId
-            })
-        }
-        //获取当前用户的
-        else {
-            this.$store.dispatch('getUserOrgAndDep').then(res => {
-                this.form.name = res.orgName
-                this.form.orgId = res.orgId
-            })
-        }
+    },
+    mounted() {
 
-        this.active = 1
+        // this.getList()
     },
     methods: {
-        /** 查询部门列表 */
-        getList() {
-            this.loading = true;
 
-            qmxCompanyList().then(res => {
-                this.deptList = res.data
+        getList() {   //获取table表单的数据**************************************
+
+            this.loading = true;
+            qmxMsgList(this.queryParams).then(response => {
+                this.tableData = response.data;
+                this.total = response.total;
                 this.loading = false;
             })
         },
-        rechargeAcc() {
+        /** 搜索按钮操作 */
+        handleQuery() {
+            this.queryParams.pageNum = 1;
+            this.getList();
+        },
+        //重置表单
+        resetQuery() {
+
+            this.rejectdateRange = []
+            this.applydateRange = []
+
+            this.resetForm("queryForm");
+            this.handleQuery();
+        },
+        //新增
+        handleAdd() {
+            this.open = true
+        },
+        // 多选框选中数据
+        handleSelectionChange(selection) {
+            this.ids = selection.map(item => item.id)
+        },
+        //删除
+        handleEliminate() {
+
+        },
+        cancel(obj) {
+
+            this.open = false
+        },
+        submitForm() {
             this.$refs["form"].validate(valid => {
                 if (valid) {
-                    const loading = this.$loading({
-                        target: "#content"
-                    });
 
-                    rechargeAccount(this.form).then(res => {
-                        // console.log('充值成功', res)
-                        this.active = 2
-                        loading.close()
+                    qmxMsgUpdate(this.form).then(res => {
+
+                        this.msgSuccess("修改成功");
+                        this.open = false;
+                        this.getList();
                     })
                         .catch(res => {
                             console.log('失败信息', res)
@@ -134,63 +227,11 @@ export default {
                         })
                 }
             })
-
-        },
-        goListDetail() {
-            this.$router.push('/cost/accountRechargeList?id=' + this.form.orgId)
-        },
+        }
+    },
+    beforeDestroy() {
     }
-};
+}
+
+
 </script>
-<style lang="scss" scoped>
-.tit {
-    padding: 50px 0 40px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 500;
-}
-.formBox {
-    width: 500px;
-    margin: 0px auto 40px;
-    .el-form-item-j {
-        margin-bottom: 24px;
-    }
-}
-.tipsBox {
-    padding: 30px 10px 0;
-    border-top: 1px solid #f0f0f0;
-    color: rgba(0, 0, 0, 0.45);
-    p {
-        margin: 0 0 4px;
-        font-size: 14px;
-        line-height: 22px;
-    }
-    .info {
-        margin: 0 0 12px;
-        font-size: 16px;
-        line-height: 32px;
-    }
-}
-.successBox {
-    padding: 10px 10px;
-    margin-bottom: 24px;
-    text-align: center;
-
-    .icon {
-        color: #52c41a;
-        font-size: 80px;
-    }
-    .h2 {
-        font-size: 24px;
-        line-height: 1.8;
-    }
-    .mini {
-        color: rgba(0, 0, 0, 0.45);
-        font-size: 14px;
-        line-height: 1.6;
-    }
-    .mxbox {
-        margin-top: 20px;
-    }
-}
-</style>
