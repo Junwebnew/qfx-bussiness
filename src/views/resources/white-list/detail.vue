@@ -21,11 +21,12 @@
                                 </div>
                             </el-col>
                             <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">企业地址：</span>
+                                <span class="custom-label">经营状态：</span>
                                 <div class="custom-r">
-                                    {{json.address || '--'}}
+                                    {{json.businessState || '--'}}
                                 </div>
                             </el-col>
+                          
                             <el-col :lg="12" :sm="12" :xs="24">
                                 <span class="custom-label">企业法人：</span>
                                 <div class="custom-r">
@@ -38,10 +39,10 @@
                                     {{json.creditCode || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">经营状态：</span>
+                              <el-col :lg="24" :sm="24" :xs="24">
+                                <span class="custom-label">企业地址：</span>
                                 <div class="custom-r">
-                                    {{json.businessState || '--'}}
+                                    {{json.address || '--'}}
                                 </div>
                             </el-col>
                             <el-col :lg="24" :sm="24" :xs="24">

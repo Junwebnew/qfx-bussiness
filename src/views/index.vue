@@ -8,7 +8,7 @@
                     </div>
                     <div class="avaterContent">
                         <h2>{{timeFix()}},{{name}}</h2>
-                        <p>{{orgInfo.orgName}} - {{orgInfo.deptName}}</p>
+                        <p>{{orgInfo.orgName}} <span v-if=" orgInfo.orgName != orgInfo.deptName"> - {{orgInfo.deptName}}</span></p>
                     </div>
                 </el-col>
                 <el-col :sm="12" :xs="24">

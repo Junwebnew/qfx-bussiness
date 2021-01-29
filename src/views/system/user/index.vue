@@ -113,18 +113,19 @@
                 <div class=" l-b back-fff">
 
                     <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
-                        <el-table-column type="index" width="50" align="center" />
-                        <!-- <el-table-column label="用户编号" align="center" prop="id" /> -->
-                        <el-table-column label="用户名称" align="center" prop="name">
+                        <el-table-column type="index" width="50" />
+                        <!-- <el-table-column label="用户编号"  prop="id" /> -->
+                        <el-table-column label="用户名称" prop="name">
                             <template slot-scope="scope">
                                 <span class="mr5">{{scope.row.name}}</span>
                                 <el-tag v-if="scope.row.accountType == 0" size="mini">主</el-tag>
                                 <el-tag v-if="scope.row.whetherAdmin == 1" type="success" size="mini">管</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column label="部门" align="center" prop="organizationName" :show-overflow-tooltip="true" />
-                        <el-table-column label="手机号码" align="center" prop="mobile" width="120" />
-                        <el-table-column label="审核状态" align="center" width="80">
+                        <el-table-column label="部门" prop="organizationName" :show-overflow-tooltip="true" />
+                        <el-table-column label="登录账号" prop="loginName" width="120" />
+                        <el-table-column label="手机号码" prop="mobile" width="120" />
+                        <el-table-column label="审核状态" width="80">
                             <template slot-scope="scope">
                                 <!-- <span>{{returnStatusName(scope.row.checkStatus)}}</span> -->
                                 <el-tag v-if="scope.row.checkStatus == 0" type='warning' size="mini">审核中</el-tag>
@@ -138,7 +139,7 @@
                                 <span :class=" scope.row.commonStatus ? 'status-flag status-success' :  'status-flag status-err' "> {{ scope.row.commonStatus　? '正常' : '禁用'}}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+                        <el-table-column label="创建时间" prop="createTime" width="160">
                             <template slot-scope="scope">
                                 <span>{{ parseTime(scope.row.createTime) }}</span>
                             </template>
