@@ -27,13 +27,13 @@
 
             <el-table v-loading="loading" :data="dataList">
                 <el-table-column prop="phone" label="电话号码"></el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column label="状态">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.commonStatus == 1" type='success' size="mini">正常</el-tag>
                         <el-tag v-else type="danger" size="mini">已禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button class="col-update" v-if="scope.row.commonStatus == 1" size="mini" type="text" @click="handleUpdateStatus(scope.row,0)">禁用</el-button>
                         <el-button class="col-del" v-else size="mini" type="text" @click="handleUpdateStatus(scope.row,1)">启用</el-button>

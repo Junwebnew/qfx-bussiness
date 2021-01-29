@@ -31,15 +31,15 @@
             </el-row>
 
             <el-table v-loading="loading" :data="dataList">
-                <el-table-column label="电话号码" prop="phone"></el-table-column>
-                <el-table-column label="公司名称" prop="peopleOrEnterpriseName" width="200"></el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column label="电话号码" prop="phone" width='110'></el-table-column>
+                <el-table-column label="公司名称" prop="peopleOrEnterpriseName"></el-table-column>
+                <el-table-column label="状态" width='100'>
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.commonStatus == 1" type='success' size="mini">正常</el-tag>
                         <el-tag v-else type="danger" size="mini">已禁用</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" align="center">
+                <el-table-column label="操作" width='100'>
                     <template slot-scope="scope">
                         <el-button class="col-update" v-if="scope.row.commonStatus == 1" size="mini" type="text" @click="handleUpdateStatus(scope.row,0)">禁用</el-button>
                         <el-button class="col-del" v-else size="mini" type="text" @click="handleUpdateStatus(scope.row,1)">启用</el-button>

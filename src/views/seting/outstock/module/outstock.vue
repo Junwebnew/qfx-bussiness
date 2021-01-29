@@ -8,7 +8,7 @@
                     <div class="form">
 
                         <el-form ref="form" :label-position="'top'" label-width="130px">
-                            <el-form-item label="开启通知">
+                            <el-form-item :label="form.value ? '开启通知' : '关闭通知' ">
                                 <el-switch v-model="form.value" active-color="#13ce66">
                                 </el-switch>
                             </el-form-item>
@@ -17,9 +17,9 @@
                                 <el-input-number v-model="num" :min="1" :max="100" size='mini' label="描述文字"></el-input-number> / 天
                             </el-form-item>
 
-                            <el-form-item label="提醒内容" prop="corpsecret">
+                            <!-- <el-form-item label="提醒内容" prop="corpsecret">
                                 <el-input type='textarea' v-model="form.remindContent" :disabled='!form.value ' />
-                            </el-form-item>
+                            </el-form-item> -->
                         </el-form>
                     </div>
                     <div class="text-left">

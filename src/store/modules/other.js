@@ -8,7 +8,8 @@ const otherData = {
             state.msgNum = num
         },
         SET_REDUCE_MSGNUM: (state) => {
-            state.msgNum = (state.msgNum - 1) || ''
+            let num = (state.msgNum - 1)
+            state.msgNum = num > 0 ? num : ''
         }
     },
     actions: {

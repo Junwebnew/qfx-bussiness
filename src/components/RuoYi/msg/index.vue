@@ -8,7 +8,7 @@
                         <ul v-show='noticeNum > 0 '>
                             <li v-for="(item,idx) in noticeArr" :key='idx' @click="readFunc(item,'noticeNum')">
                                 <h3 :class="{'read':item.isRead}">{{item.title}}</h3>
-                                <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
+                                <div class="text-delic2" :class="{'show':item.show}" v-html="item.content"></div>
                                 <small>{{item.createTime}}</small>
                             </li>
                         </ul>
@@ -29,7 +29,7 @@
                         <ul v-show='messageNum > 0 '>
                             <li v-for="(item,idx) in messageArr" :key='idx' @click="readFunc(item,'messageNum')">
                                 <h3 :class="{'read':item.isRead}"> {{item.title}}</h3>
-                                <p class="text-delic2" :class="{'show':item.show}">{{item.content}}</p>
+                                <div class="text-delic2" :class="{'show':item.show}" v-html="item.content"></div>
                                 <small>{{item.createTime}}</small>
                             </li>
                         </ul>
@@ -123,7 +123,7 @@ export default {
 
             Promise.all([
                 qmxMsgListRead(params),
-                conMsgList(Object.assign({ isRead: 0, params }))
+                conMsgList(Object.assign({ isRead: 0, isRelease: 1, params }))
             ]).then(res => {
 
                 // console.log('9999', res)
@@ -140,9 +140,11 @@ export default {
         readFunc(item, key) {
 
             this.$set(item, 'show', !item.show)
+            // console.log(11111, item)
 
-            if (item.isRead == 0) {
-                item.isRead = 1
+
+            if (item.isRead != 1) {
+                this.$set(item, 'isRead', 1)
                 if (key == 'noticeNum') {
                     qmxMsgRead({ ids: [item.id], status: 1 })
                         .then(res => {
@@ -200,15 +202,6 @@ export default {
             ]).then(res => {
                 this.initList()
             })
-
-            // if (this.noticeArr && this.noticeArr.length) {
-            //     let a = this.noticeArr.map(i => i.id)
-            //     let ids = this.messageArr.map(i => i.id).concat(a)
-            //     qmxMsgRead({ ids: ids, status: 1 })
-            //         .then(res => {
-
-            //         })
-            // }
         },
         setMsgMum(num) {
             this.$store.commit('SET_MSGNUM', num)
@@ -249,7 +242,7 @@ export default {
         }
         h3 {
             margin: 4px 0;
-            font-size: 12px;
+            font-size: 14px;
             position: relative;
             padding-left: 10px;
             color: #333;
@@ -273,7 +266,7 @@ export default {
                 }
             }
         }
-        p {
+        div {
             color: #888;
             font-size: 12px;
             margin: 4px 0;

@@ -12,7 +12,7 @@
                                     <ul>
                                         <li v-for="(item,idx) in noticeArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'n1')">
                                             <h3 class="head"> {{item.title}}</h3>
-                                            <p class="desc">{{item.content}}</p>
+                                            <div class="desc" v-html="item.content"></div>
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
@@ -34,7 +34,7 @@
                                     <ul>
                                         <li v-for="(item,idx) in messageArr" :key='idx' :class="{'read':item.isRead}" @click="readFunc(item,'n2')">
                                             <h3 class="head"> {{item.title}}</h3>
-                                            <p class="desc">{{item.content}}</p>
+                                            <div class="desc" v-html="item.content"></div>
                                             <small>{{item.createTime}}</small>
                                         </li>
                                     </ul>
@@ -127,7 +127,7 @@ export default {
                 //userId: this.userId,
                 isRelease: 1,
                 pageSize: this.pageSize,
-                pageNum: this.pageNum.n2
+                pageNum: this.pageNum.n2,
             }
             conMsgList(params).then(res => {
                 let arrKey = 'messageArr'
@@ -146,8 +146,8 @@ export default {
         },
         readFunc(item, key) {
 
-            if (item.isRead == 0) {
-                item.isRead = 1
+            if (item.isRead != 1) {
+                this.$set(item, 'isRead', 1)
                 if (key == 'n1') {
                     qmxMsgRead({ ids: [item.id], status: 1 })
                         .then(res => {

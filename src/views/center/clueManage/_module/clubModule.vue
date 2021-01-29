@@ -153,9 +153,9 @@ export default {
                 resourceType: [
                     { required: true, message: "线索类型不能为空", trigger: "blur" }
                 ],
-                vocId: [
-                    { required: true, message: "业务类型不能为空", trigger: "blur" }
-                ],
+                // vocId: [
+                //     { required: true, message: "业务类型不能为空", trigger: "blur" }
+                // ],
                 email: [
                     { message: "邮箱地址不能为空", trigger: "blur" },
                     {

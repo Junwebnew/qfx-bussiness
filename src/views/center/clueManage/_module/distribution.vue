@@ -100,7 +100,8 @@ export default {
         getList() {
             this.loading = true;
             qmxUserList(this.queryParams).then(response => {
-                this.userList = response.data;
+
+                this.userList = response.data.filter(i => i.id != this.userId);
                 this.total = response.total;
                 this.loading = false;
             })

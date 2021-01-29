@@ -83,35 +83,35 @@
                             </el-col>
                             <el-col :span="24">
                                 <el-table v-loading="loading" :data="tableData" row-key="id">
-                                    <el-table-column label="商标图样" align='center'>
+                                    <el-table-column label="商标图样" align='center' width='100'>
                                         <template slot-scope="scope">
-                                            <a :href="$getImg(scope.row.trademarkPic,2) || 'javascript:void(0)'" target="_blank">
-                                                <img :src="$getImg(scope.row.trademarkPic,2)" height="50px">
+                                            <a :href="$getImg(scope.row.trademarkPic,2) || 'javascript:void(0)'" target="_blank" class="imgBox">
+                                                <img :src="$getImg(scope.row.trademarkPic,2)">
                                             </a>
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="商标名称" prop='trademarkName' show-overflow-tooltip>
                                     </el-table-column>
-                                    <el-table-column label="资源类型">
+                                    <el-table-column label="资源类型" width='90' show-overflow-tooltip>
                                         <template slot-scope="scope">
                                             {{scope.row.resourceType == 1 ? '商标名相同' : '商标名近似' }}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="国际分类">
+                                    <el-table-column label="国际分类" width='110' show-overflow-tooltip>
                                         <template slot-scope="scope">
                                             {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="注册号" prop="applicationNumber">
+                                    <el-table-column label="注册号" width='90' prop="applicationNumber">
                                     </el-table-column>
-                                    <el-table-column label="申请日期" show-overflow-tooltip>
+                                    <el-table-column label="申请日期" width='100' show-overflow-tooltip>
                                         <template slot-scope="scope">
                                             {{scope.row.trademarkApplicationDate}}
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip>
                                     </el-table-column>
-                                    <el-table-column label="操作" width='220' align='center' class-name="small-padding fixed-width">
+                                    <el-table-column label="操作" width='140' align='center' class-name="small-padding fixed-width">
                                         <template slot-scope="scope">
                                             <div class='operation'>
                                                 <el-button size="mini" type="text" @click="getResourseTel(scope.row)">获取电话</el-button>
@@ -153,7 +153,8 @@
 
 <script>
 import { objectionAnalysisDetail, objectionAnalysisDetailList } from "@/api/resources";
-import { phoneList, contrast, resoursePrice } from '../_module/telModelu'
+
+import { phoneList, contrast, resoursePrice } from '../_module'
 
 export default {
     name: 'objection-analysis-detail',
@@ -262,6 +263,17 @@ export default {
     p {
         overflow: hidden;
         color: #515a6e;
+    }
+}
+.imgBox {
+    display: block;
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    img {
+        max-width: 100%;
+        max-height: 100%;
     }
 }
 </style>

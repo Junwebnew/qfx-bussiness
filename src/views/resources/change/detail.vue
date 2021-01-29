@@ -20,16 +20,17 @@
                                     {{json.companyName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">申请人地址：</span>
-                                <div class="custom-r">
-                                    {{json.companyAddress || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="24" :sm="24" :xs="24">
+
+                            <el-col :lg="12" :sm="24" :xs="24">
                                 <span class="custom-label">社会信用代码：</span>
                                 <div class="custom-r">
                                     {{json.creditCode || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :lg="24" :sm="12" :xs="24">
+                                <span class="custom-label">申请人地址：</span>
+                                <div class="custom-r">
+                                    {{json.companyAddress || '--'}}
                                 </div>
                             </el-col>
                         </el-row>

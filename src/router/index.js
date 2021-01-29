@@ -225,13 +225,13 @@ export const asyncAllRoutes = [
                 alwaysShow: true,
                 meta: { title: "消息管理", noCache: false },
                 children: [
-                    {
-                        name: "release",
-                        path: "release",
-                        hidden: false,
-                        component: "system/message/release",
-                        meta: { title: "发布消息", noCache: false },
-                    },
+                    // {
+                    //     name: "release",
+                    //     path: "release",
+                    //     hidden: false,
+                    //     component: "system/message/release",
+                    //     meta: { title: "发布消息", noCache: false },
+                    // },
                     {
                         name: "noticeList",
                         path: "noticeList",
@@ -509,48 +509,48 @@ export const asyncAllRoutes = [
                 meta: { title: "资源统计", noCache: true },
             },
             {
-                name: "cluepool",
-                path: "cluepool",
+                name: "deptpool",
+                path: "deptpool",
                 hidden: false,
                 component: "ParentView",
-                meta: { title: "线索资源池", noCache: true },
+                meta: { title: "部门资源池", noCache: true },
                 children: [
                     {
-                        name: "cluepooldep",
-                        path: "dep",
+                        name: "clue_dept",
+                        path: "clue_dept",
                         hidden: false,
-                        component: "pool/clue/dep",
+                        component: "pool/deptpool/clue_dept",
                         meta: { title: "线索部门池", noCache: true },
                     },
                     {
-                        name: "cluepoolpublic",
-                        path: "public",
+                        name: "buss_dept",
+                        path: "buss_dept",
                         hidden: false,
-                        component: "pool/clue/public",
-                        meta: { title: "线索公共池", noCache: true },
+                        component: "pool/deptpool/buss_dept",
+                        meta: { title: "商机部门池", noCache: true },
                     }
                 ]
             },
             {
-                name: "busspool",
-                path: "busspool",
+                name: "droppool",
+                path: "droppool",
                 hidden: false,
                 component: "ParentView",
-                meta: { title: "商机资源池", noCache: true },
+                meta: { title: "掉库资源池", noCache: true },
                 children: [
                     {
-                        name: "busspooldep",
-                        path: "dep",
+                        name: "clue_drop",
+                        path: "clue_drop",
                         hidden: false,
-                        component: "pool/buss/dep",
-                        meta: { title: "商机部门池", noCache: true },
+                        component: "pool/droppool/clue_drop",
+                        meta: { title: "线索掉库池", noCache: true },
                     },
                     {
-                        name: "busspoolpublic",
-                        path: "public",
+                        name: "buss_drop",
+                        path: "buss_drop",
                         hidden: false,
-                        component: "pool/buss/public",
-                        meta: { title: "商机公共池", noCache: true },
+                        component: "pool/droppool/buss_drop",
+                        meta: { title: "商机掉库池", noCache: true },
                     }
                 ]
             }

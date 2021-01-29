@@ -71,7 +71,7 @@
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属部门：</span>
                                 <div class="custom-r">
-                                    {{json.deptId || '--'}}
+                                    {{json.deptName || '--'}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
