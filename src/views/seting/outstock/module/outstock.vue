@@ -27,6 +27,7 @@
                     </div>
                 </div>
             </el-col>
+            
             <!-- <el-col :lg="12" :sm="24" :xs="24" class="left">
                 <div class="box">
                     <h2>是否开启通知</h2>
