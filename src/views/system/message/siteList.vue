@@ -154,11 +154,14 @@ export default {
             tableData: [],
             //总数
             total: 0,
+            //机构Id
+            orgId: [],
             //查询参数
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
                 type: '',
+                orgId: [],
                 isRelease: ''
             },
             // 弹出层标题
@@ -210,6 +213,7 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
+            // this.queryParams.orgId = this.orgId.join(',')
             conMsgList(this.queryParams).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
@@ -223,10 +227,7 @@ export default {
         },
         //重置表单
         resetQuery() {
-
-            this.rejectdateRange = []
-            this.applydateRange = []
-
+            this.orgId = []
             this.resetForm("queryForm");
             this.handleQuery();
         },
@@ -304,7 +305,7 @@ export default {
         submitForm() {
             this.$refs["form"].validate(valid => {
                 if (valid) {
-
+                    this.form.isRead = 0
                     conMsgUpdate(this.form).then(res => {
 
                         this.msgSuccess(this.form.id ? "修改成功" : '新增成功');

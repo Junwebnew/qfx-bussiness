@@ -74,14 +74,14 @@
                         </a>
                     </template>
                 </el-table-column>
-                <el-table-column label="商标名称" width='100' show-overflow-tooltip>
+                <el-table-column label="商标名称" width='200' show-overflow-tooltip>
                     <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTrademarkName || '--'}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='90px'>
+                <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='100px'>
                 </el-table-column>
-                <el-table-column label="国际分类" width='90px'>
+                <el-table-column label="国际分类" width='110px'>
                     <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTypeOfTrademarkCode}}类-{{scope.row.preliNoticeTypeOfTrademarkName}}</span>
                     </template>
@@ -100,13 +100,6 @@
                     </template>
                     <template slot-scope="scope">
                         <span>{{scope.row.objectionCountNum || '--'}}个</span>
-                    </template>
-                </el-table-column>
-                <el-table-column label="最新领取记录" prop='bestNewRemark'>
-                    <template slot-scope="scope">
-                        <div class='operation'>
-                            <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>
-                        </div>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width='70' align='center'>

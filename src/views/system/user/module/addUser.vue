@@ -168,7 +168,7 @@ export default {
             // 角色选项
             roleOptions: [],
             // 是否管理员选项
-            adminArr: [{ 'key': '管理员', value: 1 }, { 'key': '普通员工', value: 0 }],
+            adminArr: [{ 'key': '管理者', value: 1 }, { 'key': '普通员工', value: 0 }],
             // 表单参数
             form: {
                 'password': 123456,

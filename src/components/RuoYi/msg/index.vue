@@ -58,7 +58,7 @@
 
 <script>
 
-import { qmxMsgListRead, qmxMsgRead, conMsgList, conMsgRead } from '@/api/system/msg.js'
+import { qmxMsgListRead, qmxMsgRead, conMsgListRead, conMsgRead } from '@/api/system/msg.js'
 import { mapGetters } from 'vuex'
 
 
@@ -123,7 +123,7 @@ export default {
 
             Promise.all([
                 qmxMsgListRead(params),
-                conMsgList(Object.assign({ isRead: 0, isRelease: 1, params }))
+                conMsgListRead(Object.assign({ params }))
             ]).then(res => {
 
                 // console.log('9999', res)
@@ -131,10 +131,10 @@ export default {
                 this.noticeArr = res[0].allData.data
                 this.noticeNum = res[0].notReadNum
 
-                this.messageArr = res[1].data
-                this.messageNum = res[1].total
+                this.messageArr = res[1].allData.data
+                this.messageNum = res[1].notReadNum
 
-                this.setMsgMum(res[0].notReadNum + res[1].total)
+                this.setMsgMum(res[0].notReadNum + res[1].notReadNum)
             })
         },
         readFunc(item, key) {

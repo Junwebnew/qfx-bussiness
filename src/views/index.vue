@@ -2,7 +2,7 @@
     <div class="app-container home">
         <div class="back-fff">
             <el-row :gutter="10" class="pad20 userInfoBox mb10">
-                <el-col :sm="12" :xs="24" class="">
+                <el-col :sm="8" :xs="24" class="">
                     <div class="user-avatar">
                         <img :src="avatar">
                     </div>
@@ -11,8 +11,12 @@
                         <p>{{orgInfo.orgName}} <span v-if=" orgInfo.orgName != orgInfo.deptName"> - {{orgInfo.deptName}}</span></p>
                     </div>
                 </el-col>
-                <el-col :sm="12" :xs="24">
+                <el-col :sm="16" :xs="24">
                     <ul class="showInfo">
+                        <li v-if="mainAccount">
+                            <span>剩余次数</span>
+                            <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber}}</p>
+                        </li>
                         <li>
                             <span>线索总数</span>
                             <p class="num">{{countObj.clueCount}}</p>
@@ -69,6 +73,8 @@
 import echarts from "echarts";
 import { mapGetters } from 'vuex'
 import { getDataStatic, finishOppsStatisticsMoney, bussTodayeList } from "@/api/center";
+import { rechargeAccountList } from "@/api/account";
+
 export default {
     name: "index",
     data() {
@@ -78,12 +84,14 @@ export default {
             countObj: {},
             bussTodayArr: [],
             myChart: {},
+            accountNumber: ''
         };
     },
     computed: {
         ...mapGetters([
             'avatar',
-            'name'
+            'name',
+            'mainAccount'
         ]),
     },
     created() {
@@ -93,11 +101,23 @@ export default {
         getDataStatic({}).then(res => {
             this.countObj = res.data
         })
+        if (this.mainAccount) {
+            rechargeAccountList({ pageNum: 1, pageSize: 1, orgId: '' }).then(res => {
+                this.accountNumber = res.data[0].accountNumber
+                // this.accountNumber = 9
+            })
+                .catch(error => {
+                    console.log('获取数量失败', error)
+                })
+        }
+
     },
     mounted() {
 
         this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.handleQuery()
+
+
     },
     methods: {
         handleQuery() {

@@ -35,9 +35,14 @@ export function qmxMsgUpdate(data) {
 //********************************************站内信（消息）**************************************************** */
 
 
-//获取消息 
+//获取消息 (不含未读数量)
 export function conMsgList(data) {
     return $axios.post('msg/msgOrgInstationNews/page/list', data)
+}
+
+//获取消息 (含未读数量)
+export function conMsgListRead(data) {
+    return $axios.post('msg/msgOrgInstationNews/page/list/all', data)
 }
 
 //批量更新是否已读

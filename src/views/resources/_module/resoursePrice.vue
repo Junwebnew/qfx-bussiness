@@ -14,6 +14,7 @@ export default {
         resourcesModule: {
             type: String | Number
         },
+        // 0 是企业，1 是个人
         applicationType: {
             type: String | Number
         }
@@ -37,7 +38,7 @@ export default {
 
             let types = this.ids[this.resourcesModule - 1]
 
-            this.$store.dispatch('getResoursePrice', this.applicationType ? types.com : types.person).then(res => {
+            this.$store.dispatch('getResoursePrice', this.applicationType == 1 ? types.person : types.com).then(res => {
                 // console.log('0000', res)
                 this.price = res.value
             })

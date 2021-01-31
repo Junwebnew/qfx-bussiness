@@ -111,6 +111,13 @@
                                     </el-table-column>
                                     <el-table-column label="申请人" prop="applicationNameCn" show-overflow-tooltip>
                                     </el-table-column>
+                                    <el-table-column label="最新领取记录" prop='bestNewRemark'>
+                                        <template slot-scope="scope">
+                                            <div class='operation'>
+                                                <span class="f12">{{scope.row.bestNewRemark || '--'}}</span>
+                                            </div>
+                                        </template>
+                                    </el-table-column>
                                     <el-table-column label="操作" width='140' align='center' class-name="small-padding fixed-width">
                                         <template slot-scope="scope">
                                             <div class='operation'>

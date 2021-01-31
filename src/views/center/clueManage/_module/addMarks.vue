@@ -84,7 +84,10 @@ export default {
 
                     function isNeedTips() {
                         if (that.form.remindDate) {
-                            that.form.remindDate = that.form.remindDate + ':00:00'
+                            // that.form.remindDate = that.form.remindDate + ':00:00'
+                            if (that.form.remindDate.indexOf('00:00') == -1) {
+                                that.form.remindDate = that.form.remindDate + ':00:00'
+                            }
                             return clueTipsUpdate(that.form)
                         }
                         return []

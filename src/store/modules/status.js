@@ -145,12 +145,13 @@ const status = {
         getResoursePrice({ commit, state }, id) {
 
             return new Promise(resolve => {
-                if (state.resoursePrice.length) {
+                // 不能缓存，实时获取
+                // if (state.resoursePrice.length) {
 
-                    let obj = state.resoursePrice.filter(i => i.id == id)[0]
-                    resolve(obj)
-                    return
-                }
+                //     let obj = state.resoursePrice.filter(i => i.id == id)[0]
+                //     resolve(obj)
+                //     return
+                // }
                 getDictData({ pageNum: 1, pageSize: 500 })
                     .then(res => {
 

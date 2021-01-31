@@ -1,4 +1,4 @@
-import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList, qmxgetOrgAndDep } from '@/api/login'
+import { login, logout, getInfo, qmxLogin, qmxgetInfo, qmxgetRoleList, qmxgetOrgAndDep, qmxLogout } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { $getImg } from '@/utils/qmx'
 import { qmxUserList } from "@/api/system/user"
@@ -65,7 +65,7 @@ const user = {
 
             return new Promise((resolve, reject) => {
                 qmxLogin(username, password).then(res => {
-                    Cookies.remove('tagsList')
+
                     setToken(res.data)
                     commit('SET_TOKEN', res.data)
                     resolve()
@@ -162,7 +162,8 @@ const user = {
         // 退出系统
         LogOut({ commit, state }) {
             return new Promise((resolve, reject) => {
-                logout(state.token).then(() => {
+                qmxLogout(state.token).then(() => {
+                    Cookies.remove('tagsList')
                     commit('SET_TOKEN', '')
                     commit('SET_ROLES', [])
                     commit('SET_PERMISSIONS', [])

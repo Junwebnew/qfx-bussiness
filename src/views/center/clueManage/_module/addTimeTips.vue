@@ -76,7 +76,10 @@ export default {
                     this.form.businessId = this.businessId
                     this.form.type = this.type
 
-                    this.form.remindDate = this.form.remindDate + ':00:00'
+                    if (this.form.remindDate.indexOf('00:00') == -1) {
+                        this.form.remindDate = this.form.remindDate + ':00:00'
+                    }
+
                     clueTipsUpdate(this.form).then(response => {
                         this.msgSuccess('新增成功');
                         this.open = false;

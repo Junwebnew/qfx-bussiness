@@ -9,7 +9,7 @@
                             <!--部门数据-->
                             <el-col :lg='6' :md='10' :sm="24" :xs="24" v-if="whetherAdmin">
                                 <el-form-item label="部门名称：">
-                                    <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择上级部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
+                                    <treeselect v-model="queryParams.orgId" :options="deptListTree" :normalizer="normalizer" placeholder="选择部门" noResultsText="暂无结果" :searchable="true" @select='depTtreeChange' />
                                 </el-form-item>
                             </el-col>
 
