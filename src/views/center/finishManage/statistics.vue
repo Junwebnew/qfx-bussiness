@@ -67,7 +67,7 @@
             <el-row :gutter="10" class="chartBox" v-if="whetherAdmin">
                 <el-col :md='18' :sm="18" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单比例统计</p>
+                        <p class=" f16 mb20 part-tit"> <i class="el-icon-info col"></i> 业务人员成单数统计</p>
                         <div ref="myChart4" style="width:100%;height:500px"></div>
                     </div>
                 </el-col>
@@ -163,7 +163,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'whetherAdmin'
+            'whetherAdmin',
+            'organizationId'
         ])
     },
     created() {
@@ -179,6 +180,7 @@ export default {
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
             })
+            this.queryParams.orgId = this.organizationId
         }
 
     },
@@ -428,43 +430,6 @@ export default {
         },
         initHistogram(myChart, chartData, totalNum) {
             let option = {
-                xAxis: {
-                    data: chartData.map(i => i.name),
-                    axisPointer: {
-                        type: 'shadow'
-                    },
-                    axisLabel: {
-                        //inside: true,
-                        textStyle: {
-                            fontSize: '10'
-                        },
-                        rotate: 40
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    z: 10
-                },
-                yAxis: {
-                    axisLine: {
-                        show: false
-                    },
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        textStyle: {
-                            color: '#999'
-                        }
-                    },
-                    max: function (value) {
-                        return value.max > 10 ? (value.max + 6) : (value.max + 1);
-                    }
-                },
-                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -472,32 +437,64 @@ export default {
                         crossStyle: {
                             color: '#999'
                         }
-                    },
-                    // formatter: function (params) {
-                    //     var result = ''
-                    //     var dotHtml = '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:8px;height:8px;background-color:#1890ff"></span>'
-                    //     params.forEach(function (item) {
-                    //         // console.log(item) item.marker
-                    //         result += dotHtml + item.name + ' : ' + item.value + '条 '
-                    //     })
-                    //     return result
-                    // },
-                    // backgroundColor: "rgba(255,255,255,0.8)", //设置背景图片 rgba格式
-                    // color: "black",
-                    // borderWidth: "1", //边框宽度设置1
-                    // borderColor: "#f1f1f1", //设置边框颜色
-                    // textStyle: {
-                    //     color: "black" //设置文字颜色
-                    // },
-                    // shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    }
                 },
-                series: [{
-                    name: '成单数',
-                    data: chartData.map(i => (i.value)),
-                    type: 'bar',
-                    showBackground: true,
-                    barMaxWidth: 30,
-                }]
+                //画布的大小，位置
+                grid: {
+                    top: "100px",
+                    left: "50px",
+                    right: "10px",
+                    bottom: "50px",
+                    width: "auto", //图例宽度
+                },
+                toolbox: {
+                    feature: {
+                        // dataView: { show: true, readOnly: false },
+                        magicType: { show: true, type: ['line', 'bar'] },
+                        // restore: { show: true },
+                        // saveAsImage: { show: true }
+                    }
+                },
+                color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
+                legend: {
+                    data: ['成单数']
+                },
+                xAxis: [
+                    {
+                        // type: 'category',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                fontSize: '10'
+                            },
+                            rotate: 40
+                        },
+                        data: chartData.map(i => i.name),
+                        axisPointer: {
+                            type: 'shadow'
+                        },
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value',
+                        name: '数量',
+                        min: 0,
+                        max: function (value) {
+                            return value.max > 10 ? (value.max + 6) : (value.max + 1);
+                        },
+                        axisLabel: {
+                            formatter: '{value}条'
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: '成单数',
+                        type: 'bar',
+                        data: chartData.map(i => i.value)
+                    }
+                ]
             };
 
             myChart.setOption(option)

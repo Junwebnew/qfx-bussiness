@@ -68,7 +68,7 @@
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
                 <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
-                <el-table-column label="提醒时间" prop="remindDate" width='120' show-overflow-tooltip></el-table-column>
+                <el-table-column label="提醒时间" prop="remindDate" width='160' show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新备注" prop="remarkContent">
                     <template slot-scope="scope">

@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </el-col>
-            
+
             <!-- <el-col :lg="12" :sm="24" :xs="24" class="left">
                 <div class="box">
                     <h2>是否开启通知</h2>
@@ -54,14 +54,17 @@ export default {
     props: {
         outType: {
             type: String | Number
-        }
+        },
+        openId: '',
+        daysId: ''
     },
     data() {
         return {
             num: 1,
             form: {
                 value: true
-            }
+            },
+
         }
     },
     computed: {
@@ -74,6 +77,10 @@ export default {
         }
     },
     methods: {
+        initDate(dataObj) {
+            this.num = dataObj.days
+            this.form.value = dataObj.isOpen
+        },
         submit(type) {
 
             const loading = this.$loading({
@@ -81,18 +88,27 @@ export default {
                 target: '#box'
             });
 
+            //通知开通 1是开通，2是关闭
 
             Promise.all([
-                outOfStockSet({ code: 'days_not_followed_up', value: this.num, type: this.outType }),
-                outOfStockSet({ code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent, type: this.outType })
+                outOfStockSet({ id: this.daysId, code: 'days_not_followed_up', value: this.num, type: this.outType }),
+                outOfStockSet({ id: this.openId, code: 'no_follow_up_reminder', value: this.form.value ? 1 : 2, remindContent: this.form.remindContent, type: this.outType })
             ])
                 .then(res => {
+                    this.reset()
                     this.msgSuccess('更新成功')
                     loading.close();
+                    this.$emit('finish')
                 })
                 .catch(res => {
                     loading.close();
                 })
+        },
+        reset() {
+            // this.num = 1
+            // this.form = {
+            //     value: true
+            // }
         }
     }
 }

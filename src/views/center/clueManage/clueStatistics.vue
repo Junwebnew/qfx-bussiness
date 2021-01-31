@@ -156,7 +156,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'whetherAdmin'
+            'whetherAdmin',
+            'organizationId'
         ])
     },
     watch: {
@@ -180,6 +181,8 @@ export default {
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
             })
+
+            this.orgAndDept = this.organizationId
         }
 
     },
@@ -333,7 +336,7 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
-            this.orgAndDept = undefined
+            this.orgAndDept = this.organizationId
 
             this.queryParams.counselorId = ''
             this.handleQuery();

@@ -81,7 +81,7 @@
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" v-hasPermi="['finish']" @click="goComplete(scope.row)">转为成单</el-button>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
                             <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
@@ -96,7 +96,7 @@
             <!-- 新增和修改    -->
             <bussModule ref='bussModule' :clueStatueArr='clueStatueArr' :resourceTypeArr='resourceTypeArr' :vocIdArr='vocIdArr' @backGetList='handleQuery' />
             <!-- 分配 -->
-            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' />
+            <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' :showStr="'移交'" />
             <!-- 转为商机 -->
             <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='getList' />
             <!-- 成单 -->
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { getClueStatusList, bussMyList, bussEliminate, bussDistribution } from "@/api/center";
+import { getClueStatusList, bussMyList, bussEliminate, bussTransfer } from "@/api/center";
 import { bussModule, distribution, selectVocTpye, completeBuss } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
@@ -262,9 +262,11 @@ export default {
         },
         //选完用户之后
         seleceUserFinish(userId) {
-            bussDistribution({ oppIds: this.ids, disTraUserId: userId }).then(res => {
 
-                this.msgSuccess('分配成功')
+
+            bussTransfer({ oppIds: this.ids, disTraUserId: userId }).then(res => {
+
+                this.msgSuccess('移交成功')
                 this.handleQuery()
 
             })

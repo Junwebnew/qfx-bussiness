@@ -151,11 +151,11 @@
             </el-row>
         </div>
         <!-- 修改状态 -->
-        <changeStatus ref='changeStatus' :clueStatueArr='clueStatueArr' @finish='getmarks' />
+        <changeStatus ref='changeStatus' :clueStatueArr='clueStatueArr' @finish='initPage' />
         <!-- 新增备注 -->
         <addMarks ref='addMarks' :clueStatueArr='clueStatueArr' @finish='getmarks' />
         <!-- 新增提醒 -->
-        <addTimeTips ref='addTimeTips' />
+        <addTimeTips ref='addTimeTips' @finish='getmarks' />
         <!-- 转为商机 -->
         <selectVocTpye ref='selectVocTpye' :vocIdArr='vocIdArr' @finish='initPage' />
     </div>
@@ -223,12 +223,18 @@ export default {
     },
     methods: {
         initPage() {
+
+            this.marksQuery.pageNum = 1
+
+            this.initDetail()
+            this.getmarks()
+        },
+        initDetail() {
             clueDetail(this.marksQuery.businessId)
                 .then(res => {
                     this.title = (res.data.customerName || '') + ' 线索详情页'
                     this.json = res.data
                 })
-            this.getmarks()
         },
         getmarks() {
 

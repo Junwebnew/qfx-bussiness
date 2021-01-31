@@ -10,7 +10,13 @@
                 </div>
             </div>
             <div class="r">
-                <outstock :outType='active == 1 ? 2 : 1' />
+                <div v-show='active == 1'>
+                    <outstock :outType='2' :assObj='bussObj' ref='bussTem' :openId='bussObj.openId' :daysId='bussObj.daysId' @finish='initPage' />
+                </div>
+                <div v-show='active != 1'>
+                    <outstock :outType='1' :assObj='clueObj' ref='clueTem' :openId='clueObj.openId' :daysId='clueObj.daysId' @finish='initPage' />
+                </div>
+
             </div>
         </div>
     </div>
@@ -18,30 +24,78 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import { outOfStockSet, getOutOfStockSet } from '@/api/system/set.js'
 import outstock from './module/outstock'
 export default {
     components: { outstock },
     data() {
         return {
-            active: 0
+            active: 0,
+            clueObj: {
+                isOpen: false,
+                days: 1,
+                openId: '',
+                daysId: ""
+            },
+            bussObj: {
+                isOpen: false,
+                days: 1,
+                openId: '',
+                daysId: ""
+            },
         }
     },
     computed: {
         ...mapGetters([
             'organizationId',
             'userId',
-            'mainAccount'
+            'mainAccount',
+            'companyId'
         ])
     },
     created() {
-        // this.initList('n1', () => {
-        //     this.initList('n2')
-        // })
+
+        this.initPage()
     },
     methods: {
+        initPage() {
+
+            Promise.all([
+                getOutOfStockSet({ orgId: this.companyId, type: 1 }),
+                getOutOfStockSet({ orgId: this.companyId, type: 2 })
+            ])
+                .then(res => {
 
 
+                    this.clueObj.isOpen = this.assObj('no_follow_up_reminder', res[0].data).value
+                    this.clueObj.openId = this.assObj('no_follow_up_reminder', res[0].data).uodateId
+                    this.clueObj.days = this.assObj('days_not_followed_up', res[0].data).value
+                    this.clueObj.daysId = this.assObj('days_not_followed_up', res[0].data).uodateId
+
+
+                    this.bussObj.isOpen = this.assObj('no_follow_up_reminder', res[1].data).value
+                    this.bussObj.openId = this.assObj('no_follow_up_reminder', res[1].data).uodateId
+                    this.bussObj.days = this.assObj('days_not_followed_up', res[1].data).value
+                    this.bussObj.daysId = this.assObj('days_not_followed_up', res[1].data).uodateId
+
+                    this.$refs.bussTem.initDate(this.bussObj)
+                    this.$refs.clueTem.initDate(this.clueObj)
+
+                })
+        },
+        assObj(key, oldarr) {
+
+            let arr = oldarr.filter(i => i.code == key)
+
+            let value = arr.length ? Number(arr[0].value) : ''
+            let uodateId = arr.length ? arr[0].id : ''
+
+            if (key == 'no_follow_up_reminder') {
+                return { uodateId, value: value == 1 }
+            }
+
+            return { uodateId, value: value || 1 }
+        }
     }
 }
 </script>

@@ -16,3 +16,8 @@ export function outOfStockSet(data) {
 export function clearNoticeData(num) {
     return $axios.get('api-qfxpdc/resourceManagement/cleaningPreliminaryNotice?noticeNum=' + num)
 }
+
+//获取调库设置
+export function getOutOfStockSet(data) {
+    return $axios.post('clueopp/businessClueoppOutOfStock/getOrgConfig', data)
+}

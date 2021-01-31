@@ -88,7 +88,7 @@
                 <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
+                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
                         </div>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { getClueStatusList, bussAllList, bussEliminate, bussTransfer } from "@/api/center";
+import { getClueStatusList, bussAllList, bussEliminate, bussDistribution } from "@/api/center";
 import { distribution } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
@@ -219,9 +219,6 @@ export default {
             this.handleQuery();
         },
         checkDetail(obj) {
-
-            let key = this.$route.name + obj.id
-
             this.$router.push('/center/bussManage/buss/detail?id=' + obj.id)
         },
         /** 修改按钮操作 */
@@ -272,9 +269,9 @@ export default {
         },
         //选完用户之后
         seleceUserFinish(userId) {
-            bussTransfer({ oppIds: this.ids, disTraUserId: userId }).then(res => {
+            bussDistribution({ oppIds: this.ids, disTraUserId: userId }).then(res => {
 
-                this.msgSuccess('移交成功')
+                this.msgSuccess('分配成功')
                 this.handleQuery()
 
             })

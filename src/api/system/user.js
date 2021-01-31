@@ -129,10 +129,16 @@ export function importTemplate() {
 
 //************************QMX************************ */
 
-//获取角色列表
-export function qmxUserList(data) {
+//获取所有用户列表（包含禁用用户）
+export function qmxUserListAll(data) {
     return $axios.post('back/user/page/enterpriseUserlist', data)
 }
+
+//获取用户列表
+export function qmxUserList(data) {
+    return $axios.post('back/user/page/pageSelectEnterpriseUserList', data)
+}
+
 //添加或更新用户
 export function qmxUserUpdate(data) {
     return $axios.post('back/user/saveorupdate', data)

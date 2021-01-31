@@ -64,7 +64,7 @@ export default {
 
             this.businessId = obj.id
             this.addTitle = tit || '提醒时间'
-            this.form = { remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
+            this.form = { remindDate: this.parseTime(new Date().getTime(), '{y}-{m}-{d}') + ' 09:00:00' }
             this.open = true
 
         },
@@ -72,6 +72,7 @@ export default {
         submitForm: function () {
             this.$refs["form"].validate(valid => {
                 if (valid) {
+
 
                     this.form.businessId = this.businessId
                     this.form.type = this.type

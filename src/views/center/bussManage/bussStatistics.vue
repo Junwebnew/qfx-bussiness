@@ -195,7 +195,8 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'whetherAdmin'
+            'whetherAdmin',
+            'organizationId'
         ])
     },
     watch: {
@@ -219,6 +220,8 @@ export default {
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
             })
+
+            this.orgAndDept = this.organizationId
         }
 
     },
@@ -414,7 +417,7 @@ export default {
         resetQuery() {
             this.dateRange = []
             this.queryParams.counselorId = ''
-            this.orgAndDept = undefined
+            this.orgAndDept = this.organizationId
             this.handleQuery();
         },
         initCharts(myChart, titStr, chartData, total) {

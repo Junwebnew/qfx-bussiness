@@ -89,11 +89,12 @@
                 <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <template v-if="whetherAdmin">
+                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <template v-if="isShowhandle(scope.row)">
                                 <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
                                 <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             </template>
-                            <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+
                         </div>
                     </template>
                 </el-table-column>
@@ -142,8 +143,10 @@ export default {
                 followStatusList: ''
             },
             seProps: { value: 'id', label: "name" },
-            //线索状态
+            //线索所有状态
             clueStatueArr: [],
+            //未变为商机的线索状态
+            myClueStatueArr: [],
             //业务类型
             vocIdArr: [],
             vocId: '',
@@ -169,7 +172,11 @@ export default {
         this.getList()
 
         this.$store.dispatch('getBussStatus', 1).then(res => {
+
             this.clueStatueArr = res
+        })
+        this.$store.dispatch('getBussStatus', 2).then(res => {
+            this.myClueStatueArr = res
         })
         this.$store.dispatch('getCenterType', 1).then(res => {
             this.vocIdArr = res
@@ -209,6 +216,12 @@ export default {
             let item = this.clueStatueArr.filter(i => i.code == row.followStatus)[0]
 
             return (item && item.name) || row.followStatus
+        },
+        //是否展示操作按钮
+        isShowhandle(row) {
+            let arr = this.myClueStatueArr.filter(i => i.id == row.followStatus)
+
+            return this.whetherAdmin && arr.length
         },
         /** 搜索按钮操作 */
         handleQuery() {

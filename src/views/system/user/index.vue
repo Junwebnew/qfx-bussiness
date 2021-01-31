@@ -213,7 +213,7 @@
 </template>
 
 <script>
-import { qmxUserList, qmxUserUpdate, qmxUserDel, qmxUserReset, qmxUserCheck } from "@/api/system/user";
+import { qmxUserListAll, qmxUserUpdate, qmxUserDel, qmxUserReset, qmxUserCheck } from "@/api/system/user";
 import { getToken } from "@/utils/auth";
 import { qmxDept } from "@/api/system/dept";
 import { qmxRoleList } from "@/api/system/role";
@@ -395,7 +395,7 @@ export default {
             this.loading = true;
 
 
-            qmxUserList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            qmxUserListAll(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
                 this.userList = response.data;
                 this.total = response.total;
                 this.loading = false;

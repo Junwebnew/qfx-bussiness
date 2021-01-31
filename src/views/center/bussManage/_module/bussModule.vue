@@ -263,7 +263,7 @@ export default {
                         newObj.vocId = newObj.vocId[newObj.vocId.length - 1]
                     }
 
-                    let str = !newObj.id ? '修改成功' : '新增成功'
+                    let str = newObj.id ? '修改成功' : '新增成功'
 
                     bussUpdate(newObj).then(res => {
 

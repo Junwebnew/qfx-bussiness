@@ -278,7 +278,7 @@ export default {
         submitForm() {
             this.$refs["form"].validate(valid => {
                 if (valid) {
-
+                    this.form.isRead = 0
                     qmxMsgUpdate(this.form).then(res => {
 
                         this.msgSuccess(this.form.id ? "修改成功" : '新增成功');

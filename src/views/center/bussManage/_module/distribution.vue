@@ -21,7 +21,7 @@
                 <el-table-column label="部门" align="center" prop="organizationName" :show-overflow-tooltip="true" />
                 <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
-                        <el-button class="col" size="mini" type="text" @click="handleDistribution(scope.row)">分配</el-button>
+                        <el-button class="col" size="mini" type="text" @click="handleDistribution(scope.row)">{{showStr}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -46,6 +46,10 @@ export default {
         ids: {
             type: Array,
             default: () => []
+        },
+        showStr: {
+            type: String,
+            default: '分配'
         }
     },
     computed: {

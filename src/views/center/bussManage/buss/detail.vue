@@ -144,11 +144,11 @@
             </el-row>
         </div>
         <!-- 修改状态 -->
-        <changeStatus ref='changeStatus' :clueStatueArr='clueStatueArr' @finish='getmarks' />
+        <changeStatus ref='changeStatus' :clueStatueArr='clueStatueArr' @finish='initPage' />
         <!-- 新增备注 -->
         <addMarks ref='addMarks' :clueStatueArr='clueStatueArr' @finish='getmarks' />
         <!-- 新增提醒 -->
-        <addTimeTips ref='addTimeTips' />
+        <addTimeTips ref='addTimeTips' @finish='getmarks' />
         <!-- 成单 -->
         <completeBuss ref='completeBuss' @finish='getmarks' />
     </div>
@@ -217,6 +217,13 @@ export default {
     },
     methods: {
         initPage() {
+
+            this.marksQuery.pageNum = 1
+
+            this.initDetail()
+            this.getmarks()
+        },
+        initDetail() {
 
             let id = this.marksQuery.businessId
 

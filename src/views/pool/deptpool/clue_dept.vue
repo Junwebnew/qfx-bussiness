@@ -59,10 +59,11 @@
                 <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <span class="f12">{{scope.row.createTime}}_{{scope.row.remarkContent}}</span>
+                            <span class="f12">{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
                         </div>
                     </template>
                 </el-table-column>
+
                 <el-table-column label="操作" align="left" width="80" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>

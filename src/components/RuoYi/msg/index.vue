@@ -115,9 +115,9 @@ export default {
             let params = {
                 // companyId: this.organizationId,
                 // userId: this.userId,
-                // isRead: 0, //0 未读 1已读
+                isRead: 0, //0 未读 1已读
                 isRelease: 1,
-                pageSize: 30,
+                pageSize: 10,
                 pageNum: 1,
             }
 
@@ -128,13 +128,13 @@ export default {
 
                 // console.log('9999', res)
 
-                this.noticeArr = res[0].allData.data
-                this.noticeNum = res[0].notReadNum
+                this.noticeArr = res[0].notReadData.data
+                this.noticeNum = res[0].notReadData.total
 
-                this.messageArr = res[1].allData.data
-                this.messageNum = res[1].notReadNum
+                this.messageArr = res[1].notReadData.data
+                this.messageNum = res[1].notReadData.total
 
-                this.setMsgMum(res[0].notReadNum + res[1].notReadNum)
+                this.setMsgMum(res[0].notReadData.total + res[1].notReadData.total)
             })
         },
         readFunc(item, key) {

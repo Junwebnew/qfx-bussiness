@@ -13,6 +13,8 @@ const getters = {
     permission_routes: state => state.permission.routes,
     //用户信息
     userInfo: state => state.user.userInfo,
+    //所属机构Id
+    companyId: state => state.user.userInfo.companyId || '',
     //部门ID
     organizationId: state => state.user.userInfo.userOrganizationId || '',
     //角色ID
