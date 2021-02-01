@@ -5,7 +5,7 @@
                 <el-col>
                     <p class="tit">{{value[0].typeName}}</p>
                 </el-col>
-                <el-col :lg="12" :sm="12" :xs="24" v-for="item in value" :key="item.id">
+                <el-col :lg="12" :sm="24" :xs="24" v-for="item in value" :key="item.id">
                     <div class="item">
                         <div class="editBox">
                             <span class="mr10">{{item.name}} :</span>

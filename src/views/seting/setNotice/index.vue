@@ -11,7 +11,7 @@
             </div>
             <div class="r">
                 <setPerson v-show=" active == 0 " />
-                <setDep v-show=" active == 1 " />
+                <setDep v-show=" active == 1 " v-if="mainAccount" />
             </div>
         </div>
     </div>
@@ -45,35 +45,6 @@ export default {
     },
     methods: {
 
-        initList(key, cb) {
-
-            let params = {
-                companyId: this.organizationId,
-                userId: this.userId,
-                pageSize: this.pageSize,
-                pageNum: this.pageNum[key],
-                type: key == 'n1' ? 0 : 1
-            }
-
-            qmxMsgList(params).then(res => {
-
-                let arrKey = key == 'n1' ? 'noticeArr' : 'messageArr'
-
-                if (params.pageNum > 1) {
-                    this[arrKey] = this[arrKey].concat(res.data)
-                }
-                else {
-
-                    this[arrKey] = res.data
-
-                }
-
-                this.total[key] = res.total
-                cb && cb()
-
-            })
-
-        },
         handleClick() {
 
         },

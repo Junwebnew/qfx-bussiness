@@ -45,19 +45,12 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
-                            <el-form-item label="用户角色" prop="roleIds">
-                                <el-select v-model="form.roleIds" multiple placeholder="请选择" style="width:100%">
-                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id" :disabled="item.status == 1"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
-                        <el-col :span="12">
                             <el-form-item label="用户邮箱" prop="email">
                                 <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
                             </el-form-item>
                         </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
                         <el-col :span="12">
                             <el-form-item label="微信Code" prop="enterpriseMicroSignal">
                                 <el-input v-model="form.enterpriseMicroSignal" placeholder="请输入接收消息的企业微信code" maxlength="50" />
@@ -70,11 +63,20 @@
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
                         <el-col :span="12">
                             <el-form-item label="人员类型">
                                 <el-radio-group v-model="form.whetherAdmin">
                                     <el-radio v-for="dict in adminArr" :key="dict.key" :label="dict.value">{{dict.key}}</el-radio>
                                 </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="24">
+                            <el-form-item label="用户角色" prop="roleIds">
+                                <el-select v-model="form.roleIds" multiple placeholder="请选择" style="width:100%">
+                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id" :disabled="item.status == 1"></el-option>
+                                </el-select>
                             </el-form-item>
                         </el-col>
                     </el-row>

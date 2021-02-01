@@ -104,6 +104,7 @@ export default {
             } else {
                 this.$router.push("/");
             }
+            this.cookeSaveTag()
         },
         //刷新
         refreshSelectedTag() {
@@ -125,6 +126,9 @@ export default {
             }
             this.tagsList = arr
             this.$router.push(this.selectedTag.fullPath);
+
+            this.cookeSaveTag()
+
         },
         // 关闭其他标签
         closeOther() {
@@ -134,6 +138,8 @@ export default {
             }
             else
                 this.tagsList = [this.tagsList[0], this.selectedTag];
+
+            this.cookeSaveTag()
         },
         // 关闭全部标签
         closeAll() {
@@ -161,9 +167,12 @@ export default {
 
                 });
 
-                Cookies.set('tagsList', this.tagsList)
+                this.cookeSaveTag()
                 // this.$ls.set('tagsList', tagsList)
             }
+        },
+        cookeSaveTag() {
+            Cookies.set('tagsList', this.tagsList)
         },
         closeMenu() {
             this.visible = false

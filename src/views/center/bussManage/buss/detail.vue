@@ -210,7 +210,7 @@ export default {
         })
 
         this.qmxDataKey().then(res => {
-            // console.log('0000', res)
+            // console.log('0000', res['followRecordOperValueEnumList'])
             this.marksTypeArr = res['followRecordOperValueEnumList']
         })
 

@@ -380,6 +380,8 @@ export default {
 
         this.qmxDataKey().then(res => {
 
+            // console.log(11,res)
+            this.commonStatus = res['delFlagEnum']
             this.sexOptions = res['sexEnumList']
             this.statusOptions = res['checkStatusEnumList']
             this.checkStatusEnumList = res['checkStatusEnumList']

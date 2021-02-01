@@ -9,7 +9,8 @@
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="form.followStatus = dict.id">
+                        <!-- 不展示 已成单 -->
+                        <li v-for="dict in clueStatueArr" v-show=" dict.id != '13' " :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="selectStatus(dict)">
                             {{dict.name}}
                         </li>
                     </ul>
@@ -67,6 +68,10 @@ export default {
 
             this.open = true
 
+        },
+        selectStatus(item) {
+            this.form.followStatus = item.id
+            this.form.followStatusName = item.name
         },
         validStatus(rule, value, callback) {
 

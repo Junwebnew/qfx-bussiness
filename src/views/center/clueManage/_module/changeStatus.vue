@@ -9,7 +9,7 @@
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <!-- 不展示转为商机 -->
+                        <!-- 不展示 转为商机 -->
                         <li v-for="dict in clueStatueArr" v-show=" dict.id != '5' " :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="selectStatus(dict)">
                             {{dict.name}}
                         </li>

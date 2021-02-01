@@ -35,7 +35,6 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-
                     <el-row :gutter="20">
                         <el-col :span="12">
                             <el-form-item label="用户性别">
@@ -44,15 +43,6 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="角色" prop="roleIds">
-                                <el-select v-model="form.roleIds" multiple placeholder="请选择" disabled style="width:100%">
-                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                                </el-select>
-                            </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row :gutter="20">
                         <el-col :span="12">
                             <el-form-item label="邮箱" prop="email">
                                 <el-input v-model="form.email" placeholder="请输入邮箱" maxlength="50" />
@@ -66,6 +56,17 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+                    <el-row :gutter="20">
+
+                        <el-col :span="24">
+                            <el-form-item label="角色" prop="roleIds">
+                                <el-select v-model="form.roleIds" multiple placeholder="请选择" disabled style="width:100%">
+                                    <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+
                     <!-- <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
@@ -76,8 +77,8 @@
                 </el-form>
             </div>
             <div slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="submitForm">确 定</el-button>
                 <el-button @click="cancel">取 消</el-button>
+                <el-button type="primary" @click="submitForm">确 定</el-button>
             </div>
         </el-dialog>
 

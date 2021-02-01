@@ -17,10 +17,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="24" :xs="24" align='right'>
-                        <el-form-item>
-                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                        </el-form-item>
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -37,14 +35,15 @@
 
             <el-table v-loading="loading" :data="dataList">
                 <el-table-column prop="orgName" label="公司名称"></el-table-column>
-                <el-table-column label="充值金额" prop="money" width="200">
+                <el-table-column label="充值金额" prop="money" width="150">
                     <template slot-scope="scope">
                         <span>￥{{scope.row.money}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="充值次数" prop="number" width="200"></el-table-column>
-                <el-table-column label="剩余次数" prop="accountNumber" width="200"></el-table-column>
-                <el-table-column label="充值时间" prop="createTime" width="200"></el-table-column>
+                <el-table-column label="充值人员" prop="userName" width="150"></el-table-column>
+                <el-table-column label="充值次数" prop="number" width="150"></el-table-column>
+                <el-table-column label="剩余次数" prop="accountNumber" width="150"></el-table-column>
+                <el-table-column label="充值时间" prop="createTime" width="150"></el-table-column>
                 <el-table-column label="充值备注" prop="remark"></el-table-column>
             </el-table>
 

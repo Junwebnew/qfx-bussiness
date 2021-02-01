@@ -38,7 +38,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
-                        <el-form-item label="所属商务" prop="time" class="el-form-item-none">
+                        <el-form-item label="所属商务" prop="counselorId" class="el-form-item-none">
                             <el-select v-model="queryParams.counselorId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
@@ -88,9 +88,12 @@
                 <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
-                            <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <template v-if="isShowhandle(scope.row)">
+                                <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">分配</el-button>
+                                <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
+                            </template>
+
                         </div>
                     </template>
                 </el-table-column>
@@ -137,7 +140,9 @@ export default {
                 followStatusList: ''
             },
             seProps: { value: 'id', label: "name" },
-            //商机状态
+            //我的商机状态
+            myClueStatueArr: [],
+            //所有商机状态
             clueStatueArr: [],
             //业务类型
             vocIdArr: [],
@@ -165,6 +170,9 @@ export default {
 
         this.$store.dispatch('getBussStatus', 3).then(res => {
             this.clueStatueArr = res
+        })
+        this.$store.dispatch('getBussStatus', 4).then(res => {
+            this.myClueStatueArr = res
         })
         this.$store.dispatch('getCenterType', 1).then(res => {
             this.vocIdArr = res
@@ -204,6 +212,12 @@ export default {
             let item = this.clueStatueArr.filter(i => i.code == row.followStatus)[0]
 
             return (item && item.name) || row.followStatus
+        },
+        //是否展示操作按钮
+        isShowhandle(row) {
+            let arr = this.myClueStatueArr.filter(i => i.id == row.followStatus)
+
+            return this.whetherAdmin && arr.length
         },
         /** 搜索按钮操作 */
         handleQuery() {

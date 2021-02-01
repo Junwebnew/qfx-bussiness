@@ -62,10 +62,10 @@
                 </el-row>
 
                 <el-table v-loading="loading" :data="tableData" row-key="id">
-                    <el-table-column prop="name" label="商标图样" align='center' width='120'>
+                    <el-table-column prop="name" label="商标图样" align='center' width='80'>
                         <template slot-scope="scope">
-                            <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col">
-                                <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''" width="110px">
+                            <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col imgBox">
+                                <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''">
                             </a>
                         </template>
                     </el-table-column>
@@ -187,3 +187,14 @@ export default {
 
 
 </script>
+<style lang="scss" scoped>
+.imgBox {
+    width: 60px;
+    height: 60px;
+    display: block;
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+}
+</style>

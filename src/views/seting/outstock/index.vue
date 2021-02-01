@@ -11,10 +11,10 @@
             </div>
             <div class="r">
                 <div v-show='active == 1'>
-                    <outstock :outType='2' :assObj='bussObj' ref='bussTem' :openId='bussObj.openId' :daysId='bussObj.daysId' @finish='initPage' />
+                    <outstock :outType='2' ref='bussTem' @finish='initPage' />
                 </div>
                 <div v-show='active != 1'>
-                    <outstock :outType='1' :assObj='clueObj' ref='clueTem' :openId='clueObj.openId' :daysId='clueObj.daysId' @finish='initPage' />
+                    <outstock :outType='1' ref='clueTem' @finish='initPage' />
                 </div>
 
             </div>
@@ -74,12 +74,14 @@ export default {
 
                     this.clueObj.isOpen = this.assObj('no_follow_up_reminder', res[0].data).value
                     this.clueObj.openId = this.assObj('no_follow_up_reminder', res[0].data).uodateId
+
                     this.clueObj.days = this.assObj('days_not_followed_up', res[0].data).value
                     this.clueObj.daysId = this.assObj('days_not_followed_up', res[0].data).uodateId
 
 
                     this.bussObj.isOpen = this.assObj('no_follow_up_reminder', res[1].data).value
                     this.bussObj.openId = this.assObj('no_follow_up_reminder', res[1].data).uodateId
+
                     this.bussObj.days = this.assObj('days_not_followed_up', res[1].data).value
                     this.bussObj.daysId = this.assObj('days_not_followed_up', res[1].data).uodateId
 

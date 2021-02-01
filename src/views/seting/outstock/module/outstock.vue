@@ -1,8 +1,8 @@
 <template>
     <div class="con" id='box'>
-        <h1>{{title}}</h1>
+        <h1>{{title}}掉库设置</h1>
         <el-row>
-            <el-col :lg="12" :sm="24" :xs="24">
+            <el-col :lg="24" :sm="24" :xs="24">
                 <div class="box">
                     <!-- <h2>配置天数</h2> -->
                     <div class="form">
@@ -15,6 +15,7 @@
 
                             <el-form-item label="天数设置" prop="corpsecret">
                                 <el-input-number v-model="num" :min="1" :max="100" size='mini' label="描述文字"></el-input-number> / 天
+                                <p class="tips">说明：系统间隔 <span> XX </span>天未备注显示，{{title}}资源将自动掉库到到 <span>资源池 -> 掉库资源池 -> {{title}}掉库池</span> </p>
                             </el-form-item>
 
                             <!-- <el-form-item label="提醒内容" prop="corpsecret">
@@ -55,8 +56,7 @@ export default {
         outType: {
             type: String | Number
         },
-        openId: '',
-        daysId: ''
+
     },
     data() {
         return {
@@ -64,7 +64,8 @@ export default {
             form: {
                 value: true
             },
-
+            openId: '',
+            daysId: ''
         }
     },
     computed: {
@@ -73,13 +74,16 @@ export default {
             'userId'
         ]),
         title() {
-            return this.outType == 1 ? '线索掉库设置' : '商机掉库设置'
+            return this.outType == 1 ? '线索' : '商机'
         }
     },
     methods: {
         initDate(dataObj) {
+
             this.num = dataObj.days
             this.form.value = dataObj.isOpen
+            this.openId = dataObj.openId
+            this.daysId = dataObj.daysId
         },
         submit(type) {
 
@@ -125,7 +129,7 @@ h1 {
     border-left: 1px solid #f0f0f0;
 }
 .box {
-    width: 400px;
+    // width: 400px;
     h2 {
         margin: 0 0 12px;
         color: rgba(0, 0, 0, 0.85);
@@ -136,6 +140,14 @@ h1 {
     .form {
         margin: 30px 0;
         min-height: 120px;
+    }
+}
+.tips {
+    line-height: 1.5;
+    color: #999;
+    margin-top: 15px;
+    span {
+        color: #000;
     }
 }
 </style>

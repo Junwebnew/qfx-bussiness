@@ -147,7 +147,7 @@ export default {
             // 是否显示弹出层
             open: false,
             // 状态
-            statusOptions: [{ 'dictValue': 1, 'dictLabel': '有效' }, { 'dictValue': 0, 'dictLabel': '无效' },],
+            statusOptions: [{ 'dictValue': 1, 'dictLabel': '正常' }, { 'dictValue': 0, 'dictLabel': '禁用' },],
             // 查询参数
             queryParams: {
                 name: undefined,

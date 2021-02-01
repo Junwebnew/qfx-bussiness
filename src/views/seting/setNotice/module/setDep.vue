@@ -66,8 +66,12 @@ export default {
         this.dept.companyId = this.companyId
 
         getQmxdDeptMsgSet(this.companyId).then(res => {
-            // console.log(1123, res.data)
-            this.dept = res.data
+
+            if (res.data.id) {
+                this.dept = res.data
+            }
+
+            this.$forceUpdate()
         })
     },
     methods: {

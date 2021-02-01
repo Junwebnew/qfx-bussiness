@@ -38,7 +38,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
-                        <el-form-item label="所属商务" prop="time" class="el-form-item-none">
+                        <el-form-item label="所属商务" prop="counselorId" class="el-form-item-none">
                             <el-select v-model="queryParams.counselorId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
