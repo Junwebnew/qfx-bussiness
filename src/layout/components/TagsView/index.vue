@@ -151,9 +151,9 @@ export default {
 
             if (!isExist) {
 
-                if (this.tagsList.length >= 8) {
-                    this.tagsList.shift();
-                }
+                // if (this.tagsList.length >= 8) {
+                //     this.tagsList.shift();
+                // }
                 this.tagsList.push({
                     title: route.meta.title,
                     fullPath: route.fullPath,

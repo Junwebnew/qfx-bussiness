@@ -5,13 +5,13 @@
             <div class="form">
                 <el-form ref="form" :model="dept" :rules="rules" :label-position="'top'" label-width="130px">
                     <el-form-item label="微信应用ID" prop="agentid">
-                        <el-input v-model="dept.agentid" />
+                        <el-input v-model="dept.agentid" maxlength='100' />
                     </el-form-item>
                     <el-form-item label="微信公司ID" prop="corpid">
-                        <el-input v-model="dept.corpid" />
+                        <el-input v-model="dept.corpid" maxlength='100' />
                     </el-form-item>
                     <el-form-item label="企业微信密钥" prop="corpsecret">
-                        <el-input v-model="dept.corpsecret" />
+                        <el-input v-model="dept.corpsecret" maxlength='100' />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" size="mini" @click="submit">更新</el-button>
@@ -28,14 +28,18 @@
 </template>
 
 <script>
-import { qmxdDeptMsgSet } from '@/api/system/dept.js'
+import { qmxdDeptMsgSet, getQmxdDeptMsgSet } from '@/api/system/dept.js'
 import { mapGetters } from 'vuex'
 
 export default {
     name: 'personSet',
     data() {
         return {
-            dept: {},
+            dept: {
+                agentid: "",
+                corpid: "",
+                corpsecret: ""
+            },
             rules: {
                 agentid: [
                     { required: true, message: "企业微信应用ID不能为空", trigger: "blur" }
@@ -53,12 +57,18 @@ export default {
     computed: {
         ...mapGetters([
             'organizationId',
+            'companyId',
             'userId'
         ])
     },
     created() {
         this.dept.userId = this.userId
-        this.dept.companyId = this.organizationId
+        this.dept.companyId = this.companyId
+
+        getQmxdDeptMsgSet(this.companyId).then(res => {
+            // console.log(1123, res.data)
+            this.dept = res.data
+        })
     },
     methods: {
         submit() {

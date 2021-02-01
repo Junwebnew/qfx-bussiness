@@ -108,6 +108,12 @@ export function qmxdDeptMsgSet(data) {
     return $axios.post('msg/msgConfigWechat/saveorupdate', data)
 }
 
+//获取公司企业微信帐号配置
+
+export function getQmxdDeptMsgSet(companyId) {
+    return $axios.post('msg/msgConfigWechat/getByOrgId', '"' + companyId + '"')
+}
+
 //获取公司列表分页和名字查询
 export function qmxCompanyList(data) {
     data = data || {

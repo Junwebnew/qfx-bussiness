@@ -9,7 +9,8 @@
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->
                     <ul class="tagsBox">
-                        <li v-for="dict in clueStatueArr" :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="form.followStatus = dict.id">
+                        <!-- 不展示转为商机 -->
+                        <li v-for="dict in clueStatueArr" v-show=" dict.id != '5' " :key="dict.id" :class="{'active':form.followStatus == dict.id}" @click="selectStatus(dict)">
                             {{dict.name}}
                         </li>
                     </ul>
@@ -68,6 +69,10 @@ export default {
             this.open = true
 
         },
+        selectStatus(item) {
+            this.form.followStatus = item.id
+            this.form.followStatusName = item.name
+        },
         validStatus(rule, value, callback) {
 
             if (value == this.followStatus) {
@@ -83,6 +88,8 @@ export default {
 
             this.$refs["form"].validate(valid => {
                 if (valid) {
+                    console.log('999', this.form)
+                    return
 
                     clueUpdate(this.form).then(response => {
                         this.msgSuccess('变更成功');

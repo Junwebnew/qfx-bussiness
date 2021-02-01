@@ -84,7 +84,7 @@
                             </el-table-column>
                             <el-table-column prop="value" align='center' width='70' label="成单数">
                             </el-table-column>
-                            <el-table-column prop="per" align='center' width='70' label="百分比">
+                            <el-table-column prop="per" align='center' width='80' label="百分比" fixed="right">
                                 <div slot-scope="scope" class="sellList">
                                     <span class="num">{{scope.row.percentage}}</span>
                                 </div>
@@ -211,6 +211,12 @@ export default {
                 lock: true,
                 target: '#box'
             });
+            // console.log(123, this.queryParams.orgId)
+            if (this.whetherAdmin && !this.queryParams.orgId) {
+
+                console.log(123, this.queryParams.orgId)
+                this.queryParams.orgId = this.organizationId
+            }
 
             bussFinishStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'orderformTimeStart', end: 'orderformTimeEnd' })).then(response => {
 
@@ -305,8 +311,8 @@ export default {
         //重置表单
         resetQuery() {
             this.dateRange = []
-            this.orgAndDept = undefined
             this.queryParams.counselorId = ''
+            this.queryParams.orgId = this.organizationId
             this.handleQuery();
         },
         //饼图

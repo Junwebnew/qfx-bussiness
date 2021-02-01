@@ -78,47 +78,46 @@ const user = {
         // 获取用户信息 //使用id区分角色， id：1  超级角色  id:2 主账号  角色  
         GetInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
-                qmxgetInfo(state.token).then(res => {
-
-                    Promise.all([
-                        qmxgetInfo(),
-                        qmxgetRoleList()
-                    ])
-                        .then(res => {
-
-                            const user = res[0].data
-
-                            commit('SET_ROLEID', res[1].roleId) //角色
-
-                            const avatar = user.headImg ? $getImg(user.headImg) : require("@/assets/images/profile.jpg");
 
 
-                            // commit('SET_PERMISSIONS', ["*:*:*"])
-                            commit('SET_ROLES', [user.id])
-                            commit('SET_USERID', user.id)
+                Promise.all([
+                    qmxgetInfo(),
+                    qmxgetRoleList()
+                ])
+                    .then(res => {
 
-                            console.log(123, assRouter(user.menuList))
+                        const user = res[0].data
 
-                            let menuList = assRouter(user.menuList)
 
-                            commit('SET_MENULIST', menuList)
+                        setInfoMsg(commit, user)
 
-                            //超级管理员
-                            if (res[1].roleId == 1) {
-                                res.menuList = false
-                            }
-                            else {
-                                res.menuList = menuList
-                            }
+                        commit('SET_ROLEID', res[1].roleId) //角色
 
-                            commit('SET_NAME', user.name)
-                            commit('SET_AVATAR', avatar)
-                            commit('SET_USER', user)
+                        let menuList = assRouter(user.menuList)
 
-                            resolve(res)
-                        })
-                }).catch(error => {
-                    reject(error)
+                        commit('SET_MENULIST', menuList)
+
+                        //超级管理员
+                        if (res[1].roleId == 1) {
+                            res.menuList = false
+                        }
+                        else {
+                            res.menuList = menuList
+                        }
+
+                        resolve(res)
+                    })
+            }).catch(error => {
+                reject(error)
+            })
+        },
+        //更新用户信息后再次拉取
+        GetInfoAgain({ commit }) {
+            return new Promise((resolve, reject) => {
+                qmxgetInfo().then(res => {
+                    const user = res.data
+                    setInfoMsg(commit, user)
+                    resolve({})
                 })
             })
         },
@@ -184,6 +183,20 @@ const user = {
             })
         }
     }
+}
+
+//公共更新用户方法
+function setInfoMsg(commit, user) {
+    const avatar = user.headImg ? $getImg(user.headImg) : require("@/assets/images/profile.jpg");
+
+    // commit('SET_PERMISSIONS', ["*:*:*"])
+    commit('SET_ROLES', [user.id])
+    commit('SET_USERID', user.id)
+
+    commit('SET_NAME', user.name)
+    commit('SET_AVATAR', avatar)
+    commit('SET_USER', user)
+
 }
 
 export default user

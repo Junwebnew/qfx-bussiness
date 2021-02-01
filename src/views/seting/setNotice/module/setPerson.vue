@@ -5,7 +5,7 @@
             <div class="form">
                 <el-form ref="form" :model="user" :rules="rules" :label-position="'top'" label-width="130px">
                     <el-form-item label="企业微信号" prop="enterpriseMicroSignal">
-                        <el-input v-model="user.enterpriseMicroSignal" />
+                        <el-input v-model="user.enterpriseMicroSignal" maxlength='100' />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" size="mini" @click="submit">更新</el-button>
@@ -31,7 +31,9 @@ export default {
     name: 'personSet',
     data() {
         return {
-            user: {},
+            user: {
+                enterpriseMicroSignal: ''
+            },
             rules: {
                 enterpriseMicroSignal: [
                     { required: true, message: "个人微信号不能为空", trigger: "blur" }
@@ -48,12 +50,17 @@ export default {
     },
     created() {
         this.user.id = this.userId
+
+        this.user.enterpriseMicroSignal = this.$store.state.user.userInfo.enterpriseMicroSignal
     },
     methods: {
         submit() {
             this.$refs["form"].validate(valid => {
                 if (valid) {
                     qmxUserUpdate(this.user).then(res => {
+
+                        return this.$store.dispatch('GetInfoAgain')
+                    }).then(res => {
                         this.msgSuccess('更新成功')
                     })
                 }

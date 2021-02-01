@@ -126,7 +126,7 @@ export default {
             let checkedKeys = this.getMenuAllCheckedKeys()
 
             qmxSaveRoleList({ functionIdList: checkedKeys, roleId: this.roleId }).then(res => {
-
+                this.msgSuccess("授权成功");
                 this.show = false
             })
         },

@@ -18,7 +18,7 @@
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="线索状态" prop="followStatusList" class="el-form-item-none">
                             <el-select v-model="queryParams.followStatusList" clearable size="small" style="width: 100%">
-                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.code" />
+                                <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -39,7 +39,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
                         <el-form-item label="所属商务" prop="time" class="el-form-item-none">
-                            <el-select v-model="queryParams.counselorId" multiple clearable size="small" style="width: 100%">
+                            <el-select v-model="queryParams.counselorId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
                         </el-form-item>
@@ -67,6 +67,7 @@
             <el-table v-loading="loading" :data="tableData">
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系电话" prop='contactPhone' width='130'> </el-table-column>
+                <el-table-column label="所属商务" prop='counselorName' width='130'> </el-table-column>
                 <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
                 <el-table-column label="提醒时间" prop="remindDate" width='160' show-overflow-tooltip></el-table-column>
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
@@ -77,7 +78,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" align="left" width="120" class-name="small-padding fixed-width" fixed="right">
+                <el-table-column label="操作" align="left" width="150" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
@@ -125,7 +126,8 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                followStatusList: ''
+                followStatusList: '',
+                contactPhone: ""
             },
             seProps: { value: 'id', label: "name" },
             //线索状态
@@ -150,6 +152,7 @@ export default {
         this.getList()
 
         this.$store.dispatch('getBussStatus', 2).then(res => {
+            console.log(111, res)
             this.clueStatueArr = res
         })
         this.$store.dispatch('getCenterType', 1).then(res => {
@@ -162,7 +165,7 @@ export default {
             this.whetherAdmin = true
 
             this.$store.dispatch('getDepUser').then(res => {
-                this.depUserList = res.data
+                this.depUserList = res
             })
         }
     },

@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <div class="content">
-            <div class="back-fff pad20">
+            <div class="back-fff pad20 full-height">
 
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="公告" name="n1">
@@ -186,11 +186,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-    // width: 1000px;
-    // max-width: 80%;
-    margin: 10px auto;
-    min-height: 100px;
-    padding: 10px 30px;
+    // margin: 10px auto;
+    // min-height: 100px;
+    // padding: 10px 30px;
     ::v-deep .el-tabs__header {
         margin: 0 0 40px;
     }

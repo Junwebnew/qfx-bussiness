@@ -77,7 +77,7 @@
                             </el-table-column>
                             <el-table-column prop="bussNum" align='center' width='70' label="商机数">
                             </el-table-column>
-                            <el-table-column prop="per" align='center' width='70' label="转化率">
+                            <el-table-column prop="per" align='center' width='80' label="转化率" fixed="right">
                                 <div slot-scope="scope" class="sellList">
                                     <span class="num">{{scope.row.per}}%</span>
                                 </div>

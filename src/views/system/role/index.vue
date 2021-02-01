@@ -132,7 +132,7 @@
                 <el-row :gutter="10" class="mb8">
                     <el-col :span='24'>
                         <el-form-item label="角色名称" prop="name">
-                            <el-input v-model="form.name" placeholder="请输入角色名称" />
+                            <el-input v-model="form.name" placeholder="请输入角色名称" maxlength='20' />
                         </el-form-item>
                         <!-- <el-form-item label="权限字符" prop="roleKey">
                     <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
@@ -195,7 +195,7 @@
 import { qmxRoleList, qmxDelRole, qmxUpdateRole, qmxRoleDetail } from "@/api/system/role";
 import { treeselect as menuTreeselect, roleMenuTreeselect, qmxRoleTree } from "@/api/system/menu";
 import { treeselect as deptTreeselect, roleDeptTreeselect } from "@/api/system/dept";
-
+import { deepClone } from '@/utils/index'
 import { mapGetters } from 'vuex'
 
 import roleTree from './module/roleTree'
@@ -389,7 +389,7 @@ export default {
         /** 修改按钮操作 */
         handleUpdate(row) {
             this.reset();
-            this.form = row
+            this.form = deepClone(row)
             this.open = true;
             this.title = "修改角色";
         },

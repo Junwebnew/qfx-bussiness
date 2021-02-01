@@ -123,6 +123,8 @@
                             </template>
                         </el-table-column>
                         <el-table-column label="部门" prop="organizationName" :show-overflow-tooltip="true" />
+                        <el-table-column label="角色名称" prop="userRoleName" :show-overflow-tooltip="true" />
+
                         <el-table-column label="登录账号" prop="loginName" width="120" />
                         <el-table-column label="手机号码" prop="mobile" width="120" />
                         <el-table-column label="审核状态" width="80">

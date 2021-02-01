@@ -28,10 +28,10 @@ import { clueTipsUpdate } from "@/api/center";
 
 export default {
     props: {
-        /*类型  1：线索必传 2：商机不传）*/
+        /*类型  1：线索必传 2：商机可以不传）*/
         type: {
             type: String | Number,
-            default: 1
+            default: 2
         }
     },
     data() {
@@ -64,7 +64,7 @@ export default {
 
             this.businessId = obj.id
             this.addTitle = tit || '提醒时间'
-            this.form = { remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
+            this.form = { remindDate: this.parseTime(new Date().getTime(), '{y}-{m}-{d}') + ' 09:00:00' }
             this.open = true
 
         },

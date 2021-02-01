@@ -51,7 +51,7 @@ export function qmxLogin(userName, password) {
         userName,
         password
     }
-    return $axios.post('common/back/login?loading', data)
+    return $axios.post('common/back/login', data)
 }
 
 // 获取用户详细信息和权限

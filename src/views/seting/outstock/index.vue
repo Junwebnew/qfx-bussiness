@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="app-container" id='main'>
         <div class="content back-fff">
             <div class="l navBox">
                 <div class="item" :class="{'active':active == 0}" @click="active = 0">
@@ -60,6 +60,11 @@ export default {
     methods: {
         initPage() {
 
+            const loading = this.$loading({
+                lock: true,
+                target: '#main'
+            });
+
             Promise.all([
                 getOutOfStockSet({ orgId: this.companyId, type: 1 }),
                 getOutOfStockSet({ orgId: this.companyId, type: 2 })
@@ -81,6 +86,12 @@ export default {
                     this.$refs.bussTem.initDate(this.bussObj)
                     this.$refs.clueTem.initDate(this.clueObj)
 
+                    loading.close();
+
+                })
+                .catch((msg) => {
+                    console.log('掉库报错', msg)
+                    loading.close();
                 })
         },
         assObj(key, oldarr) {

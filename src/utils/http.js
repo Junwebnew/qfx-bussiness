@@ -2,10 +2,12 @@
 import axios from "axios";
 import { Message, MessageBox, Loading, Notification } from 'element-ui';
 import Cookies from 'js-cookie'
-import { getToken } from '@/utils/auth'
-
+import { getToken, removeToken } from '@/utils/auth'
 import { publicUrl, qmxOnlineUrl } from './baseConfig'
 import errorCode from '@/utils/errorCode'
+
+
+var isNotifi = null  //是否已通知过期
 
 
 const http = axios.create({
@@ -80,15 +82,26 @@ http.interceptors.response.use(
             })
             return Promise.reject(new Error(msg))
         } else if (code !== 200) {
+
+            if (isNotifi) return
+
             Notification.error({
                 title: msg
             })
+
             if (msg == '该账号已经重新登录,Token信息已失效') {
+
+                isNotifi = true
+
                 setTimeout(() => {
+                    removeToken()
                     Cookies.remove('TOKEN');
                     Cookies.remove('userInfo');
+                    Cookies.remove('tagsList')
                     window.location.replace('/')
+                    isNotifi = false
                 }, 1000)
+
             }
             return Promise.reject('error')
         } else {
@@ -99,7 +112,7 @@ http.interceptors.response.use(
     },
     function (error) {
 
-        console.error(error.response)
+        // console.error(error.response)
 
         if (loading) {
             loading.close()
