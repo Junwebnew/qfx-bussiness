@@ -118,7 +118,10 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
+                userName: undefined,
+                regNum: undefined,
+                agency: undefined,
+                userAddress: undefined
             },
             //初始时间
             initDate: [],

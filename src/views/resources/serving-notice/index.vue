@@ -131,7 +131,12 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                hasPhone: true
+                hasPhone: true,
+                tmName: undefined,
+                intclass: undefined,
+                applicationNameCn: undefined,
+                userAddress: undefined,
+                agency: undefined
             },
             //申请人类型
             aplicationTypeArr: [

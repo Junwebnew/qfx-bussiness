@@ -122,7 +122,12 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
+                tmName: undefined,
+                agency: undefined,
+                regNum: undefined,
+                intClass: undefined,
+                applicationName: undefined,
+                applicationAddress: undefined
             },
             //初始日期
             initDate: [],

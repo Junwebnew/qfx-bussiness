@@ -65,21 +65,24 @@ export default {
         this.dept.userId = this.userId
         this.dept.companyId = this.companyId
 
-        getQmxdDeptMsgSet(this.companyId).then(res => {
 
-            if (res.data.id) {
-                this.dept = res.data
-            }
-
-            this.$forceUpdate()
-        })
     },
     methods: {
+        initPage() {
+            getQmxdDeptMsgSet(this.companyId).then(res => {
+
+                if (res.data.id) {
+                    this.dept = res.data
+                }
+
+            })
+        },
         submit() {
             this.$refs["form"].validate(valid => {
                 if (valid) {
                     qmxdDeptMsgSet(this.dept).then(res => {
                         this.msgSuccess('更新成功')
+                        this.initPage()
                     })
                 }
             });

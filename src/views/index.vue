@@ -47,14 +47,14 @@
                     <el-table :data="bussTodayArr" style="width: 100%" height='360'>
                         <el-table-column type='index' label="序号" width='50'></el-table-column>
                         <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
-                        <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                        <el-table-column label="最新备注" prop="remarkContent">
                             <template slot-scope="scope">
                                 <div>
-                                    <span>{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
+                                    <span class="f12">{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>
                                 </div>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" align="left" width="200" class-name="small-padding fixed-width" fixed="right">
+                        <el-table-column label="操作" align="center" width="60" class-name="small-padding fixed-width" fixed="right">
                             <template slot-scope="scope">
                                 <div class='operation'>
                                     <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>

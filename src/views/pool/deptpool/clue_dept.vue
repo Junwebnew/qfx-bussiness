@@ -56,7 +56,7 @@
                 <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
                 <!-- <el-table-column label="申请人名称"  prop="applicantName" show-overflow-tooltip></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>
-                <el-table-column label="最新备注" prop="remarkContent" show-overflow-tooltip>
+                <el-table-column label="最新备注" prop="remarkContent">
                     <template slot-scope="scope">
                         <div class='operation'>
                             <span class="f12">{{scope.row.remarkDate}}_{{scope.row.remarkContent}}</span>

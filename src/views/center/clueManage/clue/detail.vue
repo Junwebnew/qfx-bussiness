@@ -127,7 +127,7 @@
                                 <ul class="marksBox">
                                     <li v-for="(item,idx) in marksList" :key='idx'>
                                         <h3 class="head">
-                                            <img src="" :onerror='$headImg.error' alt="头像">
+                                            <img :src="$getImg(item.headImg)" :onerror='$headImg.error' alt="头像">
                                         </h3>
                                         <div class="r-box">
                                             <p class="top">

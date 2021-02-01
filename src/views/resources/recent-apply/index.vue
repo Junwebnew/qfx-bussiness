@@ -123,7 +123,11 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
+                agency: undefined,
+                trademarkNumber: undefined,
+                typeOfTrademarkCode: undefined,
+                applicationDddrCn: undefined,
+                applicationType: undefined,
             },
             //初始时间
             initDate: [],

@@ -32,10 +32,17 @@
                                     <el-input v-model="queryParams.mobile" placeholder="请输入手机号码" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="8" :sm="12" :xs="24">
-                                <el-form-item label="审核状态" prop="status" class="el-form-item-none">
+                            <el-col :lg="8" :sm="12" :xs="24" v-if="superAdmin">
+                                <el-form-item label="审核状态" prop="checkStatusList" class="el-form-item-none">
                                     <el-select v-model="queryParams.checkStatusList" placeholder="用户状态" multiple clearable size="small" style="width: 100%">
                                         <el-option v-for="dict in statusOptions" :key="dict.value" :label="dict.key" :value="dict.value" />
+                                    </el-select>
+                                </el-form-item>
+                            </el-col>
+                            <el-col :lg="8" :sm="12" :xs="24">
+                                <el-form-item label="状态" prop="commonStatusList" class="el-form-item-none">
+                                    <el-select v-model="queryParams.commonStatusList" placeholder="用户状态" multiple clearable size="small" style="width: 100%">
+                                        <el-option v-for="dict in commonStatusOptions" :key="dict.value" :label="dict.key" :value="dict.value" />
                                     </el-select>
                                 </el-form-item>
                             </el-col>
@@ -44,12 +51,11 @@
                                     <el-date-picker v-model="dateRange" size="small" style="width: 100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg="{'span':10,'offset':6}" :sm="12" :xs="24" align='right'>
-                                <el-form-item class="el-form-item-none">
+                            <el-col :lg="{'span':8}" :sm="12" :xs="24" align='right'>
 
-                                    <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                                    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
-                                </el-form-item>
+                                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">查询</el-button>
+
                             </el-col>
 
                         </el-row>
@@ -127,7 +133,7 @@
 
                         <el-table-column label="登录账号" prop="loginName" width="120" />
                         <el-table-column label="手机号码" prop="mobile" width="120" />
-                        <el-table-column label="审核状态" width="80">
+                        <el-table-column label="审核状态" width="84" v-if="superAdmin">
                             <template slot-scope="scope">
                                 <!-- <span>{{returnStatusName(scope.row.checkStatus)}}</span> -->
                                 <el-tag v-if="scope.row.checkStatus == 0" type='warning' size="mini">审核中</el-tag>
@@ -138,7 +144,7 @@
                         <el-table-column label="状态" align="left" width="80">
                             <template slot-scope="scope">
                                 <!-- <el-switch disabled v-model="scope.row.commonStatus" :active-value="1" :inactive-value="0" @change="handleStatusChange(scope.row)"></el-switch> -->
-                                <span :class=" scope.row.commonStatus ? 'status-flag status-success' :  'status-flag status-err' "> {{ scope.row.commonStatus　? '正常' : '禁用'}}</span>
+                                <span :class=" scope.row.commonStatus ? 'status-flag status-success' :  'status-flag status-err' ">{{returnCommStatusName(scope.row.commonStatus)}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column label="创建时间" prop="createTime" width="160">
@@ -291,6 +297,8 @@ export default {
             sexOptions: [],
             //审核状态字典
             checkStatusEnumList: [],
+            //数据状态字典
+            commonStatusOptions: [{ key: "正常", value: 1 }, { key: "禁用", value: 0 }],
             // 岗位选项
             postOptions: [],
             // 角色选项
@@ -332,7 +340,8 @@ export default {
                 pageSize: 10,
                 name: undefined,
                 mobile: undefined,
-                orgIds: undefined
+                orgIds: undefined,
+                commonStatusList: []
             },
             // 表单校验
             rules: {
@@ -381,7 +390,7 @@ export default {
         this.qmxDataKey().then(res => {
 
             // console.log(11,res)
-            this.commonStatus = res['delFlagEnum']
+            // this.commonStatusOptions = res['delFlagEnum']
             this.sexOptions = res['sexEnumList']
             this.statusOptions = res['checkStatusEnumList']
             this.checkStatusEnumList = res['checkStatusEnumList']
@@ -480,6 +489,11 @@ export default {
             })
 
             return str
+        },
+        returnCommStatusName(value) {
+            let arr = this.commonStatusOptions.filter(i => i.value == value)
+
+            return arr.length ? arr[0].key : ''
         },
         //审核用户状态
         handleCheck(row) {

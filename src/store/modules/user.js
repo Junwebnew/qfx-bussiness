@@ -35,7 +35,9 @@ const user = {
         },
         SET_ROLEID: (state, rolesId) => {
             state.rolesId = rolesId
-            state.superAdmin = rolesId == 1
+        },
+        SET_SUPER: (state, accountType) => {
+            state.superAdmin = accountType == 99
         },
         SET_PERMISSIONS: (state, permissions) => {
             state.permissions = permissions
@@ -98,7 +100,7 @@ const user = {
                         commit('SET_MENULIST', menuList)
 
                         //超级管理员
-                        if (res[1].roleId == 1) {
+                        if (res[1].roleId == 1 || user.accountType == 99) {
                             res.menuList = false
                         }
                         else {
@@ -192,7 +194,7 @@ function setInfoMsg(commit, user) {
     // commit('SET_PERMISSIONS', ["*:*:*"])
     commit('SET_ROLES', [user.id])
     commit('SET_USERID', user.id)
-
+    commit('SET_SUPER', user.accountType)
     commit('SET_NAME', user.name)
     commit('SET_AVATAR', avatar)
     commit('SET_USER', user)

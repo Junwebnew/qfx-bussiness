@@ -5,12 +5,12 @@
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="申请人" prop="userName" class="el-form-item-none">
+                        <el-form-item label="申请人" prop="companyName" class="el-form-item-none">
                             <el-input v-model="queryParams.companyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="申请人地址" prop="userAddress" class="el-form-item-none">
+                        <el-form-item label="申请人地址" prop="companyAddress" class="el-form-item-none">
                             <el-input v-model="queryParams.companyAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
@@ -82,7 +82,8 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
+                companyAddress: "",
+                companyName: ''
             },
             //初始时间
             initDate: [],

@@ -27,7 +27,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="申请人地址" prop="preliNoticeApplicationDddrCn" class="el-form-item-none">
-                            <el-input v-model="queryParams.applicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                            <el-input v-model="queryParams.preliNoticeApplicationDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
@@ -37,7 +37,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="机构地址" prop="preliNoticeAgencyNameDddrCn" class="el-form-item-none">
-                            <el-input v-model="queryParams.agencyAddr" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                            <el-input v-model="queryParams.preliNoticeAgencyNameDddrCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
 
@@ -138,7 +138,11 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                applicationType: ""
+                preliNoticeTrademarkName: undefined,
+                preliNoticeApplicationNameCn: undefined,
+                preliNoticeApplicationDddrCn: undefined,
+                preliNoticeAgencyName: undefined,
+                preliNoticeAgencyNameDddrCn: undefined,
             },
             //初始时间
             initDate: [],

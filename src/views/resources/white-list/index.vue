@@ -77,7 +77,9 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                hasPhone: true
+                hasPhone: true,
+                applicantName: undefined,
+                address: undefined
             },
             //初始时间
             initDate: [],

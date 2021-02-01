@@ -10,8 +10,8 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="求购类别" prop="intclass" class="el-form-item-none">
-                            <el-select v-model="queryParams.intclassmu" clearable multiple size="small" style="width: 100%">
+                        <el-form-item label="求购类别" prop="intclassList" class="el-form-item-none">
+                            <el-select v-model="queryParams.intclassList" clearable multiple size="small" style="width: 100%">
                                 <el-option v-for="dict in intclassArr" :key="dict.value" :label="dict.name" :value="dict.value" />
                             </el-select>
                         </el-form-item>
@@ -109,6 +109,8 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
+                buyInfo: '',
+                intclassList: undefined
             },
             //扣除价格
             price: '',
@@ -141,6 +143,7 @@ export default {
     },
     mounted() {
         this.getList()
+        this.getPrice()
     },
     methods: {
 
@@ -148,15 +151,15 @@ export default {
 
             this.loading = true;
 
-            if (this.queryParams.intclassmu && this.queryParams.intclassmu.length) {
-                this.queryParams.intclass = this.queryParams.intclassmu.join(',')
-            }
+            // if (this.queryParams.intclassmu && this.queryParams.intclassmu.length) {
+            //     this.queryParams.intclass = this.queryParams.intclassmu.join(',')
+            // }
 
             resourceBuyList(this.queryParams).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
-                this.getPrice()
+
             })
         },
         //获取扣费次数
@@ -173,7 +176,7 @@ export default {
         },
         //重置表单
         resetQuery() {
-            this.queryParams.intclass = ''
+
             this.dateRange = []
             this.resetForm("queryForm");
             this.handleQuery();

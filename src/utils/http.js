@@ -89,7 +89,7 @@ http.interceptors.response.use(
                 title: msg
             })
 
-            if (msg == '该账号已经重新登录,Token信息已失效') {
+            if (msg == '该账号已经重新登录,Token信息已失效' || msg == 'token已经失效') {
 
                 isNotifi = true
 
@@ -99,6 +99,7 @@ http.interceptors.response.use(
                     Cookies.remove('userInfo');
                     Cookies.remove('tagsList')
                     window.location.replace('/')
+                    console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
                     isNotifi = false
                 }, 1000)
 
