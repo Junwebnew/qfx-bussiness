@@ -122,7 +122,7 @@ export default {
     position: relative;
     background: #fff;
     // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid #edf0f4;
     .hamburger-container {
         line-height: 46px;
         height: 100%;

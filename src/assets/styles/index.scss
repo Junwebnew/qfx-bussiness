@@ -128,7 +128,7 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 10px 10px 0px;
+  padding: 0px 10px 0px;
 }
 
 .components-container {
@@ -235,4 +235,20 @@ button {
 
 img {
   vertical-align: middle;
+}
+//设置滚动条
+/* 滚动条的样式 */
+.scroll-box {
+  overflow: scroll;
+}
+.scroll-box::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scroll-box::-webkit-scrollbar-track {
+  background-color: #eaeaea;
+}
+
+.scroll-box::-webkit-scrollbar-thumb {
+  background-color: #55bbff;
 }

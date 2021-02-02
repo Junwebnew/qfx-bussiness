@@ -1,20 +1,16 @@
 <template>
     <div id="tags-view-container" class="tags-view-container">
-        <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-            <!-- <router-link to='/index' :class="{'active': isActive('index'),'tags-view-item':true}" @contextmenu.prevent.native="openTabShow(indexItem,$event)">
-                首页
-            </router-link> -->
+        <span class="scroll-btn l el-icon-d-arrow-left" @click="handleScroll( 200 )"></span>
+        <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+
             <router-link v-for="(item,index) in tagsList" :to="item.fullPath" :class="{'active': isActive(item.name),'tags-view-item':true}" :key="index" @contextmenu.prevent.native="openTabShow(item,$event)">
                 {{ item.title }}
                 <span v-if="item.name != '首页'" class="el-icon-close" @click.prevent.stop="closeTags(index)" />
             </router-link>
+
         </scroll-pane>
-        <!-- <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
-            <li v-show="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">关闭当前</li>
-            <li @click="closeOthersTags">关闭其他</li>
-            <li @click="closeAllTags(selectedTag)">关闭所有</li>
-        </ul> -->
+        <span class="scroll-btn r el-icon-d-arrow-right" @click="handleScroll( -200 )"></span>
+
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
             <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
             <li @click="closeOther" v-show=' selectedTag.name == $route.name'>关闭其他</li>
@@ -177,7 +173,18 @@ export default {
         closeMenu() {
             this.visible = false
         },
-        handleScroll() {
+        handleScroll(num) {
+
+            let eleRef = this.$refs.scrollPane.$refs.scrollContainer.$refs.wrap
+            let timer = 0
+
+            var inter = setInterval(() => {
+                eleRef.scrollLeft = eleRef.scrollLeft + (num / 10)
+
+                if (timer++ == 10) {
+                    clearInterval(inter)
+                }
+            }, 10)
 
         }
     }
@@ -186,12 +193,14 @@ export default {
 
 <style lang="scss" scoped>
 .tags-view-container {
-    height: 40px;
+    height: 32px;
     width: 100%;
     // background: #edf0f4;
     background: #ffffff;
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+    position: relative;
+    padding: 0 40px;
     .tags-view-wrapper {
         .tags-view-item {
             display: inline-block;
@@ -204,18 +213,22 @@ export default {
             background: #fff;
             padding: 0 12px 0 12px;
             font-size: 12px;
-            margin-left: 5px;
-            margin-top: 4px;
-            border-radius: 3px;
+            // margin-left: 5px;
+            // margin-top: 4px;
+            // border-radius: 3px;
+            border-right: 1px solid #edf0f4;
+            overflow: hidden;
             &:first-of-type {
-                margin-left: 10px;
+                // margin-left: 10px;
+                border-left: 1px solid #edf0f4;
             }
-            &:last-of-type {
-                margin-right: 10px;
-            }
+            // &:last-of-type {
+            //     margin-right: 10px;
+            // }
             &.active {
                 background-color: #ffffff;
                 color: #2d8cf0;
+                background: #edf0f4;
             }
         }
     }
@@ -238,6 +251,20 @@ export default {
             &:hover {
                 background: #eee;
             }
+        }
+    }
+    .scroll-btn {
+        position: absolute;
+        top: 0;
+        height: 32px;
+        width: 40px;
+        text-align: center;
+        line-height: 32px;
+        &.l {
+            left: 0;
+        }
+        &.r {
+            right: 0;
         }
     }
 }

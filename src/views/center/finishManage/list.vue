@@ -197,10 +197,15 @@ export default {
 
             if (this.resourceType && this.resourceType.length) {
                 this.queryParams.resourceType = this.resourceType[this.resourceType.length - 1]
+            } else {
+                this.queryParams.resourceType = ''
             }
 
             if (this.vocId && this.vocId.length) {
                 this.queryParams.vocId = this.vocId[this.vocId.length - 1]
+            }
+            else {
+                this.queryParams.vocId = ''
             }
             /**
              * deptIdList 所属部门ID    applicantId 申请人ID
