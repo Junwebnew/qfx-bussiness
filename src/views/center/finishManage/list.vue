@@ -38,7 +38,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch && whetherAdmin">
-                        <el-form-item label="所属商务" prop="time" class="el-form-item-none">
+                        <el-form-item label="所属商务" prop="orderformUserId" class="el-form-item-none">
                             <el-select v-model="queryParams.orderformUserId" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in depUserList" :key="dict.id" :label="dict.name" :value="dict.id" />
                             </el-select>
@@ -143,7 +143,10 @@ export default {
             //搜索条件 
             queryParams: {
                 pageNum: 1,
-                pageSize: 10
+                pageSize: 10,
+                customerName: undefined,
+                contactPhone: undefined,
+                orderformUserId: undefined,
             },
             seProps: { value: 'id', label: "name" },
             //业务类型

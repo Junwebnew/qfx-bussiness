@@ -16,7 +16,7 @@
                         </el-col>
                         <el-col :lg="6" :sm="12" :xs="24">
                             <el-form-item label="国际分类" prop="typeOfTrademarkCode" class="el-form-item-none">
-                                <el-input v-model="queryParams.typeOfTrademarkCode" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                                <el-input v-model="queryParams.typeOfTrademarkCode" placeholder="精准:请输入1-45" clearable size="small" @keyup.enter.native="handleQuery" />
                             </el-form-item>
                         </el-col>
                         <el-col :lg="6" :sm="12" :xs="24">
@@ -70,7 +70,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column label="注册号" width='90' prop="trademarkNumber"></el-table-column>
-                    <el-table-column label="国际分类" width='90' show-overflow-tooltip>
+                    <el-table-column label="国际分类" width='120' show-overflow-tooltip>
                         <template slot-scope="scope">
                             <span>
                                 {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName || '暂无'}}

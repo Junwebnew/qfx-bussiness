@@ -71,7 +71,7 @@
                         </el-col>
                         <el-col :span="18" :offset="2" align='right'>
                             <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
-                            <el-button type="warning" icon="el-icon-plus" size="mini" @click="handleAdd('main')" v-hasPermi="['addmain-btn']">新增主账号</el-button>
+                            <el-button type="warning" v-if="superAdmin" icon="el-icon-plus" size="mini" @click="handleAdd('main')" v-hasPermi="['addmain-btn']">新增主账号</el-button>
                             <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                         </el-col>
                         <!-- <el-col :span="1.5">

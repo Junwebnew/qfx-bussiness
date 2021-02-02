@@ -191,7 +191,7 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scope>
+<style rel="stylesheet/scss" lang="scss" scoped>
 .login {
     position: relative;
     display: flex;

@@ -43,8 +43,8 @@
                 <el-table-column label="资源类型" prop="moduleName" width="120"></el-table-column>
                 <el-table-column label="电话号码" prop="phone" width="120"></el-table-column>
                 <el-table-column label="操作人员" prop="name" width="100"></el-table-column>
-                <el-table-column label="抵扣次数" prop="deductionNumber" width="100"></el-table-column>
-                <el-table-column label="剩余次数" prop="accountNumber" width="140"></el-table-column>
+                <el-table-column label="抵扣星数" prop="deductionNumber" width="100"></el-table-column>
+                <el-table-column label="剩余星数" prop="accountNumber" width="140"></el-table-column>
                 <el-table-column label="抵扣时间" prop="createTime" width="180"></el-table-column>
             </el-table>
 

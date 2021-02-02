@@ -21,7 +21,7 @@
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="国际分类" prop="intClass" class="el-form-item-none">
-                            <el-input v-model="queryParams.intClass" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                            <el-input v-model="queryParams.intClass" placeholder="精准:请输入1-45" clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">

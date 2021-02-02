@@ -41,8 +41,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="充值人员" prop="userName" width="150"></el-table-column>
-                <el-table-column label="充值次数" prop="number" width="150"></el-table-column>
-                <el-table-column label="剩余次数" prop="accountNumber" width="150"></el-table-column>
+                <el-table-column label="充值星数" prop="number" width="150"></el-table-column>
+                <el-table-column label="剩余星数" prop="accountNumber" width="150"></el-table-column>
                 <el-table-column label="充值时间" prop="createTime" width="150"></el-table-column>
                 <el-table-column label="充值备注" prop="remark"></el-table-column>
             </el-table>

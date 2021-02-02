@@ -34,14 +34,14 @@
                         <span>{{scope.row.subAccountNumber || '--'}}人</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="剩余次数" prop="accountNum" width="80">
+                <el-table-column label="剩余星数" prop="accountNum" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.accountNum || '--'}}次</span>
+                        <span>{{scope.row.accountNum || '--'}}</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="试用次数" prop="originalTimes" width="80">
+                <el-table-column label="试用星数" prop="originalTimes" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.originalTimes || '--'}}次</span>
+                        <span>{{scope.row.originalTimes || '--'}}</span>
                     </div>
                 </el-table-column>
                 <!-- <el-table-column label="试用天数" prop="days" width="80">
@@ -56,7 +56,7 @@
                         <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
                         <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用次数</el-button>
+                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用星数</el-button>
                         <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">增加试用天数</el-button>
                     </template>
                 </el-table-column>
@@ -107,8 +107,8 @@
                 <el-button type="primary" @click="setDeptMsg('formDays')">确 定</el-button>
             </div>
         </el-dialog>
-        <!-- //试用次数设置 -->
-        <el-dialog title="试用次数设置" :visible.sync="formNum.open" width="500px">
+        <!-- //试用星数设置 -->
+        <el-dialog title="试用星数设置" :visible.sync="formNum.open" width="500px">
             <el-form ref="formNum" :model="formNum" label-width="110px" :rules='rules'>
                 <el-row>
                     <el-col :span='24'>
@@ -117,7 +117,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col :span='24'>
-                        <el-form-item label="试用次数" prop="num">
+                        <el-form-item label="试用星数" prop="num">
                             <el-input-number v-model="formNum.num" :min="1" :max="100000" label="数量" style="width:250px"></el-input-number>
                         </el-form-item>
                     </el-col>

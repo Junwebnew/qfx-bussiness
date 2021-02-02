@@ -8,7 +8,12 @@
                     </div>
                     <div class="avaterContent">
                         <h2>{{timeFix()}},{{name}}</h2>
-                        <p>{{orgInfo.orgName}} <span v-if=" orgInfo.orgName != orgInfo.deptName"> - {{orgInfo.deptName}}</span></p>
+                        <p>
+                            {{orgInfo.orgName}}
+                            <span v-if=" orgInfo.orgName != orgInfo.deptName"> - {{orgInfo.deptName}}</span>
+                            <span v-if="!rolesId" class="col-red">用户未授予角色权限</span>
+                        </p>
+
                     </div>
                 </el-col>
                 <el-col :sm="16" :xs="24">
@@ -92,7 +97,8 @@ export default {
             'avatar',
             'name',
             'mainAccount',
-            'companyId'
+            'companyId',
+            'rolesId'
         ]),
     },
     created() {
@@ -315,6 +321,7 @@ export default {
         color: rgba(0, 0, 0, 0.45);
         line-height: 22px;
         padding-top: 6px;
+        overflow: h;
         h2 {
             margin-bottom: 8px;
             color: rgba(0, 0, 0, 0.85);

@@ -109,7 +109,8 @@ export default {
     computed: {
         ...mapGetters([
             'organizationId',
-            'rolesId'
+            'rolesId',
+            'superAdmin'
         ])
     },
     data() {
@@ -118,7 +119,7 @@ export default {
 
             let emojiTest = /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig
 
-            if (!value) {
+            if (value === '') {
                 callback(new Error('用户名不能为空'))
             }
             else if (emojiTest.test(value)) {
@@ -129,6 +130,7 @@ export default {
                 callback()
             }
         }
+
 
         return {
             // 遮罩层
@@ -188,13 +190,8 @@ export default {
                     { validator: validateUseName, trigger: "blur" },
                 ],
                 name: [
-                    { required: true, message: "用户姓名不能为空", trigger: "blur" },
-                    {
-                        pattern: /[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF][\u200D|\uFE0F]|[\uD83C|\uD83D|\uD83E][\uDC00-\uDFFF]|[0-9|*|#]\uFE0F\u20E3|[0-9|#]\u20E3|[\u203C-\u3299]\uFE0F\u200D|[\u203C-\u3299]\uFE0F|[\u2122-\u2B55]|\u303D|[\A9|\AE]\u3030|\uA9|\uAE|\u3030/ig,
-                        message: "不能输入表情符号",
-                        trigger: ["blur", "change"]
-                    },
-                    { validator: validateUseName, trigger: "blur" }
+                    { required: true, message: "用户名称不能为空", trigger: "blur" },
+                    { validator: validateUseName, trigger: "blur" },
                 ],
                 orgId: [
                     { required: true, message: "归属部门不能为空", trigger: "change" }
@@ -326,7 +323,7 @@ export default {
 
             qmxSaveUserRole({ userId: id, roleIdList: this.form.roleIds, id: this.form.id })
                 .then(res => {
-                    console.log('角色新增成功', res)
+                    // console.log('角色新增成功', res)
                     this.msgSuccess(str)
                     this.open = false
                     this.$emit('backGetList')

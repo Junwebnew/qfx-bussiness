@@ -61,13 +61,13 @@
             <el-row :gutter="10" class="chartBox">
                 <el-col :md='16' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20 part-tit"> 资源转化率统计</p>
+                        <p class=" f16 mb20 part-tit"> 资源成单率统计</p>
                         <div ref="myChart4" style="width:100%;height:500px"></div>
                     </div>
                 </el-col>
                 <el-col :md='8' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 资源转化率排名</p>
+                        <p class="f16 mb20 part-tit"> 资源成单率排名</p>
 
                         <el-table :data="transSortArr" style="width: 100%" height='500px'>
                             <el-table-column align='center' label="序号" width='50'>
@@ -81,7 +81,7 @@
                             </el-table-column>
                             <el-table-column prop="finishNum" align='center' width='70' label="成单数">
                             </el-table-column>
-                            <el-table-column prop="per" align='center' width='70' label="转化率">
+                            <el-table-column prop="per" align='center' width='70' label="成单率">
                                 <div slot-scope="scope" class="sellList">
                                     <span class="num">{{scope.row.per}}%</span>
                                 </div>
@@ -95,13 +95,13 @@
             <el-row :gutter="10" class="chartBox">
                 <el-col :md='16' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class=" f16 mb20 part-tit"> 业务转化率统计</p>
+                        <p class=" f16 mb20 part-tit"> 业务成单率统计</p>
                         <div ref="myChart5" style="width:100%;height:500px"></div>
                     </div>
                 </el-col>
                 <el-col :md='8' :sm="24" :xs="24">
                     <div class="back-fff pad20 mb10">
-                        <p class="f16 mb20 part-tit"> 业务转化率排名</p>
+                        <p class="f16 mb20 part-tit"> 业务成单率排名</p>
                         <el-table :data="oppsTransSortArr" style="width: 100%" height='500px'>
                             <el-table-column align='center' label="序号" width='50'>
                                 <div slot-scope="scope" class="sellList">
@@ -114,7 +114,7 @@
                             </el-table-column>
                             <el-table-column prop="finishNum" align='center' width='70' label="成单数">
                             </el-table-column>
-                            <el-table-column prop="per" align='center' width='80' label="转化率" fixed="right">
+                            <el-table-column prop="per" align='center' width='80' label="成单率" fixed="right">
                                 <div slot-scope="scope" class="sellList">
                                     <span class="num">{{scope.row.per}}%</span>
                                 </div>
@@ -187,9 +187,9 @@ export default {
             dateRange: [],
             chartData: [],
             myChart: {},
-            //资源类型转化率
+            //资源类型成单率
             transSortArr: [],
-            //业务类型转化率
+            //业务类型成单率
             oppsTransSortArr: []
         }
     },
@@ -314,7 +314,7 @@ export default {
                     console.log('出我', res)
                 })
         },
-        //线索转化率的统计
+        //线索成单率的统计
         asstransSortArr(clueArr, bussArr) {
             let transSortArr = clueArr.map(mo => {
                 mo.value = Number(mo.value)
