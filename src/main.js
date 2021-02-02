@@ -53,6 +53,14 @@ Vue.prototype.msgInfo = function (msg) {
     this.$message.info(msg);
 }
 
+Vue.prototype.$eleLoading = function (ele) {
+    return this.$loading({
+        lock: true,
+        target: ele
+    });
+}
+
+
 // 全局组件挂载
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)

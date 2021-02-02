@@ -82,7 +82,7 @@ export default {
     position: relative;
     overflow: hidden;
     width: 100%;
-    background: #edf0f4;
+    // background: #edf0f4;
     >>> {
         .el-scrollbar__bar {
             bottom: 0px;

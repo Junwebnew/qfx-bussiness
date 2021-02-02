@@ -73,7 +73,8 @@
                         <span>{{scope.row.contactPhone || scope.row.contactQq || scope.row.contactWx}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
+                <el-table-column label="线索状态" prop="followStatusName" width='110'>
+                </el-table-column>
                 <el-table-column label="资源类型" prop="resName" width='120'></el-table-column>
                 <!-- <el-table-column label="业务类型"  prop="vocName"></el-table-column> -->
                 <el-table-column label="说明" prop="busexplain" show-overflow-tooltip></el-table-column>

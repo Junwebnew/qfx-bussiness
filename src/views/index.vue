@@ -15,7 +15,7 @@
                     <ul class="showInfo">
                         <li v-if="mainAccount">
                             <span>剩余次数</span>
-                            <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber}}</p>
+                            <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber || 0}}</p>
                         </li>
                         <li>
                             <span>线索总数</span>
@@ -91,7 +91,8 @@ export default {
         ...mapGetters([
             'avatar',
             'name',
-            'mainAccount'
+            'mainAccount',
+            'companyId'
         ]),
     },
     created() {

@@ -38,7 +38,7 @@
 
                 <el-table-column label="申请人" prop='companyName' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="申请人地址" prop='companyAddress' show-overflow-tooltip> </el-table-column>
-                <el-table-column label="社会信用代码" width='170' prop='creditCode' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="社会信用代码" width='190' prop='creditCode' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>

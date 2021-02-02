@@ -16,7 +16,7 @@
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
                                         <el-button type="text" size='mini' @click="handleAddTips()">新增提醒</el-button>
-                                        <el-button type="text" size='mini' @click="vocTpyeChange()">转为商机</el-button>
+                                        <el-button v-if='isShowHandle' type="text" size='mini' @click="vocTpyeChange()">转为商机</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
@@ -62,6 +62,12 @@
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
+                                <span class="custom-label">线索状态：</span>
+                                <div class="custom-r col">
+                                    {{json.followStatusName}}
+                                </div>
+                            </el-col>
+                            <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属商务：</span>
                                 <div class="custom-r">
                                     {{json.counselorName || '--'}}
@@ -74,12 +80,7 @@
                                     {{json.deptName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">线索状态：</span>
-                                <div class="custom-r">
-                                    {{json.followStatusName}}
-                                </div>
-                            </el-col>
+
                             <!-- <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源来源：</span>
                                 <div class="custom-r">
@@ -117,14 +118,14 @@
                                         <span>备注信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
-                                        <el-button type="text" size='mini' @click="handleChange()">状态变更</el-button>
+                                        <el-button type="text" v-if='isShowHandle' size='mini' @click="handleChange()">状态变更</el-button>
                                         <el-button type="text" size='mini' @click="handleAddMarks()">新增备注</el-button>
                                         <el-button type="text" size='mini' @click="getmarks()">刷新</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
                             <el-col>
-                                <ul class="marksBox">
+                                <ul class="marksBox" id='maskloading'>
                                     <li v-for="(item,idx) in marksList" :key='idx'>
                                         <h3 class="head">
                                             <img :src="$getImg(item.headImg)" :onerror='$headImg.error' alt="头像">
@@ -141,7 +142,6 @@
                                         </div>
                                     </li>
                                 </ul>
-
                                 <!-- 分页 -->
                                 <pagination v-show="total>0" :total="total" :page.sync="marksQuery.pageNum" :limit.sync="marksQuery.pageSize" layout='total, prev, pager, next' @pagination="getmarks" :autoScroll='false' />
                             </el-col>
@@ -177,6 +177,8 @@ export default {
             json: {},
             markLoading: false,
             tableData: [],
+            //未变为商机的线索状态
+            myClueStatueArr: [],
             //线索状态
             clueStatueArr: [],
             //资源类型
@@ -199,6 +201,12 @@ export default {
             showBtns: true
         }
     },
+    computed: {
+        //是否显示页面的一些操作
+        isShowHandle() {
+            return this.myClueStatueArr.filter(i => i.id == this.json.followStatus).length > 0
+        }
+    },
     created() {
 
         this.marksQuery.businessId = this.$route.query.id
@@ -209,6 +217,10 @@ export default {
 
         this.$store.dispatch('getBussStatus', 1).then(res => {
             this.clueStatueArr = res
+        })
+
+        this.$store.dispatch('getBussStatus', 2).then(res => {
+            this.myClueStatueArr = res
         })
 
         this.$store.dispatch('getCenterType', 1).then(res => {
@@ -234,15 +246,24 @@ export default {
                 .then(res => {
                     this.title = (res.data.customerName || '') + ' 线索详情页'
                     this.json = res.data
+
+
                 })
         },
         getmarks() {
 
-            this.markLoading = true
+
+
+            var loading = this.$eleLoading('#maskloading')
+
             clueMarksList(this.marksQuery).then(res => {
                 this.marksList = res.data
                 this.total = res.total
-                this.markLoading = false
+
+                setTimeout(() => {
+                    loading.close()
+                }, 500)
+
             })
 
         },

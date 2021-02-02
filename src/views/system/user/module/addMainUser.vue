@@ -60,7 +60,8 @@
 
                         <el-col :span="24">
                             <el-form-item label="角色" prop="roleIds">
-                                <el-select v-model="form.roleIds" multiple placeholder="请选择" disabled style="width:100%">
+                                <!-- disabled -->
+                                <el-select v-model="form.roleIds" multiple placeholder="请选择" style="width:100%">
                                     <el-option v-for="item in roleOptions" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>

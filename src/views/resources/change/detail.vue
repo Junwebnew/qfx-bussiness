@@ -45,7 +45,7 @@
                                 <div class="text-center">名称变更记录</div>
                                 <div v-if="json.changeNameVoList" class="mt20 timeList">
                                     <el-timeline>
-                                        <el-timeline-item v-for="(activity, index) in json.changeNameVoList" :key="index" :timestamp="activity.createTime" placement="top">
+                                        <el-timeline-item v-for="(activity, index) in json.changeNameVoList" :key="index" :timestamp="splitTimes(activity.createTime) " placement="top">
                                             {{activity.companyName}}
                                         </el-timeline-item>
                                     </el-timeline>
@@ -56,7 +56,7 @@
                                 <div class="text-center">地址变更记录</div>
                                 <div v-if="json.changeAddressVoList" class="mt20 timeList">
                                     <el-timeline>
-                                        <el-timeline-item v-for="(activity, index) in json.changeAddressVoList" :key="index" :timestamp="activity.createTime" placement="top">
+                                        <el-timeline-item v-for="(activity, index) in json.changeAddressVoList" :key="index" :timestamp="splitTimes(activity.createTime)" placement="top">
                                             {{activity.companyAddress}}
                                         </el-timeline-item>
                                     </el-timeline>
@@ -135,6 +135,10 @@ export default {
         },
         getResourse(row) {
 
+        },
+        splitTimes(times) {
+
+            return (times || '').split(' ')[0]
         }
     }
 }

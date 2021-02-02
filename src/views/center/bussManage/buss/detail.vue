@@ -16,13 +16,13 @@
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
                                         <el-button type="text" size='mini' @click="handleAddTips()">新增提醒</el-button>
-                                        <el-button type="text" size='mini' @click="goComplete()">转为成单</el-button>
+                                        <el-button type="text" size='mini' v-if="isShowHandle" @click="goComplete()">转为成单</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="12" :xs="24" class="mb16">
                                 <span class="custom-label">客户名称：</span>
                                 <div class="custom-r">
                                     {{json.customerName || '--'}}
@@ -41,6 +41,19 @@
                                     {{json.contactPhone}}
                                 </div>
                             </el-col>
+                            <el-col :sm="12" :xs="24" class="mb16">
+                                <span class="custom-label">申请人名称：</span>
+                                <div class="custom-r">
+                                    {{json.applicantName || '--'}}
+                                </div>
+                            </el-col>
+
+                            <el-col :sm="6" :xs="24" class="mb16">
+                                <span class="custom-label">联系微信：</span>
+                                <div class="custom-r">
+                                    {{json.contactWx || '--'}}
+                                </div>
+                            </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">联系QQ：</span>
                                 <div class="custom-r">
@@ -48,9 +61,9 @@
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">联系微信：</span>
-                                <div class="custom-r">
-                                    {{json.contactWx || '--'}}
+                                <span class="custom-label">商机状态：</span>
+                                <div class="custom-r col">
+                                    {{json.followStatusName}}
                                 </div>
                             </el-col>
                             <el-col :sm="6" :xs="24" class="mb16">
@@ -59,24 +72,14 @@
                                     {{json.counselorName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">申请人名称：</span>
-                                <div class="custom-r">
-                                    {{json.applicantName || '--'}}
-                                </div>
-                            </el-col>
+
                             <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">所属部门：</span>
                                 <div class="custom-r">
                                     {{json.deptName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">商机状态：</span>
-                                <div class="custom-r">
-                                    {{json.followStatusName}}
-                                </div>
-                            </el-col>
+
                             <!-- <el-col :sm="6" :xs="24" class="mb16">
                                 <span class="custom-label">资源来源：</span>
                                 <div class="custom-r">
@@ -111,14 +114,14 @@
                                         <span>备注信息</span>
                                     </el-col>
                                     <el-col :lg="21" :sm="21" :xs="12" v-if='showBtns'>
-                                        <el-button type="text" size='mini' @click="handleChange()">状态变更</el-button>
+                                        <el-button type="text" size='mini' v-if="isShowHandle" @click="handleChange()">状态变更</el-button>
                                         <el-button type="text" size='mini' @click="handleAddMarks()">新增备注</el-button>
                                         <el-button type="text" size='mini' @click="getmarks()">刷新</el-button>
                                     </el-col>
                                 </el-row>
                             </el-col>
                             <el-col>
-                                <ul class="marksBox">
+                                <ul class="marksBox" id='maskloading'>
                                     <li v-for="(item,idx) in marksList" :key='idx'>
                                         <h3 class="head">
                                             <img :src="$getImg(item.headImg)" :onerror='$headImg.error' alt="头像">
@@ -170,6 +173,8 @@ export default {
             json: {},
             markLoading: false,
             tableData: [],
+            //我的商机状态
+            myClueStatueArr: [],
             //商机状态
             clueStatueArr: [],
             //资源类型
@@ -192,7 +197,12 @@ export default {
             showBtns: true
         }
     },
-
+    computed: {
+        //是否显示页面的一些操作
+        isShowHandle() {
+            return this.myClueStatueArr.filter(i => i.id == this.json.followStatus).length > 0
+        }
+    },
     created() {
 
         this.marksQuery.businessId = this.$route.query.id
@@ -203,6 +213,10 @@ export default {
 
         this.$store.dispatch('getBussStatus', 3).then(res => {
             this.clueStatueArr = res
+        })
+
+        this.$store.dispatch('getBussStatus', 4).then(res => {
+            this.myClueStatueArr = res
         })
 
         this.$store.dispatch('getCenterType', 1).then(res => {
@@ -236,12 +250,14 @@ export default {
         },
         getmarks() {
 
-            this.markLoading = true
+            var loading = this.$eleLoading('#maskloading')
 
             clueMarksList(this.marksQuery).then(res => {
                 this.marksList = res.data
                 this.total = res.total
-                this.markLoading = false
+                setTimeout(() => {
+                    loading.close()
+                }, 500)
             })
 
         },

@@ -36,9 +36,9 @@
                     <router-link to="/user/profile">
                         <el-dropdown-item>个人中心</el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item @click.native="setting = true">
+                    <!-- <el-dropdown-item @click.native="setting = true">
                         <span>布局设置</span>
-                    </el-dropdown-item>
+                    </el-dropdown-item> -->
                     <el-dropdown-item divided @click.native="logout">
                         <span>退出登录</span>
                     </el-dropdown-item>
@@ -121,8 +121,8 @@ export default {
     overflow: hidden;
     position: relative;
     background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-
+    // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    border-bottom: 1px solid #f1f1f1;
     .hamburger-container {
         line-height: 46px;
         height: 100%;
@@ -177,7 +177,7 @@ export default {
 
             .avatar-wrapper {
                 position: relative;
-                line-height: 50px;
+                line-height: 46px;
                 .user-avatar {
                     cursor: pointer;
                     width: 35px;

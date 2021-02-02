@@ -88,8 +88,6 @@ export default {
 
             this.$refs["form"].validate(valid => {
                 if (valid) {
-                    console.log('999', this.form)
-                    return
 
                     clueUpdate(this.form).then(response => {
                         this.msgSuccess('变更成功');
