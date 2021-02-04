@@ -51,13 +51,33 @@
                 </el-table-column> -->
                 <el-table-column label="充值时间" prop="rechargeTime" width="180"></el-table-column>
                 <el-table-column label="到期日期" prop="termOfValidityDate" width="180"></el-table-column>
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='420px' fixed="right">
+                <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='180px' fixed="right">
                     <template slot-scope="scope">
-                        <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
+
                         <el-button class="col-del" size="mini" type="text" @click="costDetail(scope.row)">充值详情</el-button>
-                        <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleLimit(scope.row)">人员限制</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用星数</el-button>
-                        <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">增加试用天数</el-button>
+
+                        <el-dropdown class="ml10">
+                            <el-button type="text" size='mini'>
+                                相关操作<i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <el-button class="col-del" size="mini" type="text" @click="costRecharge(scope.row)">账号充值</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button class="col-del" size="mini" type="text" v-hasPermi="['user']" @click="handleUpdate(scope.row,'form')">人员限制</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formNum')">增加试用星数</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button class="col-del" size="mini" type="text" @click="showSetBox(scope.row,'formDays')">增加试用天数</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button class="col-del" size="mini" type="text" @click="handleUpdate(scope.row,'resourseSet')">资源流程配置</el-button>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </template>
                 </el-table-column>
             </el-table>
@@ -128,6 +148,26 @@
                 <el-button type="primary" @click="setDeptMsg('formNum')">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- //试用星数设置 -->
+        <el-dialog title="资源流程配置" :visible.sync="resourseSet.open" width="500px">
+            <el-form ref="resourseSet" :model="{}" label-width="110px" :rules='rules'>
+                <el-row>
+                    <el-col :span='24'>
+                        <el-radio v-model="resourseSet.receiveClueOppWay" label="1">资源 -> 线索 -> 商机 ->成单</el-radio>
+                    </el-col>
+                    <el-col :span='24' class="mt20">
+                        <el-radio v-model="resourseSet.receiveClueOppWay" label="2">资源 -> 商机 ->成单</el-radio>
+                    </el-col>
+                    <el-col :span='24' class="mt20">
+                        <p class="f12 col-hui">说明：系统默认支持其中一种资源领取方式</p>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="clearForm">取 消</el-button>
+                <el-button type="primary" @click="resourseSetfunc">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -171,6 +211,10 @@ export default {
                 open: false,
                 name: "",
                 num: 1,
+            },
+            resourseSet: {
+                open: false,
+                receiveClueOppWay: "1",
             },
             rules: {
                 subAccountNumber: [
@@ -231,12 +275,14 @@ export default {
             this.form = { open: false }
             this.formDays = { open: false }
             this.formNum = { open: false }
+            this.resourseSet = { open: false }
         },
         //人员数量限制
-        handleLimit(row) {
+        handleUpdate(row, key) {
 
-            this.form = deepClone(row)
-            this.form.open = true
+            this[key] = deepClone(row)
+            this[key].receiveClueOppWay = this[key].receiveClueOppWay || '1'
+            this[key].open = true
         },
         //提交
         submitFileForm() {
@@ -298,6 +344,14 @@ export default {
         /** 修改按钮操作 */
         costDetail(row) {
             this.$router.push('/cost/accountRechargeList?id=' + row.id)
+        },
+        //修改资源领取方式
+        resourseSetfunc() {
+            qmxUpdateDept(this.resourseSet).then(response => {
+                this.msgSuccess("修改成功");
+                this.clearForm();
+                this.getList();
+            })
         }
     }
 };

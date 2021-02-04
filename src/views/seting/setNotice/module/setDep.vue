@@ -4,24 +4,39 @@
             <h2>企业微信设置</h2>
             <div class="form">
                 <el-form ref="form" :model="dept" :rules="rules" :label-position="'top'" label-width="130px">
+                    <el-form-item label="公司应用ID" prop="corpid">
+                        <el-input v-model="dept.corpid" maxlength='100' />
+                    </el-form-item>
                     <el-form-item label="微信应用ID" prop="agentid">
                         <el-input v-model="dept.agentid" maxlength='100' />
                     </el-form-item>
-                    <el-form-item label="微信公司ID" prop="corpid">
-                        <el-input v-model="dept.corpid" maxlength='100' />
-                    </el-form-item>
+
                     <el-form-item label="企业微信密钥" prop="corpsecret">
                         <el-input v-model="dept.corpsecret" maxlength='100' />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" size="mini" @click="submit">更新</el-button>
                     </el-form-item>
+
                 </el-form>
             </div>
         </div>
         <div class="imgBox">
-            <el-image style="width: 80%" :src="imgs[0]" :preview-src-list="imgs">
-            </el-image>
+            <div class="i">
+                <el-image :src="imgs[0]" :preview-src-list="imgs">
+                </el-image>
+                <span class="num">1</span>
+            </div>
+            <div class="i">
+                <el-image :src="imgs[1]" :preview-src-list="imgs">
+                </el-image>
+                <span class="num">2</span>
+            </div>
+            <div class="i">
+                <el-image :src="imgs[2]" :preview-src-list="imgs">
+                </el-image>
+                <span class="num">3</span>
+            </div>
         </div>
 
     </div>
@@ -51,7 +66,7 @@ export default {
                     { required: true, message: "企业微信公司密钥不能为空", trigger: "blur" }
                 ]
             },
-            imgs: [require("@/assets/images/dept.png")]
+            imgs: [require("@/assets/images/dept-tep3.png"), require("@/assets/images/dept-tep1.png"), require("@/assets/images/dept-tep2.png")]
         }
     },
     computed: {
@@ -110,6 +125,28 @@ export default {
 .imgBox {
     flex: 1;
     padding: 0 30px;
-    text-align: center;
+    text-align: left;
+    .i {
+        max-width: 240px;
+        width: 100%;
+        margin: 0 10px 20px;
+        position: relative;
+        display: inline-block;
+        .num {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 28px;
+            height: 28px;
+            transform: translateX(-50%) translateY(-50%);
+            border-radius: 30px;
+            text-align: center;
+            line-height: 28px;
+            font-weight: bolder;
+            font-size: 20px;
+            color: #ffffff;
+            background-color: #1579fa;
+        }
+    }
 }
 </style>

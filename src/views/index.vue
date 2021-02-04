@@ -19,7 +19,7 @@
                 <el-col :sm="16" :xs="24">
                     <ul class="showInfo">
                         <li v-if="mainAccount">
-                            <span>剩余次数</span>
+                            <span>剩余星数</span>
                             <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber || 0}}</p>
                         </li>
                         <li>
@@ -42,13 +42,18 @@
         <el-row :gutter="10" class="chartBox">
             <el-col :md='12' :sm="24" :xs="24" class="l">
                 <div class="back-fff pad20  mb10">
-                    <p class=" f16 mb20 part-tit"> 成单金额统计</p>
+                    <p class=" f16 mb20 part-tit">
+                        成单金额统计
+                        <router-link class="col fr f14" to="/center/finishManage/finishStatistics">详情></router-link>
+                    </p>
                     <div ref="myChart1" class="myChart"></div>
                 </div>
             </el-col>
             <el-col :md='12' :sm="24" :xs="24" class='r'>
                 <div class="back-fff pad20  mb10">
-                    <p class="f16 mb20 part-tit"> 今日待跟进商机</p>
+                    <p class="f16 mb20 part-tit"> 今日待跟进商机
+                        <router-link class="col fr f14" to="/center/bussManage/today">详情></router-link>
+                    </p>
                     <el-table :data="bussTodayArr" style="width: 100%" height='360'>
                         <el-table-column type='index' label="序号" width='50'></el-table-column>
                         <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>

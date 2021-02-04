@@ -15,7 +15,7 @@
 
                             <el-form-item label="天数设置" prop="corpsecret">
                                 <el-input-number v-model="num" :min="1" :max="100" size='mini' label="描述文字"></el-input-number> / 天
-                                <p class="tips">说明：系统间隔 <span> XX </span>天未备注显示，{{title}}资源将自动掉库到到 <span>资源池 -> 掉库资源池 -> {{title}}掉库池</span> </p>
+                                <p class="tips">说明：系统间隔 <span> XX </span>天<span>{{title}}资源</span>没有添加最新备注内容，{{title}}资源将自动掉库： <span>资源池 -> 掉库资源池 -> {{title}}掉库池</span> </p>
                             </el-form-item>
 
                             <!-- <el-form-item label="提醒内容" prop="corpsecret">

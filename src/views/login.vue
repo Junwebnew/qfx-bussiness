@@ -56,7 +56,7 @@
                         </el-button>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <p class="text-center goReg">没有账号？<router-link to="/register" class="ml10 col b">立即注册</router-link>
+                        <p class="text-center goReg">没有账号?<router-link to="/register" class="ml10 col">立即注册</router-link>
                         </p>
                     </el-form-item>
                 </el-form>
@@ -274,7 +274,7 @@ export default {
         color: #8db9e8;
     }
     .login_ipt {
-        input {
+        ::v-deep input {
             border-radius: 0;
             border: none;
             border-bottom: 1px solid #dae5f1;

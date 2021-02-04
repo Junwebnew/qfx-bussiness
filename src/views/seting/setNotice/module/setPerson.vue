@@ -4,7 +4,7 @@
             <h2>个人企业微信号设置</h2>
             <div class="form">
                 <el-form ref="form" :model="user" :rules="rules" :label-position="'top'" label-width="130px">
-                    <el-form-item label="企业微信号" prop="enterpriseMicroSignal">
+                    <el-form-item label="个人企业微信号" prop="enterpriseMicroSignal">
                         <el-input v-model="user.enterpriseMicroSignal" maxlength='100' />
                     </el-form-item>
                     <el-form-item>

@@ -1,19 +1,20 @@
 <template>
     <div id="tags-view-container" class="tags-view-container">
-        <span class="scroll-btn l el-icon-d-arrow-left" @click="handleScroll( 200 )"></span>
-        <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+        <div class="scroll-pane-box">
+            <span class="scroll-btn l el-icon-d-arrow-left" @click="handleScroll( 200 )" v-show="isShowScrollBtn"></span>
+            <scroll-pane ref="scrollPane" class="tags-view-wrapper">
 
-            <router-link v-for="(item,index) in tagsList" :to="item.fullPath" :class="{'active': isActive(item.name),'tags-view-item':true}" :key="index" @contextmenu.prevent.native="openTabShow(item,$event)">
-                {{ item.title }}
-                <span v-if="item.name != '首页'" class="el-icon-close" @click.prevent.stop="closeTags(index)" />
-            </router-link>
+                <router-link v-for="(item,index) in tagsList" :to="item.fullPath" :ref='item.name' :class="{'active': isActive(item.name),'tags-view-item':true}" :key="index" @contextmenu.prevent.native="openTabShow(item,$event)">
+                    {{ item.title }}
+                    <span v-if="item.name != '首页'" class="el-icon-close" @click.prevent.stop="closeTags(index)" />
+                </router-link>
 
-        </scroll-pane>
-        <span class="scroll-btn r el-icon-d-arrow-right" @click="handleScroll( -200 )"></span>
-
+            </scroll-pane>
+            <span class="scroll-btn r el-icon-d-arrow-right" @click="handleScroll( -200 )" v-show="isShowScrollBtn"></span>
+        </div>
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click="refreshSelectedTag(selectedTag)">刷新页面</li>
-            <li @click="closeOther" v-show=' selectedTag.name == $route.name'>关闭其他</li>
+            <li @click="refreshSelectedTag(selectedTag)" v-show="selectedTag.name == $route.name ">刷新页面</li>
+            <li @click="closeOther">关闭其他</li>
             <li @click="closeRight">关闭右侧</li>
             <li @click="closeAll" v-show="selectedTag.name != '首页'">关闭所有</li>
         </ul>
@@ -40,12 +41,16 @@ export default {
             left: 0,
             top: 0,
             selectedTag: {},
-            isClick: false
+            //滚动盒子
+            scrollBox: '',
+            //是否展示滚动操作按钮
+            isShowScrollBtn: false
         }
     },
     watch: {
         $route(newValue, oldValue) {
             this.setTags(newValue);
+
         },
         visible(value) {
             if (value) {
@@ -57,13 +62,19 @@ export default {
     },
     created() {
 
-        console.log(this.$route)
+        // console.log(this.$route)
 
         if (Cookies.get('tagsList')) {
             this.tagsList = JSON.parse(Cookies.get('tagsList'))
-
         }
         this.setTags(this.$route);
+    },
+    mounted() {
+
+        this.scrollBox = this.$refs.scrollPane.$refs.scrollContainer.$refs.wrap
+
+        this.isShowScrollBtn = this.scrollBox.scrollWidth > this.scrollBox.clientWidth
+
     },
     methods: {
         //右键点击
@@ -73,7 +84,7 @@ export default {
             const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
             const offsetWidth = this.$el.offsetWidth // container width
             const maxLeft = offsetWidth - menuMinWidth // left boundary
-            const left = e.clientX - offsetLeft + 15 // 15: margin right
+            const left = e.clientX - offsetLeft
 
             if (left > maxLeft) {
                 this.left = maxLeft
@@ -81,13 +92,42 @@ export default {
                 this.left = left
             }
 
-            this.top = e.clientY
+            this.top = e.clientY - 50 //顶部导航高 50
             this.visible = true
             this.selectedTag = tag
         },
+        //寻找当前选中tag的位置 然后再滚动到显示的位置
+        findNowSelect(name) {
+            this.$nextTick(() => {
+
+                let leftWidth = this.$el.getBoundingClientRect().left,  //盒子距离右侧宽度
+                    boxWidth = this.scrollBox.clientWidth, //盒子长度
+                    positionL = this.$refs[name][0].$el.getBoundingClientRect().left,//当前元素距左侧长度
+                    positionR = this.$refs[name][0].$el.getBoundingClientRect().right;//当前元素距左侧长度+盒子自身长度
+
+                //1.已滚动到左侧隐藏    
+                // console.log('111', positionL, positionR)
+                if (leftWidth > positionL) {
+                    this.scrollTeps(positionL - leftWidth - 12) //padding有 12
+                }
+                else if (positionR > (leftWidth + boxWidth)) {
+                    this.scrollTeps(positionR - leftWidth - boxWidth - 12)
+                }
+
+            })
+
+        },
         // 当前选中标签
-        isActive(path) {
-            return path === this.$route.name;
+        isActive(name, ele) {
+            // console.log(111, ele)
+            // return name === this.$route.name;
+            if (name === this.$route.name) {
+                this.findNowSelect(name)
+
+                return true
+            }
+
+            return false
         },
         // 关闭单个标签
         closeTags(index) {
@@ -135,6 +175,11 @@ export default {
             else
                 this.tagsList = [this.tagsList[0], this.selectedTag];
 
+
+            if (this.selectedTag.fullPath != this.$route.fullPath) {
+                this.$router.push(this.selectedTag.fullPath);
+            }
+
             this.cookeSaveTag()
         },
         // 关闭全部标签
@@ -164,28 +209,35 @@ export default {
                 });
 
                 this.cookeSaveTag()
+
+
                 // this.$ls.set('tagsList', tagsList)
             }
         },
         cookeSaveTag() {
-            Cookies.set('tagsList', this.tagsList)
+
+            this.$nextTick(() => {
+                this.isShowScrollBtn = this.scrollBox.scrollWidth > this.scrollBox.clientWidth
+                Cookies.set('tagsList', this.tagsList)
+            })
         },
         closeMenu() {
             this.visible = false
         },
         handleScroll(num) {
 
-            let eleRef = this.$refs.scrollPane.$refs.scrollContainer.$refs.wrap
+            this.scrollTeps(num)
+        },
+        //long 滑动长度 ; teps 分多少步，默认20
+        scrollTeps(long, teps = 20) {
             let timer = 0
-
             var inter = setInterval(() => {
-                eleRef.scrollLeft = eleRef.scrollLeft + (num / 10)
+                this.scrollBox.scrollLeft = this.scrollBox.scrollLeft + (long / teps)
 
-                if (timer++ == 10) {
+                if (timer++ == teps) {
                     clearInterval(inter)
                 }
             }, 10)
-
         }
     }
 }
@@ -200,7 +252,12 @@ export default {
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
     position: relative;
-    padding: 0 40px;
+    .scroll-pane-box {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        display: flex;
+    }
     .tags-view-wrapper {
         .tags-view-item {
             display: inline-block;
@@ -254,18 +311,18 @@ export default {
         }
     }
     .scroll-btn {
-        position: absolute;
-        top: 0;
+        // position: absolute;
+        // top: 0;
         height: 32px;
-        width: 40px;
+        width: 32px;
         text-align: center;
         line-height: 32px;
-        &.l {
-            left: 0;
-        }
-        &.r {
-            right: 0;
-        }
+        // &.l {
+        //     left: 0;
+        // }
+        // &.r {
+        //     right: 0;
+        // }
     }
 }
 </style>
@@ -273,6 +330,7 @@ export default {
 <style lang="scss">
 //reset element css of el-icon-close
 .tags-view-wrapper {
+    flex: 1;
     .tags-view-item {
         .el-icon-close {
             width: 16px;

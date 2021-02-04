@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="content back-fff">
+        <div class="content back-fff full-height">
             <div class="l navBox">
                 <div class="item" :class="{'active':active == 0}" @click="active = 0">
                     <span>个人企业微信号设置</span>
@@ -78,7 +78,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content {
-    min-height: 500px;
+    // min-height: 500px;
     overflow: hidden;
     display: flex;
     padding: 10px 0;

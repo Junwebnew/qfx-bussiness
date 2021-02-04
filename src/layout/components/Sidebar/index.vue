@@ -5,7 +5,7 @@
             <!-- <el-menu :default-active="activeMenu" :collapse="isCollapse" :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBg : variables.menuLightBg" :text-color="settings.sideTheme === 'theme-dark' ? variables.menuText : 'rgba(0,0,0,.65)'" :unique-opened="true" :active-text-color="settings.theme" :collapse-transition="false" mode="vertical">
                 <sidebar-item v-for="(route, index) in permission_routes" :key="route.path  + index" :item="route" :sideTheme='settings.sideTheme' :base-path="route.path" />
             </el-menu> -->
-            <el-menu :default-active="activeMenu" :collapse="isCollapse" :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBg : variables.menuLightBg" :text-color="settings.sideTheme === 'theme-dark' ? variables.menuText : 'rgba(0,0,0,.65)'" :unique-opened="true" :active-text-color="settings.theme" :collapse-transition="false" mode="vertical">
+            <el-menu :default-active="activeMenu" :collapse="isCollapse" :background-color="settings.sideTheme === 'theme-dark' ? variables.menuBg : variables.menuLightBg" :text-color="settings.sideTheme === 'theme-dark' ? variables.menuText : 'rgba(0,0,0,.65)'" :unique-opened="uniqueOpened" :active-text-color="settings.theme" :collapse-transition="false" mode="vertical">
                 <sidebar-item v-for="(route, index) in permission_routes" :key="route.path  + index" :item="route" :sideTheme='settings.sideTheme' :base-path="route.path" />
             </el-menu>
         </el-scrollbar>
@@ -20,6 +20,12 @@ import variables from "@/assets/styles/variables.scss";
 
 export default {
     components: { SidebarItem, Logo },
+    data() {
+        return {
+            //是否只保持一个子菜单的展开
+            uniqueOpened: false
+        }
+    },
     computed: {
         ...mapState(["settings"]),
         ...mapGetters(["permission_routes", "sidebar"]),

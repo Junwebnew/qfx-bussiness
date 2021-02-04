@@ -69,18 +69,6 @@ export default {
         return {
             visibleShow: false,
             activeName: 'n1',
-            data: [
-                {
-                    title: '灭霸来信',
-                    content: '一起吧，来为宇宙转身就ask成绩拔尖删除绝爱是把见死不救啊好暗杀计划阿斯顿啊是巨大安徽省氨甲环酸v氨基酸的',
-                    createTime: "2020.10.10 10:10"
-                },
-                {
-                    title: '灭霸来信',
-                    content: '一起吧，来为宇宙转身就ask成绩拔尖删除绝爱是把见死不救啊好暗杀计划阿斯顿啊是巨大安徽省氨甲环酸v氨基酸的',
-                    createTime: "2020.10.10 10:10"
-                },
-            ],
             noticeArr: [],
             noticeNum: 0,
             messageArr: [],
@@ -126,7 +114,6 @@ export default {
                 conMsgListRead(Object.assign({ params }))
             ]).then(res => {
 
-                // console.log('9999', res)
 
                 this.noticeArr = res[0].notReadData.data
                 this.noticeNum = res[0].notReadData.total
@@ -178,18 +165,22 @@ export default {
         },
         readAllfunc() {
 
+
+
+            let that = this
+
             function redNotice() {
-                if (this.noticeArr && this.noticeArr.length) {
-                    let ids = this.noticeArr.map(i => i.id)
+                if (that.noticeArr && that.noticeArr.length) {
+                    let ids = that.noticeArr.map(i => i.id)
                     return qmxMsgRead({ ids: ids, status: 1 })
                 }
                 return {}
             }
 
             function redComMsg() {
-                if (this.messageArr && this.messageArr.length) {
+                if (that.messageArr && that.messageArr.length) {
 
-                    let ids = this.messageArr.map(i => i.id)
+                    let ids = that.messageArr.map(i => i.id)
                     return conMsgRead({ ids: ids, status: 1 })
                 }
 
@@ -200,7 +191,7 @@ export default {
                 redNotice(),
                 redComMsg()
             ]).then(res => {
-                this.initList()
+                that.initList()
             })
         },
         setMsgMum(num) {
