@@ -150,7 +150,7 @@
         </el-dialog>
         <!-- //试用星数设置 -->
         <el-dialog title="资源流程配置" :visible.sync="resourseSet.open" width="500px">
-            <el-form ref="resourseSet" :model="{}" label-width="110px" :rules='rules'>
+            <el-form ref="resourseSet" :model="resourseSet" label-width="110px" :rules='rules'>
                 <el-row>
                     <el-col :span='24'>
                         <el-radio v-model="resourseSet.receiveClueOppWay" label="1">资源 -> 线索 -> 商机 ->成单</el-radio>
@@ -282,7 +282,8 @@ export default {
 
             this[key] = deepClone(row)
             this[key].receiveClueOppWay = this[key].receiveClueOppWay || '1'
-            this[key].open = true
+
+            this.$set(this[key], 'open', true)
         },
         //提交
         submitFileForm() {

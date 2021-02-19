@@ -171,12 +171,18 @@ export function noticeArriveList(data) {
 
 
 
-
-
-
 // ******************************************** 资源领取 ************************************
 
 //资源领取为线索
 export function receiveResource(typeStr, data) {
     return $axios.post(`${typeStr}/receive`, data)
+}
+
+
+// ******************************************** 资源总数 ************************************
+
+//新增资源总数统计，统计某时间段新增的各个资源总数，不传参数，默认为今天
+
+export function totalCountResourse(data = {}) {
+    return $axios.post('resource/statistic/alanalysis/resource/newadd/totalCount', data)
 }

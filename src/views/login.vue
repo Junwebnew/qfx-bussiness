@@ -5,27 +5,30 @@
         <!-- 头部 -->
         <div class="el-login-head">
             <img src="../assets/images/logo.png" alt="权发现" srcset="">
+            <span>· 知产销售利器</span>
         </div>
         <!-- 表单盒子 -->
         <div class="formBox">
-            <div class="l">
 
-            </div>
-            <div class="r">
+            <h1 class="title">权发现智能销售云平台</h1>
+            <h2>用数据和技术为企业销售赋能</h2>
+            <div class="box">
+                <div class="l"></div>
+                <div class="r">
 
-                <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-                    <h3 class="title">权发现商机管理系统</h3>
-                    <el-form-item prop="username">
-                        <el-input v-model="loginForm.username" class="login_ipt" type="text" auto-complete="off" placeholder="账号" maxLength='11'>
-                            <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
-                        </el-input>
-                    </el-form-item>
-                    <el-form-item prop="password">
-                        <el-input v-model="loginForm.password" class="login_ipt" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin" maxLength='31'>
-                            <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
-                        </el-input>
-                    </el-form-item>
-                    <!-- <el-form-item prop="code">
+                    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
+                        <!-- <h3 class="title"></h3> -->
+                        <el-form-item prop="username">
+                            <el-input v-model="loginForm.username" class="login_ipt" type="text" auto-complete="off" placeholder="账号" maxLength='11'>
+                                <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item prop="password">
+                            <el-input v-model="loginForm.password" class="login_ipt" type="password" auto-complete="off" placeholder="密码" @keyup.enter.native="handleLogin" maxLength='31'>
+                                <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+                            </el-input>
+                        </el-form-item>
+                        <!-- <el-form-item prop="code">
                         <el-input
                             v-model="loginForm.code"
                             auto-complete="off"
@@ -47,19 +50,20 @@
                             />
                         </div>
                     </el-form-item> -->
-                    <el-checkbox v-model="loginForm.rememberMe" style="margin: 0px 0px 25px 0px">记住密码</el-checkbox>
+                        <el-checkbox v-model="loginForm.rememberMe" style="margin: 0px 0px 25px 0px">记住密码</el-checkbox>
 
-                    <el-form-item style="width: 100%">
-                        <el-button :loading="loading" class="login_btn" size="medium" type="primary" style="width: 100%" @click.native.prevent="handleLogin">
-                            <span v-if="!loading">登 录</span>
-                            <span v-else>登 录 中...</span>
-                        </el-button>
-                    </el-form-item>
-                    <el-form-item prop="password">
-                        <p class="text-center goReg">没有账号?<router-link to="/register" class="ml10 col">立即注册</router-link>
-                        </p>
-                    </el-form-item>
-                </el-form>
+                        <el-form-item style="width: 100%">
+                            <el-button :loading="loading" class="login_btn" size="medium" type="primary" style="width: 100%" @click.native.prevent="handleLogin">
+                                <span v-if="!loading">登 录</span>
+                                <span v-else>登 录 中...</span>
+                            </el-button>
+                        </el-form-item>
+                        <el-form-item prop="password">
+                            <p class="text-center goReg">没有账号?<router-link to="/register" class="ml10 col">立即注册</router-link>
+                            </p>
+                        </el-form-item>
+                    </el-form>
+                </div>
             </div>
         </div>
 
@@ -221,46 +225,37 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    background: #fff;
-    display: flex;
-    border-radius: 6px;
-    overflow: hidden;
-    .l {
-        width: 360px;
-        background: #fff url("../assets/images/main.jpg") center center
-            no-repeat;
+    transform: translateX(-50%) translateY(-55%);
+    h1 {
+        font-size: 60px;
+        color: #ffffff;
+        font-weight: 600;
+        text-shadow: 1px 4px 10px #666;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    h2 {
+        text-align: center;
+        font-size: 26px;
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+    .box {
+        display: flex;
+        border-radius: 6px;
         overflow: hidden;
-        background-size: 70% auto;
-        // border-radius: 4px 0 0 4px;
     }
     .r {
         padding: 30px 0 10px;
-        // border-left: 1px solid #dae5f1;
         position: relative;
-        &:after {
-            position: absolute;
-            content: " ";
-            left: 0;
-            top: 10%;
-            width: 1px;
-            height: 80%;
-            background-color: #f4f6f9;
-        }
+        color: #fff;
+        margin: 0 auto;
     }
 }
 
 .login-form {
-    border-radius: 6px;
-    background: #ffffff;
     width: 360px;
-    padding: 25px 40px 5px 40px;
-    .title {
-        font-size: 18px;
-        font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
-            Microsoft YaHei, "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;
-        color: #333;
-    }
+    padding: 15px 40px 5px 40px;
     .el-input {
         height: 38px;
         input {
@@ -275,9 +270,9 @@ export default {
     }
     .login_ipt {
         ::v-deep input {
-            border-radius: 0;
-            border: none;
-            border-bottom: 1px solid #dae5f1;
+            border-radius: 40px;
+            // border: none;
+            // border-bottom: 1px solid #dae5f1;
         }
     }
     .login_btn {
@@ -285,7 +280,13 @@ export default {
         margin-top: 10px;
     }
     .goReg {
-        color: #333;
+        color: #fff;
+    }
+    ::v-deep .el-checkbox__label {
+        color: #ffffff;
+    }
+    ::v-deep .el-form-item__error {
+        color: #ffffff;
     }
 }
 .login-tip {
@@ -309,6 +310,11 @@ export default {
     padding: 14px 14px 0;
     img {
         height: 42px;
+    }
+    span {
+        font-size: 15px;
+        color: #ffffff;
+        font-family: KaiTi;
     }
 }
 .el-login-footer {

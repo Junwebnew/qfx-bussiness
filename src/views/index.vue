@@ -38,6 +38,31 @@
                 </el-col>
             </el-row>
         </div>
+        <!-- 新增资源 -->
+        <div class="back-fff">
+            <el-row :gutter="10" class="pad20  mb10">
+                <el-col>
+                    <p class=" f16 mb20 part-tit">
+                        今日资源新增
+                        <!-- <router-link class="col fr f14" to="/center/finishManage/finishStatistics">详情></router-link> -->
+                    </p>
+                </el-col>
+                <ul class="reourseBox">
+                    <li v-for="(item,idx) in resourceTotal" :key='idx' class="pointer" @click="goPage( item.id )">
+                        <p class="mb5">{{item.name}}</p>
+                        <span class="b col">{{item.value}}</span>
+                    </li>
+                </ul>
+                <!-- <template v-for="(item,idx) in resourceTotal">
+                    <el-col :md='4' :sm="6" :xs="12" :key='idx' v-show='item.value != 0 '>
+                        <p class="mb10 pointer" @click="goPage( item.id )">
+                            <label>{{item.name}}：</label>
+                            <span class="b col ml5">{{item.value}}</span> 条
+                        </p>
+                    </el-col>
+                </template> -->
+            </el-row>
+        </div>
         <!-- //图标 -->
         <el-row :gutter="10" class="chartBox">
             <el-col :md='12' :sm="24" :xs="24" class="l">
@@ -84,6 +109,7 @@ import echarts from "echarts";
 import { mapGetters } from 'vuex'
 import { getDataStatic, finishOppsStatisticsMoney, bussTodayeList } from "@/api/center";
 import { rechargeAccountList } from "@/api/account";
+import { totalCountResourse } from "@/api/resources";
 
 export default {
     name: "index",
@@ -94,7 +120,8 @@ export default {
             countObj: {},
             bussTodayArr: [],
             myChart: {},
-            accountNumber: ''
+            accountNumber: '',
+            resourceTotal: []
         };
     },
     computed: {
@@ -129,7 +156,11 @@ export default {
         this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.handleQuery()
 
+        totalCountResourse().then(res => {
+            // console.log(111, res)
+            this.resourceTotal = res.data
 
+        })
     },
     methods: {
         handleQuery() {
@@ -141,8 +172,6 @@ export default {
 
                 this.bussTodayArr = res[0].data
 
-
-                // console.log('99', res[1])
                 this.initCharts(this.myChart.a, '总金额', res[1].data.businessTypeCountList, this.assTotal(res[1].data.businessTypeCountList))
             })
 
@@ -287,6 +316,18 @@ export default {
                 ]
             });
         },
+        //页面跳转
+        goPage(id) {
+            var resoursesPage = [
+                { id: "1344173032301821954", url: '/resources/recent-apply' }, { id: "1344241701388201986", url: '/resources/objection-analysis' },
+                { id: "1344173049066455042", url: '/resources/renewal' }, { id: "1344173216280772609", url: '/resources/agency-cancel' },
+                { id: "1344173201047060482", url: '/resources/change' }, { id: "1344241701266567170", url: '/resources/reject' },
+                { id: "1344241701547585538", url: '/resources/resource-buy' }, { id: "1344241701484670977", url: '/resources/white-list' },
+                { id: "1344241701484670978", url: '/resources/serving-notice' }
+            ]
+            let goItem = resoursesPage.filter(i => i.id == id)
+            this.$router.push(goItem[0].url)
+        },
         goTarget(href) {
             window.open(href, "_blank");
         },
@@ -414,6 +455,20 @@ export default {
     .num {
         font-weight: 600;
         color: #000;
+    }
+}
+.reourseBox {
+    li {
+        display: inline-block;
+        text-align: center;
+        width: 11.11%;
+        & + li {
+            border-left: 1px solid #f0f0f0;
+        }
+        .b {
+            font-size: 20px;
+            font-weight: normal;
+        }
     }
 }
 </style>

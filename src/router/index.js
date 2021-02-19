@@ -675,7 +675,7 @@ export const asyncAllRoutes = [
                 path: "resource-buy",
                 hidden: false,
                 component: "resources/resource-buy/index",
-                meta: { title: "客户求购", noCache: false },
+                meta: { title: "商标求购", noCache: false },
             },
             {
                 name: "serving-notice",

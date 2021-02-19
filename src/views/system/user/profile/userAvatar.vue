@@ -151,6 +151,7 @@ export default {
     position: relative;
     display: inline-block;
     height: 120px;
+    text-align: center;
 }
 
 .user-info-head:hover:after {
