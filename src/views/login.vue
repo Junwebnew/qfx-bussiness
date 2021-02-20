@@ -58,7 +58,7 @@
                                 <span v-else>登 录 中...</span>
                             </el-button>
                         </el-form-item>
-                        <el-form-item prop="password">
+                        <el-form-item>
                             <p class="text-center goReg">没有账号?<router-link to="/register" class="ml10 col">立即注册</router-link>
                             </p>
                         </el-form-item>
@@ -110,10 +110,10 @@ export default {
             },
             loginRules: {
                 username: [
-                    { validator: validateUseName, trigger: "blur" },
+                    { validator: validateUseName, trigger: "none" },
                 ],
                 password: [
-                    { required: true, trigger: "blur", message: "密码不能为空" }
+                    { required: true, trigger: "none", message: "密码不能为空" }
                 ]
             },
             loading: false,
@@ -190,7 +190,7 @@ export default {
         }
     },
     beforeDestroy() {
-        CanvasStop()
+        window.CanvasStop && window.CanvasStop()
     },
 };
 </script>
@@ -236,7 +236,7 @@ export default {
     }
     h2 {
         text-align: center;
-        font-size: 26px;
+        font-size: 22px;
         color: #ffffff;
         margin-bottom: 30px;
     }

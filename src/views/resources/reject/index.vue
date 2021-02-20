@@ -60,10 +60,11 @@
         </div>
         <div class="back-fff pad20">
             <el-row :gutter="10" class="mb8">
-                <el-col :span="4" class="lin32">
+                <el-col :span="10" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
+                    <small class="ml10 col-warn">(疑似驳回数据是通过大数据技术进行分析预测，智能监测、比对、预测的驳回数据，数据存在一定误差。)</small>
                 </el-col>
-                <el-col :span="20" align='right'>
+                <el-col :span="14" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>

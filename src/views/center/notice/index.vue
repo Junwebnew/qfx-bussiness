@@ -242,7 +242,7 @@ export default {
             margin: 10px 0;
         }
         small {
-            color: rgba(0, 0, 0, 0.25);
+            color: rgba(0, 0, 0, 0.85);
         }
     }
 

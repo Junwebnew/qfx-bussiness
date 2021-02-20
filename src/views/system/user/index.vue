@@ -580,7 +580,7 @@ export default {
         handleAdd(type) {
 
             if (type == 'main') {
-                this.$refs.addMainUser.showFunc({ orgId: this.organizationId, password: 123456, commonStatus: 1, whetherAdmin: 1 }, '添加主用户')
+                this.$refs.addMainUser.showFunc({ orgId: this.queryParams.orgId, password: 123456, commonStatus: 1, whetherAdmin: 1 }, '添加主用户')
             }
             else {
                 this.$refs.addUser.showFunc({ orgId: this.queryParams.orgId, password: 123456, commonStatus: 1, whetherAdmin: 0 }, '添加用户')

@@ -1,14 +1,14 @@
 <template>
     <div>
         <!-- 添加或修改参数配置对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+        <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal='false'>
             <div class="pad20">
                 <el-form ref="form" :model="form" :rules="rules" label-width="80px">
                     <el-row :gutter="20">
 
                         <el-col :span="24">
                             <el-form-item label="归属部门" prop="orgId">
-                                <treeselect v-model="form.orgId" :options="deptOptions" :normalizer="normalizer" disabled :show-count="true" placeholder="请选择归属部门" />
+                                <treeselect v-model="form.orgId" :options="deptOptions" :normalizer="normalizer" :show-count="true" placeholder="请选择机构名称" />
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
@@ -18,7 +18,7 @@
                         </el-col>
                         <el-col :span="12" v-if="form.id == undefined">
                             <el-form-item label="用户密码" prop="password">
-                                <el-input v-model="form.password" placeholder="请输入用户密码" type="text" :disabled="true" />
+                                <el-input v-model="form.password" placeholder="请输入用户密码" type="text" disabled />
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -223,7 +223,7 @@ export default {
     },
     created() {
 
-        this.queryParams.orgId = this.organizationId
+        // this.queryParams.orgId = this.organizationId
 
         this.qmxDataKey('sexEnumList').then(res => {
             this.sexOptions = res
@@ -310,6 +310,7 @@ export default {
                     this.form.accountType = 0 //主账号
                     this.form.checkStatus = 1 //审核通过
                     this.form.whetherAdmin = 1 //主账号为管理者
+                    this.form.companyId = this.form.orgId //所属机构id
                     qmxUserUpdate(this.form).then(res => {
 
                         this.addUserRole(res.data)

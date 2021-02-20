@@ -2,7 +2,7 @@
     <div>
 
         <!-- 添加或修改参数配置对话框 -->
-        <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+        <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal='false'>
             <div class="pad20">
                 <el-form ref="form" :model="form" :rules="rules" label-width="80px">
                     <el-row :gutter="20">
@@ -117,7 +117,9 @@ export default {
     computed: {
         ...mapGetters([
             'organizationId',
-            'rolesId'
+            'rolesId',
+            'superAdmin',
+            'companyId'
         ])
     },
     data() {
@@ -296,7 +298,10 @@ export default {
                     this.form.accountType = 10 //子账号
                     this.form.loginName = this.form.mobile
                     this.form.checkStatus = 1 //审核通过
+                    this.form.companyId = this.getBelongCompanyId(this.form.orgId) //所属机构id
 
+                    // console.log('000000', this.form.companyId)
+                    // return
                     qmxUserUpdate(this.form).then(res => {
                         console.log(111, res)
                         this.addUserRole(res.data)
@@ -315,6 +320,37 @@ export default {
                     this.open = false
                     this.$emit('backGetList')
                 })
+        },
+        //获取所属机构ID
+        getBelongCompanyId(orgId) {
+            if (this.companyId == 1) {
+
+                // console.log(this.deptOptions[0].treeVoList)
+
+                return this.getID(this.deptOptions[0].treeVoList, orgId)
+
+            }
+            return this.companyId
+        },
+        getID(arr, orgId) {
+
+            let bool = false
+
+            for (let item of arr) {
+
+                if (item.id == orgId) {
+                    return item.id
+                }
+                if (item.treeVoList && item.treeVoList.length) {
+                    bool = this.getID(item.treeVoList, orgId)
+                }
+
+                if (bool) {
+                    return item.id
+                }
+            }
+
+            return bool
         }
     }
 };

@@ -68,8 +68,8 @@
             <el-col :md='12' :sm="24" :xs="24" class="l">
                 <div class="back-fff pad20  mb10">
                     <p class=" f16 mb20 part-tit">
-                        成单金额统计
-                        <router-link class="col fr f14" to="/center/finishManage/finishStatistics">详情></router-link>
+                        成单金额统计 <small class="col-hui f12">(默认查询当月 {{timer.orderformTimeStart}} ~ {{timer.orderformTimeEnd}} )</small>
+                        <router-link class="col fr f14" to="/center/finishManage/finishStatistics">更多></router-link>
                     </p>
                     <div ref="myChart1" class="myChart"></div>
                 </div>
@@ -77,7 +77,7 @@
             <el-col :md='12' :sm="24" :xs="24" class='r'>
                 <div class="back-fff pad20  mb10">
                     <p class="f16 mb20 part-tit"> 今日待跟进商机
-                        <router-link class="col fr f14" to="/center/bussManage/today">详情></router-link>
+                        <router-link class="col fr f14" to="/center/bussManage/today">更多></router-link>
                     </p>
                     <el-table :data="bussTodayArr" style="width: 100%" height='360'>
                         <el-table-column type='index' label="序号" width='50'></el-table-column>
@@ -108,7 +108,7 @@
 import echarts from "echarts";
 import { mapGetters } from 'vuex'
 import { getDataStatic, finishOppsStatisticsMoney, bussTodayeList } from "@/api/center";
-import { rechargeAccountList } from "@/api/account";
+import { costSetAccountList } from "@/api/account";
 import { totalCountResourse } from "@/api/resources";
 
 export default {
@@ -121,7 +121,9 @@ export default {
             bussTodayArr: [],
             myChart: {},
             accountNumber: '',
-            resourceTotal: []
+            resourceTotal: [],
+            //统计时间段
+            timer: { 'orderformTimeStart': '', 'orderformTimeEnd': '' }
         };
     },
     computed: {
@@ -141,8 +143,9 @@ export default {
             this.countObj = res.data
         })
         if (this.mainAccount) {
-            rechargeAccountList({ pageNum: 1, pageSize: 1, orgId: '' }).then(res => {
-                this.accountNumber = res.data[0].accountNumber
+            costSetAccountList({ pageNum: 1, pageSize: 2, orgId: this.companyId }).then(res => {
+
+                this.accountNumber = res.data[0].num
                 // this.accountNumber = 9
             })
                 .catch(error => {
@@ -152,6 +155,8 @@ export default {
 
     },
     mounted() {
+        //防止canvas 动画未停止
+        window.CanvasStop && window.CanvasStop()
 
         this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.handleQuery()
@@ -165,9 +170,11 @@ export default {
     methods: {
         handleQuery() {
 
+            let timer = this.timer = { 'orderformTimeStart': this.parseTime(new Date(), '{y}-{m}-') + '01', 'orderformTimeEnd': this.parseTime(new Date(), '{y}-{m}-{d}') }
+
             Promise.all([
                 bussTodayeList({ pageNum: 1, pageSize: 10 }),
-                finishOppsStatisticsMoney({}),
+                finishOppsStatisticsMoney(timer),
             ]).then(res => {
 
                 this.bussTodayArr = res[0].data

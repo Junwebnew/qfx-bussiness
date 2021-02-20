@@ -30,3 +30,9 @@ export function costAccountUnpate(data) {
 export function costAccountStatit(data) {
     return $axios.post('cost/orgTimes/costOrgTimes/statistical/analysis', data)
 }
+
+//公司帐号次数配置分页查询
+export function costSetAccountList(data) {
+    return $axios.post('cost/orgTimes/costOrgTimes/page/list', data)
+}
+
