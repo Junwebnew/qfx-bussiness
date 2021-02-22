@@ -169,6 +169,12 @@ th > .cell {
   padding: 0 30px;
 }
 
+.vertop {
+  vertical-align: top;
+}
+.vermiddle {
+  vertical-align: middle;
+}
 .el-dialog:not(.is-fullscreen) {
   margin-top: 6vh !important;
 }

@@ -23,16 +23,34 @@
                             <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber || 0}}</p>
                         </li>
                         <li>
-                            <span>线索总数</span>
-                            <p class="num">{{countObj.clueCount}}</p>
+                            <span>我的线索数</span>
+                            <p class="num">
+                                <router-link class="col" to="/center/clueManage/clue">{{clueNum}}</router-link>
+                            </p>
                         </li>
                         <li>
+                            <span>我的商机数</span>
+                            <p class="num">
+                                <router-link class="col" to="/center/bussManage/buss">{{bussNum}}</router-link>
+                            </p>
+                        </li>
+                        <li v-if="whetherAdmin">
+                            <span>线索总数</span>
+                            <p class="num">
+                                <router-link class="col" to="/center/clueManage/clue-all">{{countObj.clueCount}}</router-link>
+                            </p>
+                        </li>
+                        <li v-if="whetherAdmin">
                             <span>商机总数</span>
-                            <p class="num">{{countObj.oppCount}}</p>
+                            <p class="num">
+                                <router-link class="col" to="/center/bussManage/buss-all">{{countObj.oppCount}}</router-link>
+                            </p>
                         </li>
                         <li>
                             <span>成单总数</span>
-                            <p class="num">{{countObj.orderFormCount}}</p>
+                            <p class="num">
+                                <router-link class="col" to="/center/finishManage/finishList">{{countObj.orderFormCount}}</router-link>
+                            </p>
                         </li>
                     </ul>
                 </el-col>
@@ -107,7 +125,7 @@
 
 import echarts from "echarts";
 import { mapGetters } from 'vuex'
-import { getDataStatic, finishOppsStatisticsMoney, bussTodayeList } from "@/api/center";
+import { getDataStatic, finishOppsStatisticsMoney, bussTodayeList, clueMyList, bussMyList } from "@/api/center";
 import { costSetAccountList } from "@/api/account";
 import { totalCountResourse } from "@/api/resources";
 
@@ -117,7 +135,12 @@ export default {
         return {
             //机构职位
             orgInfo: {},
+            //总数统计
             countObj: {},
+            //线索数
+            clueNum: '',
+            //商机数
+            bussNum: '',
             bussTodayArr: [],
             myChart: {},
             accountNumber: '',
@@ -132,16 +155,15 @@ export default {
             'name',
             'mainAccount',
             'companyId',
-            'rolesId'
+            'rolesId',
+            'whetherAdmin'
         ]),
     },
     created() {
         this.$store.dispatch('getUserOrgAndDep').then(res => {
             this.orgInfo = res
         })
-        getDataStatic({}).then(res => {
-            this.countObj = res.data
-        })
+
         if (this.mainAccount) {
             costSetAccountList({ pageNum: 1, pageSize: 2, orgId: this.companyId }).then(res => {
 
@@ -153,6 +175,17 @@ export default {
                 })
         }
 
+        getDataStatic({}).then(res => {
+            this.countObj = res.data
+        })
+        //我的线索数
+        clueMyList({ pageNum: 1, pageSize: 1 }).then(response => {
+            this.clueNum = response.total
+        })
+        //我的商机数
+        bussMyList({ pageNum: 1, pageSize: 1 }).then(response => {
+            this.bussNum = response.total
+        })
     },
     mounted() {
         //防止canvas 动画未停止
@@ -392,16 +425,20 @@ export default {
         li {
             position: relative;
             display: inline-block;
-            padding: 0 32px;
+            padding: 0 4px;
             color: rgba(0, 0, 0, 0.65);
             font-size: 14px;
             font-variant: tabular-nums;
             line-height: 1.5;
             text-align: center;
+            width: 16.66%;
+            max-width: 130px;
+            vertical-align: top;
             .num {
                 color: rgba(0, 0, 0, 0.85);
                 font-size: 24px;
                 margin-top: 10px;
+                height: 36px;
             }
             & + li {
                 &::after {

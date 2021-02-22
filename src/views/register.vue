@@ -3,12 +3,9 @@
         <header>
             <div class="tungee-head-bar">
                 <div class="logo inline">
-                    <a href="/" class="logo-link">
-                        <!-- <img src="../../assets/images/logo2.png" alt="个人中心" width="150px"> -->
-                    </a>
+                    <router-link to='/' class="logo-link"><img src="../assets/images/logo.png" alt="个人中心" height="42px"></router-link>
                     <router-link to='/' class="col fr f16">返回登录</router-link>
                 </div>
-
             </div>
         </header>
         <div class="content">
@@ -356,7 +353,7 @@ header {
     height: 64px;
     background: #1d2327;
     line-height: 64px;
-    padding: 0 64px;
+    padding: 0 32px 0 14px;
 }
 
 .reg {

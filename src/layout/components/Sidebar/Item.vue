@@ -1,29 +1,36 @@
 <script>
 export default {
-  name: 'MenuItem',
-  functional: true,
-  props: {
-    icon: {
-      type: String,
-      default: ''
+    name: 'MenuItem',
+    functional: true,
+    props: {
+        icon: {
+            type: String,
+            default: ''
+        },
+        title: {
+            type: String,
+            default: ''
+        }
     },
-    title: {
-      type: String,
-      default: ''
-    }
-  },
-  render(h, context) {
-    const { icon, title } = context.props
-    const vnodes = []
+    render(h, context) {
+        const { icon, title } = context.props
+        const vnodes = []
 
-    if (icon) {
-      vnodes.push(<svg-icon icon-class={icon}/>)
-    }
+        function mathUnit(title) {
+            let arr = ['异议分析', '近日申请', '疑似驳回']
+            if (arr.includes(title)) {
+                return (<i class='col-red f12 vertop'>次</i>)
+            }
+        }
 
-    if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+        if (icon) {
+            vnodes.push(<svg-icon icon-class={icon} />)
+        }
+
+        if (title) {
+            vnodes.push(<span slot='title'>{title} {mathUnit(title)}</span>)
+        }
+        return vnodes
     }
-    return vnodes
-  }
 }
 </script>

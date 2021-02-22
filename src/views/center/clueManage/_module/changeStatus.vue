@@ -14,9 +14,10 @@
                             {{dict.name}}
                         </li>
                     </ul>
-                </el-form-item>
 
+                </el-form-item>
             </el-form>
+            <p class="tips"><i class="el-icon-warning col"></i>提示:跟进状态变更为 '客户流失'和'线索无效'后,该条资源将不能继续'转为商机'和'状态变更'的操作</p>
         </div>
 
         <div slot="footer" class="dialog-footer">
@@ -126,5 +127,8 @@ export default {
             border-color: $col;
         }
     }
+}
+.tips {
+    color: #888;
 }
 </style>
