@@ -2,6 +2,7 @@ import { constantRoutes, asyncAllRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView';
+import ResourseLayout from '@/layout/resourseLayout';
 
 const permission = {
     state: {
@@ -16,7 +17,7 @@ const permission = {
     },
     actions: {
         // 生成路由
-        GenerateRoutes({ commit },params) {
+        GenerateRoutes({ commit }, params) {
             return new Promise(resolve => {
 
 
@@ -24,19 +25,19 @@ const permission = {
 
                 var accessedRoutes = []
 
-                if(params.menuList){
+                if (params.menuList) {
 
-                    console.log('子账号' )
+                    console.log('子账号')
                     accessedRoutes = filterAsyncRouter(params.menuList)
-                    console.log(111,accessedRoutes)
+                    console.log(111, accessedRoutes)
                 }
-                else{
+                else {
 
-                    console.log('主账号和管理员' )
+                    console.log('主账号和管理员')
 
                     accessedRoutes = filterAsyncRouter(asyncAllRoutes)
 
-                    
+
                 }
                 //暂时写在前端
                 // const accessedRoutes = filterAsyncRouter(asyncAllRoutes)
@@ -65,6 +66,9 @@ function filterAsyncRouter(asyncRouterMap) {
                 route.component = Layout
             } else if (route.component === 'ParentView') {
                 route.component = ParentView
+            }
+            else if (route.component === 'ResourseLayout') {
+                route.component = ResourseLayout
             } else {
                 route.component = loadView(route.component)
             }

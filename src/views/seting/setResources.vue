@@ -27,12 +27,28 @@
                 </el-col>
             </el-row>
         </div>
+        <div class="back-fff pad20 mb10">
+            <el-row :gutter="10" class="section">
+                <el-col>
+                    <p class="tit">资源模块是否支持包年扣费</p>
+                </el-col>
+                <el-col :lg="8 " :sm="12" :xs="24" v-for="item in yearResourseSet" :key="item.id">
+                    <div class="item">
+                        <div class="editBox">
+                            <span class="mr10">{{item.moduleMenuName}} :</span>
+                            <el-switch v-model="item.supportYearPay" :active-value="1" :inactive-value="0" active-color="#13ce66" @change="handleStatusChange(item)"></el-switch>
+                            <span class="ml5">{{ item.supportYearPay == 1 ? '开启' : '关闭' }}</span>
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 
 <script>
 
-import { getDictData, setDictData } from "@/api/system/dict/data";
+import { getDictData, setDictData, setYearResourse, updateYearResourse } from "@/api/system/dict/data";
 import { deepClone } from '@/utils/index'
 
 import { mapGetters } from 'vuex'
@@ -47,6 +63,7 @@ export default {
             showSearch: true,
             //列表数据
             dictObj: {},
+            yearResourseSet: []
         };
     },
     computed: {
@@ -56,6 +73,12 @@ export default {
     },
     created() {
         this.getList();
+
+        setYearResourse().then(res => {
+            // console.log(1111, res)
+            this.yearResourseSet = res.data
+        })
+
     },
     methods: {
 
@@ -122,7 +145,22 @@ export default {
         //取消
         bandleCancel(item) {
             this.$set(item, 'isEdit', false)
-        }
+        },
+        // 包年资源状态修改
+        handleStatusChange(row) {
+            let text = row.supportYearPay === 1 ? "开启" : "关闭"
+            this.$confirm('确认要"' + text + '""' + row.moduleMenuName + '"包年扣费吗?', "警告", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(function () {
+                return updateYearResourse({ "id": row.id, 'supportYearPay': row.supportYearPay });
+            }).then(() => {
+                this.msgSuccess(text + "成功");
+            }).catch(function () {
+                row.supportYearPay = row.supportYearPay == 1 ? 0 : 1;
+            });
+        },
     }
 };
 </script>

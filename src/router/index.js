@@ -561,7 +561,8 @@ export const asyncAllRoutes = [
         path: "/resources",
         hidden: false,
         redirect: "noRedirect",
-        component: "Layout",
+        // component: "Layout",
+        component: "ResourseLayout",
         alwaysShow: true,
         meta: { title: "资源模块", icon: "example", noCache: true },
         children: [

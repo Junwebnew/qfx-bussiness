@@ -56,3 +56,19 @@ export function getDictData(data) {
 export function setDictData(data) {
     return $axios.post(`back/dict/saveorupdate`, data)
 }
+
+// 获取包年开启资源的设置
+export function setYearResourse(data) {
+
+    data = data || {
+        "pageNum": 1,
+        "pageSize": 30
+    }
+    return $axios.post(`resourceModuleYearCostConfig/page/list`, data)
+}
+
+// 添加或更新资源模块年费配置
+export function updateYearResourse(data) {
+
+    return $axios.post(`resourceModuleYearCostConfig/saveorupdate`, data)
+}

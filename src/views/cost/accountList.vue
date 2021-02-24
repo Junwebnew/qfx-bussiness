@@ -22,7 +22,12 @@
             </el-row>
 
             <el-table v-loading="loading" :data="deptList">
-                <el-table-column prop="name" label="公司名称"></el-table-column>
+                <el-table-column prop="name" label="公司名称">
+                    <div slot-scope="scope">
+                        <span>{{scope.row.name}}</span>
+                        <el-tag v-if="scope.row.yearMemberTrue == 1" size="mini">年</el-tag>
+                    </div>
+                </el-table-column>
                 <el-table-column prop="status" label="状态" width='80'>
                     <div slot-scope="scope">
                         <el-tag v-if="scope.row.commonStatus" type="success" size='mini'>正常</el-tag>
@@ -49,8 +54,11 @@
                         <span>{{scope.row.days || '--'}}天</span>
                     </div>
                 </el-table-column> -->
-                <el-table-column label="充值时间" prop="rechargeTime" width="180"></el-table-column>
-                <el-table-column label="到期日期" prop="termOfValidityDate" width="180"></el-table-column>
+                <el-table-column label="充值时间" prop="rechargeTime" width="150"></el-table-column>
+                <el-table-column label="到期日期" prop="termOfValidityDate" width="150"></el-table-column>
+                <el-table-column label="包年开始时间" prop="yearTermOfValidityBeginDate" width="150"></el-table-column>
+                <el-table-column label="包年结束时间" prop="yearTermOfValidityDate" width="150"></el-table-column>
+                <el-table-column label="包年本月剩余" prop="yearNum" width="100"></el-table-column>
                 <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='180px' fixed="right">
                     <template slot-scope="scope">
 
@@ -75,6 +83,10 @@
                                 </el-dropdown-item>
                                 <el-dropdown-item>
                                     <el-button class="col-del" size="mini" type="text" @click="handleUpdate(scope.row,'resourseSet')">资源流程配置</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button class="col-red" v-if="scope.row.yearMemberTrue == 1" size="mini" type="text" @click="handleBusiness( false, scope.row)">关闭包年业务</el-button>
+                                    <el-button class="col-del" v-else size="mini" type="text" @click="handleBusiness( true,scope.row )">开通包年业务</el-button>
                                 </el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -172,7 +184,7 @@
 </template>
 
 <script>
-import { qmxCompanyList, qmxUpdateDept, setDeptDaysAndNum } from "@/api/system/dept";
+import { qmxCompanyList, qmxUpdateDept, setDeptDaysAndNum, openYearFee } from "@/api/system/dept";
 import { deepClone } from '@/utils/index'
 
 import { mapGetters } from 'vuex'
@@ -353,6 +365,26 @@ export default {
                 this.clearForm();
                 this.getList();
             })
+        },
+        //开通与关闭包年
+        handleBusiness(bool, json) {
+
+
+            let str = bool ? '开通' : '关闭'
+
+            this.$confirm('确定对"' + json.name + '"' + str + '包年业务吗？', "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消"
+            }).then(() => {
+
+                openYearFee(`?orgId=${json.id}&ifOpen=${bool ? 1 : 0}`)
+                    .then(res => {
+                        this.msgSuccess(str + "成功");
+
+                        this.getList()
+                    })
+            }).catch(() => { });
+
         }
     }
 };

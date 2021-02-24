@@ -128,3 +128,8 @@ export function qmxCompanyList(data) {
 export function setDeptDaysAndNum(data) {
     return $axios.post('cost/orgTimes/costOrgTimes/saveorupdate', data)
 }
+
+//公司开通关闭包年
+export function openYearFee(str) {
+    return $axios.get('cost/orgTimes/costOrgTimes/open/year/fee' + str)
+}

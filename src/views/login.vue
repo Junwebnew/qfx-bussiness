@@ -13,7 +13,6 @@
             <h1 class="title">权发现智能销售云平台</h1>
             <h2>用数据和技术为企业销售赋能</h2>
             <div class="box">
-                <div class="l"></div>
                 <div class="r">
 
                     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
@@ -139,6 +138,7 @@ export default {
         }
     },
     mounted() {
+
         Constellationel('myCanvas', 'canvasBox')
     },
     methods: {
@@ -196,6 +196,20 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+@media screen and (max-width: 1000px) {
+    .login .formBox {
+        top: 52%;
+    }
+    .login .formBox h1 {
+        font-size: 32px;
+    }
+    .login .formBox h2 {
+        font-size: 16px;
+    }
+    .login .formBox .r {
+        padding-top: 10px;
+    }
+}
 .login {
     position: relative;
     display: flex;
@@ -226,6 +240,7 @@ export default {
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-55%);
+    transition: all 0.2s;
     h1 {
         font-size: 60px;
         color: #ffffff;
@@ -233,12 +248,14 @@ export default {
         text-shadow: 1px 4px 10px #666;
         text-align: center;
         margin-bottom: 10px;
+        transition: all 0.2s;
     }
     h2 {
         text-align: center;
         font-size: 22px;
         color: #ffffff;
         margin-bottom: 30px;
+        transition: all 0.2s;
     }
     .box {
         display: flex;

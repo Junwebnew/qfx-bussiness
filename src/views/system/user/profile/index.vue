@@ -3,7 +3,7 @@
         <div>
             <el-row :gutter="10">
                 <el-col :span="6" :xs="24">
-                    <div class="back-fff pad20 full-height">
+                    <div class="back-fff pad20 full-height mb10">
                         <p class=" f16 mb20 part-tit">
                             个人信息
                         </p>
@@ -43,7 +43,7 @@
                     </div>
                 </el-col>
                 <el-col :span="18" :xs="24">
-                    <div class="back-fff pad20 full-height">
+                    <div class="back-fff pad20 full-height mb10">
                         <!-- <div slot="header" class="clearfix">
                             <span>基本资料</span>
                         </div> -->

@@ -15,7 +15,7 @@
 
             <div class="nav">
                 <div class="nav-item" :class="{'navItemActive':navStep == 0 }" @click="swaitchNav(0)"><a href="javascript:void(0)">填写信息</a></div>
-                <div class="nav-item" :class="{'navItemActive':navStep == 1 }" @click="swaitchNav(1)"><a href="javascript:void(0)">填写账密码</a></div>
+                <div class="nav-item" :class="{'navItemActive':navStep == 1 }" @click="swaitchNav(1)"><a href="javascript:void(0)">填写账号密码</a></div>
                 <div class="nav-item" :class="{'navItemActive':navStep == 2 }"><a href="javascript:void(0)">注册成功</a></div>
             </div>
 

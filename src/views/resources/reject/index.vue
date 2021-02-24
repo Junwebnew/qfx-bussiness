@@ -60,11 +60,11 @@
         </div>
         <div class="back-fff pad20">
             <el-row :gutter="10" class="mb8">
-                <el-col :span="10" class="lin32">
+                <el-col :span="20" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                     <small class="ml10 col-warn">(疑似驳回数据是通过大数据技术进行分析预测，智能监测、比对、预测的驳回数据，数据存在一定误差。)</small>
                 </el-col>
-                <el-col :span="14" align='right'>
+                <el-col :span="4" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
@@ -74,7 +74,7 @@
                 <el-table-column label="注册号" width='90px' prop='regNum'> </el-table-column>
                 <el-table-column label="国际分类" width='90px' prop='intClass'> </el-table-column>
                 <el-table-column label="申请人" prop='applicationName'> </el-table-column>
-                <el-table-column label="申请人地址" prop='applicationAddress' show-overflow-tooltip> </el-table-column>
+                <!-- <el-table-column label="申请人地址" prop='applicationAddress' show-overflow-tooltip> </el-table-column> -->
                 <el-table-column label="代理机构" prop='agency' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="注册日期" width='120px' prop='trademarkApplicationDate' />
                 <el-table-column label="驳回日期" width='120px' prop='rejectDate' />
@@ -194,19 +194,14 @@ export default {
 
         getList() {   //获取table表单的数据**************************************
 
-
-
             let params = this.queryParams
-
             if (this.rejectdateRange && this.rejectdateRange.length > 0) {
                 let arr = this.rejectdateRange
                 params = Object.assign({ 'startRejectDate': arr[0], 'endRejectDate': arr[1] }, params)
-
             }
             if (this.applydateRange && this.applydateRange.length > 0) {
                 let arr = this.applydateRange
                 params = Object.assign({ 'startTademarkApplicationDate': arr[0], 'endTademarkApplicationDate': arr[1] }, params)
-
             }
             this.loading = true;
             rejectList(params).then(response => {
@@ -231,7 +226,6 @@ export default {
         },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.id
             this.$router.push('/resources/reject/detail?id=' + obj.id)
         }
     },

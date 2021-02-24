@@ -43,6 +43,10 @@ router.beforeEach((to, from, next) => {
                         });
                     });
             } else {
+
+                // if (to.path.indexOf('/resources/') === 0) {
+                //     console.log('进入了', to.path)
+                // }
                 next();
                 // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
                 // if (hasPermission(store.getters.roles, to.meta.roles)) {
@@ -68,3 +72,9 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
     NProgress.done();
 });
+
+//进入资源前需要查询此资源是否会员才能进入，并且用户是会员，并且会员未过期
+
+function beforeEnterResourse() {
+
+}

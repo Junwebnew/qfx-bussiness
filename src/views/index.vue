@@ -20,7 +20,13 @@
                     <ul class="showInfo">
                         <li v-if="mainAccount">
                             <span>剩余星数</span>
-                            <p class="num" :class="{'col-red':accountNumber < 100}">{{accountNumber || 0}}</p>
+                            <p class="num" :class="{'col-red':orgAccount.num < 100}">{{orgAccount.num || 0}}</p>
+                        </li>
+                        <li v-if="orgAccount.yearMemberTrue == 1">
+                            <span>本月剩余星数（年）</span>
+                            <p class="num" :class="{'col-red':orgAccount.yearNum < 100}">{{orgAccount.yearNum || 0}}
+                                <span class="col-red" v-if='orgAccount.isItDue'>已过期</span>
+                            </p>
                         </li>
                         <li>
                             <span>我的线索数</span>
@@ -143,7 +149,7 @@ export default {
             bussNum: '',
             bussTodayArr: [],
             myChart: {},
-            accountNumber: '',
+            orgAccount: {},
             resourceTotal: [],
             //统计时间段
             timer: { 'orderformTimeStart': '', 'orderformTimeEnd': '' }
@@ -164,16 +170,24 @@ export default {
             this.orgInfo = res
         })
 
-        if (this.mainAccount) {
-            costSetAccountList({ pageNum: 1, pageSize: 2, orgId: this.companyId }).then(res => {
+        this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
 
-                this.accountNumber = res.data[0].num
-                // this.accountNumber = 9
-            })
-                .catch(error => {
-                    console.log('获取数量失败', error)
-                })
-        }
+            // console.log(11221, res)
+            this.orgAccount = res
+        })
+
+        // if (this.mainAccount) {
+
+        //     costSetAccountList({ pageNum: 1, pageSize: 2, orgId: this.companyId }).then(res => {
+        //         console.log(111, res)
+
+        //         this.orgAccount = res.data[0]
+        //         // this.accountNumber = 9
+        //     })
+        //     .catch(error => {
+        //         console.log('获取数量失败', error)
+        //     })
+        // }
 
         getDataStatic({}).then(res => {
             this.countObj = res.data
@@ -188,6 +202,7 @@ export default {
         })
     },
     mounted() {
+
         //防止canvas 动画未停止
         window.CanvasStop && window.CanvasStop()
 

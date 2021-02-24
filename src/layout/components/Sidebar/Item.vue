@@ -17,7 +17,7 @@ export default {
         const vnodes = []
 
         function mathUnit(title) {
-            let arr = ['异议分析', '近日申请', '疑似驳回']
+            let arr = ['疑似驳回']
             if (arr.includes(title)) {
                 return (<i class='col-red f12 vertop'>次</i>)
             }
