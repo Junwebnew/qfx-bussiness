@@ -2,12 +2,13 @@
     <div class="resourse-flag">
         <div class="flag-topright"></div>
         <div class="coin"><span>{{price}}</span>
-            <br>星/次
+            <br>{{unit}}
         </div>
     </div>
 </template>
 
 <script>
+import { resourseConfig } from '@/utils/baseConfig'
 export default {
     props: {
         /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:商标求购,8:企业白名单,9:送达公告*/
@@ -26,23 +27,67 @@ export default {
                 { 'person': '17', 'com': '9' }, { 'person': '18', 'com': '10' }, { 'person': '19', 'com': '11' }, { 'person': '20', 'com': '12' },
                 { 'person': '22', 'com': '21' }
             ],
-            price: ''
+            price: '', //价格
+            unit: '', //单位
+        }
+    },
+    watch: {
+        applicationType() {
+            this.isShowData()
         }
     },
     created() {
-        this.getPrice()
+        this.isShowData()
     },
     methods: {
-        //获取扣费
+        // 包年扣次（写死 每个都扣1次） ，特殊资源扣星（ 星是配置的 ）； 次数用完了，用星数解决
+
+        isShowData() {
+
+            let itemObj = resourseConfig[this.resourcesModule - 1]
+
+            if (itemObj.id) {
+
+                this.$store.dispatch('getYearResourse').then(res => {
+
+                    let arr2 = res.filter(i => i.id == itemObj.id)
+
+                    //获取到相对应的资源，并且是false,则是特殊资源
+                    if (arr2.length && !arr2[0].supportYearPay) {
+
+                        this.getPrice()
+                    }
+                    else {
+                        //判断用户有没有次数
+                        this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
+
+                            //有次数
+                            if (res.num > 0) {
+
+                                this.price = 1 //价格
+                                this.unit = '次' //单位
+                                return
+                            }
+                            //无次数
+                            this.getPrice()
+                        })
+
+                    }
+
+                })
+            }
+        },
+        //获取配置的资源扣星数
         getPrice() {
 
             let types = this.ids[this.resourcesModule - 1]
 
             this.$store.dispatch('getResoursePrice', this.applicationType == 1 ? types.person : types.com).then(res => {
-                // console.log('0000', res)
-                this.price = res.value
+                // console.log('222', res)
+                this.price = res.value / 10 //价格
+                this.unit = '星/次' //单位
             })
-        }
+        },
     }
 }
 </script>

@@ -277,6 +277,24 @@ export default {
         },
         //去商机成单
         goComplete(row) {
+            // console.log(111, row)
+            let that = this
+            if (!row.vocId) {
+
+                this.$confirm('此商机还未选择业务类型？', "警告", {
+                    confirmButtonText: "去选择",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                }).then(function () {
+
+                    that.$refs.bussModule.showFunc(deepClone(row), '修改商机')
+
+                }).catch(msg => {
+                    console.log(11111, msg)
+                })
+
+                return
+            }
             this.$refs.completeBuss.show(row)
         }
     },

@@ -19,7 +19,7 @@ export default {
         function mathUnit(title) {
             let arr = ['疑似驳回']
             if (arr.includes(title)) {
-                return (<i class='col-red f12 vertop'>次</i>)
+                return (<i class='col-red f12 vertop'>星</i>)
             }
         }
 

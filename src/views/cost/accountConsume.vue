@@ -45,7 +45,7 @@
                 <el-table-column label="资源类型" prop="moduleName"></el-table-column>
                 <el-table-column label="抵扣星数" prop="deductionNumber">
                     <div slot-scope="scope" class="col">
-                        <b>{{scope.row.deductionNumber}}</b> 星
+                        <b>{{scope.row.deductionNumber | narrowTen}}</b> 星
                     </div>
                 </el-table-column>
             </el-table>

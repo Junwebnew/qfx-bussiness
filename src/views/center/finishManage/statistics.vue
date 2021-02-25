@@ -31,7 +31,7 @@
                                     <el-date-picker v-model="dateRange" size="small" style="width:100%" :picker-options="pickerOptions" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                                 </el-form-item>
                             </el-col>
-                            <el-col :lg='6' :md='10' :sm="10" :xs="24">
+                            <el-col :lg='10' :md='10' :sm="10" :xs="24">
                                 <el-form-item label="">
                                     <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                                     <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -172,28 +172,22 @@ export default {
         //管理员可以选择机构，选择人员
         if (this.whetherAdmin) {
 
+            //机构
             qmxDept(this.queryParams).then(res => {
-
                 this.deptListTree = this.changeDate(res.data)
             })
-
+            //人员
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
             })
-            this.queryParams.orgId = this.organizationId
         }
-
+        // this.queryParams.deptIdList = [this.organizationId]
     },
     mounted() {
-
-
-
 
         this.myChartObj.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
         this.myChartObj.b = echarts.init(this.$refs.myChart2, null, { devicePixelRatio: 2.5 });
         this.myChartObj.c = echarts.init(this.$refs.myChart3, null, { devicePixelRatio: 2.5 });
-
-
         window.addEventListener("resize", () => {
             for (let key in this.myChartObj) {
                 this.myChartObj[key].resize()
@@ -211,12 +205,11 @@ export default {
                 lock: true,
                 target: '#box'
             });
-            // console.log(123, this.queryParams.orgId)
-            if (this.whetherAdmin && !this.queryParams.orgId) {
+            // if (this.whetherAdmin && !this.queryParams.deptIdList) {
 
-                console.log(123, this.queryParams.orgId)
-                this.queryParams.orgId = this.organizationId
-            }
+
+            //     this.queryParams.deptIdList = [this.organizationId]
+            // }
 
             bussFinishStatistics(this.addDateRange(this.queryParams, this.dateRange, { start: 'orderformTimeStart', end: 'orderformTimeEnd' })).then(response => {
 
@@ -304,6 +297,17 @@ export default {
         },
         depTtreeChange(e) {
             // console.log('9999', e)
+            //企业
+            if (e.level == 2) {
+                this.queryParams.orgId = e.id
+                this.queryParams.deptIdList = undefined
+            }
+            //部门
+            else {
+                this.queryParams.orgId = undefined
+                this.queryParams.deptIdList = [e.id]
+            }
+
             this.queryParams.orderformUserId = ''
             this.depUserList = []
             this.getUserList(e.id)
@@ -312,7 +316,8 @@ export default {
         resetQuery() {
             this.dateRange = []
             this.queryParams.counselorId = ''
-            this.queryParams.orgId = this.organizationId
+            this.queryParams.orgId = undefined
+            this.queryParams.deptIdList = undefined
             this.handleQuery();
         },
         //饼图

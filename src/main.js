@@ -60,6 +60,18 @@ Vue.prototype.$eleLoading = function (ele) {
     });
 }
 
+//过滤器（缩小10倍）
+Vue.filter('narrowTen', function (value) {
+
+    if (isNaN(Number(value))) {
+        return value
+    } else {
+
+        return (value / 10)
+    }
+
+})
+
 
 // 全局组件挂载
 Vue.component('Pagination', Pagination)

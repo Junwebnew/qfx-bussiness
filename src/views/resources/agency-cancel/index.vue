@@ -147,7 +147,7 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            agencyCancelList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            agencyCancelList(this.addDateRange(this.queryParams, this.dateRange, { start: 'startAnnDate', end: 'endAnnDate' })).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;

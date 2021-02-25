@@ -20,11 +20,11 @@
                     <ul class="showInfo">
                         <li v-if="mainAccount">
                             <span>剩余星数</span>
-                            <p class="num" :class="{'col-red':orgAccount.num < 100}">{{orgAccount.num || 0}}</p>
+                            <p class="num" :class="{'col-red':orgAccount.num < 100}">{{(orgAccount.num || 0 ) | narrowTen}}</p>
                         </li>
                         <li v-if="orgAccount.yearMemberTrue == 1">
-                            <span>本月剩余星数（年）</span>
-                            <p class="num" :class="{'col-red':orgAccount.yearNum < 100}">{{orgAccount.yearNum || 0}}
+                            <span>剩余次数</span>
+                            <p class="num" :class="{'col-red':orgAccount.yearNum < 100}">{{(orgAccount.yearNum || 0)  }}
                                 <span class="col-red" v-if='orgAccount.isItDue'>已过期</span>
                             </p>
                         </li>
@@ -67,7 +67,7 @@
             <el-row :gutter="10" class="pad20  mb10">
                 <el-col>
                     <p class=" f16 mb20 part-tit">
-                        今日资源新增
+                        今日平台新增资源
                         <!-- <router-link class="col fr f14" to="/center/finishManage/finishStatistics">详情></router-link> -->
                     </p>
                 </el-col>

@@ -235,6 +235,8 @@ export default {
 
             this.form = obj
 
+            console.log(obj)
+
             if (obj.id) {
                 this.getUserRole(obj.id)
             }

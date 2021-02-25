@@ -144,24 +144,14 @@ export default {
     },
     mounted() {
 
-        // recentApplyList(this.queryParams).then(res => {
-        //     console.log(1123, res)
-        // })
-
-        // let time = [this.$getFulldate(new Date(new Date().getTime() - 31 * 24 * 60 * 60 * 1000)).date, this.$getFulldate(new Date(new Date().getTime() - 24 * 60 * 60 * 1000)).date]
-
-        // this.initDate = time
-        // this.queryParams.time = time
-
         this.getList()
-        // this.getUserList()
     },
     methods: {
 
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            recentApplyList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            recentApplyList(this.addDateRange(this.queryParams, this.dateRange, { start: 'trademarkApplicationDateStart', end: 'trademarkApplicationDateEnd' })).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;

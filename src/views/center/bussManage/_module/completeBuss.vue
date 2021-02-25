@@ -53,11 +53,12 @@ export default {
             title: '恭喜成单',
             qmxOnlineUrl: qmxOnlineUrl,
             customerName: '', //商机名称
-            form: { oppId: '', orderformContract: '', orderformPrice: 1 },
+            form: { oppId: '', orderformContract: '', orderformPrice: undefined },
             // 表单校验
             rules: {
                 orderformPrice: [
-                    { required: true, message: "金额不能为空", trigger: "blur" }
+                    { required: true, message: "金额不能为空", trigger: "blur" },
+                    { pattern: /^[1-9]\d*$/, message: '请输入金额', trigger: "blur" }
                 ]
             },
             //正在上传
@@ -69,18 +70,22 @@ export default {
 
             this.customerName = obj.customerName
 
-            this.form.oppId = obj.id
+            this.form = { oppId: obj.id, orderformContract: '', orderformPrice: undefined }
 
             this.open = true
 
         },
         submitFileForm() {
 
-            bussFinishSuccess(this.form).then(res => {
+            this.$refs.form.validate(valid => {
 
-                this.msgSuccess("操作成功");
-                this.$emit('finish')
-                this.close()
+                if (valid) {
+                    bussFinishSuccess(this.form).then(res => {
+                        this.msgSuccess("操作成功");
+                        this.$emit('finish')
+                        this.close()
+                    })
+                }
             })
 
         },

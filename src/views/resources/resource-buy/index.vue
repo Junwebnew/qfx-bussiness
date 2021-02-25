@@ -76,7 +76,7 @@
                 </div>
                 <div class="item">
                     <label>资源抵扣</label>
-                    <p class="col b">{{price ||'--'}}星/次</p>
+                    <p class="col b">{{ priceStr}}</p>
                 </div>
             </div>
             <div slot="footer" class="dialog-footer">
@@ -113,7 +113,7 @@ export default {
                 intclassList: undefined
             },
             //扣除价格
-            price: '',
+            priceStr: '',
             //初始时间
             initDate: [],
             //申请人类型
@@ -164,9 +164,39 @@ export default {
         },
         //获取扣费次数
         getPrice() {
+
+            this.$store.dispatch('getYearResourse').then(res => {
+
+                let arr2 = res.filter(i => i.id == '1344241701547585538')
+
+                //获取到相对应的资源，并且是false,则是特殊资源
+                if (arr2.length && !arr2[0].supportYearPay) {
+
+                    this.getSetResoursePrice()
+                }
+                else {
+                    //判断用户有没有次数
+                    this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
+
+                        //有次数
+                        if (res.num < 0) {
+
+                            this.priceStr = '1/次'
+
+                            return
+                        }
+                        //无次数
+                        this.getSetResoursePrice()
+                    })
+
+                }
+
+            })
+        },
+        getSetResoursePrice() {
             this.$store.dispatch('getResoursePrice', '11').then(res => {
                 // console.log('0000', res)
-                this.price = res.value
+                this.priceStr = res.value / 10 + '星/次'
             })
         },
         /** 搜索按钮操作 */

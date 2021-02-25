@@ -12,6 +12,7 @@
 <script>
 import Layout from "./index";
 import { mapGetters } from 'vuex'
+import { resourseConfig } from '@/utils/baseConfig'
 export default {
     name: 'resourseLayout',
     components: { Layout },
@@ -39,13 +40,33 @@ export default {
 
             this.lock = false
 
-            if (routeName == 'reject') {
+            // console.log('key', routeName)
+            let arr = resourseConfig.filter(i => i.key == routeName)
+
+            if (arr.length) {
+
+                //判断用户有没有次数
                 this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
 
-                    this.lock = res.num <= 0
-                    // orgAccount.num
+                    if (res.num > 0) {
+                        this.lock = false
+                        return
+                    }
+
+                    this.$store.dispatch('getYearResourse').then(res => {
+
+                        let arr2 = res.filter(i => i.id == arr[0].id)
+                        //获取到相对应的资源，并且是false
+                        if (arr2.length && !arr2[0].supportYearPay) {
+
+                            this.lock = true
+                        }
+                    })
                 })
+
             }
+
+
         }
     },
 }

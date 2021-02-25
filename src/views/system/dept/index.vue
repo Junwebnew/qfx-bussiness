@@ -53,7 +53,12 @@
             <el-table v-loading="loading" :data="deptList" row-key="id" default-expand-all :tree-props="treePros">
                 <el-table-column prop="name" label="部门名称"></el-table-column>
                 <!-- <el-table-column prop="orderNum" label="排序" width="200"></el-table-column> -->
-                <el-table-column prop="status" label="状态" width='70' :formatter="statusFormat"></el-table-column>
+                <el-table-column prop="status" label="状态" width='70'>
+                    <template slot-scope="scope">
+                        <el-tag v-if="scope.row.commonStatus == 1" size="mini">正常</el-tag>
+                        <el-tag v-else type="danger" size="mini">禁用</el-tag>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="type" label="类型" width='70' :formatter="typeFormat"></el-table-column>
                 <el-table-column label="创建时间" align="center" prop="createTime" width="180">
                     <template slot-scope="scope">
@@ -286,7 +291,7 @@ export default {
         },
         // 字典状态字典翻译
         statusFormat(row, column) {
-            return row.status || '正常'
+            return row.commonStatus == 1 ? '正常' : '禁用 '
         },
         typeFormat(row, column) {
             return row.type == 1 ? '企业' : '部门'

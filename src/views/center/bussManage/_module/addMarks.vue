@@ -67,7 +67,7 @@ export default {
             this.addTitle = tit || '新增备注'
 
             // this.form = { businessStatusId: obj.followStatus, remindDate: this.parseTime(new Date().getTime() + 24 * 60 * 60 * 1000) }
-            this.form = { businessStatusId: obj.followStatus, remindDate: this.parseTime(new Date().getTime(), '{y}-{m}-{d}') + ' 09:00:00' }
+            this.form = { businessStatusId: obj.followStatus, remindDate: '' }
             this.open = true
 
         },

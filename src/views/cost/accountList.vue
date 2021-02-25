@@ -41,19 +41,14 @@
                 </el-table-column>
                 <el-table-column label="剩余星数" prop="accountNum" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.accountNum || '--'}}</span>
+                        <span>{{ (scope.row.accountNum || '--') | narrowTen}}</span>
                     </div>
                 </el-table-column>
                 <el-table-column label="试用星数" prop="originalTimes" width="80">
                     <div slot-scope="scope">
-                        <span>{{scope.row.originalTimes || '--'}}</span>
+                        <span>{{(scope.row.originalTimes || '--') | narrowTen}}</span>
                     </div>
                 </el-table-column>
-                <!-- <el-table-column label="试用天数" prop="days" width="80">
-                    <div slot-scope="scope">
-                        <span>{{scope.row.days || '--'}}天</span>
-                    </div>
-                </el-table-column> -->
                 <el-table-column label="充值时间" prop="rechargeTime" width="150"></el-table-column>
                 <el-table-column label="到期日期" prop="termOfValidityDate" width="150"></el-table-column>
                 <el-table-column label="包年开始时间" prop="yearTermOfValidityBeginDate" width="150"></el-table-column>

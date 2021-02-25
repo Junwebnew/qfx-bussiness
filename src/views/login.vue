@@ -129,13 +129,13 @@ export default {
     },
     created() {
         //this.getCode();
-        //this.getCookie();
-        if (process.env.NODE_ENV != 'production') {
-            this.loginForm = {
-                username: "admin",
-                password: "123456",
-            }
-        }
+        this.getCookie();
+        // if (process.env.NODE_ENV != 'production') {
+        //     this.loginForm = {
+        //         username: "admin",
+        //         password: "123456",
+        //     }
+        // }
     },
     mounted() {
 
@@ -163,6 +163,10 @@ export default {
 
                 if (valid) {
                     this.loading = true;
+
+                    // console.log(11, this.loginForm)
+                    // this.loginForm.password = encryp
+
                     if (this.loginForm.rememberMe) {
                         Cookies.set("username", this.loginForm.username, { expires: 7 });
                         Cookies.set("password", encrypt(this.loginForm.password), { expires: 7 });
@@ -210,6 +214,18 @@ export default {
         padding-top: 10px;
     }
 }
+@media screen and (min-width: 1000px) and (max-width: 1380px) {
+    .login .formBox {
+        top: 55%;
+    }
+    .login .formBox h1 {
+        font-size: 60px;
+    }
+    .login .formBox h2 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+}
 .login {
     position: relative;
     display: flex;
@@ -238,23 +254,23 @@ export default {
 .formBox {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 48%;
     transform: translateX(-50%) translateY(-55%);
     transition: all 0.2s;
     h1 {
-        font-size: 60px;
+        font-size: 65px;
         color: #ffffff;
         font-weight: 600;
         text-shadow: 1px 4px 10px #666;
         text-align: center;
-        margin-bottom: 10px;
+        margin-bottom: 14px;
         transition: all 0.2s;
     }
     h2 {
         text-align: center;
         font-size: 22px;
         color: #ffffff;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
         transition: all 0.2s;
     }
     .box {

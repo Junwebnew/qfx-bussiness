@@ -28,10 +28,10 @@ const otherData = {
 
             return new Promise(resolve => {
 
-                if (state.orgMsg.id) {
-                    resolve(state.orgMsg)
-                    return
-                }
+                // if (state.orgMsg.id) {
+                //     resolve(state.orgMsg)
+                //     return
+                // }
                 costSetAccountList({ pageNum: 1, pageSize: 2, orgId: orgId }).then(res => {
                     commit('SET_ORGMSG', res.data[0])
                     resolve(res.data[0])

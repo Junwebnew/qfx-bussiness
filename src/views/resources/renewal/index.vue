@@ -152,7 +152,7 @@ export default {
             }
             if (this.applydateRange && this.applydateRange.length > 0) {
                 let arr = this.applydateRange
-                params = Object.assign({ 'startCreateTime': arr[0], 'endCreateTime': arr[1] }, params)
+                params = Object.assign({ 'startTmApplicationDate': arr[0], 'endTmApplicationDate': arr[1] }, params)
 
             }
 
