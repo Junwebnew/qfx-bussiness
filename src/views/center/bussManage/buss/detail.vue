@@ -153,7 +153,7 @@
         <!-- 新增提醒 -->
         <addTimeTips ref='addTimeTips' @finish='getmarks' />
         <!-- 成单 -->
-        <completeBuss ref='completeBuss' @finish='getmarks' />
+        <completeBuss ref='completeBuss' @finish='reFreshPage' />
     </div>
 </template>
 
@@ -310,6 +310,14 @@ export default {
         //去商机成单
         goComplete(row) {
             this.$refs.completeBuss.show(deepClone(this.json))
+        },
+        //刷新本页面
+        reFreshPage() {
+            this.$nextTick(() => {
+                this.$router.replace({
+                    path: '/redirect' + this.$route.fullPath
+                })
+            })
         }
     }
 }

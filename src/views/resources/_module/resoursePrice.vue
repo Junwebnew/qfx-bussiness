@@ -17,7 +17,8 @@ export default {
         },
         // 0 是企业，1 是个人
         applicationType: {
-            type: String | Number
+            type: String | Number,
+            default: undefined
         }
     },
     data() {
@@ -37,7 +38,7 @@ export default {
         }
     },
     created() {
-        this.isShowData()
+        // this.isShowData()
     },
     methods: {
         // 包年扣次（写死 每个都扣1次） ，特殊资源扣星（ 星是配置的 ）； 次数用完了，用星数解决
@@ -85,7 +86,7 @@ export default {
             this.$store.dispatch('getResoursePrice', this.applicationType == 1 ? types.person : types.com).then(res => {
                 // console.log('222', res)
                 this.price = res.value / 10 //价格
-                this.unit = '星/次' //单位
+                this.unit = '星' //单位
             })
         },
     }

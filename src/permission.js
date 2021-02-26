@@ -27,7 +27,6 @@ router.beforeEach((to, from, next) => {
                     .dispatch("GetInfo")
                     .then(res => {
                         // 拉取user_info
-
                         store.dispatch("GenerateRoutes", { menuList: res.menuList }).then(accessRoutes => {
                             // 测试 默认静态页面
                             // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
@@ -72,9 +71,3 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
     NProgress.done();
 });
-
-//进入资源前需要查询此资源是否会员才能进入，并且用户是会员，并且会员未过期
-
-function beforeEnterResourse() {
-
-}

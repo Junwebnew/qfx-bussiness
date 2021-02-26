@@ -2,7 +2,7 @@ import $axios from '@/utils/http'
 
 //获取电话列表
 export function resourcePhoneList(data) {
-    return $axios.post('resource/phone/page/list', data)
+    return $axios.post('resource/phone/page/list/new', data)
 }
 
 //启用|禁用电话

@@ -4,7 +4,7 @@
         <div class="isLock" v-if="lock">
             <div class="msgBox">
                 <img src="../assets/images/lock-b.png" alt="加锁">
-                <p class="msg">此资源为扣次资源，如需查看，请联系商务人员！</p>
+                <p class="msg">此资源为扣星资源，如需查看，请联系商务人员充值星数！</p>
             </div>
         </div>
     </section>

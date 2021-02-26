@@ -179,7 +179,7 @@ export default {
                     this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
 
                         //有次数
-                        if (res.num < 0) {
+                        if (res.num > 0) {
 
                             this.priceStr = '1/次'
 

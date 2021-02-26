@@ -17,6 +17,7 @@ import { mapGetters, mapState } from "vuex";
 import Logo from "./Logo";
 import SidebarItem from "./SidebarItem";
 import variables from "@/assets/styles/variables.scss";
+import Global from "@/layout/components/global.js";
 
 export default {
     components: { SidebarItem, Logo },
@@ -51,6 +52,10 @@ export default {
     },
     mounted() {
         // console.log('侧边路由数组', this.activeMenu)
+        Global.$on('setRouterShow', msg => {
+            console.log('打开路由数组', msg)
+            this.selectedIndexs.push(msg)
+        })
     },
     methods: {
         handleOpen(key, keyPath) {

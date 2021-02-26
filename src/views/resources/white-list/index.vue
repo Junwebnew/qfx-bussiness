@@ -35,6 +35,7 @@
             <el-table v-loading="loading" :data="tableData">
                 <el-table-column label="企业名称" prop="applicantName" show-overflow-tooltip></el-table-column>
                 <el-table-column label="企业地址" prop="address" show-overflow-tooltip></el-table-column>
+                <el-table-column label="所属行业" prop="industry" show-overflow-tooltip></el-table-column>
                 <el-table-column label="经营状态" prop="businessState" show-overflow-tooltip></el-table-column>
                 <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">

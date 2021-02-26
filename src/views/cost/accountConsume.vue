@@ -45,7 +45,13 @@
                 <el-table-column label="资源类型" prop="moduleName"></el-table-column>
                 <el-table-column label="抵扣星数" prop="deductionNumber">
                     <div slot-scope="scope" class="col">
-                        <b>{{scope.row.deductionNumber | narrowTen}}</b> 星
+                        <!-- <b>{{scope.row.deductionNumber | narrowTen}}</b> 星 -->
+                        <p v-if="scope.row.consumType == 2">
+                            <b>{{scope.row.deductionNumber}}</b>次
+                        </p>
+                        <p v-else>
+                            <b>{{scope.row.deductionNumber | narrowTen}}</b> 星
+                        </p>
                     </div>
                 </el-table-column>
             </el-table>

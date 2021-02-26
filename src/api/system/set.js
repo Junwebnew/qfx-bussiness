@@ -14,7 +14,7 @@ export function outOfStockSet(data) {
 
 //公告数据清洗
 export function clearNoticeData(num) {
-    return $axios.get('api-qfxpdc/resourceManagement/cleaningPreliminaryNotice?noticeNum=' + num)
+    return $axios.get('/API/api-qfxpdc/resourceManagement/cleaningPreliminaryNotice?noticeNum=' + num)
 }
 
 //获取调库设置
