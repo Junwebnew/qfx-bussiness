@@ -181,7 +181,9 @@ export default {
                     this.$store
                         .dispatch("Login", this.loginForm)
                         .then(() => {
-                            this.$router.push({ path: this.redirect || "/" });
+                            this.$router.push({ path: this.redirect || "/" },( msg ) => {
+                                console.log('9999',msg)
+                            });
                         })
                         .catch((err) => {
 

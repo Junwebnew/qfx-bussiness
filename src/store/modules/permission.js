@@ -27,13 +27,13 @@ const permission = {
 
                 if (params.menuList) {
 
-                    console.log('子账号')
+                    // console.log('子账号')
                     accessedRoutes = filterAsyncRouter(params.menuList)
-                    console.log(111, accessedRoutes)
+                    // console.log(111, accessedRoutes)
                 }
                 else {
 
-                    console.log('主账号和管理员')
+                    // console.log('主账号和管理员')
 
                     accessedRoutes = filterAsyncRouter(asyncAllRoutes)
 

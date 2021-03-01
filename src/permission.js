@@ -20,13 +20,12 @@ router.beforeEach((to, from, next) => {
             next({ path: "/" });
             NProgress.done();
         } else {
-
+            // 用户ID不存在  判断当前用户是否已拉取完user_info信息
             if (!store.getters.userId) {
-                // 用户ID不存在  判断当前用户是否已拉取完user_info信息
+                // 拉取user_info
                 store
                     .dispatch("GetInfo")
                     .then(res => {
-                        // 拉取user_info
                         store.dispatch("GenerateRoutes", { menuList: res.menuList }).then(accessRoutes => {
                             // 测试 默认静态页面
                             // store.dispatch('permission/generateRoutes', { roles }).then(accessRoutes => {
