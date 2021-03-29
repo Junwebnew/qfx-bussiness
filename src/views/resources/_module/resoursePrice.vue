@@ -11,7 +11,7 @@
 import { resourseConfig } from '@/utils/baseConfig'
 export default {
     props: {
-        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:商标求购,8:企业白名单,9:送达公告*/
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:商标求购,8:企业白名单,9:送达公告,10:到期未续展*/
         resourcesModule: {
             type: String | Number
         },
@@ -26,7 +26,7 @@ export default {
             ids: [
                 { 'person': '13', 'com': '5' }, { 'person': '14', 'com': '6' }, { 'person': '15', 'com': '7' }, { 'person': '16', 'com': '8' },
                 { 'person': '17', 'com': '9' }, { 'person': '18', 'com': '10' }, { 'person': '19', 'com': '11' }, { 'person': '20', 'com': '12' },
-                { 'person': '22', 'com': '21' }
+                { 'person': '22', 'com': '21' }, { 'person': '32', 'com': '31' }
             ],
             price: '', //价格
             unit: '', //单位
@@ -51,6 +51,8 @@ export default {
 
                 this.$store.dispatch('getYearResourse').then(res => {
 
+                    // console.log('222', res)
+
                     let arr2 = res.filter(i => i.id == itemObj.id)
 
                     //获取到相对应的资源，并且是false,则是特殊资源
@@ -62,9 +64,11 @@ export default {
                         //判断用户有没有次数
                         this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
 
+
+
                             //有次数
                             if (res.num > 0) {
-
+                                // this.getPrice()
                                 this.price = 1 //价格
                                 this.unit = '次' //单位
                                 return
@@ -84,7 +88,9 @@ export default {
             let types = this.ids[this.resourcesModule - 1]
 
             this.$store.dispatch('getResoursePrice', this.applicationType == 1 ? types.person : types.com).then(res => {
-                // console.log('222', res)
+
+                // console.log('111', res, types)
+
                 this.price = res.value / 10 //价格
                 this.unit = '星' //单位
             })

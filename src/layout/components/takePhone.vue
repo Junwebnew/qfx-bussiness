@@ -34,11 +34,9 @@
                             <span></span>
                         </div>
                         <p class="text-center mt20" :class="showWave ? 'col-green' : 'col-red' ">{{connectionText}}</p>
-                        <!-- <p class="text-center col-green" v-show='connectioning === 1'>{{connentTime}}</p>
-                        <p class="text-center col-red" v-show='connectioning === 2'>未接通</p> -->
+                        <p class="text-center mt20" v-show='connentTime'>{{connentTime}}</p>
                     </div>
 
-                    <!-- <p>{{connentTime}}</p> -->
                     <div class="btnBox">
                         <div class="btn button hangup" @click="hangup">挂断</div>
                     </div>
@@ -62,19 +60,21 @@ export default {
     },
     data() {
         return {
-            phoneShow: true,
+            phoneShow: false,
             numArr: [1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#'],
-            telNum: '15181049795',
+            telNum: '',
             //显示拨打层
             isConnection: false, //是否拨打
             //连接中
             connectioning: 0, //0 正在连接 1 接通 2 未接通
-            connentTime: 'XXXX',
+
             // 音浪效果
             showWave: true,
             // 连接状态
             connectionstatus: 0, //0 正在连接 1 接通 2 未接通 3 挂断
             connectionText: '', //文字状态
+            timer: undefined, //通话定时器
+            connentTime: '', //通话时长
             //电话相关配置
             status: false,//连接状态
             UA: {},
@@ -82,19 +82,9 @@ export default {
         }
     },
     mounted() {
-        // this.connentTime = formatDate(11298765, true).dayTime
 
-        let old = new Date().getTime()
-
-        // this.connentTime = formatDate(old, true).dayTime
-
-        // setInterval(() => {
-        //     let last = new Date().getTime() - old
-
-        //     this.connentTime = formatDate(last, true).dayTime
-
-        // }, 1000)
-
+        //开发环境，暂时不能使用
+        return
         this.initPhoneSet()
     },
     methods: {
@@ -130,6 +120,11 @@ export default {
         },
         //点击拨打
         ringout() {
+
+            if (!this.status) {
+                this.msgError('电话连接失败，请稍后再试！')
+                return
+            }
             // var phone = $('#number').val();
             // //alert('webdial:'+phone);
             // call(phone);
@@ -146,9 +141,14 @@ export default {
             this.SSS.terminate();
             this.showWave = false
             this.isConnection = false
+            this.connentTime = ''
+            clearInterval(this.timer)
         },
         //开始拨打电话
         call_events() {
+
+            this.connentTime = ''
+
             var options = {
                 media: {
                     constraints: {
@@ -171,6 +171,22 @@ export default {
 
                 that.showWave = true
                 that.connectionText = '接听中'
+
+                var num = 0
+
+                this.timer = setInterval(() => {
+
+                    num++
+
+                    let hours = Math.floor(num / 3600 % 24),
+                        minni = Math.floor(num / 60 % 60),
+                        sec = Math.floor(num % 60);
+
+                    this.connentTime = (hours ? ((hours < 10 ? ('0' + hours) : "") + ":") : '') + (minni ? ((minni < 10 ? ('0' + minni) : "") + ":") : '00:') + (sec < 10 ? ('0' + sec) : sec)
+
+                }, 1000)
+
+
             });
             sss.on('cancel', function () {//取消呼叫
 
@@ -189,10 +205,14 @@ export default {
             });
             sss.on('bye', function (request) {//挂机
 
+                clearInterval(this.timer)
+
                 that.showWave = false
                 that.connectionText = '挂机'
             })
             sss.on('terminated', function (message, cause) {//结束
+
+                clearInterval(this.timer)
 
                 that.showWave = false
                 that.connectionText = '结束'
@@ -232,7 +252,10 @@ export default {
                 this.telNum += num
             }
         }
-    }
+    },
+    beforeDestroy() {
+        clearInterval(this.timer)
+    },
 }
 </script>
 

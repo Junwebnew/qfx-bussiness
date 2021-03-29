@@ -169,6 +169,22 @@ export function noticeArriveList(data) {
     return $axios.post('notice/arrive/noticeArrive/page/listForPhone', data)
 }
 
+// ******************************************** 到期未续展 ************************************
+/**
+ * 到期未续展 详情
+ */
+export function notContinuesDetaiil(id) {
+    return $axios.post('resource/notContinues/get', '"' + id + '"')
+}
+
+/**
+ * 到期未续展 分页查询
+*/
+export function notContinuesList(data) {
+    return $axios.post('resource/notContinues/page/listForPhone', data)
+}
+
+
 
 
 // ******************************************** 资源领取 ************************************

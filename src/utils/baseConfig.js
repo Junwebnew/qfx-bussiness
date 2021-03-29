@@ -6,7 +6,7 @@ var publicUrl = 'http://192.168.0.251:9007/'
 
 publicUrl = 'http://192.168.0.13:9007/'
 
-publicUrl = 'http://39.99.128.104:9007/'
+// publicUrl = 'http://39.99.128.104:9007/'
 
 
 //图片请求地址
@@ -24,7 +24,7 @@ const resourseConfig = [
     { id: "1344173049066455042", name: "商标续展", key: 'renewal' }, { id: "1344173216280772609", name: "代理注销", key: 'agency-cancel' },
     { id: "1344173201047060482", name: "商标变更", key: 'change' }, { id: "1344241701266567170", name: "疑似驳回", key: 'reject' },
     { id: "1344241701547585538", name: "商标求购", key: 'resource-buy' }, { id: "1344241701484670977", name: "企业白名单", key: 'white-list' },
-    { id: "1344241701484670978", name: "送达公告", key: 'serving-notice' },
+    { id: "1344241701484670978", name: "送达公告", key: 'serving-notice' }, { id: "1344241701547586666", name: "到期为续展", key: 'not-continues-detail' },
 
 ]
 

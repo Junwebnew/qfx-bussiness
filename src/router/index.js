@@ -691,6 +691,20 @@ export const asyncAllRoutes = [
                 hidden: true,
                 component: "resources/serving-notice/detail",
                 meta: { title: "送达公告-详情", noCache: true },
+            },
+            {
+                name: "notContinues",
+                path: "not-continues",
+                hidden: false,
+                component: "resources/not-continues/index",
+                meta: { title: "到期未续展", noCache: false },
+            },
+            {
+                name: "not-continues-detail",
+                path: "not-continues/detail",
+                hidden: true,
+                component: "resources/not-continues/detail",
+                meta: { title: "到期未续展-详情", noCache: true },
             }
         ],
     },
