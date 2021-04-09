@@ -22,7 +22,7 @@
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
-                            <el-col :sm="12" :xs="24" class="mb16">
+                            <el-col :sm="10" :xs="24" class="mb16">
                                 <span class="custom-label">客户名称：</span>
                                 <div class="custom-r">
                                     {{json.customerName || '--'}}
@@ -35,15 +35,17 @@
                                     {{json.contactName || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="8" :xs="24" class="mb16">
                                 <span class="custom-label">联系电话：</span>
                                 <div class="custom-r">
                                     {{json.contactPhone || '--'}}
+
+                                    <el-button v-show="json.contactPhone" class="ml10" type="primary" size='mini' @click="takePhone">拨打</el-button>
                                 </div>
                             </el-col>
                         </el-row>
                         <el-row :gutter="20">
-                            <el-col :sm="12" :xs="24" class="mb16">
+                            <el-col :sm="10" :xs="24" class="mb16">
                                 <span class="custom-label">申请人名称：</span>
                                 <div class="custom-r">
                                     {{json.applicantName || '--'}}
@@ -55,13 +57,13 @@
                                     {{json.contactWx || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="8" :xs="24" class="mb16">
                                 <span class="custom-label">联系QQ：</span>
                                 <div class="custom-r">
                                     {{json.contactQq || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="10" :xs="24" class="mb16">
                                 <span class="custom-label">线索状态：</span>
                                 <div class="custom-r col">
                                     {{json.followStatusName}}
@@ -74,7 +76,7 @@
                                 </div>
                             </el-col>
 
-                            <el-col :sm="6" :xs="24" class="mb16">
+                            <el-col :sm="8" :xs="24" class="mb16">
                                 <span class="custom-label">所属部门：</span>
                                 <div class="custom-r">
                                     {{json.deptName || '--'}}
@@ -87,12 +89,7 @@
                                     {{json.resourceId || '--'}}
                                 </div>
                             </el-col> -->
-                            <el-col :sm="6" :xs="24" class="mb16">
-                                <span class="custom-label">资源类型：</span>
-                                <div class="custom-r">
-                                    {{json.resName || '--'}}
-                                </div>
-                            </el-col>
+
                         </el-row>
                         <el-row :gutter="20">
 
@@ -102,10 +99,16 @@
                                     {{json.vocName || '--'}}
                                 </div>
                             </el-col> -->
-                            <el-col :sm="24" :xs="24" class="mb16">
+                            <el-col :sm="16" :xs="24" class="mb16">
                                 <span class="custom-label">线索说明：</span>
                                 <div class="custom-r">
                                     {{json.busexplain || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :sm="8" :xs="24" class="mb16">
+                                <span class="custom-label">资源类型：</span>
+                                <div class="custom-r">
+                                    {{json.resName || '--'}}
                                 </div>
                             </el-col>
                         </el-row>
@@ -166,6 +169,7 @@ import { clueDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
 import { addMarks, addTimeTips, changeStatus, selectVocTpye } from '../_module'
 import { deepClone } from '@/utils/index'
+import Global from "@/layout/components/global.js";
 
 export default {
     components: {
@@ -309,6 +313,10 @@ export default {
         //新增时间提醒
         handleAddTips() {
             this.$refs.addTimeTips.show(deepClone(this.json))
+        },
+        //拨打电话
+        takePhone() {
+            Global.$emit("takePhone", this.json.contactPhone);
         }
     }
 }

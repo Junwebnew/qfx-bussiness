@@ -39,10 +39,16 @@
                                     {{json.creditCode || '--'}}
                                 </div>
                             </el-col>
-                            <el-col :lg="24" :sm="24" :xs="24">
+                            <el-col :lg="12" :sm="12" :xs="24">
                                 <span class="custom-label">所属行业：</span>
                                 <div class="custom-r">
                                     {{json.industry || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :lg="12" :sm="12" :xs="24">
+                                <span class="custom-label">注册时间：</span>
+                                <div class="custom-r">
+                                    {{json.regDate || '--'}}
                                 </div>
                             </el-col>
                             <el-col :lg="24" :sm="24" :xs="24">

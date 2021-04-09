@@ -1,6 +1,6 @@
 <template>
     <div class="box" @click.stop>
-        <div class="takePhone" @click=" phoneShow = !phoneShow">
+        <div class="takePhone" @click="showTakeBox()">
             <img src="../../assets/images/phone.png" alt="" srcset="">
 
             <video id="remoteVideo" class="video" name="remoteVideo"></video>
@@ -8,7 +8,7 @@
 
         </div>
         <transition name="sidebarLogoFade">
-            <div class="phoneBox" v-show="phoneShow">
+            <div class="phoneBox" v-show="phoneShow" v-drag>
                 <span class="el-icon-close close" @click=" phoneShow = false"></span>
                 <div class="tit"> 拨打电话 <span class="status" :class="{'green':status}"></span></div>
                 <div class="iptBox">
@@ -50,6 +50,7 @@
 import { mapGetters } from 'vuex'
 import { formatDate } from '@/utils/index'
 import SIP from './webphone.js'
+import Global from "@/layout/components/global.js";
 export default {
     components: {
     },
@@ -84,10 +85,33 @@ export default {
     mounted() {
 
         //开发环境，暂时不能使用
-        return
+
         this.initPhoneSet()
+
+        let that = this
+        //
+        Global.$on("takePhone", (telePhone) => {
+
+            that.showTakeBox(true)
+
+            if (telePhone) {
+                that.telNum = telePhone
+                that.ringout()
+            }
+
+        });
     },
     methods: {
+        //展开
+        showTakeBox(bool) {
+            if (!this.phoneShow && !this.status) {
+
+                this.initPhoneSet()
+            }
+
+            this.phoneShow = bool || !this.phoneShow
+
+        },
         initPhoneSet() {
             var that = this
 
@@ -310,6 +334,7 @@ export default {
         background-color: #3a3e44;
         color: #ffffff;
         padding: 0 20px;
+        cursor: move;
         .status {
             display: inline-block;
             // vertical-align: top;

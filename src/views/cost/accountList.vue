@@ -49,10 +49,10 @@
                         <span>{{(scope.row.originalTimes || '--') | narrowTen}}</span>
                     </div>
                 </el-table-column>
-                <el-table-column label="充值时间" prop="rechargeTime" width="150"></el-table-column>
-                <el-table-column label="到期日期" prop="termOfValidityDate" width="150"></el-table-column>
-                <el-table-column label="包年开始时间" prop="yearTermOfValidityBeginDate" width="150"></el-table-column>
-                <el-table-column label="包年结束时间" prop="yearTermOfValidityDate" width="150"></el-table-column>
+                <el-table-column label="充值时间" prop="rechargeTime" width="160"></el-table-column>
+                <el-table-column label="到期日期" prop="termOfValidityDate" width="160"></el-table-column>
+                <el-table-column label="包年开始时间" prop="yearTermOfValidityBeginDate" width="160"></el-table-column>
+                <el-table-column label="包年结束时间" prop="yearTermOfValidityDate" width="160"></el-table-column>
                 <el-table-column label="包年本月剩余" prop="yearNum" width="100"></el-table-column>
                 <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width='180px' fixed="right">
                     <template slot-scope="scope">

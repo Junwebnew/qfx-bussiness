@@ -13,11 +13,14 @@
                             <el-input v-model="queryParams.address" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12' align='right'>
-                        <el-form-item class="el-form-item-none ml20">
-                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="注册日期" prop="time" class="el-form-item-none">
+                            <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                     </el-col>
                 </el-row>
             </el-form>
@@ -37,6 +40,7 @@
                 <el-table-column label="企业地址" prop="address" show-overflow-tooltip></el-table-column>
                 <el-table-column label="所属行业" prop="industry" show-overflow-tooltip></el-table-column>
                 <el-table-column label="经营状态" prop="businessState" show-overflow-tooltip></el-table-column>
+                <el-table-column label="注册时间" prop="regDate" width='100'></el-table-column>
                 <el-table-column label="最新领取记录" prop='bestNewRemark'>
                     <template slot-scope="scope">
                         <div class='operation'>
@@ -103,7 +107,7 @@ export default {
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            companyWhiteList(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
+            companyWhiteList(this.addDateRange(this.queryParams, this.dateRange, { start: 'startRegDate', end: 'endRegDate' })).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;

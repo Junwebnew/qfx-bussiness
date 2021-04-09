@@ -631,7 +631,7 @@ export const asyncAllRoutes = [
                 path: "reject",
                 hidden: false,
                 component: "resources/reject/index",
-                meta: { title: "疑似驳回", noCache: false },
+                meta: { title: "疑似被驳回", noCache: false },
 
             },
             {
@@ -640,6 +640,14 @@ export const asyncAllRoutes = [
                 hidden: true,
                 component: "resources/reject/detail",
                 meta: { title: "疑似驳回-详情", noCache: true },
+            },
+            {
+                name: "objection",
+                path: "objection",
+                hidden: false,
+                component: "resources/objection/index",
+                meta: { title: "疑似被异议", noCache: false },
+
             },
             {
                 name: "objection-analysis",

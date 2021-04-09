@@ -80,11 +80,27 @@
                 <el-table-column label="操作" align="left" width="230" class-name="small-padding fixed-width" fixed="right">
                     <template slot-scope="scope">
                         <div class='operation'>
-                            <el-button size="mini" type="text" v-hasPermi="['finish']" @click="goComplete(scope.row)">转为成单</el-button>
-                            <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
-                            <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
-                            <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <el-button size="mini" v-if='scope.row.contactPhone' type="text" @click="takePhone(scope.row.contactPhone)">拨打电话</el-button>
+                            <el-dropdown class="ml10">
+                                <el-button type="text" size='mini'>
+                                    相关操作<i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item>
+                                        <el-button size="mini" type="text" v-hasPermi="['finish']" @click="goComplete(scope.row)">转为成单</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">剔除</el-button>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </div>
                     </template>
                 </el-table-column>
@@ -110,6 +126,7 @@ import { getClueStatusList, bussMyList, bussEliminate, bussTransfer } from "@/ap
 import { bussModule, distribution, selectVocTpye, completeBuss } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
+import Global from "@/layout/components/global.js";
 
 export default {
     components: { bussModule, SwitchForm, distribution, selectVocTpye, completeBuss },
@@ -296,6 +313,10 @@ export default {
                 return
             }
             this.$refs.completeBuss.show(row)
+        },
+        //拨打电话
+        takePhone(tel) {
+            Global.$emit("takePhone", tel);
         }
     },
     beforeDestroy() {

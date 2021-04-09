@@ -8,9 +8,11 @@
             <template v-if="device!=='mobile'">
                 <!-- <search id="header-search" class="right-menu-item" /> -->
 
-                <el-tooltip content="电话" effect="dark" placement="bottom">
-                    <takePhone />
-                </el-tooltip>
+                <!-- <el-tooltip content=undefind effect="dark" placement="bottom">
+                    
+                </el-tooltip> -->
+
+                <takePhone />
 
                 <el-tooltip content="权明星官网" effect="dark" placement="bottom">
                     <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
