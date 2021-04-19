@@ -248,15 +248,19 @@ export default {
     height: 32px;
     width: 100%;
     // background: #edf0f4;
-    background: #ffffff;
-    border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+    padding-left: 216px;
+    background: #edf0f4;
+
     position: relative;
     .scroll-pane-box {
         width: 100%;
         height: 100%;
         position: relative;
         display: flex;
+        background-color: #ffffff;
+        // border-bottom: 1px solid #d8dce5;
+        // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+        //     0 0 3px 0 rgba(0, 0, 0, 0.04);
     }
     .tags-view-wrapper {
         .tags-view-item {

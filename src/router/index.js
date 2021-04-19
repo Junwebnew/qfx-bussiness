@@ -63,6 +63,7 @@ export const constantRoutes = [
         path: "",
         component: Layout,
         redirect: "index",
+        hidden: true,
         children: [
             {
                 path: "index",
@@ -282,7 +283,7 @@ export const asyncAllRoutes = [
         redirect: "noRedirect",
         component: "Layout",
         alwaysShow: true,
-        meta: { title: "费用模块", icon: "system", noCache: false },
+        meta: { title: "费用模块", icon: "money", noCache: false },
         children: [
             {
                 name: "accountList",
@@ -713,7 +714,35 @@ export const asyncAllRoutes = [
                 hidden: true,
                 component: "resources/not-continues/detail",
                 meta: { title: "到期未续展-详情", noCache: true },
-            }
+            },
+            {
+                name: "findmsg",
+                path: "find",
+                hidden: false,
+                component: "resources/find/index",
+                meta: { title: "寻找持有人", noCache: false },
+            },
+            {
+                name: "findmsg-detail",
+                path: "find-detail",
+                hidden: true,
+                component: "resources/find/detail",
+                meta: { title: "持有人详细信息", noCache: true },
+            },
+            {
+                name: "assignee",
+                path: "assignee",
+                hidden: false,
+                component: "resources/assignee/index",
+                meta: { title: "商标受让人", noCache: false },
+            },
+            {
+                name: "applicant",
+                path: "applicant",
+                hidden: false,
+                component: "resources/applicant/index",
+                meta: { title: "商标申请人", noCache: false },
+            },
         ],
     },
     // {

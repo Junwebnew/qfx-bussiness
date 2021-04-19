@@ -6,7 +6,7 @@
     position: relative;
   }
 
-  .sidebar-container {
+  .sidebar-container{
     -webkit-transition: width 0.28s;
     transition: width 0.28s;
     width: $sideBarWidth !important;
@@ -18,7 +18,7 @@
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow: hidden;
+    // overflow: hidden;
     -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
     box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
 
@@ -71,34 +71,38 @@
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
+      background-color: #ffffff !important;
     }
 
     // menu hover
-    .submenu-title-noDropdown,
-    .el-submenu__title {
+    // .submenu-title-noDropdown,
+    // .el-submenu__title {
+    //   &:hover {
+    //     background-color: rgba(0, 0, 0, 0.06) !important;
+    //     color: #ffffff;
+    //   }
+    // }
+
+    // & .theme-dark .is-active > .el-submenu__title {
+    //   color: $subMenuActiveText !important;
+    // }
+
+    & .nest-menu .el-submenu > .el-submenu__title{
+      background-color: #fff !important;
+     
       &:hover {
         // background-color: rgba(0, 0, 0, 0.06) !important;
-        color: #ffffff;
+        // color: $menuHovertext !important;
+        color: #2d8cf0;
       }
     }
-
-    & .theme-dark .is-active > .el-submenu__title {
-      color: $subMenuActiveText !important;
-    }
-
-    & .nest-menu .el-submenu > .el-submenu__title,
-    & .el-submenu .el-menu-item {
-      min-width: $sideBarWidth !important;
-      background-color: $menuItemBg !important;
-      &.is-active {
-        background-color: $menuactive !important;
-        color: $menuHovertext !important;
+    .router-link-active{
+        li{
+            background-color:#e6f7ff !important;
+            color:#1890ff !important;
+            border-right: 3px solid #1890ff;
+        }
       }
-      &:hover {
-        // background-color: rgba(0, 0, 0, 0.06) !important;
-        color: $menuHovertext !important;
-      }
-    }
   }
 
   .hideSidebar {
@@ -127,15 +131,15 @@
       overflow: hidden;
 
       & > .el-submenu__title {
-        padding: 0 !important;
+        // padding: 0 !important;
 
         .svg-icon {
           margin-left: 20px;
         }
 
-        .el-submenu__icon-arrow {
-          display: none;
-        }
+        // .el-submenu__icon-arrow {
+        //   display: none;
+        // }
       }
     }
 

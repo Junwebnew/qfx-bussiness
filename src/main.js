@@ -24,6 +24,7 @@ import { getDicts, qmxDataKey } from "@/api/system/dict/data";
 import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, handleTree } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
+import TakePhone from "@/components/TakePhone";
 //自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
 
@@ -76,6 +77,7 @@ Vue.filter('narrowTen', function (value) {
 // 全局组件挂载
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
+Vue.component('TakePhone', TakePhone)
 
 Vue.use(permission)
 

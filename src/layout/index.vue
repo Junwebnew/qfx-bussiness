@@ -12,9 +12,9 @@
                 <settings />
             </right-panel>
         </div>
+        <!-- 指导遮盖层 -->
         <div class="guideBox" v-if='showGuide'>
             <span class="skip pointer" @click.stop="showGuide = false">跳过</span>
-
             <!-- 1 -->
             <div class="stepBox step1" v-show=" step == 1">
                 <div class="words">
@@ -36,7 +36,10 @@
                 <p class="next" @click.stop="showGuide = false">完成</p>
             </div>
         </div>
-
+        <!-- 电话固定窗 -->
+        <div class="fixPhone" @click="takePhone">
+            <img src="../assets/images/fixphone.png" alt="电话">
+        </div>
     </div>
 </template>
 
@@ -88,6 +91,9 @@ export default {
         }
     },
     mounted() {
+
+
+
         let showGuide = localStorage.getItem('showGuide')
         if (!showGuide) {
             this.showGuide = true
@@ -100,6 +106,9 @@ export default {
     methods: {
         handleClickOutside() {
             this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+        },
+        takePhone() {
+            Global.$emit("takePhone");
         }
     }
 }
@@ -207,6 +216,28 @@ export default {
     }
     .step2 {
         top: 100px;
+    }
+}
+.fixPhone {
+    position: fixed;
+    z-index: 999;
+    right: 0;
+    top: 45%;
+    background-color: #ffffff;
+    border-radius: 4px 0 0 4px;
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    box-shadow: 0 1px 10px #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+        background-color: #f9f9f9;
+    }
+    img {
+        max-width: 72%;
+        max-height: 72%;
     }
 }
 </style>

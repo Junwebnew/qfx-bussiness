@@ -82,7 +82,7 @@ export default {
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 31px;
+    height: 32px;
     // background: #edf0f4;
     ::v-deep {
         .el-scrollbar__bar {

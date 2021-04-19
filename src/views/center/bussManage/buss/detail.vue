@@ -39,7 +39,8 @@
                                 <span class="custom-label">联系电话：</span>
                                 <div class="custom-r">
                                     {{json.contactPhone}}
-                                    <el-button v-show="json.contactPhone" class="ml10" type="primary" size='mini' @click="takePhone">拨打</el-button>
+                                    <!-- <el-button v-show="json.contactPhone" class="ml10" type="primary" size='mini' @click="takePhone">拨打</el-button> -->
+                                    <take-phone :number='json.contactPhone' />
                                 </div>
                             </el-col>
                             <el-col :sm="10" :xs="24" class="mb16">
@@ -164,7 +165,6 @@ import { bussDetail, getClueStatusList, clueMarksList } from "@/api/center";
 
 import { addMarks, addTimeTips, changeStatus, completeBuss } from '../_module'
 import { deepClone } from '@/utils/index'
-import Global from "@/layout/components/global.js";
 
 export default {
     components: {
@@ -321,10 +321,6 @@ export default {
                     path: '/redirect' + this.$route.fullPath
                 })
             })
-        },
-        //拨打电话
-        takePhone() {
-            Global.$emit("takePhone", this.json.contactPhone);
         }
     }
 }

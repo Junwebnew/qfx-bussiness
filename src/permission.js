@@ -11,7 +11,7 @@ const whiteList = ["/login", "/auth-redirect", "/bind", "/register"];
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    // console.log(888,to)
+    // console.log('发生了什么', to, from)
     if (getToken()) {
 
         /* has token*/

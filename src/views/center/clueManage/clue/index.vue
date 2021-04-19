@@ -63,9 +63,10 @@
                 <el-table-column type='selection'></el-table-column>
                 <el-table-column label="客户名称" prop="customerName" show-overflow-tooltip></el-table-column>
                 <!-- <el-table-column label="联系人" prop="contactName" show-overflow-tooltip></el-table-column> -->
-                <el-table-column label="联系方式" prop='contactPhone' width='130'>
+                <el-table-column label="联系方式" prop='contactPhone'>
                     <template slot-scope="scope">
                         <span>{{scope.row.contactPhone || scope.row.contactQq || scope.row.contactWx}}</span>
+                        <take-phone :number='scope.row.contactPhone' />
                     </template>
                 </el-table-column>
                 <el-table-column label="线索状态" prop="followStatusName" width='110'></el-table-column>
@@ -86,15 +87,12 @@
                         <div class='operation'>
 
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
-                            <el-button size="mini" v-if='scope.row.contactPhone' type="text" @click="takePhone(scope.row.contactPhone)">拨打电话</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
                             <el-dropdown class="ml10">
                                 <el-button type="text" size='mini'>
                                     相关操作<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item>
-                                        <el-button size="mini" type="text" v-hasPermi="['distribution']" @click="vocTpyeChange(scope.row)">转为商机</el-button>
-                                    </el-dropdown-item>
                                     <el-dropdown-item>
                                         <el-button class="col-other" size="mini" type="text" v-hasPermi="['distribution']" @click="handleDistribution(scope.row)">移交</el-button>
                                     </el-dropdown-item>
@@ -130,7 +128,6 @@ import { getClueStatusList, clueMyList, clueEliminate, clueTransfer } from "@/ap
 import { clubModule, distribution, selectVocTpye } from '../_module'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
-import Global from "@/layout/components/global.js";
 export default {
     components: { clubModule, SwitchForm, distribution, selectVocTpye },
     data() {
@@ -292,10 +289,6 @@ export default {
         //业务类型变更.，转为商机
         vocTpyeChange(row) {
             this.$refs.selectVocTpye.show(row, '转为商机')
-        },
-        //拨打电话
-        takePhone(tel) {
-            Global.$emit("takePhone", tel);
         }
     },
     beforeDestroy() {

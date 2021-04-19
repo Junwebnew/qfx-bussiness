@@ -113,6 +113,10 @@ export default {
 
         },
         initPhoneSet() {
+
+
+            return
+
             var that = this
 
             var ua = this.UA = new SIP.UA({
