@@ -1,4 +1,9 @@
 #app {
+    .el-menu-item {
+        &.is-active{
+            color: unset;
+        }
+    }
   .main-container {
     min-height: 100%;
     transition: margin-left 0.28s;
@@ -56,9 +61,9 @@
       overflow: hidden;
     }
 
-    .svg-icon {
-      margin-right: 16px;
-    }
+    // .svg-icon {
+    //   margin-left: 2px;
+    // }
 
     .el-menu {
       border: none;
@@ -115,7 +120,7 @@
     }
 
     .submenu-title-noDropdown {
-      padding: 0 !important;
+    //   padding: 0 !important;
       position: relative;
 
       .el-tooltip {
@@ -123,6 +128,7 @@
 
         .svg-icon {
           margin-left: 20px;
+          font-size: 12px;
         }
       }
     }
@@ -134,7 +140,8 @@
         // padding: 0 !important;
 
         .svg-icon {
-          margin-left: 20px;
+          margin-right: 2px;
+          font-size: 12px;
         }
 
         // .el-submenu__icon-arrow {

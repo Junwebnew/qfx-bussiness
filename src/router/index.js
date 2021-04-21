@@ -141,7 +141,7 @@ export const asyncAllRoutes = [
         redirect: "noRedirect",
         component: "Layout",
         alwaysShow: true,
-        meta: { title: "系统管理", icon: "system", noCache: false },
+        meta: { title: "系统管理", icon: "qmxset", noCache: false },
         children: [
             {
                 name: "User",
@@ -170,6 +170,91 @@ export const asyncAllRoutes = [
                 hidden: false,
                 component: "system/dept/index",
                 meta: { title: "部门管理", noCache: true },
+            },
+            {
+                name: "cost",
+                path: "cost",
+                hidden: false,
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "费用模块", noCache: false },
+                children: [
+                    {
+                        name: "accountList",
+                        path: "accountList",
+                        hidden: false,
+                        component: "cost/accountList",
+                        meta: { title: "账号列表", noCache: true },
+                    },
+                    {
+                        name: "accountRecharge",
+                        path: "accountRecharge",
+                        hidden: false,
+                        component: "cost/accountRecharge",
+                        meta: { title: "账号充值", noCache: true },
+                    },
+                    {
+                        name: "accountRechargeList",
+                        path: "accountRechargeList",
+                        hidden: false,
+                        component: "cost/accountRechargeList",
+                        meta: { title: "充值明细", noCache: true },
+                    },
+                    {
+                        name: "accountDeductionList",
+                        path: "accountDeductionList",
+                        hidden: false,
+                        component: "cost/accountDeductionList",
+                        meta: { title: "抵扣明细", noCache: true },
+                    },
+                    {
+                        name: "accountConsume",
+                        path: "accountConsume",
+                        hidden: false,
+                        component: "cost/accountConsume",
+                        meta: { title: "抵扣统计", noCache: true },
+                    }
+                ]
+            },
+            {
+                name: "seting",
+                path: "seting",
+                hidden: false,
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "配置中心", noCache: true },
+                children: [
+                    {
+                        name: "cleanData",
+                        path: "cleanData",
+                        hidden: false,
+                        component: "seting/cleanData/index",
+                        meta: { title: "数据清洗", noCache: true },
+                    },
+                    {
+                        name: "setNotice",
+                        path: "setNotice",
+                        hidden: false,
+                        component: "seting/setNotice/index",
+                        meta: { title: "消息配置", noCache: true },
+                    },
+                    {
+                        name: "outstock",
+                        path: "outstock",
+                        hidden: false,
+                        component: "seting/outstock/index",
+                        meta: { title: "掉库配置", noCache: true },
+                    },
+                    {
+                        name: "setResources",
+                        path: "setResources",
+                        hidden: false,
+                        component: "seting/setResources",
+                        meta: { title: "资源配置", noCache: true },
+                    },
+                ]
             },
             // {
             //     name: "Post",
@@ -276,91 +361,8 @@ export const asyncAllRoutes = [
             },
         ],
     },
-    {
-        name: "cost",
-        path: "/cost",
-        hidden: false,
-        redirect: "noRedirect",
-        component: "Layout",
-        alwaysShow: true,
-        meta: { title: "费用模块", icon: "money", noCache: false },
-        children: [
-            {
-                name: "accountList",
-                path: "accountList",
-                hidden: false,
-                component: "cost/accountList",
-                meta: { title: "账号列表", noCache: true },
-            },
-            {
-                name: "accountRecharge",
-                path: "accountRecharge",
-                hidden: false,
-                component: "cost/accountRecharge",
-                meta: { title: "账号充值", noCache: true },
-            },
-            {
-                name: "accountRechargeList",
-                path: "accountRechargeList",
-                hidden: false,
-                component: "cost/accountRechargeList",
-                meta: { title: "充值明细", noCache: true },
-            },
-            {
-                name: "accountDeductionList",
-                path: "accountDeductionList",
-                hidden: false,
-                component: "cost/accountDeductionList",
-                meta: { title: "抵扣明细", noCache: true },
-            },
-            {
-                name: "accountConsume",
-                path: "accountConsume",
-                hidden: false,
-                component: "cost/accountConsume",
-                meta: { title: "抵扣统计", noCache: true },
-            }
-        ]
-    },
-    {
-        name: "seting",
-        path: "/seting",
-        hidden: false,
-        redirect: "noRedirect",
-        component: "Layout",
-        alwaysShow: true,
-        meta: { title: "配置中心", icon: "message", noCache: true },
-        children: [
-            {
-                name: "cleanData",
-                path: "cleanData",
-                hidden: false,
-                component: "seting/cleanData/index",
-                meta: { title: "数据清洗", noCache: true },
-            },
-            {
-                name: "setNotice",
-                path: "setNotice",
-                hidden: false,
-                component: "seting/setNotice/index",
-                meta: { title: "消息配置", noCache: true },
-            },
-            {
-                name: "outstock",
-                path: "outstock",
-                hidden: false,
-                component: "seting/outstock/index",
-                meta: { title: "掉库配置", noCache: true },
-            },
-            {
-                name: "setResources",
-                path: "setResources",
-                hidden: false,
-                component: "seting/setResources",
-                meta: { title: "资源配置", noCache: true },
-            },
-        ]
-    },
+
+
     {
         name: "center",
         path: "/center",
@@ -368,7 +370,7 @@ export const asyncAllRoutes = [
         redirect: "noRedirect",
         component: "Layout",
         alwaysShow: true,
-        meta: { title: "个人中心", icon: "user", noCache: true },
+        meta: { title: "CRM", icon: "CRM", noCache: true },
         children: [
             {
                 name: "clueManage",
@@ -485,6 +487,70 @@ export const asyncAllRoutes = [
                 ]
             },
             {
+                name: "pool",
+                path: "/pool",
+                hidden: false,
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "资源池", noCache: true },
+                children: [
+                    {
+                        name: "resourseStatistics",
+                        path: "resourseStatistics",
+                        hidden: false,
+                        component: "pool/statistics",
+                        meta: { title: "资源统计", noCache: true },
+                    },
+                    {
+                        name: "deptpool",
+                        path: "deptpool",
+                        hidden: false,
+                        component: "ParentView",
+                        meta: { title: "部门资源池", noCache: true },
+                        children: [
+                            {
+                                name: "clue_dept",
+                                path: "clue_dept",
+                                hidden: false,
+                                component: "pool/deptpool/clue_dept",
+                                meta: { title: "线索部门池", noCache: true },
+                            },
+                            {
+                                name: "buss_dept",
+                                path: "buss_dept",
+                                hidden: false,
+                                component: "pool/deptpool/buss_dept",
+                                meta: { title: "商机部门池", noCache: true },
+                            }
+                        ]
+                    },
+                    {
+                        name: "droppool",
+                        path: "droppool",
+                        hidden: false,
+                        component: "ParentView",
+                        meta: { title: "掉库资源池", noCache: true },
+                        children: [
+                            {
+                                name: "clue_drop",
+                                path: "clue_drop",
+                                hidden: false,
+                                component: "pool/droppool/clue_drop",
+                                meta: { title: "线索掉库池", noCache: true },
+                            },
+                            {
+                                name: "buss_drop",
+                                path: "buss_drop",
+                                hidden: false,
+                                component: "pool/droppool/buss_drop",
+                                meta: { title: "商机掉库池", noCache: true },
+                            }
+                        ]
+                    }
+                ],
+            },
+            {
                 name: "Notice",
                 path: "notice",
                 hidden: false,
@@ -493,70 +559,7 @@ export const asyncAllRoutes = [
             }
         ]
     },
-    {
-        name: "pool",
-        path: "/pool",
-        hidden: false,
-        redirect: "noRedirect",
-        component: "Layout",
-        alwaysShow: true,
-        meta: { title: "资源池", icon: "log", noCache: true },
-        children: [
-            {
-                name: "resourseStatistics",
-                path: "resourseStatistics",
-                hidden: false,
-                component: "pool/statistics",
-                meta: { title: "资源统计", noCache: true },
-            },
-            {
-                name: "deptpool",
-                path: "deptpool",
-                hidden: false,
-                component: "ParentView",
-                meta: { title: "部门资源池", noCache: true },
-                children: [
-                    {
-                        name: "clue_dept",
-                        path: "clue_dept",
-                        hidden: false,
-                        component: "pool/deptpool/clue_dept",
-                        meta: { title: "线索部门池", noCache: true },
-                    },
-                    {
-                        name: "buss_dept",
-                        path: "buss_dept",
-                        hidden: false,
-                        component: "pool/deptpool/buss_dept",
-                        meta: { title: "商机部门池", noCache: true },
-                    }
-                ]
-            },
-            {
-                name: "droppool",
-                path: "droppool",
-                hidden: false,
-                component: "ParentView",
-                meta: { title: "掉库资源池", noCache: true },
-                children: [
-                    {
-                        name: "clue_drop",
-                        path: "clue_drop",
-                        hidden: false,
-                        component: "pool/droppool/clue_drop",
-                        meta: { title: "线索掉库池", noCache: true },
-                    },
-                    {
-                        name: "buss_drop",
-                        path: "buss_drop",
-                        hidden: false,
-                        component: "pool/droppool/buss_drop",
-                        meta: { title: "商机掉库池", noCache: true },
-                    }
-                ]
-            }
-        ],
-    },
+
     {
         name: "resources",
         path: "/resources",
@@ -565,184 +568,211 @@ export const asyncAllRoutes = [
         // component: "Layout",
         component: "ResourseLayout",
         alwaysShow: true,
-        meta: { title: "资源模块", icon: "example", noCache: true },
+        meta: { title: "资源模块", icon: "qmxuser", noCache: true },
         children: [
             {
-                name: "recent-apply",
-                path: "recent-apply",
+                name: "tmPage",
+                path: "tm",
                 hidden: false,
-                component: "resources/recent-apply/index",
-                meta: { title: "近日申请", noCache: false },
-            },
-            {
-                name: "recent-apply-detail",
-                path: "recent-apply/detail",
-                hidden: true,
-                component: "resources/recent-apply/detail",
-                meta: { title: "近日申请-详情", noCache: true },
-            },
+                redirect: "noRedirect",
+                component: "ParentView",
+                alwaysShow: true,
+                meta: { title: "商标资源", noCache: true },
+                children: [
+                    {
+                        name: "recent-apply",
+                        path: "recent-apply",
+                        hidden: false,
+                        component: "resources/recent-apply/index",
+                        meta: { title: "近日申请", noCache: false },
+                    },
+                    {
+                        name: "recent-apply-detail",
+                        path: "recent-apply/detail",
+                        hidden: true,
+                        component: "resources/recent-apply/detail",
+                        meta: { title: "近日申请-详情", noCache: true },
+                    },
 
-            {
-                name: "renewal",
-                path: "renewal",
-                hidden: false,
-                component: "resources/renewal/index",
-                meta: { title: "商标续展", noCache: false },
-            },
-            {
-                name: "renewal-detail",
-                path: "renewal/detail",
-                hidden: true,
-                component: "resources/renewal/detail",
-                meta: { title: "商标续展-详情", noCache: true },
-            },
+                    {
+                        name: "renewal",
+                        path: "renewal",
+                        hidden: false,
+                        component: "resources/renewal/index",
+                        meta: { title: "商标续展", noCache: false },
+                    },
+                    {
+                        name: "renewal-detail",
+                        path: "renewal/detail",
+                        hidden: true,
+                        component: "resources/renewal/detail",
+                        meta: { title: "商标续展-详情", noCache: true },
+                    },
 
-            {
-                name: "change",
-                path: "change",
-                hidden: false,
-                component: "resources/change/index",
-                meta: { title: "商标变更", noCache: false },
+                    {
+                        name: "change",
+                        path: "change",
+                        hidden: false,
+                        component: "resources/change/index",
+                        meta: { title: "商标变更", noCache: false },
 
-            },
-            {
-                name: "change-detail",
-                path: "change/detail",
-                hidden: true,
-                component: "resources/change/detail",
-                meta: { title: "商标变更-详情", noCache: true },
-            },
-            {
-                name: "agency-cancel",
-                path: "agency-cancel",
-                hidden: false,
-                component: "resources/agency-cancel/index",
-                meta: { title: "代理机构注销", noCache: false },
+                    },
+                    {
+                        name: "change-detail",
+                        path: "change/detail",
+                        hidden: true,
+                        component: "resources/change/detail",
+                        meta: { title: "商标变更-详情", noCache: true },
+                    },
+                    {
+                        name: "agency-cancel",
+                        path: "agency-cancel",
+                        hidden: false,
+                        component: "resources/agency-cancel/index",
+                        meta: { title: "代理机构注销", noCache: false },
 
-            },
-            {
-                name: "agency-cancel-detail",
-                path: "agency-cancel/detail",
-                hidden: true,
-                component: "resources/agency-cancel/detail",
-                meta: { title: "代理机构注销-详情", noCache: true },
-            },
-            {
-                name: "reject",
-                path: "reject",
-                hidden: false,
-                component: "resources/reject/index",
-                meta: { title: "疑似被驳回", noCache: false },
+                    },
+                    {
+                        name: "agency-cancel-detail",
+                        path: "agency-cancel/detail",
+                        hidden: true,
+                        component: "resources/agency-cancel/detail",
+                        meta: { title: "代理机构注销-详情", noCache: true },
+                    },
+                    {
+                        name: "reject",
+                        path: "reject",
+                        hidden: false,
+                        component: "resources/reject/index",
+                        meta: { title: "疑似被驳回", noCache: false },
 
-            },
-            {
-                name: "reject-detail",
-                path: "reject/detail",
-                hidden: true,
-                component: "resources/reject/detail",
-                meta: { title: "疑似驳回-详情", noCache: true },
-            },
-            {
-                name: "objection",
-                path: "objection",
-                hidden: false,
-                component: "resources/objection/index",
-                meta: { title: "疑似被异议", noCache: false },
+                    },
+                    {
+                        name: "reject-detail",
+                        path: "reject/detail",
+                        hidden: true,
+                        component: "resources/reject/detail",
+                        meta: { title: "疑似驳回-详情", noCache: true },
+                    },
+                    {
+                        name: "objection",
+                        path: "objection",
+                        hidden: false,
+                        component: "resources/objection/index",
+                        meta: { title: "疑似被异议", noCache: false },
 
-            },
-            {
-                name: "objection-analysis",
-                path: "objection-analysis",
-                hidden: false,
-                component: "resources/objection-analysis/index",
-                meta: { title: "异议分析", noCache: false },
+                    },
+                    {
+                        name: "objection-analysis",
+                        path: "objection-analysis",
+                        hidden: false,
+                        component: "resources/objection-analysis/index",
+                        meta: { title: "异议分析", noCache: false },
 
-            },
-            {
-                name: "objection-analysis-detail",
-                path: "objection-analysis/detail",
-                hidden: true,
-                component: "resources/objection-analysis/detail",
-                meta: { title: "异议分析-详情", noCache: true },
-            },
-            {
-                name: "white-list",
-                path: "white-list",
-                hidden: false,
-                component: "resources/white-list/index",
-                meta: { title: "企业白名单", noCache: false },
+                    },
+                    {
+                        name: "objection-analysis-detail",
+                        path: "objection-analysis/detail",
+                        hidden: true,
+                        component: "resources/objection-analysis/detail",
+                        meta: { title: "异议分析-详情", noCache: true },
+                    },
+                    {
+                        name: "white-list",
+                        path: "white-list",
+                        hidden: false,
+                        component: "resources/white-list/index",
+                        meta: { title: "企业白名单", noCache: false },
 
+                    },
+                    {
+                        name: "white-list-detail",
+                        path: "white-list/detail",
+                        hidden: true,
+                        component: "resources/white-list/detail",
+                        meta: { title: "企业白名单-详情", noCache: true },
+                    },
+                    {
+                        name: "resource-buy",
+                        path: "resource-buy",
+                        hidden: false,
+                        component: "resources/resource-buy/index",
+                        meta: { title: "商标求购", noCache: false },
+                    },
+                    {
+                        name: "serving-notice",
+                        path: "serving-notice",
+                        hidden: false,
+                        component: "resources/serving-notice/index",
+                        meta: { title: "送达公告", noCache: false },
+                    },
+                    {
+                        name: "serving-notice-detail",
+                        path: "serving-notice/detail",
+                        hidden: true,
+                        component: "resources/serving-notice/detail",
+                        meta: { title: "送达公告-详情", noCache: true },
+                    },
+                    {
+                        name: "notContinues",
+                        path: "not-continues",
+                        hidden: false,
+                        component: "resources/not-continues/index",
+                        meta: { title: "到期未续展", noCache: false },
+                    },
+                    {
+                        name: "not-continues-detail",
+                        path: "not-continues/detail",
+                        hidden: true,
+                        component: "resources/not-continues/detail",
+                        meta: { title: "到期未续展-详情", noCache: true },
+                    },
+                    {
+                        name: "findmsg",
+                        path: "find",
+                        hidden: false,
+                        component: "resources/find/index",
+                        meta: { title: "寻找持有人", noCache: false },
+                    },
+                    {
+                        name: "findmsg-detail",
+                        path: "find-detail",
+                        hidden: true,
+                        component: "resources/find/detail",
+                        meta: { title: "持有人详细信息", noCache: true },
+                    },
+                    {
+                        name: "assignee",
+                        path: "assignee",
+                        hidden: false,
+                        component: "resources/assignee/index",
+                        meta: { title: "商标受让人", noCache: false },
+                    },
+                    {
+                        name: "applicant",
+                        path: "applicant",
+                        hidden: false,
+                        component: "resources/applicant/index",
+                        meta: { title: "商标申请人", noCache: false },
+                    },
+                ]
             },
             {
-                name: "white-list-detail",
-                path: "white-list/detail",
-                hidden: true,
-                component: "resources/white-list/detail",
-                meta: { title: "企业白名单-详情", noCache: true },
-            },
-            {
-                name: "resource-buy",
-                path: "resource-buy",
+                name: "patentPage",
+                path: "patent",
                 hidden: false,
-                component: "resources/resource-buy/index",
-                meta: { title: "商标求购", noCache: false },
+                // redirect: "noRedirect",
+                component: "test-page",
+                meta: { title: "专利资源", noCache: true },
             },
             {
-                name: "serving-notice",
-                path: "serving-notice",
+                name: "lawPage",
+                path: "law",
                 hidden: false,
-                component: "resources/serving-notice/index",
-                meta: { title: "送达公告", noCache: false },
-            },
-            {
-                name: "serving-notice-detail",
-                path: "serving-notice/detail",
-                hidden: true,
-                component: "resources/serving-notice/detail",
-                meta: { title: "送达公告-详情", noCache: true },
-            },
-            {
-                name: "notContinues",
-                path: "not-continues",
-                hidden: false,
-                component: "resources/not-continues/index",
-                meta: { title: "到期未续展", noCache: false },
-            },
-            {
-                name: "not-continues-detail",
-                path: "not-continues/detail",
-                hidden: true,
-                component: "resources/not-continues/detail",
-                meta: { title: "到期未续展-详情", noCache: true },
-            },
-            {
-                name: "findmsg",
-                path: "find",
-                hidden: false,
-                component: "resources/find/index",
-                meta: { title: "寻找持有人", noCache: false },
-            },
-            {
-                name: "findmsg-detail",
-                path: "find-detail",
-                hidden: true,
-                component: "resources/find/detail",
-                meta: { title: "持有人详细信息", noCache: true },
-            },
-            {
-                name: "assignee",
-                path: "assignee",
-                hidden: false,
-                component: "resources/assignee/index",
-                meta: { title: "商标受让人", noCache: false },
-            },
-            {
-                name: "applicant",
-                path: "applicant",
-                hidden: false,
-                component: "resources/applicant/index",
-                meta: { title: "商标申请人", noCache: false },
-            },
+                // redirect: "noRedirect",
+                component: "test-page",
+                meta: { title: "法律资源", noCache: true },
+            }
         ],
     },
     // {

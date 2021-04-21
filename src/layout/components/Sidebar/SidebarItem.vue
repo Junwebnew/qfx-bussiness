@@ -1,6 +1,6 @@
 <template>
     <div v-if="!item.hidden">
-        <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
+        <!-- <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
             <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
                 <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.subMenuBg : variables.subMenuBg }">
                     <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
@@ -13,6 +13,21 @@
                 <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
             </template>
             <sidebar-item v-for="child in item.children" :key="child.path" :is-nest="true" :item="child" :base-path="resolvePath(child.path)" class="nest-menu" />
+        </el-submenu> -->
+
+        <template v-if="!item.children || item.children == 0">
+            <app-link v-if="item.meta" :to="resolvePath(item.path)">
+                <el-menu-item :index="resolvePath(item.path)" :class="{'submenu-title-noDropdown':!isNest}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.subMenuBg : variables.subMenuBg }">
+                    <item :icon="item.meta.icon||(item.meta&&item.meta.icon)" :title="item.meta.title" />
+                </el-menu-item>
+            </app-link>
+        </template>
+
+        <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+            <template slot="title">
+                <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+            </template>
+            <sidebar-item v-for="child in item.children" :key="child.path" :is-nest="true" :item="child" :base-path="resolvePath(item.path)" class="nest-menu" />
         </el-submenu>
     </div>
 </template>
@@ -87,11 +102,14 @@ export default {
         },
         resolvePath(routePath) {
             if (isExternal(routePath)) {
+
                 return routePath
             }
             if (isExternal(this.basePath)) {
+
                 return this.basePath
             }
+            // console.log(routePath, '进行中', this.basePath)
             return path.resolve(this.basePath, routePath)
         }
     }

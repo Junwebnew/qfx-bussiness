@@ -9,34 +9,38 @@
     </div> -->
     <div class="newSide">
         <div class="l-side">
-            <logo v-if="showLogo" :collapse="true" />
-            <ul class="first-item">
-                <template v-for="(route, index) in showPermission_routes">
-                    <li :key="route.path  + index" v-if="!route.hidden" :data-idx='index' class="l-side-item" :class="{'active':route.path == selectedIndexs[0]}" @click.stop="seitchMenu(index,route)">
-                        <svg-icon :icon-class='route.meta && route.meta.icon' />
-                    </li>
-                </template>
-            </ul>
+            <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
+                <logo v-if="showLogo" :collapse="true" />
+                <ul class="first-item">
+                    <template v-for="(route, index) in showPermission_routes">
+                        <li :key="route.path  + index" v-if="!route.hidden" :data-idx='index' class="l-side-item" :class="{'active':index == rActive}" @click.stop="seitchMenu(index,route)">
+                            <el-tooltip class="item" effect="dark" :content="route.meta && route.meta.title" placement="left">
+                                <svg-icon :icon-class='route.meta && route.meta.icon' />
+                            </el-tooltip>
+                        </li>
+                    </template>
+                </ul>
+            </el-scrollbar>
         </div>
         <div class="r-side" @click.stop>
 
-            <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
+            <!-- <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
                 <el-menu :default-openeds='selectedIndexs' mode="vertical">
-                    <sidebar-item v-for="(route, index) in showPermission_routes" v-show=' route.path == selectedIndexs[0] ' :key="route.path  + index" :item="route" :base-path="route.path" />
-                </el-menu>
-            </el-scrollbar>
 
-            <!-- <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper" :collapse="isCollapse">
-                <el-menu :collapse-transition="false" mode="vertical">
-                    <sidebar-item v-for=" (route, index) in showPermission_routes" v-show='rActive == index' :key="route.path + index" :item="route" :base-path="route.path" />
+                    <template>
+                        <sidebar-item v-for="(route, index) in showPermission_routes" v-show=' index == rActive ' :key="route.path  + index" :item="route" :base-path="route.path" />
+                    </template>
                 </el-menu>
             </el-scrollbar> -->
 
-            <!-- <ul class="menuBox">
-                <li v-for=" (route, index) in permission_routes[rActive]" :key="route.name" :data-idx='index' class="menu-item">
-                    <div class=" "></div>
-                </li>
-            </ul> -->
+            <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
+                <el-menu :default-openeds='selectedIndexs' mode="vertical">
+
+                    <template>
+                        <sidebar-item v-for="(route, index) in showPermission_routes[rActive].children" :key="route.path  + index" :item="route" :base-path="showPermission_routes[rActive].path" />
+                    </template>
+                </el-menu>
+            </el-scrollbar>
         </div>
     </div>
 </template>
@@ -54,7 +58,8 @@ export default {
         return {
             //是否只保持一个子菜单的展开
             uniqueOpened: false,
-            selectedIndexs: [],
+            selectedIndexs: [], //控制菜单的打开
+            rActive: 0,//第一级的选中
         }
     },
     computed: {
@@ -82,20 +87,35 @@ export default {
             return this.permission_routes.filter(i => !i.hidden)
         },
     },
+    watch: {
+        $route(newRoute) {
+            // console.log(18, n)
+            this.changeRoute(newRoute.path)
+        }
+    },
     created() {
-        // console.log('9999重新加载', this.$route.path)
-        let path = this.$route.path
-        this.selectedIndexs = path == '/index' ? ['/resources'] : ['/' + this.$route.path.split('/')[1]]
+
+        this.changeRoute(this.$route.path)
     },
     mounted() {
-        // console.log('侧边路由数组', this.showPermission_routes)
+        console.log('侧边路由数组', this.showPermission_routes)
         // Global.$on('setRouterShow', msg => {
         //     console.log('打开路由数组', msg)
         //     this.selectedIndexs.push(msg)
         // })
-
+        // console.log('9999重新加载')
     },
     methods: {
+        changeRoute(path) {
+            let selectedIndexs = path == '/index' ? ['/resources'] : ['/' + this.$route.path.split('/')[1]]
+            if (selectedIndexs[0] == this.selectedIndexs[0]) return
+            this.showPermission_routes.map((route, idx) => {
+                if (route.path == selectedIndexs[0]) {
+                    this.rActive = idx
+                }
+            })
+            this.selectedIndexs = selectedIndexs
+        },
         handleOpen(key, keyPath) {
             // console.log(key, keyPath);
         },
@@ -124,7 +144,7 @@ export default {
             height: 54px;
             text-align: center;
             line-height: 54px;
-            font-size: 20px;
+            font-size: 22px;
             color: #fff;
             cursor: pointer;
             &.active {
@@ -145,6 +165,7 @@ export default {
         transform: translateX(100%);
         overflow: auto;
         background-color: #fff;
+        padding-bottom: 70px;
     }
 }
 </style>

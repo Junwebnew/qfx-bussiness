@@ -223,10 +223,6 @@
 <script>
 import {
     listMenu,
-    getMenu,
-    delMenu,
-    addMenu,
-    updateMenu,
     qmxTree,
     qmxUpdateTree,
     qmxBtnList,
