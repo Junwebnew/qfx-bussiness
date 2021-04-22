@@ -50,18 +50,31 @@
             </div>
             <div class="backLine"></div>
             <div class="back-fff pad20">
-                <el-row :gutter="10" class="mb8">
+                <!-- <el-row :gutter="10" class="mb8">
                     <el-col :span="4" class="lin32">
                         <span class="f18">{{$route.meta.title}}</span>
                     </el-col>
                     <el-col :span="20" align='right'>
                         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                     </el-col>
+                </el-row> -->
+                <el-row :gutter="10" class="mb8">
+                    <el-col :span="20" class="lin32">
+                        <span class="f18">{{$route.meta.title}}</span>
+                        <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                    </el-col>
+                    <el-col :span="4" align='right'>
+                        <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                    </el-col>
                 </el-row>
 
                 <el-table v-loading="loading" :data="tableData" row-key="id">
 
-                    <el-table-column label="商标名" width='100' prop='tmName' show-overflow-tooltip> </el-table-column>
+                    <el-table-column label="商标名" width='100' prop='tmName' show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.tmName}}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="注册号" width='100' prop='regNum'> </el-table-column>
                     <el-table-column label="国际分类" width='80' prop='intClass'> </el-table-column>
                     <el-table-column label="申请人" prop='userName' show-overflow-tooltip> </el-table-column>
@@ -92,13 +105,22 @@
                 <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
             </div>
         </div>
+        <!-- ****************************************详情弹窗************************************** -->
+        <draw ref='myDraw'>
+            <detail ref='myDetail' />
+        </draw>
     </div>
 </template>
 
 <script>
 import { renewalList } from "@/api/resources";
+import { draw } from '../_module'
+import detail from './detail'
 export default {
     name: "renewal",
+    components: {
+        draw, detail
+    },
     data() {
         return {
             //显示搜索框
@@ -178,8 +200,11 @@ export default {
         },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.id
-            this.$router.push('/resources/renewal/detail?id=' + obj.id)
+            this.$refs.myDraw.openDraw({ title: obj.tmName + ' 详情' })
+
+            this.$nextTick(() => {
+                this.$refs.myDetail.initPage(obj.id)
+            })
         }
     },
     beforeDestroy() {

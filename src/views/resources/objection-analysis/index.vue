@@ -56,11 +56,20 @@
             </el-form>
         </div>
         <div class="back-fff pad20">
-            <el-row :gutter="10" class="mb8">
+            <!-- <el-row :gutter="10" class="mb8">
                 <el-col :span="4" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
+                    <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                </el-col>
+            </el-row> -->
+            <el-row :gutter="10" class="mb8">
+                <el-col :span="20" class="lin32">
+                    <span class="f18">{{$route.meta.title}}</span>
+                    <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                </el-col>
+                <el-col :span="4" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
@@ -70,13 +79,18 @@
                 <el-table-column prop="name" label="商标图样" width='120'>
                     <template slot-scope="scope">
                         <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col">
-                            <img :src="$getImg(scope.row.preliNoticeTrademarkPic,2) || ''" width="110px">
+                            <img :src="$getImg(scope.row.preliNoticeTrademarkPic,2) || ''" height="50px">
                         </a>
                     </template>
                 </el-table-column>
                 <el-table-column label="商标名称" width='200' show-overflow-tooltip>
-                    <template slot-scope="scope">
+                    <!-- <template slot-scope="scope">
                         <span>{{scope.row.preliNoticeTrademarkName || '--'}}</span>
+                    </template> -->
+                    <template slot-scope="scope">
+                        <span class="col pointer" @click="checkDetail(scope.row)">
+                            {{scope.row.preliNoticeTrademarkName}}
+                        </span>
                     </template>
                 </el-table-column>
                 <el-table-column label="注册号" prop="preliNoticeApplicationNumber" width='100px'>
@@ -113,14 +127,22 @@
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>
+        <!-- ****************************************详情弹窗************************************** -->
+        <draw ref='myDraw'>
+            <detail ref='myDetail' />
+        </draw>
     </div>
 </template>
 
 <script>
 import { objectionAnalysisList } from "@/api/resources";
 import { noticeNumList } from "@/api";
+import { draw } from '../_module'
+import detail from './detail'
 export default {
-
+    components: {
+        draw, detail
+    },
     data() {
         return {
             //显示搜索框
@@ -205,11 +227,19 @@ export default {
             this.resetForm("queryForm");
             this.handleQuery();
         },
+        // checkDetail(obj) {
+
+        //     let key = this.$route.name + obj.preliNoticeTrademarkId
+        //     this.$router.push('/resources/objection-analysis/detail?id=' + obj.id + "&num=" + this.activeNum)
+
+        // },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.preliNoticeTrademarkId
-            this.$router.push('/resources/objection-analysis/detail?id=' + obj.id + "&num=" + this.activeNum)
+            this.$refs.myDraw.openDraw({ title: obj.preliNoticeTrademarkName + ' 详情' })
 
+            this.$nextTick(() => {
+                this.$refs.myDetail.initPage(obj.id, this.activeNum)
+            })
         },
         lastTime(e) {
             if (!e) return 0

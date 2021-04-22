@@ -31,17 +31,30 @@
             </el-form>
         </div>
         <div class="back-fff pad20">
-            <el-row :gutter="10" class="mb8">
+            <!-- <el-row :gutter="10" class="mb8">
                 <el-col :span="4" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
+            </el-row> -->
+            <el-row :gutter="10" class="mb8">
+                <el-col :span="20" class="lin32">
+                    <span class="f18">{{$route.meta.title}}</span>
+                    <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                </el-col>
+                <el-col :span="4" align='right'>
+                    <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                </el-col>
             </el-row>
 
             <el-table v-loading="loading" :data="tableData">
-                <el-table-column label="企业名称" prop="applicantName" show-overflow-tooltip></el-table-column>
+                <el-table-column label="企业名称" prop="applicantName" show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.applicantName}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="企业地址" prop="address" show-overflow-tooltip></el-table-column>
                 <el-table-column label="所属行业" prop="industry" show-overflow-tooltip></el-table-column>
                 <el-table-column label="经营状态" prop="businessState" show-overflow-tooltip></el-table-column>

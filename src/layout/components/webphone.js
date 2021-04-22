@@ -2878,7 +2878,7 @@
                                     return sdp.substr(0, index) + sub;
                                 }
                             }
-                            return sdp;
+                            return sdp
                         },
 
                         getsConfusedAboutGUM: function (session) {
@@ -9831,6 +9831,9 @@
 
                         Object.defineProperties(this.configuration, skeleton);
 
+                        //先这块一直在打印，关掉这个
+                        return;
+
                         this.logger.log('configuration parameters after validation:');
                         for (parameter in settings) {
                             switch (parameter) {
@@ -9843,11 +9846,12 @@
                                     this.logger.log('· ' + parameter + ': ' + 'NOT SHOWN');
                                     break;
                                 default:
+
                                     this.logger.log('· ' + parameter + ': ' + JSON.stringify(settings[parameter]));
                             }
                         }
-
                         return;
+
                     };
 
                     /**

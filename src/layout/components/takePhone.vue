@@ -1,7 +1,9 @@
 <template>
     <div class="box" @click.stop>
         <div class="takePhone" @click="showTakeBox()">
-            <img src="../../assets/images/phone.png" alt="" srcset="">
+            <!-- <img src="../../assets/images/phone.png" alt="" srcset=""> -->
+
+            <svg-icon icon-class='telNum' class="telNum" />
 
             <video id="remoteVideo" class="video" name="remoteVideo"></video>
             <video id="localVideo" class="video" name="localVideo" muted="muted"></video>
@@ -51,6 +53,7 @@ import { mapGetters } from 'vuex'
 import { formatDate } from '@/utils/index'
 import SIP from './webphone.js'
 import Global from "@/layout/components/global.js";
+import $axios from '@/utils/http'
 export default {
     components: {
     },
@@ -114,37 +117,44 @@ export default {
         },
         initPhoneSet() {
 
-
-            return
-
             var that = this
 
-            var ua = this.UA = new SIP.UA({
-                uri: '8001@211.149.139.110',
-                wsServers: ['wss://cc.666vps.xyz:9531/ws'],
-                authorizationUser: '8001',
-                password: 'qwe123!@#8001',
-                hackIpInContact: true,
-                rtcpMuxPolicy: 'negotiate',
-                hackWssInTransport: true,
-            });
+            $axios.post('callPhoneConfig/page/list', { "pageNum": 1, "pageSize": 10 })
+                .then(res => {
+                    console.log('999', res.data[0])
 
-            //连接成功
-            ua.on('registered', function () {
-                that.status = true
-            });
-            //连接失败
-            ua.on('unregistered', function () {
-                that.status = false
-            });
+                    if (res.data && res.data.length) {
 
-            //接听电话（暂时不知道这块干什么）
-            ua.on('invite', function (session) {
-                console.error(111, session)
-                var sss = this.SSS = session;
+                        let config = res.data[0]
 
-            });
+                        var ua = this.UA = new SIP.UA({
+                            uri: config.uri,
+                            wsServers: [config.wsServers],
+                            authorizationUser: config.authorizationUser,
+                            password: config.password,
+                            hackIpInContact: true,
+                            rtcpMuxPolicy: config.rtcpMuxPolicy,
+                            hackWssInTransport: true,
+                        });
 
+                        //连接成功
+                        ua.on('registered', function () {
+                            that.status = true
+                        });
+                        //连接失败
+                        ua.on('unregistered', function () {
+                            that.status = false
+                        });
+
+                        //接听电话（暂时不知道这块干什么）
+                        ua.on('invite', function (session) {
+                            console.error(111, session)
+                            var sss = this.SSS = session;
+
+                        });
+
+                    }
+                })
         },
         //点击拨打
         ringout() {
@@ -307,17 +317,20 @@ export default {
 }
 .takePhone {
     display: inline-block;
-    margin-top: -2px;
+    position: relative;
+    top: -2px;
     cursor: pointer;
-    img {
-        width: 36px;
+    .telNum {
+        font-size: 26px;
+        vertical-align: middle;
+        color: #5ac724;
     }
 }
 .phoneBox {
     position: fixed;
     left: 50%;
     top: 20px;
-    z-index: 100;
+    z-index: 888;
     border-radius: 6px;
     background-color: #272b31;
     width: 240px;

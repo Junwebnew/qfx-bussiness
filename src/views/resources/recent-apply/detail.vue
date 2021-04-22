@@ -90,7 +90,7 @@
                 </el-col>
                 <!-- //右侧 -->
                 <el-col :sm="7" :xs="24">
-                    <div class="back-fff pad20 full-height full-height">
+                    <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
                         <phoneList :phoneList='json.phoneList' resourcesModule='1' :resourceId='json.id' @reload='initPage' />
                     </div>
@@ -111,7 +111,6 @@ export default {
     },
     data() {
         return {
-            title: '详情页',
             json: {},
             loading: false,
             tableData: [],
@@ -126,7 +125,7 @@ export default {
     //     }
     // },
     created() {
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+        // this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
         initPage(id) {
@@ -135,9 +134,6 @@ export default {
 
             recentApplyDetail(id)
                 .then(res => {
-
-                    this.title = (res.data.trademarkName || '') + ' 近日申请'
-
                     this.json = res.data
                 })
         },

@@ -126,7 +126,7 @@ export default {
     //     }
     // },
     created() {
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+        // this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
         initPage(id) {

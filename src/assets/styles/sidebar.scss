@@ -24,8 +24,8 @@
     left: 0;
     z-index: 1001;
     // overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    // -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    // box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -77,6 +77,14 @@
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
       background-color: #ffffff !important;
+    }
+    .el-submenu__title i{
+        color: #000;
+    }
+    .r-side .svg-icon{
+        vertical-align: middle;
+        font-size: 14px;
+        margin-right: 4px;
     }
 
     // menu hover

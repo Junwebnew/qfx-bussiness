@@ -20,16 +20,13 @@ const permission = {
         GenerateRoutes({ commit }, params) {
             return new Promise(resolve => {
 
-
-
-
                 var accessedRoutes = []
 
                 if (params.menuList) {
 
                     // console.log('子账号')
                     accessedRoutes = filterAsyncRouter(params.menuList)
-                    // console.log(111, accessedRoutes)
+
                 }
                 else {
 

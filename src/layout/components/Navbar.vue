@@ -3,7 +3,12 @@
         <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
         <!-- <div class="refresh hamburger-container" style="padding: 0 10px;" @click="refreshFunc"> <i class="el-icon-refresh-right"></i> </div> -->
         <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
-        <h2>权发现管理系统</h2>
+        <div class="logoBox">
+            <a href="http://www.qmxip.com" target="_blank" rel="noopener noreferrer">
+                <!-- <img src="../../assets/images/logo-black2.png" alt='权明星'> -->
+                权发现
+            </a><span class="min">知识产权销售利器</span>
+        </div>
         <div class="right-menu">
             <template v-if="device!=='mobile'">
                 <!-- <search id="header-search" class="right-menu-item" /> -->
@@ -126,13 +131,25 @@ export default {
     background: #fff;
     // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
     border-bottom: 1px solid #edf0f4;
-    h2 {
+    .logoBox {
         float: left;
         height: 50px;
         line-height: 50px;
-        font-size: 22px;
-        color: #333;
         margin-left: 20px;
+        font-size: 0;
+        img {
+            // height: 50px;
+            width: 152px;
+        }
+        .min {
+            // vertical-align: sub;
+            font-size: 14px;
+        }
+        a {
+            font-size: 24px;
+            font-family: NSimSun;
+            font-weight: 700;
+        }
     }
     .hamburger-container {
         line-height: 46px;

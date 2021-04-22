@@ -248,7 +248,7 @@ export default {
     height: 32px;
     width: 100%;
     // background: #edf0f4;
-    padding-left: 216px;
+    padding-left: 192px;
     background: #edf0f4;
 
     position: relative;
@@ -259,8 +259,8 @@ export default {
         display: flex;
         background-color: #ffffff;
         // border-bottom: 1px solid #d8dce5;
-        // box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
-        //     0 0 3px 0 rgba(0, 0, 0, 0.04);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12),
+            0 1px 3px 0 rgba(0, 0, 0, 0.04);
     }
     .tags-view-wrapper {
         .tags-view-item {

@@ -25,18 +25,31 @@
             </el-form>
         </div>
         <div class="back-fff pad20">
-            <el-row :gutter="10" class="mb8">
+            <!-- <el-row :gutter="10" class="mb8">
                 <el-col :span="4" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
+            </el-row> -->
+            <el-row :gutter="10" class="mb8">
+                <el-col :span="20" class="lin32">
+                    <span class="f18">{{$route.meta.title}}</span>
+                    <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                </el-col>
+                <el-col :span="4" align='right'>
+                    <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                </el-col>
             </el-row>
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
 
-                <el-table-column label="申请人" prop='companyName' show-overflow-tooltip> </el-table-column>
+                <el-table-column label="申请人" prop='companyName' show-overflow-tooltip>
+                    <template slot-scope="scope">
+                        <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.companyName}}</span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="申请人地址" prop='companyAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="社会信用代码" width='190' prop='creditCode' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="最新领取记录" prop='bestNewRemark'>
@@ -58,13 +71,22 @@
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
         </div>
+        <!-- ****************************************详情弹窗************************************** -->
+        <draw ref='myDraw'>
+            <detail ref='myDetail' />
+        </draw>
     </div>
 </template>
 
 <script>
 import { changeList } from "@/api/resources";
+import { draw } from '../_module'
+import detail from './detail'
 export default {
     name: "change",
+    components: {
+        draw, detail
+    },
     data() {
         return {
             //显示搜索框
@@ -125,9 +147,17 @@ export default {
         },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.id
-            this.$router.push('/resources/change/detail?id=' + obj.id)
-        }
+            this.$refs.myDraw.openDraw({ title: obj.companyName + ' 详情' })
+
+            this.$nextTick(() => {
+                this.$refs.myDetail.initPage(obj.id)
+            })
+        },
+        // checkDetail(obj) {
+
+        //     let key = this.$route.name + obj.id
+        //     this.$router.push('/resources/change/detail?id=' + obj.id)
+        // }
     },
     beforeDestroy() {
     }

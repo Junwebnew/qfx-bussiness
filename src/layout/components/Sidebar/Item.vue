@@ -10,16 +10,22 @@ export default {
         title: {
             type: String,
             default: ''
+        },
+        unit: {
+            type: String,
+            default: ''
         }
     },
     render(h, context) {
-        const { icon, title } = context.props
+        const { icon, title, unit } = context.props
         const vnodes = []
 
-        function mathUnit(title) {
-            let arr = ['疑似被驳回', '疑似驳回', '疑似被异议']
-            if (arr.includes(title)) {
-                return (<i class='col-red f12 vertop'>星</i>)
+        function mathUnit(unit) {
+
+            // console.log('33', title, unit)
+
+            if (unit && unit.trim()) {
+                return (<i class='col-red f12 vertop'>{unit}</i>)
             }
         }
 
@@ -28,7 +34,7 @@ export default {
         }
 
         if (title) {
-            vnodes.push(<span slot='title'>{title} {mathUnit(title)}</span>)
+            vnodes.push(<span slot='title'>{title} {mathUnit(unit)}</span>)
         }
         return vnodes
     }

@@ -407,7 +407,7 @@ ul::-webkit-scrollbar-thumb {
   min-height: calc(100vh - 100px);
 }
 .full-height2 {
-  min-height: calc(100vh - 172px);
+  min-height: calc(100vh - 72px);
 }
 .backLine {
   background-color: #edf0f4;
@@ -542,4 +542,7 @@ ul::-webkit-scrollbar-thumb {
 }
 .el-message-box {
   max-width: 90%;
+}
+.el-loading-mask{
+    z-index: 100;
 }

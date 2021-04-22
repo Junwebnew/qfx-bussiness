@@ -52,11 +52,20 @@
             </div>
             <div class="backLine"></div>
             <div class="back-fff pad20">
-                <el-row :gutter="10" class="mb8">
+                <!-- <el-row :gutter="10" class="mb8">
                     <el-col :span="4" class="lin32">
                         <span class="f18">{{$route.meta.title}}</span>
                     </el-col>
                     <el-col :span="20" align='right'>
+                        <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                    </el-col>
+                </el-row> -->
+                <el-row :gutter="10" class="mb8">
+                    <el-col :span="20" class="lin32">
+                        <span class="f18">{{$route.meta.title}}</span>
+                        <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                    </el-col>
+                    <el-col :span="4" align='right'>
                         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                     </el-col>
                 </el-row>
@@ -65,11 +74,17 @@
                     <el-table-column prop="name" label="商标图样" align='center' width='80'>
                         <template slot-scope="scope">
                             <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col imgBox">
-                                <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''">
+                                <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''" height="50px">
                             </a>
                         </template>
                     </el-table-column>
-                    <el-table-column label="注册号" width='90' prop="trademarkNumber"></el-table-column>
+                    <el-table-column label="注册号" width='90' prop="trademarkNumber">
+                        <template slot-scope="scope">
+                            <span class="col pointer" @click="checkDetail(scope.row)">
+                                {{scope.row.trademarkNumber}}
+                            </span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="国际分类" width='120' show-overflow-tooltip>
                         <template slot-scope="scope">
                             <span>
@@ -99,13 +114,21 @@
                 <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
             </div>
         </div>
+        <!-- ****************************************详情弹窗************************************** -->
+        <draw ref='myDraw'>
+            <detail ref='myDetail' />
+        </draw>
     </div>
 </template>
 
 <script>
 import { recentApplyList, notContinuesList } from "@/api/resources";
+import { draw } from '../_module'
+import detail from './detail'
 export default {
-    name: "recentApply",
+    components: {
+        draw, detail
+    },
     data() {
         return {
             //显示搜索框
@@ -168,11 +191,19 @@ export default {
             this.resetForm("queryForm");
             this.handleQuery();
         },
+        // checkDetail(obj) {
+
+        //     let key = this.$route.name + obj.id
+
+        //     this.$router.push('/resources/not-continues/detail?id=' + obj.id)
+        // },
         checkDetail(obj) {
 
-            let key = this.$route.name + obj.id
+            this.$refs.myDraw.openDraw({ title: obj.trademarkNumber + ' 详情' })
 
-            this.$router.push('/resources/not-continues/detail?id=' + obj.id)
+            this.$nextTick(() => {
+                this.$refs.myDetail.initPage(obj.id)
+            })
         }
     },
     beforeDestroy() {

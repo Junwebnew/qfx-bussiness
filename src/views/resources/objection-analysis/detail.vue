@@ -97,12 +97,12 @@
                                             {{scope.row.resourceType == 1 ? '商标名相同' : '商标名近似' }}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="国际分类" width='110' show-overflow-tooltip>
+                                    <el-table-column label="国际分类" width='100' show-overflow-tooltip>
                                         <template slot-scope="scope">
                                             {{scope.row.typeOfTrademarkCode}}类-{{scope.row.typeOfTrademarkName}}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="注册号" width='90' prop="applicationNumber">
+                                    <el-table-column label="注册号" width='86' prop="applicationNumber">
                                     </el-table-column>
                                     <el-table-column label="申请日期" width='100' show-overflow-tooltip>
                                         <template slot-scope="scope">
@@ -118,7 +118,7 @@
                                             </div>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="操作" width='140' align='center' class-name="small-padding fixed-width">
+                                    <el-table-column label="操作" width='140' align='center' class-name="small-padding fixed-width" fixed="right">
                                         <template slot-scope="scope">
                                             <div class='operation'>
                                                 <el-button size="mini" type="text" @click="getResourseTel(scope.row)">获取电话</el-button>
@@ -186,12 +186,14 @@ export default {
     //     }
     // },
     created() {
-        this.noticeNum = this.$route.query.num
-        this.initPage(this.$route.query.id)
+        // this.noticeNum = this.$route.query.num
+        // this.initPage(this.$route.query.id)
     },
     methods: {
 
         initPage(id, num) {
+
+            this.noticeNum = num
 
             id = id || this.json.id
 

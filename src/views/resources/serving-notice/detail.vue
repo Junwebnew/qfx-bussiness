@@ -123,12 +123,14 @@ export default {
     //     }
     // },
     created() {
-        this.noticeNum = this.$route.query.num
-        this.initPage(this.$route.query.id)
+        // this.noticeNum = this.$route.query.num
+        // this.initPage(this.$route.query.id)
     },
     methods: {
 
         initPage(id, num) {
+
+            this.noticeNum = num
 
             id = id || this.json.id
 

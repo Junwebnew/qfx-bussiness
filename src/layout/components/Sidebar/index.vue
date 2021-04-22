@@ -34,11 +34,8 @@
             </el-scrollbar> -->
 
             <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
-                <el-menu :default-openeds='selectedIndexs' mode="vertical">
-
-                    <template>
-                        <sidebar-item v-for="(route, index) in showPermission_routes[rActive].children" :key="route.path  + index" :item="route" :base-path="showPermission_routes[rActive].path" />
-                    </template>
+                <el-menu :default-active="activeMenu" :default-openeds='selectedIndexs' mode="vertical">
+                    <sidebar-item v-for="(route, index) in showPermission_routes[rActive].children" :key="route.path  + index" :item="route" :base-path="showPermission_routes[rActive].path" />
                 </el-menu>
             </el-scrollbar>
         </div>
@@ -98,7 +95,7 @@ export default {
         this.changeRoute(this.$route.path)
     },
     mounted() {
-        console.log('侧边路由数组', this.showPermission_routes)
+        // console.log('侧边路由数组', this.showPermission_routes)
         // Global.$on('setRouterShow', msg => {
         //     console.log('打开路由数组', msg)
         //     this.selectedIndexs.push(msg)
@@ -160,7 +157,7 @@ export default {
         position: absolute;
         right: 0;
         top: 50px;
-        width: 206px;
+        width: 182px;
         height: 100%;
         transform: translateX(100%);
         overflow: auto;

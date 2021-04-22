@@ -133,6 +133,16 @@
                             <el-input v-model="form.url" placeholder="请输入路由地址url" />
                         </el-form-item>
                     </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="页面简介" prop="ext1">
+                            <el-input v-model="form.ext1" placeholder="请输入页面简介" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="特殊字段" prop="ext2">
+                            <el-input v-model="form.ext2" placeholder="请输入特殊字段" />
+                        </el-form-item>
+                    </el-col>
                     <el-col :span="24">
                         <el-form-item label="组件路径" prop="viewName">
                             <el-input v-model="form.viewName" placeholder="请输入组件路径code" />

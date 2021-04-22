@@ -26,20 +26,29 @@
             </el-form>
         </div>
         <div class="back-fff pad20">
-            <el-row :gutter="10" class="mb8">
+            <!-- <el-row :gutter="10" class="mb8">
                 <el-col :span="4" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
                     <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
+            </el-row> -->
+            <el-row :gutter="10" class="mb8">
+                <el-col :span="20" class="lin32">
+                    <span class="f18">{{$route.meta.title}}</span>
+                    <span class="page_recourse_desc">{{$route.meta.desc}}</span>
+                </el-col>
+                <el-col :span="4" align='right'>
+                    <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                </el-col>
             </el-row>
 
             <el-table v-loading="loading" :data="tableData" row-key="id">
                 <el-table-column label="求购信息" prop="buyInfo" show-overflow-tooltip>
-                    <div slot-scope="scope">
+                    <span slot-scope="scope" class="col pointer" @click=" showDetail(scope.row)">
                         <span v-if='scope.row.isEmergency' class='flag'>急</span> <span>{{scope.row.buyInfo}}</span>
-                    </div>
+                    </span>
                 </el-table-column>
                 <el-table-column label="求购类别" width='150' prop="intclass" show-overflow-tooltip></el-table-column>
                 <el-table-column label="联系人" width='250' prop="contact" show-overflow-tooltip></el-table-column>

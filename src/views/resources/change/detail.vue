@@ -1,9 +1,5 @@
 <template>
     <div class="app-container">
-        <div class="head-parts mb10">
-            <div class="words">{{title}}</div>
-        </div>
-
         <div class="mb10 custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
@@ -68,7 +64,7 @@
                 </el-col>
                 <!-- //右侧 -->
                 <el-col :sm="7" :xs="24">
-                    <div class="back-fff pad20 full-height full-height2">
+                    <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
                         <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' @reload='initPage' />
                     </div>
@@ -104,7 +100,7 @@ export default {
     //     }
     // },
     created() {
-        this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
+        // this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
 

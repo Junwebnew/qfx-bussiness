@@ -1,6 +1,6 @@
 <template>
     <el-table :data="phoneList" row-key="id" class="table" v-loading='loading'>
-        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column type="index" width="40"></el-table-column>
         <el-table-column label="联系方式" prop="phone"></el-table-column>
         <el-table-column label="操作" align='center'>
             <template slot-scope="scope">
