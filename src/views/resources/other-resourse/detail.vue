@@ -5,59 +5,45 @@
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
                     <div class="back-fff pad20 custom-box full-height2 posRelative">
-                        <resoursePrice :resourcesModule='8' :applicationType='json.applicationType' />
                         <el-row :gutter="20">
                             <el-col :span="24" class="mb16">
-                                <p class=" tit">企业信息</p>
+                                <p class=" tit">资源信息</p>
                             </el-col>
                             <el-col :lg="12" :sm="12" :xs="24">
                                 <span class="custom-label">企业名称：</span>
                                 <div class="custom-r">
-                                    {{json.applicantName || '--'}}
+                                    {{json.companyName || '--'}}
                                 </div>
                             </el-col>
                             <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">经营状态：</span>
-                                <div class="custom-r">
-                                    {{json.businessState || '--'}}
-                                </div>
-                            </el-col>
-
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">企业法人：</span>
-                                <div class="custom-r">
-                                    {{json.legalPerson || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">社会信用代码：</span>
-                                <div class="custom-r">
-                                    {{json.creditCode || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">所属行业：</span>
-                                <div class="custom-r">
-                                    {{json.industry || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">注册时间：</span>
-                                <div class="custom-r">
-                                    {{json.regDate || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="24" :sm="24" :xs="24">
                                 <span class="custom-label">企业地址：</span>
                                 <div class="custom-r">
-                                    {{json.address || '--'}}
+                                    {{json.companyAddress || '--'}}
                                 </div>
                             </el-col>
 
-                            <el-col :lg="24" :sm="24" :xs="24">
-                                <span class="custom-label">经营范围：</span>
+                            <el-col :lg="12" :sm="12" :xs="24">
+                                <span class="custom-label">联系人：</span>
                                 <div class="custom-r">
-                                    {{json.bsinessScope || '--'}}
+                                    {{json.contactPeople || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :lg="12" :sm="12" :xs="24">
+                                <span class="custom-label">手机号：</span>
+                                <div class="custom-r">
+                                    {{json.contactPhone || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :lg="24" :sm="24" :xs="24">
+                                <span class="custom-label">联系情况：</span>
+                                <div class="custom-r">
+                                    {{json.contactSituation || '--'}}
+                                </div>
+                            </el-col>
+                            <el-col :lg="24" :sm="24" :xs="24">
+                                <span class="custom-label">备注：</span>
+                                <div class="custom-r">
+                                    {{json.remark || '--'}}
                                 </div>
                             </el-col>
 
@@ -77,13 +63,13 @@
 </template>
 
 <script>
-import { companyWhiteDetail } from "@/api/resources";
-import { phoneList, resoursePrice } from '../_module'
+import { externalResourceDetail } from "@/api/resources";
+import { phoneList } from '../_module'
 
 export default {
     name: 'recent-apply-detail',
     components: {
-        phoneList, resoursePrice
+        phoneList
     },
     data() {
         return {
@@ -101,10 +87,10 @@ export default {
 
             id = id || this.json.id
 
-            companyWhiteDetail(id)
+            externalResourceDetail(id)
                 .then(res => {
 
-                    this.title = (res.data.applicantName || '')
+                    this.title = (res.data.companyName || '')
 
                     this.json = res.data
                 })

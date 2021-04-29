@@ -551,6 +551,13 @@ export const asyncAllRoutes = [
                 ],
             },
             {
+                name: "customer",
+                path: "customer",
+                hidden: false,
+                component: "center/customer/index",
+                meta: { title: "客户管理", noCache: true },
+            },
+            {
                 name: "Notice",
                 path: "notice",
                 hidden: false,
@@ -755,6 +762,13 @@ export const asyncAllRoutes = [
                         component: "resources/applicant/index",
                         meta: { title: "商标申请人", noCache: false },
                     },
+                    {
+                        name: "otherResourse",
+                        path: "other-resourse",
+                        hidden: false,
+                        component: "resources/other-resourse/index",
+                        meta: { title: "外部资源", noCache: false },
+                    }
                 ]
             },
             {

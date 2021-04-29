@@ -55,6 +55,11 @@
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="外呼坐席">
+                                <el-input v-model="form.xxxCode" placeholder="请输入外呼系统的坐席号" maxlength="50" />
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                     <el-row :gutter="20">
 

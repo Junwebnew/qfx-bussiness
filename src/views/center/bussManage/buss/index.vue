@@ -52,9 +52,9 @@
                     <span class="f18">{{$route.meta.title}}</span>
                 </el-col>
                 <el-col :span="20" align='right'>
-                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增</el-button>
+                    <el-button type="primary" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增商机</el-button>
                     <el-button type="success" size="mini" @click="handleDistribution()" v-hasPermi="['distribution']" :disabled="!ids.length">批量移交</el-button>
-                    <el-button type="warning" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
+                    <el-button type="danger" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
@@ -202,12 +202,6 @@ export default {
                 this.total = response.total;
                 this.loading = false;
             })
-        },
-        formatterStatus(row) {
-
-            let item = this.clueStatueArr.filter(i => i.code == row.followStatus)[0]
-
-            return (item && item.name) || row.followStatus
         },
         /** 搜索按钮操作 */
         handleQuery() {

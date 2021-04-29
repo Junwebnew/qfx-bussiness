@@ -1,51 +1,41 @@
 <template>
-    <div class="box" @click.stop>
-        <div class="takePhone" @click="showTakeBox()">
-            <!-- <img src="../../assets/images/phone.png" alt="" srcset=""> -->
 
-            <svg-icon icon-class='telNum' class="telNum" />
+    <transition name="sidebarLogoFade">
+        <div class="phoneBox" v-show="phoneShow" v-drag>
+            <span class="el-icon-close close" @click=" phoneShow = false"></span>
+            <div class="tit"> 拨打电话 <span class="status" :class="{'green':status}"></span></div>
+            <div class="iptBox">
+                <input type="text" v-model="telNum" maxlength="11">
+                <span class="iptclose claearOne" v-show="telNum" @click="delOne"></span>
+                <span class="el-icon-circle-close iptclose" v-show="telNum" @click="clearNum"></span>
+            </div>
+            <ul class="numBox">
+                <li class="btn" v-for="(item,idx) in numArr" :key='idx' @click="dialNum(item)">{{item}}</li>
+            </ul>
+            <div class="btnBox">
+                <div class="btn button" @click="ringout">拨打</div>
+            </div>
 
-            <video id="remoteVideo" class="video" name="remoteVideo"></video>
-            <video id="localVideo" class="video" name="localVideo" muted="muted"></video>
-
-        </div>
-        <transition name="sidebarLogoFade">
-            <div class="phoneBox" v-show="phoneShow" v-drag>
-                <span class="el-icon-close close" @click=" phoneShow = false"></span>
-                <div class="tit"> 拨打电话 <span class="status" :class="{'green':status}"></span></div>
-                <div class="iptBox">
-                    <input type="text" v-model="telNum" maxlength="11">
-                    <span class="iptclose claearOne" v-show="telNum" @click="delOne"></span>
-                    <span class="el-icon-circle-close iptclose" v-show="telNum" @click="clearNum"></span>
+            <div class="loadingBox" v-show='isConnection'>
+                <div class="topBox">
+                    <div class="icon_loading" v-show="showWave">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <p class="text-center mt20" :class="showWave ? 'col-green' : 'col-red' ">{{connectionText}}</p>
+                    <p class="text-center mt20" v-show='connentTime'>{{connentTime}}</p>
                 </div>
-                <ul class="numBox">
-                    <li class="btn" v-for="(item,idx) in numArr" :key='idx' @click="dialNum(item)">{{item}}</li>
-                </ul>
+
                 <div class="btnBox">
-                    <div class="btn button" @click="ringout">拨打</div>
-                </div>
-
-                <div class="loadingBox" v-show='isConnection'>
-                    <div class="topBox">
-                        <div class="icon_loading" v-show="showWave">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                        <p class="text-center mt20" :class="showWave ? 'col-green' : 'col-red' ">{{connectionText}}</p>
-                        <p class="text-center mt20" v-show='connentTime'>{{connentTime}}</p>
-                    </div>
-
-                    <div class="btnBox">
-                        <div class="btn button hangup" @click="hangup">挂断</div>
-                    </div>
+                    <div class="btn button hangup" @click="hangup">挂断</div>
                 </div>
             </div>
-        </transition>
-    </div>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -116,6 +106,9 @@ export default {
 
         },
         initPhoneSet() {
+
+
+            return
 
             var that = this
 
@@ -298,11 +291,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.video {
-    display: none;
-    width: 100px;
-    height: 100px;
-}
 .sidebarLogoFade-enter-active {
     transition: opacity 0.5s;
 }
@@ -315,22 +303,11 @@ export default {
     display: inline-block;
     vertical-align: top;
 }
-.takePhone {
-    display: inline-block;
-    position: relative;
-    top: -2px;
-    cursor: pointer;
-    .telNum {
-        font-size: 26px;
-        vertical-align: middle;
-        color: #5ac724;
-    }
-}
 .phoneBox {
     position: fixed;
     left: 50%;
     top: 20px;
-    z-index: 888;
+    z-index: 88888;
     border-radius: 6px;
     background-color: #272b31;
     width: 240px;

@@ -73,7 +73,7 @@ http.interceptors.response.use(
 
         const code = res.data.code || 200;
 
-        const msg = errorCode[code] || res.data.msg || errorCode['default']
+        const msg = errorCode[code] || res.data.msg || res.data.data || errorCode['default']
 
         if (code === 500) {
             Message({

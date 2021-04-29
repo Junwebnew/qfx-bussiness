@@ -9,7 +9,7 @@
                             <el-date-picker v-model="form.remindDate" type="datetime" size='small' style="width:100%" value-format='yyyy-MM-dd HH' :picker-options="pickerOptions0" placeholder="选择日期时间">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="线索备注" prop="remarkContent">
+                        <el-form-item label="备注内容" prop="remarkContent">
                             <el-input v-model="form.remarkContent" type="textarea" maxLength='200' placeholder="请输入内容"></el-input>
                         </el-form-item>
                     </el-col>

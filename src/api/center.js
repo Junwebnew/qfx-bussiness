@@ -273,3 +273,20 @@ export function resourceTotalCount(data) {
 export function receiveResourceTotalCount(data) {
     return $axios.post('resource/statistic/alanalysis/receiveResourceTotalCount', data)
 }
+
+/******************************************************** 用户管理 */
+
+//新增和修改用户
+export function customerManage(data) {
+    return $axios.post('customerManage/saveorupdate', data)
+}
+
+//客户列表
+export function customerList(data) {
+    return $axios.post('customerManage/page/list', data)
+}
+
+//客户删除
+export function customerDel(arr) {
+    return $axios.post('customerManage/batch/del', arr)
+}

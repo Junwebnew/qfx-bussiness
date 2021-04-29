@@ -4,18 +4,18 @@
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="企业名称" prop="applicantName" class="el-form-item-none">
-                            <el-input v-model="queryParams.applicantName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="企业名称" prop="companyName" class="el-form-item-none">
+                            <el-input v-model="queryParams.companyName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="联系人" prop="address" class="el-form-item-none">
-                            <el-input v-model="queryParams.address" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="联系人" prop="contactPeople" class="el-form-item-none">
+                            <el-input v-model="queryParams.contactPeople" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
                     <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="联系电话" prop="address" class="el-form-item-none">
-                            <el-input v-model="queryParams.address" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        <el-form-item label="联系电话" prop="contactPhone" class="el-form-item-none">
+                            <el-input v-model="queryParams.contactPhone" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
 
@@ -28,31 +28,34 @@
         </div>
         <div class="back-fff pad20">
             <el-row :gutter="10" class="mb8">
-                <el-col :span="18" class="lin32">
+                <el-col :span="10" class="lin32">
                     <span class="f18">{{$route.meta.title}}</span>
                     <span class="page_recourse_desc">{{$route.meta.desc}}</span>
                 </el-col>
-                <el-col :span="6" align='right'>
-                    <el-button type="info" class="mr10" size="mini" @click="handleImport()" v-hasPermi="['add-btn']">导入资源</el-button>
-                    <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+                <el-col :span="14" align='right'>
+                    <el-button type="primary" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增资源</el-button>
+                    <el-button type="info" size="mini" @click="handleImport()" v-hasPermi="['add-btn']">导入资源</el-button>
+                    <el-button type="danger" size="mini" @click="handleEliminate()" v-hasPermi="['batch-del']" :disabled="!ids.length">批量剔除</el-button>
+                    <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
 
-            <el-table v-loading="loading" :data="tableData">
-                <el-table-column label="企业名称" prop="applicantName" show-overflow-tooltip>
+            <el-table v-loading="loading" :data="tableData" @selection-change="handleSelectionChange">
+                <el-table-column type='selection'></el-table-column>
+                <el-table-column label="企业名称" prop="companyName" show-overflow-tooltip width='200'>
                     <template slot-scope="scope">
-                        <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.applicantName}}</span>
+                        <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.companyName}}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="申请人" prop="address" show-overflow-tooltip></el-table-column>
-                <el-table-column label="地址" prop="industry" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系人" prop="businessState" show-overflow-tooltip></el-table-column>
-                <el-table-column label="联系电话" prop="regDate" width='100'></el-table-column>
-                <el-table-column label="所属公司" prop="regDate" width='100'></el-table-column>
-                <el-table-column label="操作" width='70' align='center'>
+                <el-table-column label="联系人" prop="contactPeople" show-overflow-tooltip width='100'></el-table-column>
+                <el-table-column label="联系电话" prop="contactPhone" width='120'></el-table-column>
+                <el-table-column label="备注" prop="remark"></el-table-column>
+                <el-table-column label="操作" width='130' align='center'>
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
+                            <el-button size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">删除</el-button>
                         </div>
                     </template>
                 </el-table-column>
@@ -79,7 +82,7 @@
                     </el-col>
                 </el-row>
             </el-form> -->
-            <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" action='#' with-credentials :name='upload.name' drag :http-request="myUploadFile">
+            <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" action='/123#' :auto-upload='false' :name='upload.name' drag :http-request="myUploadFile">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
                     将文件拖到此处，或
@@ -96,6 +99,8 @@
                 <el-button type="primary" @click="submitFileForm">确 定</el-button>
             </div>
         </el-dialog>
+        <!-- 新增资源 -->
+        <addResourse ref='addResourse' @finish='getList' />
         <!-- ****************************************详情弹窗************************************** -->
         <draw ref='myDraw'>
             <detail ref='myDetail' />
@@ -104,13 +109,16 @@
 </template>
 
 <script>
-import { companyWhiteList } from "@/api/resources";
+import { externalResourceList, externalResourceDel } from "@/api/resources";
 import { draw } from '../_module'
 import detail from './detail'
+import addResourse from './_module/addResourse'
+import { DownFile } from '@/utils'
+
 export default {
     name: "recentApply",
     components: {
-        draw, detail
+        draw, detail, addResourse
     },
     data() {
         return {
@@ -132,6 +140,8 @@ export default {
                 applicantName: undefined,
                 address: undefined
             },
+            //id集合
+            ids: [],
             //初始时间
             initDate: [],
             //申请人类型
@@ -157,14 +167,14 @@ export default {
     },
     mounted() {
 
-        // this.getList()
+        this.getList()
     },
     methods: {
 
         getList() {   //获取table表单的数据**************************************
 
             this.loading = true;
-            companyWhiteList(this.addDateRange(this.queryParams, this.dateRange, { start: 'startRegDate', end: 'endRegDate' })).then(response => {
+            externalResourceList(this.queryParams).then(response => {
                 this.tableData = response.data;
                 this.total = response.total;
                 this.loading = false;
@@ -183,7 +193,7 @@ export default {
         },
         checkDetail(obj) {
 
-            this.$refs.myDraw.openDraw({ title: obj.applicantName + ' 详情' })
+            this.$refs.myDraw.openDraw({ title: obj.companyName + ' 详情' })
 
             this.$nextTick(() => {
                 this.$refs.myDetail.initPage(obj.id)
@@ -202,10 +212,10 @@ export default {
         // 自定义上传 提交上传文件
         submitFileForm() {
 
-            if (!this.uploadData.sourceType) {
-                this.$message.warning("请先选择来源")
-                return
-            }
+            // if (!this.uploadData.sourceType) {
+            //     this.$message.warning("请先选择来源")
+            //     return
+            // }
 
             this.$refs.upload.submit();
         },
@@ -214,37 +224,78 @@ export default {
 
             let form = new FormData();
             form.append("file", params.file);
-            form.append("sourceExplain", params.data.sourceExplain);
-            form.append("sourceType", params.data.sourceType);
 
-
-            this.$axios.post('zuul/api-qfx/transaction/sellTrademark/importExcel', form, { timeout: 120000 })
+            this.$axios.post('externalResourceInput/import?loading', form, { timeout: 120000 })
                 .then(res => {
-                    //console.log('成功1', res)
+                    // console.log('成功1', res)
 
                     if (res.code == 200) {
-                        this.$message.success('上传成功！');
+
+                        this.msgSuccess("上传成功！");
                         this.upload.open = false;
+
+                        this.getList()
                     }
                     else {
-                        this.$message.error('上传失败,' + res.msg);
+                        this.msgError('上传失败:' + res.msg)
                     }
                 })
                 .catch(res => {
                     console.log('失败1', res)
-                    this.$message.error("上传失败！")
+                    // this.msgError('上传失败')
                 })
 
         },
         //下载模板文件
         importTemplate() {
+            this.$axios.get('externalResourceInput/downloadTemplateFile', { 'responseType': 'blob' })
+                .then(res => {
+                    DownFile(res, '外部资源导入模板.xlsx')
+                })
+                .catch(msg => {
+                    console.error(msg)
+                })
+        },
+        // 多选框选中数据
+        handleSelectionChange(selection) {
+            this.ids = selection.map(item => item.id)
+        },
+        //删除
+        handleEliminate(obj) {
 
-            let froms = this.$refs.dowmLoadFrom
-            froms.action = this.$BaseUrl + 'api-qfx/transaction/sellTrademark/downloadTemplateFile'
+            let tit = '是否批量删除线索？'
+            let that = this
 
-            froms.access_token.value = Cookies.get('TOKEN')
+            if (obj) {
+                this.ids = [obj.id]
+                tit = '是否删除 ' + obj.companyName + " ？"
+            }
 
-            froms.submit()
+            this.$confirm(tit, "警告", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(function () {
+
+                return externalResourceDel(that.ids);
+
+            }).then(() => {
+
+                this.getList();
+                this.msgSuccess("删除成功");
+
+            })
+                .catch(msg => {
+                    console.log(11111, msg)
+                })
+        },
+        //新增
+        handleAdd() {
+            this.$refs.addResourse.showFunc({}, '新增资源')
+        },
+        /** 修改按钮操作 */
+        handleUpdate(row) {
+            this.$refs.addResourse.showFunc(row, '修改资源')
         },
     },
     beforeDestroy() {

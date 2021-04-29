@@ -40,6 +40,8 @@
         <div class="fixPhone" @click="takePhone">
             <img src="../assets/images/fixphone.png" alt="电话">
         </div>
+        <!-- 电话组件 -->
+        <takePhone/>
     </div>
 </template>
 
@@ -50,7 +52,7 @@ import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 import variables from '@/assets/styles/variables.scss'
 import Global from "@/layout/components/global.js";
-
+import takePhone from './components/takePhone'
 export default {
     name: 'Layout',
     components: {
@@ -59,7 +61,8 @@ export default {
         RightPanel,
         Settings,
         Sidebar,
-        TagsView
+        TagsView,
+        takePhone
     },
     mixins: [ResizeMixin],
     computed: {
@@ -163,7 +166,7 @@ export default {
     top: 0px;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 100000;
     background-color: rgba(0, 0, 0, 0.8);
     .skip {
         position: absolute;

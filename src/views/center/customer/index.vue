@@ -35,8 +35,8 @@
                 </el-col>
                 <el-col :span="14" align='right'>
                     <el-button type="primary" size="mini" @click="handleAdd()" v-hasPermi="['add-btn']">新增客户</el-button>
-                    <el-button type="info" size="mini" @click="handleImport()" v-hasPermi="['add-btn']">导入客户</el-button>
-                    <el-button type="danger" size="mini" @click="handleEliminate()" v-hasPermi="['distribution']" :disabled="!ids.length">批量剔除</el-button>
+                    <el-button type="info" size="mini" @click="handleImport()" v-hasPermi="['import']">导入客户</el-button>
+                    <el-button type="danger" size="mini" @click="handleEliminate()" v-hasPermi="['batch-del']" :disabled="!ids.length">批量剔除</el-button>
                     <right-toolbar class="ml10" :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
                 </el-col>
             </el-row>
@@ -87,7 +87,7 @@
                     </el-col>
                 </el-row>
             </el-form> -->
-            <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" action='#' with-credentials :name='upload.name' drag :http-request="myUploadFile">
+            <el-upload ref="upload" :limit="1" accept=".xlsx, .xls" action='#' :auto-upload='false' :name='upload.name' drag :http-request="myUploadFile">
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">
                     将文件拖到此处，或
@@ -114,6 +114,8 @@ import { customerList, customerDel } from "@/api/center"
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 import customerModule from './_module/customerModule'
+import { DownFile } from '@/utils'
+
 export default {
     components: { SwitchForm, customerModule },
     data() {
@@ -261,11 +263,6 @@ export default {
         // 自定义上传 提交上传文件
         submitFileForm() {
 
-            if (!this.uploadData.sourceType) {
-                this.$message.warning("请先选择来源")
-                return
-            }
-
             this.$refs.upload.submit();
         },
         myUploadFile(params) {
@@ -273,37 +270,39 @@ export default {
 
             let form = new FormData();
             form.append("file", params.file);
-            form.append("sourceExplain", params.data.sourceExplain);
-            form.append("sourceType", params.data.sourceType);
 
-
-            this.$axios.post('zuul/api-qfx/transaction/sellTrademark/importExcel', form, { timeout: 120000 })
+            this.$axios.post('customerManage/import?loading', form, { timeout: 120000 })
                 .then(res => {
-                    //console.log('成功1', res)
+                    // console.log('成功1', res)
 
                     if (res.code == 200) {
-                        this.$message.success('上传成功！');
+
+                        this.msgSuccess("上传成功！");
                         this.upload.open = false;
+
+                        this.getList()
                     }
                     else {
-                        this.$message.error('上传失败,' + res.msg);
+                        this.msgError('上传失败:' + res.msg)
                     }
                 })
                 .catch(res => {
                     console.log('失败1', res)
-                    this.$message.error("上传失败！")
+                    // this.msgError('上传失败')
                 })
+
 
         },
         //下载模板文件
         importTemplate() {
 
-            let froms = this.$refs.dowmLoadFrom
-            froms.action = this.$BaseUrl + 'api-qfx/transaction/sellTrademark/downloadTemplateFile'
-
-            froms.access_token.value = Cookies.get('TOKEN')
-
-            froms.submit()
+            this.$axios.get('customerManage/downloadTemplateFile', { 'responseType': 'blob' })
+                .then(res => {
+                    DownFile(res, '客户导入模板.xls')
+                })
+                .catch(msg => {
+                    console.error(msg)
+                })
         },
     },
     beforeDestroy() {

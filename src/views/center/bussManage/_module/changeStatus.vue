@@ -4,7 +4,7 @@
         <div class="pad0-30">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-form-item label="线索状态" prop="followStatus">
+                <el-form-item label="商机状态" prop="followStatus">
                     <!-- <el-select v-model="form.followStatus" clearable size="small" style="width: 100%">
                         <el-option v-for="dict in clueStatueArr" :key="dict.id" :label="dict.name" :value="dict.id" />
                     </el-select> -->

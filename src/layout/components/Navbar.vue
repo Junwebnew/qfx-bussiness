@@ -17,7 +17,12 @@
                     
                 </el-tooltip> -->
 
-                <takePhone />
+                <!-- 电话 -->
+                <div class="takePhone" @click="takePhone">
+                    <svg-icon icon-class='telNum' class="telNum" />
+                </div>
+
+                <!-- <takePhone /> -->
 
                 <el-tooltip content="权明星官网" effect="dark" placement="bottom">
                     <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
@@ -65,7 +70,8 @@ import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 // import RuoYiDoc from '@/components/RuoYi/Doc'
 import qmxmsg from '@/components/RuoYi/msg'
-import takePhone from './takePhone'
+
+import Global from "@/layout/components/global.js";
 export default {
     components: {
         Breadcrumb,
@@ -75,8 +81,7 @@ export default {
         Search,
         RuoYiGit,
         // RuoYiDoc,
-        qmxmsg,
-        takePhone
+        qmxmsg
     },
     computed: {
         ...mapGetters([
@@ -118,6 +123,9 @@ export default {
                     location.href = '/';
                 })
             })
+        },
+        takePhone() {
+            Global.$emit("takePhone");
         }
     }
 }
@@ -245,8 +253,10 @@ export default {
     vertical-align: top;
     margin-top: -2px;
     cursor: pointer;
-    img {
-        width: 36px;
+    .telNum {
+        font-size: 26px;
+        vertical-align: middle;
+        color: #5ac724;
     }
 }
 </style>

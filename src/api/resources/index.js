@@ -184,7 +184,31 @@ export function notContinuesList(data) {
     return $axios.post('resource/notContinues/page/listForPhone', data)
 }
 
+// ******************************************** 外部资源 ************************************
 
+
+/**
+ * 分页查询
+ */
+export function externalResourceList(data) {
+    return $axios.post('externalResourceInput/page/list', data)
+}
+/**
+ * 批量删除外部资源导入
+*/
+export function externalResourceDel(arr) {
+    return $axios.post('externalResourceInput/batch/del', arr)
+}
+
+/* 根据ID查询外部资源导入 */
+
+export function externalResourceDetail(arr) {
+    return $axios.post('externalResourceInput/get', arr)
+}
+/* 添加或更新外部资源导入 */
+export function externalResourceManage(data) {
+    return $axios.post('externalResourceInput/saveorupdate', data)
+}
 
 
 // ******************************************** 资源领取 ************************************

@@ -57,6 +57,13 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
+                            <el-form-item label="外呼坐席">
+                                <el-input v-model="form.xxxCode" placeholder="请输入外呼系统的坐席号" maxlength="50" />
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row :gutter="20">
+                        <el-col :span="24">
                             <el-form-item label="状态">
                                 <el-radio-group v-model="form.commonStatus">
                                     <el-radio v-for="dict in statusOptions" :key="dict.key" :label="dict.value">{{dict.key}}</el-radio>

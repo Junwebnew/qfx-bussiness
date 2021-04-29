@@ -112,7 +112,7 @@ export default {
 
         },
         goListDetail() {
-            this.$router.push('/cost/accountRechargeList?id=' + this.form.orgId)
+            this.$router.push('/system/cost/accountRechargeList?id=' + this.form.orgId)
         },
     }
 };

@@ -1,41 +1,57 @@
 <template>
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal='false'>
-        <div class="pad20">
+        <div class="pad0-20">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <!-- <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
                             <el-input v-model="form.customerName" :disabled='disabled' placeholder="请输入..." maxlength="50" />
                         </el-form-item>
                     </el-col>
+                     -->
+
+                    <el-col :sm="16" :xs="24">
+                        <el-form-item label="客户名称" :rules="{ required: true}">
+                            <el-select v-model="form.customerId" filterable remote placeholder="请输入关键词搜索" :remote-method="searchName" size='small' @change='changeName' style="width:100%" ref='customerId' :disabled=" type == 'again'" :loading="nameLoading">
+                                <el-option v-for="item in nameOptions" :key="item.id" :label="item.assName" :value="item.id">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :sm="3" :xs="24" class="text-right">
+                        <el-button type="primary" v-if="type != 'again'" size='small' class="ml10" @click="addCustomer">新增客户</el-button>
+                    </el-col>
+
+                </el-row>
+
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="联系人" prop="contactName">
                             <el-input v-model="form.contactName" placeholder="请输入..." type="text" maxlength="50" />
                         </el-form-item>
                     </el-col>
-                </el-row>
-
-                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="联系电话" prop="contactPhone">
                             <el-input v-model="form.contactPhone" placeholder="请输入..." maxlength="11" />
                         </el-form-item>
                     </el-col>
+
+                </el-row>
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="联系QQ" prop="contactQq">
                             <el-input v-model="form.contactQq" placeholder="请输入..." type="text" maxlength="50" />
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="联系微信" prop="contactWx">
                             <el-input v-model="form.contactWx" placeholder="请输入..." maxlength="50" />
                         </el-form-item>
                     </el-col>
-
+                </el-row>
+                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="商机状态" prop="followStatus">
                             <el-select v-model="form.followStatus" :disabled='disabled' clearable size="small" style="width: 100%">
@@ -43,24 +59,23 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row :gutter="20">
                     <el-col :span="12">
                         <el-form-item label="资源类型" prop="resourceType">
                             <el-cascader :props="seProps" :options="resourceTypeArr" :disabled='disabled' style="width:100%;" :size='"small"' v-model='form.resourceType' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
+
+                </el-row>
+                <el-row :gutter="20" v-show='whetherAdmin'>
                     <el-col :span="12">
                         <el-form-item label="业务类型" prop="vocId">
                             <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='form.vocId' clearable></el-cascader>
                         </el-form-item>
                     </el-col>
-                </el-row>
-                <el-row :gutter="20" v-show='whetherAdmin'>
                     <el-col :span="12">
                         <el-form-item label="所属商务" prop="counselorId">
                             <!-- <el-input v-model="form.counselorId" :disabled='disabled' placeholder="请输入..." type="text" maxlength="50" /> -->
-                            <el-select v-model="form.counselorId" filterable size='small' :disabled='disabled' clearable>
+                            <el-select v-model="form.counselorId" filterable size='small' style="width:100%;" :disabled='disabled' clearable>
                                 <el-option v-for="item in depUserList" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
                             </el-select>
@@ -73,16 +88,19 @@
             <el-button @click="cancel">取 消</el-button>
             <el-button type="primary" @click="submitForm">确 定</el-button>
         </div>
+        <!-- 增加修改用户框 -->
+        <customerModule ref='customerModule' @finish='finish' />
     </el-dialog>
 </template>
 
 <script>
 
-import { bussUpdate } from "@/api/center"
+import { bussUpdate, customerList } from "@/api/center"
 import { mapGetters } from 'vuex'
 import { deepClone } from '@/utils/index'
-
+import customerModule from '../../customer/_module/customerModule'
 export default {
+    components: { customerModule },
     props: {
         clueStatueArr: {
             type: Array,
@@ -130,9 +148,15 @@ export default {
             open: false,
             // 表单参数
             form: {
-                resourceType: "",
-                vocId: "",
-                followStatus: ""
+                customerId: undefined,
+                contactName: undefined,
+                contactPhone: undefined,
+                contactQq: undefined,
+                contactWx: undefined,
+                followStatus: undefined,
+                resourceType: undefined,
+                counselorId: undefined,
+                vocId: undefined
             },
             //用户列表
             depUserList: [],
@@ -171,11 +195,14 @@ export default {
                         trigger: "blur"
                     }
                 ]
-            }
+            },
+            //客户搜索的一些设置
+            type: undefined,
+            nameLoading: false,
+            nameOptions: []
         };
     },
     created() {
-
         if (this.whetherAdmin) {
             this.$store.dispatch('getDepUser').then(res => {
                 this.depUserList = res
@@ -199,32 +226,52 @@ export default {
 
             this.open = true
         },
-        //级联查出上级的id
-        findParentAssId(moId, moArr) {
-
-            let assArr = []
-
-            function findItem(id, arr) {
-
-                for (let item of arr) {
-                    if (item.id == id) {
-                        assArr.unshift(id)
-                        return true
-                    }
-                    if (item.children && item.children.length) {
-                        let findBool = findItem(id, item.children)
-
-                        if (findBool) {
-                            assArr.unshift(item.id)
-                            return true
+        //输入框的搜索
+        searchName(query) {
+            if (query !== '') {
+                this.nameLoading = true;
+                customerList({ customerName: query })
+                    .then(res => {
+                        let arr = res.data
+                        if (arr && arr.length > 0) {
+                            for (let i of arr) {
+                                i.assName = i.customerName + (i.mobilePhone ? (' / ' + i.mobilePhone) : '') + ' / ' + (i.applicationType != '1' ? '企业' : '个人')
+                            }
                         }
-                    }
+                        this.nameOptions = arr
+                    })
+                    .finally(() => {
+                        this.nameLoading = false;
+                    })
+            }
+            else {
+                this.nameOptions = [];
+            }
+        },
+        //改变后，拉出相关信息
+        changeName(value) {
+
+            for (let i of this.nameOptions) {
+                if (i.id == value) {
+                    this.form.contactName = i.contactsName
+                    this.form.contactPhone = i.mobilePhone
+                    this.form.contactQq = i.qq
+                    this.form.contactWx = i.wechatNumber
                 }
             }
+        },
+        //新增用户
+        addCustomer() {
+            this.$refs.customerModule.showFunc({}, '新增客户')
+        },
+        //新增后
+        finish(obj) {
 
-            findItem(moId, moArr)
+            obj.assName = obj.customerName
+            this.nameOptions = [obj]
+            this.form.customerId = obj.id
 
-            return assArr
+            this.changeName(obj.id)
         },
         // 取消按钮
         cancel() {

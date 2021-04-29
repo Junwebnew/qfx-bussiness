@@ -1,21 +1,30 @@
 <template>
-    <el-table :data="phoneList" row-key="id" class="table" v-loading='loading'>
-        <el-table-column type="index" width="40"></el-table-column>
-        <el-table-column label="联系方式" prop="phone"></el-table-column>
-        <el-table-column label="操作" align='center'>
-            <template slot-scope="scope">
-                <div class='operation'>
-                    <el-button size="mini" type="text" @click="getResourse(scope.row)">领取</el-button>
-                </div>
-            </template>
-        </el-table-column>
-    </el-table>
+    <div>
+        <el-table :data="phoneList" row-key="id" class="table" v-loading='loading'>
+            <!-- <el-table-column type="index" width="40"></el-table-column> -->
+            <el-table-column label="联系方式" prop="phone"></el-table-column>
+            <el-table-column label="操作" align='center'>
+                <template slot-scope="scope">
+                    <div class='operation'>
+                        <el-button size="mini" type="text" @click="getResourse(scope.row)">领取</el-button>
+                        <el-button size="mini" class="col-green" type="text" @click="getNewNumber(scope.row)">拨打</el-button>
+                        <el-button size="mini" v-show='scope.row.businessId' class="col-red" type="text" @click="addMarksFunc(scope.row)">备注</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <!-- 新增备注 -->
+        <addMarks ref='addMarks' @finish='finish' />
+    </div>
+
 </template>
 
 <script>
 import { receiveResource } from "@/api/resources";
-
+import Global from "@/layout/components/global.js";
+import addMarks from "./addMarks";
 export default {
+    components: { addMarks },
     props: {
         phoneList: {
             type: Array,
@@ -102,6 +111,21 @@ export default {
             }).catch(error => {
                 console.log('4534', error)
             })
+
+        },
+        //获取真实的号码，返回新的商机Id和号码
+        getNewNumber(json) {
+            Global.$emit("takePhone");
+            setTimeout(() => {
+                this.$set(json, 'businessId', '85563423523235234')
+            }, 1000)
+        },
+        //添加备注
+        addMarksFunc(json) {
+            console.log('9999', json.businessId)
+            this.$refs.addMarks.show({})
+        },
+        finish() {
 
         }
     }

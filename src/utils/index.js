@@ -400,3 +400,25 @@ export function phoneStartCode(phone) {
     }
     return '--'
 }
+//获取当前页面最高层级
+export function GetZindex() {
+    var arr = [...document.all].map(e => +window.getComputedStyle(e).zIndex || 0);
+    return arr.length ? Math.max(...arr) : 1
+}
+
+
+//获取当前页面最高层级
+export function DownFile(content, filename) {
+    var eleLink = document.createElement('a')
+    eleLink.style.display = 'none'
+    var blob = new Blob([content])
+    var url = window.URL.createObjectURL(blob)
+    eleLink.href = url
+    eleLink.download = filename
+    // 触发点击
+    document.body.appendChild(eleLink);
+    eleLink.click()
+    window.URL.revokeObjectURL(url)
+    // 然后移除
+    document.body.removeChild(eleLink);
+}

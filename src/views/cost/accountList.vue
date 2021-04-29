@@ -347,11 +347,11 @@ export default {
         },
         //去充值
         costRecharge(row) {
-            this.$router.push('/cost/accountRecharge?id=' + row.id)
+            this.$router.push('/system/cost/accountRecharge?id=' + row.id)
         },
         /** 修改按钮操作 */
         costDetail(row) {
-            this.$router.push('/cost/accountRechargeList?id=' + row.id)
+            this.$router.push('/system/cost/accountRechargeList?id=' + row.id)
         },
         //修改资源领取方式
         resourseSetfunc() {
