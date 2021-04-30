@@ -77,7 +77,7 @@ export default {
     },
     mounted() {
 
-        console.log('999', this.$store.state.user.userInfo.seatNumber)
+        // console.log('999', this.$store.state.user.userInfo.seatNumber)
 
         //开发环境，暂时不能使用
 
