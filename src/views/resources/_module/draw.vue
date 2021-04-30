@@ -30,6 +30,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.backcolor {
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
 ::v-deep .el-drawer {
     background-color: #edf0f4;
     .el-drawer__header {

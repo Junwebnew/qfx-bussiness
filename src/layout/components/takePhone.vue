@@ -77,9 +77,11 @@ export default {
     },
     mounted() {
 
+        console.log('999', this.$store.state.user.userInfo.seatNumber)
+
         //开发环境，暂时不能使用
 
-        this.initPhoneSet()
+        this.initPhoneSet('init')
 
         let that = this
         //
@@ -99,16 +101,38 @@ export default {
         showTakeBox(bool) {
             if (!this.phoneShow && !this.status) {
 
+                this.phoneShow = true
+
                 this.initPhoneSet()
             }
+            else
 
-            this.phoneShow = bool || !this.phoneShow
+                this.phoneShow = bool || !this.phoneShow
 
         },
-        initPhoneSet() {
+        initPhoneSet(type) {
 
+            //坐席号
+            let seatNumber = this.$store.state.user.userInfo.seatNumber
 
-            return
+            if (!seatNumber && !seatNumber.trim()) {
+
+                if (type != 'init') {
+                    this.$confirm('您还未设置自己的坐席号，请联系管理员设置', "警告", {
+                        confirmButtonText: "确定",
+                        cancelButtonText: "取消",
+                        showCancelButton: false,
+                        type: "warning"
+                    }).then(function () { })
+                        .catch(msg => {
+                            console.log(11111, msg)
+                        })
+                }
+
+                this.phoneShow = false
+
+                return
+            }
 
             var that = this
 
@@ -120,6 +144,7 @@ export default {
 
                         let config = res.data[0]
 
+                        let setNumber = 2
                         var ua = this.UA = new SIP.UA({
                             uri: config.uri,
                             wsServers: [config.wsServers],

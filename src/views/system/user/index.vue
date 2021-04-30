@@ -125,7 +125,7 @@
                             <template slot-scope="scope">
                                 <span class="mr5">{{scope.row.name}}</span>
                                 <el-tag v-if="scope.row.accountType == 0" size="mini">主</el-tag>
-                                <el-tag v-if="scope.row.whetherAdmin == 1" type="success" size="mini">管</el-tag>
+                                <el-tag class="ml5" v-if="scope.row.whetherAdmin == 1" type="success" size="mini">管</el-tag>
                             </template>
                         </el-table-column>
                         <el-table-column label="部门" prop="organizationName" :show-overflow-tooltip="true" />

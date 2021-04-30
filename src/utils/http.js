@@ -12,7 +12,7 @@ var isNotifi = null  //是否已通知过期
 
 const http = axios.create({
     baseURL: publicUrl, //请求url
-    timeout: 15000, //超时处理
+    timeout: 30000, //超时处理
     headers: {
         'Content-Type': 'application/json'
     }

@@ -27,7 +27,14 @@
                         <el-col :lg="6" :sm="12" :xs="24">
                             <el-form-item label="申请人类型" prop="applicationType" class="el-form-item-none">
                                 <el-select v-model="queryParams.applicationType" clearable size="small" style="width: 100%">
-                                    <el-option v-for="dict in aplicationTypeArr" :key="dict.value" :label="dict.name" :value="dict.value" />
+                                    <el-option v-for="dict in applicantTypeEnum" :key="dict.value" :label="dict.key" :value="dict.value" />
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :lg="6" :sm="12" :xs="24">
+                            <el-form-item label="号码类型" prop="phoneType" class="el-form-item-none">
+                                <el-select v-model="queryParams.phoneType" clearable size="small" style="width: 100%">
+                                    <el-option v-for="dict in phoneTypeArr" :key="dict.value" :label="dict.key" :value="dict.value" />
                                 </el-select>
                             </el-form-item>
                         </el-col>
@@ -36,11 +43,11 @@
                                 <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                             </el-form-item>
                         </el-col>
-                        <el-col :span='12' align='right'>
-                            <el-form-item class="el-form-item-none ml20">
+                        <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                            <div>
                                 <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                            </el-form-item>
+                            </div>
                         </el-col>
                     </el-row>
 
@@ -148,10 +155,9 @@ export default {
             //初始时间
             initDate: [],
             //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ],
+            applicantTypeEnum: [],
+            //电话类型
+            phoneTypeArr: [],
             userList: []
         }
     },
@@ -160,7 +166,12 @@ export default {
     },
     mounted() {
 
-        console.log(111, this.$route.meta)
+        this.qmxDataKey().then(res => {
+            console.log('0000', res)
+            this.phoneTypeArr = res['phoneTypeEnumList']
+            this.applicantTypeEnum = res['applicantTypeEnumList']
+        })
+
         this.getList()
     },
     methods: {
