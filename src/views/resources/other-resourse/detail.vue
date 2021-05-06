@@ -54,7 +54,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='7' :resourceId='json.id' @reload='initPage' />
+                        <phoneList :phoneList='phoneList' resourcesModule='10' :resourceId='json.id' @reload='receiveAfter' />
                     </div>
                 </el-col>
             </el-row>
@@ -76,7 +76,8 @@ export default {
             title: '详情页',
             json: {},
             loading: false,
-            tableData: []
+            tableData: [],
+            phoneList: []
         }
     },
     created() {
@@ -84,6 +85,8 @@ export default {
     },
     methods: {
         initPage(id) {
+
+            // console.log('8888', id)
 
             id = id || this.json.id
 
@@ -93,6 +96,9 @@ export default {
                     this.title = (res.data.companyName || '')
 
                     this.json = res.data
+
+                    this.phoneList = [{ id: id, phone: res.data.contactPhone }]
+
                 })
         },
         initServerArr(str) {
@@ -102,12 +108,20 @@ export default {
             }
             return str ? str.split(",") : ["--"];
         },
+        //领取后
+        receiveAfter() {
+            this.initPage()
+            this.$emit('reload')
+        },
         //替换del标签
         replaceDel(item) {
             if (item) {
                 return item.replace(/<(del|\/del).*?>/g, '')
             }
             return ''
+        },
+        finishReceive() {
+            this.phoneList = []
         },
         getResourse(row) {
 

@@ -93,7 +93,7 @@
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='6' :resourceId='json.id' @reload='initPage' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='6' :resourceId='json.id' @reload='receiveAfter' />
                     </div>
                 </el-col>
             </el-row>
@@ -137,6 +137,11 @@ export default {
                     this.title = res.data.tmName + ' 驳回详情'
                     this.json = res.data
                 })
+        },
+        //领取后
+        receiveAfter() {
+            this.initPage()
+            this.$emit('reload')
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")

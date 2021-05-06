@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { resourseConfig } from '@/utils/baseConfig'
+import { resourseConfig } from '@/baseConfig'
 export default {
     props: {
         /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:商标求购,8:企业白名单,9:送达公告,10:到期未续展*/
@@ -63,8 +63,6 @@ export default {
                     else {
                         //判断用户有没有次数
                         this.$store.dispatch('getOrgMsg', this.companyId).then(res => {
-
-
 
                             //有次数
                             if (res.num > 0) {

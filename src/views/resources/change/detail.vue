@@ -1,72 +1,111 @@
 <template>
     <div class="app-container">
-        <div class="mb10 custom-box">
+        <div class="custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="17" :xs="24">
-                    <div class="back-fff pad20 custom-box posRelative">
-                        <resoursePrice :resourcesModule='5' :applicationType='json.applicationType' />
-                        <el-row :gutter="20">
-                            <el-col :span="24" class="mb16">
-                                <p class=" tit">申请人信息</p>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <span class="custom-label">申请人名称：</span>
-                                <div class="custom-r">
-                                    {{json.companyName || '--'}}
-                                </div>
-                            </el-col>
+                    <div class="full-height-auto">
 
-                            <el-col :lg="12" :sm="24" :xs="24">
-                                <span class="custom-label">社会信用代码：</span>
-                                <div class="custom-r">
-                                    {{json.creditCode || '--'}}
-                                </div>
-                            </el-col>
-                            <el-col :lg="24" :sm="12" :xs="24">
-                                <span class="custom-label">申请人地址：</span>
-                                <div class="custom-r">
-                                    {{json.companyAddress || '--'}}
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-                    <div class="mt10 back-fff pad20 custom-box">
-                        <el-row :gutter="20">
-                            <el-col :span="24" class="mb16">
-                                <p class=" tit">变更信息</p>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
+                        <div class="back-fff pad20 custom-box posRelative">
+                            <resoursePrice :resourcesModule='5' :applicationType='json.applicationType' />
+                            <el-row :gutter="20">
+                                <el-col :span="24" class="mb16">
+                                    <p class=" tit">申请人信息</p>
+                                </el-col>
+                                <el-col :lg="12" :sm="12" :xs="24">
+                                    <span class="custom-label">申请人名称：</span>
+                                    <div class="custom-r">
+                                        {{json.companyName || '--'}}
+                                    </div>
+                                </el-col>
 
-                                <div class="text-center">名称变更记录</div>
-                                <div v-if="json.changeNameVoList" class="mt20 timeList">
-                                    <el-timeline>
-                                        <el-timeline-item v-for="(activity, index) in json.changeNameVoList" :key="index" :timestamp="splitTimes(activity.createTime) " placement="top">
-                                            {{activity.companyName}}
-                                        </el-timeline-item>
-                                    </el-timeline>
-                                </div>
-                                <p v-else class="text-center">(暂无)</p>
-                            </el-col>
-                            <el-col :lg="12" :sm="12" :xs="24">
-                                <div class="text-center">地址变更记录</div>
-                                <div v-if="json.changeAddressVoList" class="mt20 timeList">
-                                    <el-timeline>
-                                        <el-timeline-item v-for="(activity, index) in json.changeAddressVoList" :key="index" :timestamp="splitTimes(activity.createTime)" placement="top">
-                                            {{activity.companyAddress}}
-                                        </el-timeline-item>
-                                    </el-timeline>
-                                </div>
-                                <p v-else class="text-center">(暂无)</p>
-                            </el-col>
-                        </el-row>
+                                <el-col :lg="12" :sm="24" :xs="24">
+                                    <span class="custom-label">社会信用代码：</span>
+                                    <div class="custom-r">
+                                        {{json.creditCode || '--'}}
+                                    </div>
+                                </el-col>
+                                <el-col :lg="24" :sm="12" :xs="24">
+                                    <span class="custom-label">申请人地址：</span>
+                                    <div class="custom-r">
+                                        {{json.companyAddress || '--'}}
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </div>
+                        <div class="mt10 back-fff pad20 custom-box">
+                            <el-row :gutter="20">
+                                <el-col :span="24" class="mb16">
+                                    <p class=" tit">变更信息</p>
+                                </el-col>
+                                <el-col>
+
+                                    <table class="c-table" align="center">
+                                        <thead>
+                                            <tr>
+                                                <td class='n' style=" width:40px">序号</td>
+                                                <td class='n' style=" width:80px">变更日期</td>
+                                                <td class='n' style=" width:80px">变更项目</td>
+                                                <td class='n'>变更前</td>
+                                                <td class='n'>变更后</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,idx) in changeVoList" :key='idx'>
+                                                <td>{{idx+1}}</td>
+                                                <td>{{splitTimes(item.createTime)}}</td>
+                                                <td>{{matchTypeName(item.changeType)}}</td>
+                                                <td>{{item.changeBefore}}</td>
+                                                <td>{{item.changeAfter}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </el-col>
+                            </el-row>
+                        </div>
+
+                        <div class="mt10 back-fff pad20 custom-box">
+                            <el-row :gutter="20">
+                                <el-col :span="24" class="mb16">
+                                    <p class=" tit">申请人相关商标</p>
+                                </el-col>
+                                <el-col>
+                                    <table class="c-table" align="center">
+                                        <thead>
+                                            <tr>
+                                                <td class='n' style="width:40px">序号</td>
+                                                <td class='n'>商标名</td>
+                                                <td class='n'>注册号</td>
+                                                <td class='n'>国际分类</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(item,idx) in tmList" :key='idx'>
+                                                <td>{{idx+1}}</td>
+                                                <td>
+                                                    <a :href="'https://www.qmxip.com/tm_xq/'+item.id" target="_blank" class="col">
+                                                        <span>{{item.trademarkName}}</span>
+                                                    </a>
+                                                </td>
+                                                <td>{{item.trademarkNumber}}</td>
+                                                <td>{{item.typeOfTrademarkCode}}类-{{item.typeOfTrademarkName}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <!-- 分页 -->
+                                    <pagination v-show="total>0" :total="total" :page.sync="pageNum" layout="prev, pager, next" :limit.sync="pageSize" @pagination="getApplicationList" />
+                                </el-col>
+                            </el-row>
+                        </div>
                     </div>
                 </el-col>
                 <!-- //右侧 -->
                 <el-col :sm="7" :xs="24">
                     <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' @reload='initPage' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' @reload='receiveAfter' />
                     </div>
                 </el-col>
             </el-row>
@@ -75,10 +114,16 @@
 </template>
 
 <script>
-import { changeDetail } from "@/api/resources";
+import { changeDetail, changeApplicationList } from "@/api/resources";
 import { phoneList, resoursePrice } from '../_module'
 export default {
     name: 'change-detail',
+    props: {
+        changeTypeEnum: {
+            type: Array,
+            default: []
+        }
+    },
     components: {
         phoneList, resoursePrice
     },
@@ -88,31 +133,68 @@ export default {
             json: {},
             loading: false,
             tableData: [],
-            price: ""
+            price: "",
+            changeVoList: [],
+            //商标列表
+            total: 0,
+            pageNum: 1,
+            pageSize: 10,
+            tmList: []
         }
     },
-    // watch: {
-    //     $route(now) {
 
-    //         if ('change' == now.name && this.$route.query.id != now.query.id) {
-    //             this.initPage(now.query.id)
-    //         }
-    //     }
-    // },
     created() {
         // this.initPage(this.$route.query.id || 'b88ec8e7e9d24c09a8fc916a4d69d4c5')
     },
     methods: {
 
-        initPage(id) {
+        initPage(applicationId, id) {
 
-            id = id || this.json.id
-
-            changeDetail(id)
+            Promise.all([
+                changeDetail(id),
+                changeApplicationList(applicationId)
+            ])
                 .then(res => {
 
-                    this.title = (res.data.companyName || '') + ' 变更详情'
-                    this.json = res.data
+                    let json = res[0].data
+
+                    this.title = (json.companyName || '') + ' 变更详情'
+                    this.json = json
+
+                    this.changeVoList = res[1].data
+
+                    this.getApplicationList()
+                })
+        },
+        //领取后
+        receiveAfter() {
+            this.initPage()
+            this.$emit('reload')
+        },
+        //申请人商标列表
+        getApplicationList() {
+            let name = '深圳市新宝沙水产实业有限公司'
+            if (!name) return {}
+
+            let requireObj = {
+                'pageNo': this.pageNum,
+                'pageSize': this.pageSize,
+                'keyword': name,
+                "searchType": "1",
+                "searchFieldDTO": {
+                    "applicationNameAndGyr": "1",  //申请人名称
+                }
+            }
+            this.$axios.post('/API/api-e/trademark/query_hit_page_newPc', requireObj)
+                .then(res => {
+                    // console.log('8888', res)
+
+                    let data = res.data
+                    this.total = data.total
+                    this.tmList = data.businessList
+
+                }).catch(res => {
+
                 })
         },
         initServerArr(str) {
@@ -129,8 +211,11 @@ export default {
             }
             return ''
         },
-        getResourse(row) {
+        //匹配变更类型
+        matchTypeName(type) {
+            let item = this.changeTypeEnum.filter(i => i.value == type)[0]
 
+            return (item && item.key) || '--'
         },
         splitTimes(times) {
 
@@ -139,19 +224,20 @@ export default {
     }
 }
 </script>
-<style lang="scss" scoped>
-.timeList {
-    padding: 0 30px;
-    ::v-deep .el-image-viewer__close .el-icon-circle-close {
-        color: #ffffff;
-    }
-    ::v-deep .el-timeline-item__timestamp {
-        font-size: 14px;
-        color: #2d8cf0;
-        font-weight: bold;
-    }
-    ::v-deep .el-timeline-item__content {
-        color: #515a6e;
-    }
-}
+// <style lang="scss" scoped>
+// .timeList {
+//     padding: 0 30px;
+//     ::v-deep .el-image-viewer__close .el-icon-circle-close {
+//         color: #ffffff;
+//     }
+//     ::v-deep .el-timeline-item__timestamp {
+//         font-size: 14px;
+//         color: #2d8cf0;
+//         font-weight: bold;
+//     }
+//     ::v-deep .el-timeline-item__content {
+//         color: #515a6e;
+//     }
+// }
+//
 </style>

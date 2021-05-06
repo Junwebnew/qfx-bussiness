@@ -46,7 +46,7 @@ export default {
             default: 2
         },
 
-        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:企业白名单,8:送达公告,9:到期未续展*/
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:企业白名单,8:送达公告,9:到期未续展,10:外部资源的导入*/
 
         resourcesModule: {
             type: String | Number
@@ -54,13 +54,13 @@ export default {
     },
     computed: {
         urlTypeStr() {
-            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList/', 'notice/arrive/noticeArrive', 'resource/notContinues']
+            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList/', 'notice/arrive/noticeArrive', 'resource/notContinues', 'externalResourceInput']
 
             return arr[this.resourcesModule - 1]
         },
         resourcesModuleType() {
 
-            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170', '1344241701484670977', '1344241701484670978', '1344241701547586666']
+            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170', '1344241701484670977', '1344241701484670978', '1344241701547586666', '外部资源无']
             return arr[this.resourcesModule - 1]
         }
     },
@@ -74,28 +74,32 @@ export default {
     methods: {
         getResourse(row) {
 
-            let that = this
+
             this.$confirm('确定是否领取此资源?', "警告", {
                 confirmButtonText: "确定",
                 cancelButtonText: "取消",
                 type: "warning"
             }).then(() => {
 
-                that.loading = true
+                this.formationBussiness(row)
 
-                let obj = {
-                    businessBelong: this.businessBelong,
-                    distributionToUserId: this.distributionToUserId,
-                    phoneId: row.id,
-                    phoneNumber: row.phone,
-                    resourceId: this.resourceId,
-                    resourcesModule: this.resourcesModuleType,
-                    type: this.type
-                }
+            }).catch(error => {
+                console.log('4534', error)
+            })
 
-                console.log(this.urlTypeStr, obj)
+        },
+        //领取形成商机
+        formationBussiness(row) {
 
-                receiveResource(this.urlTypeStr, obj)
+
+            let that = this
+            that.loading = true
+
+            //如果是10 外部资源形成商机
+
+            if (this.resourcesModule == 10) {
+
+                this.$axios.get(this.urlTypeStr + '/receive?id=' + row.id)
                     .then(res => {
 
                         this.msgSuccess('领取成功')
@@ -108,10 +112,36 @@ export default {
                         that.loading = false
                     })
 
-            }).catch(error => {
-                console.log('4534', error)
-            })
+                return
+            }
 
+            return
+
+
+            let obj = {
+                businessBelong: this.businessBelong,
+                distributionToUserId: this.distributionToUserId,
+                phoneId: row.id,
+                phoneNumber: row.phone,
+                resourceId: this.resourceId,
+                resourcesModule: this.resourcesModuleType,
+                type: this.type
+            }
+
+            console.log(this.urlTypeStr, obj)
+
+            receiveResource(this.urlTypeStr, obj)
+                .then(res => {
+
+                    this.msgSuccess('领取成功')
+
+                    that.loading = false
+
+                    that.$emit('reload')
+                })
+                .catch(res => {
+                    that.loading = false
+                })
         },
         //获取真实的号码，返回新的商机Id和号码
         getNewNumber(json) {

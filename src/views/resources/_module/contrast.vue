@@ -240,8 +240,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import url("../../../assets/styles/table.scss");
-
 ::v-deep .el-dialog__body {
     padding: 10px 20px;
 }

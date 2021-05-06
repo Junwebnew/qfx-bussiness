@@ -113,7 +113,7 @@ export default {
         initPhoneSet(type) {
 
             //坐席号
-            let seatNumber = this.$store.state.user.userInfo.seatNumber
+            let seatNumber = this.$store.state.user.userInfo.seatNumber || ''
 
             if (!seatNumber && !seatNumber.trim()) {
 

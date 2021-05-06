@@ -3,7 +3,7 @@ import axios from "axios";
 import { Message, MessageBox, Loading, Notification } from 'element-ui';
 import Cookies from 'js-cookie'
 import { getToken, removeToken } from '@/utils/auth'
-import { publicUrl, qmxOnlineUrl } from './baseConfig'
+import { publicUrl, qmxOnlineUrl } from '../baseConfig'
 import errorCode from '@/utils/errorCode'
 
 

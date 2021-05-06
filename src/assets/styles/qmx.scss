@@ -407,8 +407,12 @@ ul::-webkit-scrollbar-thumb {
   min-height: calc(100vh - 100px);
 }
 .full-height2 {
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - 80px);
 }
+.full-height-auto {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
 .backLine {
   background-color: #edf0f4;
   height: 10px;
@@ -420,8 +424,8 @@ ul::-webkit-scrollbar-thumb {
     color: #333;
     padding-bottom: 14px;
     font-size: 16px;
-    line-height: 30px;
-    height: 44px;
+    line-height: 24px;
+    height: 36px;
     // font-weight: bold;
   }
   .custom-label {
@@ -499,7 +503,24 @@ ul::-webkit-scrollbar-thumb {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-
+//一个表格的样式
+.c-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  
+  .c-table td {
+    padding: 8px ;
+    // padding-right: 0;
+    border: 1px solid #e4eef6;
+    height: 40px;
+  }
+  .c-table td.n {
+      background: #f2f9fc;
+      width: 100px;
+  }
+  
 /* 覆盖 el 饿了么 */
 .el-message {
   min-width: auto !important;

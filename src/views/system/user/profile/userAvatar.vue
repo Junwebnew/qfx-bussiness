@@ -47,7 +47,7 @@ import store from "@/store";
 import { VueCropper } from "vue-cropper";
 import { fileUpload } from "@/api";
 import { updateLoginUserInfo } from "@/api/system/user";
-import { qmxOnlineUrl } from '@/utils/baseConfig'
+
 
 export default {
     components: { VueCropper },

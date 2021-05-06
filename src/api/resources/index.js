@@ -60,6 +60,13 @@ export function changeDetail(id) {
     return $axios.post('resource/change/get', '"' + id + '"')
 }
 
+/**
+ * 申请人变更 详情
+ */
+export function changeApplicationList(id) {
+    return $axios.post('resource/changeDetail/getDetail', '"' + id + '"')
+}
+
 // ********************************************代理结构注销 ************************************
 /**
  * 代理结构注销 关联电话分页查询

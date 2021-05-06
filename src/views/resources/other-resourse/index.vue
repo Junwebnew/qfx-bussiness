@@ -103,7 +103,7 @@
         <addResourse ref='addResourse' @finish='getList' />
         <!-- ****************************************详情弹窗************************************** -->
         <draw ref='myDraw'>
-            <detail ref='myDetail' />
+            <detail ref='myDetail' @reload='getList' />
         </draw>
     </div>
 </template>
@@ -136,9 +136,10 @@ export default {
             queryParams: {
                 pageNum: 1,
                 pageSize: 10,
-                hasPhone: true,
-                applicantName: undefined,
-                address: undefined
+                contactPeople: undefined,
+                companyName: undefined,
+                contactPhone: undefined,
+                receiveStatus: 0 //领取状态：0未领取 1已领取
             },
             //id集合
             ids: [],
@@ -189,11 +190,14 @@ export default {
         resetQuery() {
             this.dateRange = []
             this.resetForm("queryForm");
+            this.queryParams.receiveStatus = 0
             this.handleQuery();
         },
         checkDetail(obj) {
 
             this.$refs.myDraw.openDraw({ title: obj.companyName + ' 详情' })
+
+            // console.log('999', obj)
 
             this.$nextTick(() => {
                 this.$refs.myDetail.initPage(obj.id)

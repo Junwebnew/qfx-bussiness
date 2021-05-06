@@ -12,7 +12,7 @@
 <script>
 import Layout from "./index";
 import { mapGetters } from 'vuex'
-import { resourseConfig } from '@/utils/baseConfig'
+import { resourseConfig } from '@/baseConfig'
 export default {
     name: 'resourseLayout',
     components: { Layout },

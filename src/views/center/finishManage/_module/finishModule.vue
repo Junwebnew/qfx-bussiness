@@ -82,7 +82,7 @@
 import { bussFinishAgain, bussFinishUpdate } from "@/api/center"
 import { mapGetters } from 'vuex'
 import { deepClone } from '@/utils/index'
-import { qmxOnlineUrl } from '@/utils/baseConfig'
+import { qmxOnlineUrl } from '@/baseConfig'
 
 export default {
     props: {

@@ -32,7 +32,7 @@
 <script>
 
 import { bussFinishSuccess } from "@/api/center";
-import { qmxOnlineUrl } from '@/utils/baseConfig'
+import { qmxOnlineUrl } from '@/baseConfig'
 
 export default {
     props: {

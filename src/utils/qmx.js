@@ -1,7 +1,7 @@
 
 import Vue from "vue"
 
-import { baseImgUrl } from './baseConfig'
+import { baseImgUrl } from '../baseConfig'
 
 import headerImg from '../assets/images/head.png'
 

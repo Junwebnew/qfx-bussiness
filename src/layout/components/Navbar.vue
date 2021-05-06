@@ -28,6 +28,8 @@
                     <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
                 </el-tooltip>
 
+                <wchartBox class="right-menu-item hover-effect" />
+
                 <qmxmsg class="right-menu-item hover-effect" />
 
                 <!-- <screenfull id="screenfull" class="right-menu-item hover-effect" /> -->
@@ -70,7 +72,7 @@ import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 // import RuoYiDoc from '@/components/RuoYi/Doc'
 import qmxmsg from '@/components/RuoYi/msg'
-
+import wchartBox from './wchartBox'
 import Global from "@/layout/components/global.js";
 export default {
     components: {
@@ -81,7 +83,8 @@ export default {
         Search,
         RuoYiGit,
         // RuoYiDoc,
-        qmxmsg
+        qmxmsg,
+        wchartBox
     },
     computed: {
         ...mapGetters([
@@ -194,7 +197,7 @@ export default {
             display: inline-block;
             padding: 0 14px;
             height: 100%;
-            font-size: 18px;
+            font-size: 24px;
             color: #5a5e66;
             vertical-align: text-bottom;
 

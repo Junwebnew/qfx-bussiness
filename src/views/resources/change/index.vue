@@ -50,6 +50,7 @@
                         <span class='col pointer' @click="checkDetail(scope.row)">{{scope.row.companyName}}</span>
                     </template>
                 </el-table-column>
+                <el-table-column label="变更类型" width='100' :formatter='formatterType' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="申请人地址" prop='companyAddress' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="社会信用代码" width='190' prop='creditCode' show-overflow-tooltip> </el-table-column>
                 <el-table-column label="最新领取记录" prop='bestNewRemark'>
@@ -73,7 +74,7 @@
         </div>
         <!-- ****************************************详情弹窗************************************** -->
         <draw ref='myDraw'>
-            <detail ref='myDetail' />
+            <detail ref='myDetail' :changeTypeEnum='changeTypeEnum' @reload='getList' />
         </draw>
     </div>
 </template>
@@ -110,17 +111,26 @@ export default {
             //初始时间
             initDate: [],
             //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ],
-            userList: []
+            aplicationTypeArr: [],
+            userList: [],
+            //变更类型
+            changeTypeEnum: []
         }
     },
     created() {
 
     },
     mounted() {
+
+        this.qmxDataKey().then(res => {
+            // console.log('0000', res['ChangeTypeEnum'])
+            this.changeTypeEnum = res['ChangeTypeEnum'] || [
+                { key: '名称变更', value: "1" },
+                { key: '地址变更', value: "2" }
+            ]
+            this.aplicationTypeArr = res['applicantTypeEnumList']
+        })
+
         this.getList()
     },
     methods: {
@@ -145,12 +155,19 @@ export default {
             this.resetForm("queryForm");
             this.handleQuery();
         },
+        //匹配类型
+        formatterType(row) {
+
+            let item = this.changeTypeEnum.filter(i => i.value == row.changeType)[0]
+
+            return (item && item.key) || '--'
+        },
         checkDetail(obj) {
 
             this.$refs.myDraw.openDraw({ title: obj.companyName + ' 详情' })
 
             this.$nextTick(() => {
-                this.$refs.myDetail.initPage(obj.id)
+                this.$refs.myDetail.initPage(obj.applicationNameId, obj.id)
             })
         },
         // checkDetail(obj) {

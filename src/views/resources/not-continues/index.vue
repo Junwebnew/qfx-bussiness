@@ -116,7 +116,7 @@
         </div>
         <!-- ****************************************详情弹窗************************************** -->
         <draw ref='myDraw'>
-            <detail ref='myDetail' />
+            <detail ref='myDetail' @reload='getList' />
         </draw>
     </div>
 </template>

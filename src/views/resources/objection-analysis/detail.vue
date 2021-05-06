@@ -149,7 +149,7 @@
                                 <p>{{selectItem.applicationNameCn}}</p>
                             </div>
                         </div>
-                        <phoneList :phoneList=" selectItem.phoneList " resourcesModule='2' :resourceId='selectItem.id' @reload='initPage' />
+                        <phoneList :phoneList=" selectItem.phoneList " resourcesModule='2' :resourceId='selectItem.id' @reload='receiveAfter' />
                     </div>
                 </el-col>
             </el-row>
@@ -212,6 +212,11 @@ export default {
                     loading.close()
                 })
             this.initList(id)
+        },
+        //领取后
+        receiveAfter() {
+            this.initPage()
+            this.$emit('reload')
         },
         initList(id) {
             //获取的是列表

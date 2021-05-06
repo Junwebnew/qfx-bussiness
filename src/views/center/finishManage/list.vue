@@ -116,7 +116,7 @@
 
 <script>
 import { bussFinishDiscard, bussFinishList } from "@/api/center";
-import { qmxOnlineUrl } from '@/utils/baseConfig'
+import { qmxOnlineUrl } from '@/baseConfig'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 import { mapGetters } from 'vuex'

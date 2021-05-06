@@ -88,7 +88,7 @@
                 <el-col :sm="8" :xs="24">
                     <div class="back-fff pad20 full-height full-height2">
                         <p class="tit mb16">联系信息</p>
-                        <phoneList :phoneList='json.phoneList' resourcesModule='8' :resourceId='json.id' @reload='initPage' />
+                        <phoneList :phoneList='json.phoneList' resourcesModule='8' :resourceId='json.id' @reload='receiveAfter' />
                     </div>
                 </el-col>
             </el-row>
@@ -149,6 +149,11 @@ export default {
                     loading.close()
                 })
             // this.initList(id)
+        },
+        //领取后
+        receiveAfter() {
+            this.initPage()
+            this.$emit('reload')
         },
         initServerArr(str) {
             str = (str + '').replace(/null/g, "")
