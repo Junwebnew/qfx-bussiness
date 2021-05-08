@@ -551,6 +551,13 @@ export const asyncAllRoutes = [
                 ],
             },
             {
+                name: "resourseManage",
+                path: "resourseManage",
+                hidden: false,
+                component: "center/resourseManage/index",
+                meta: { title: "资源管理", noCache: true },
+            },
+            {
                 name: "customer",
                 path: "customer",
                 hidden: false,
@@ -572,8 +579,8 @@ export const asyncAllRoutes = [
         path: "/resources",
         hidden: false,
         redirect: "noRedirect",
-        // component: "Layout",
-        component: "ResourseLayout",
+        component: "Layout",
+        // component: "ResourseLayout",
         alwaysShow: true,
         meta: { title: "资源模块", icon: "qmxuser", noCache: true },
         children: [

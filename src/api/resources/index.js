@@ -233,3 +233,8 @@ export function receiveResource(typeStr, data) {
 export function totalCountResourse(data = {}) {
     return $axios.post('resource/statistic/alanalysis/resource/newadd/totalCount', data)
 }
+
+//根据ID查询号码
+export function getResourcePhoneNumber(id) {
+    return $axios.post(`resource/phone/get`, '"' + id + '"')
+}

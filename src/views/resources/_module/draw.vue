@@ -36,6 +36,7 @@ export default {
 }
 ::v-deep .el-drawer {
     background-color: #edf0f4;
+    max-width: 100% !important;
     .el-drawer__header {
         padding: 15px 20px;
         margin-bottom: 10px;

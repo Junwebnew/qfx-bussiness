@@ -11,7 +11,7 @@
 import { resourseConfig } from '@/baseConfig'
 export default {
     props: {
-        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:商标求购,8:企业白名单,9:送达公告,10:到期未续展*/
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:企业白名单,8:送达公告,9:到期未续展,10:外部资源的导入*/
         resourcesModule: {
             type: String | Number
         },
@@ -24,9 +24,16 @@ export default {
     data() {
         return {
             ids: [
-                { 'person': '13', 'com': '5' }, { 'person': '14', 'com': '6' }, { 'person': '15', 'com': '7' }, { 'person': '16', 'com': '8' },
-                { 'person': '17', 'com': '9' }, { 'person': '18', 'com': '10' }, { 'person': '19', 'com': '11' }, { 'person': '20', 'com': '12' },
-                { 'person': '22', 'com': '21' }, { 'person': '32', 'com': '31' }
+                { 'person': '13', 'com': '5' },  //近日申请
+                { 'person': '14', 'com': '6' }, //异议分析
+                { 'person': '15', 'com': '7' }, //商标续展
+                { 'person': '16', 'com': '8' },//代理注销
+                { 'person': '17', 'com': '9' },//商标变更
+                { 'person': '18', 'com': '10' }, //疑似驳回
+                { 'person': '20', 'com': '12' },//企业白名单
+                { 'person': '22', 'com': '21' },//送达公告
+                { 'person': '32', 'com': '31' },//到期未续展
+                { 'person': '', 'com': '' },//外部资源的导入 暂无
             ],
             price: '', //价格
             unit: '', //单位
@@ -54,6 +61,8 @@ export default {
                     // console.log('222', res)
 
                     let arr2 = res.filter(i => i.id == itemObj.id)
+
+                    //console.log('999', this.resourcesModule, itemObj, arr2)
 
                     //获取到相对应的资源，并且是false,则是特殊资源
                     if (arr2.length && !arr2[0].supportYearPay) {
@@ -87,7 +96,7 @@ export default {
 
             this.$store.dispatch('getResoursePrice', this.applicationType == 1 ? types.person : types.com).then(res => {
 
-                // console.log('111', res, types)
+                console.log('111', res, types)
 
                 this.price = res.value / 10 //价格
                 this.unit = '星' //单位

@@ -214,8 +214,11 @@ export default {
             this.initList(id)
         },
         //领取后
-        receiveAfter() {
-            this.initPage()
+        receiveAfter(type) {
+            //拨打领取，只需要刷新列表页
+            if (type == 'all') {
+                this.initPage()
+            }
             this.$emit('reload')
         },
         initList(id) {

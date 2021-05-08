@@ -150,7 +150,7 @@ export default {
     font-weight: 500;
 }
 .formBox {
-    width: 500px;
+    max-width: 500px;
     margin: 0px auto 40px;
     .el-form-item-j {
         margin-bottom: 24px;

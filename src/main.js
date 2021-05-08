@@ -25,6 +25,8 @@ import { getConfigKey } from "@/api/system/config";
 import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, download, handleTree } from "@/utils/ruoyi";
 import Pagination from "@/components/Pagination";
 import TakePhone from "@/components/TakePhone";
+import SwitchForm from "@/components/SwitchForm";
+
 //自定义表格工具扩展
 import RightToolbar from "@/components/RightToolbar"
 
@@ -78,6 +80,7 @@ Vue.filter('narrowTen', function (value) {
 Vue.component('Pagination', Pagination)
 Vue.component('RightToolbar', RightToolbar)
 Vue.component('TakePhone', TakePhone)
+Vue.component('SwitchForm', SwitchForm)
 
 Vue.use(permission)
 

@@ -1,5 +1,5 @@
 <template>
-    <div id="tags-view-container" class="tags-view-container">
+    <div id="tags-view-container" class="tags-view-container" :class="{'mobile':device == 'mobile'}">
         <div class="scroll-pane-box">
             <span class="scroll-btn l el-icon-d-arrow-left" @click="handleScroll( 200 )" v-show="isShowScrollBtn"></span>
             <scroll-pane ref="scrollPane" class="tags-view-wrapper">
@@ -26,9 +26,15 @@ import ScrollPane from './ScrollPane'
 import Global from "@/layout/components/global.js";
 import Cookies from 'js-cookie'
 import { deepClone } from '@/utils/index'
+import { mapState } from 'vuex'
 
 export default {
     components: { ScrollPane },
+    computed: {
+        ...mapState({
+            device: state => state.app.device,
+        }),
+    },
     data() {
         return {
             indexItem: {
@@ -250,8 +256,10 @@ export default {
     // background: #edf0f4;
     padding-left: 192px;
     background: #edf0f4;
-
     position: relative;
+    &.mobile {
+        padding-left: 0px;
+    }
     .scroll-pane-box {
         width: 100%;
         height: 100%;

@@ -23,16 +23,6 @@
             </el-scrollbar>
         </div>
         <div class="r-side" @click.stop>
-
-            <!-- <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
-                <el-menu :default-openeds='selectedIndexs' mode="vertical">
-
-                    <template>
-                        <sidebar-item v-for="(route, index) in showPermission_routes" v-show=' index == rActive ' :key="route.path  + index" :item="route" :base-path="route.path" />
-                    </template>
-                </el-menu>
-            </el-scrollbar> -->
-
             <el-scrollbar :class="settings.sideTheme" wrap-class="scrollbar-wrapper">
                 <el-menu :default-active="activeMenu" :default-openeds='selectedIndexs' mode="vertical">
                     <sidebar-item v-for="(route, index) in showPermission_routes[rActive].children" :key="route.path  + index" :item="route" :base-path="showPermission_routes[rActive].path" />

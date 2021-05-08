@@ -14,11 +14,18 @@
                             <el-input v-model="queryParams.companyAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="12" :sm="12" :xs="24" align='right'>
-                        <el-form-item class="el-form-item-none ml20">
-                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="号码类型" prop="phoneType" class="el-form-item-none">
+                            <el-select v-model="queryParams.phoneType" clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in phoneTypeArr" :key="dict.value" :label="dict.key" :value="dict.value" />
+                            </el-select>
                         </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none">
+
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+
                     </el-col>
                 </el-row>
 
@@ -81,10 +88,11 @@
 
 <script>
 import { changeList } from "@/api/resources";
-import { draw } from '../_module'
+import { draw, resourseMixin } from '../_module'
 import detail from './detail'
 export default {
     name: "change",
+    mixins: [resourseMixin],
     components: {
         draw, detail
     },
@@ -105,8 +113,9 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 hasPhone: true,
-                companyAddress: "",
-                companyName: ''
+                companyAddress: undefined,
+                companyName: undefined,
+                phoneType: undefined
             },
             //初始时间
             initDate: [],

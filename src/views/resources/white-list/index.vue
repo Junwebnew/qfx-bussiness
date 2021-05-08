@@ -18,7 +18,14 @@
                             <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="6" :sm="12" :xs="24">
+                        <el-form-item label="号码类型" prop="phoneType" class="el-form-item-none">
+                            <el-select v-model="queryParams.phoneType" clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in phoneTypeArr" :key="dict.value" :label="dict.key" :value="dict.value" />
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none">
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                     </el-col>
@@ -81,13 +88,14 @@
 
 <script>
 import { companyWhiteList } from "@/api/resources";
-import { draw } from '../_module'
+import { draw, resourseMixin } from '../_module'
 import detail from './detail'
 export default {
     name: "recentApply",
     components: {
         draw, detail
     },
+    mixins: [resourseMixin],
     data() {
         return {
             //显示搜索框
@@ -106,15 +114,9 @@ export default {
                 pageSize: 10,
                 hasPhone: true,
                 applicantName: undefined,
-                address: undefined
-            },
-            //初始时间
-            initDate: [],
-            //申请人类型
-            aplicationTypeArr: [
-                { name: '企业', value: "0" },
-                { name: '个人', value: "1" }
-            ]
+                address: undefined,
+                phoneTypeArr: undefined,
+            }
         }
     },
     created() {

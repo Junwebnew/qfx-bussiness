@@ -58,6 +58,9 @@
                                                 <td>{{item.changeBefore}}</td>
                                                 <td>{{item.changeAfter}}</td>
                                             </tr>
+                                            <tr v-if='!changeVoList || changeVoList.length == 0'>
+                                                <td colspan="5" class="text-center">暂无数据</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
@@ -74,7 +77,7 @@
                                     <table class="c-table" align="center">
                                         <thead>
                                             <tr>
-                                                <td class='n' style="width:40px">序号</td>
+                                                <td class='n' style="width:20px">序号</td>
                                                 <td class='n'>商标名</td>
                                                 <td class='n'>注册号</td>
                                                 <td class='n'>国际分类</td>
@@ -91,11 +94,14 @@
                                                 <td>{{item.trademarkNumber}}</td>
                                                 <td>{{item.typeOfTrademarkCode}}类-{{item.typeOfTrademarkName}}</td>
                                             </tr>
+                                            <tr v-if='!tmList || tmList.length == 0'>
+                                                <td colspan="4" class="text-center">暂无数据</td>
+                                            </tr>
                                         </tbody>
                                     </table>
 
                                     <!-- 分页 -->
-                                    <pagination v-show="total>0" :total="total" :page.sync="pageNum" layout="prev, pager, next" :limit.sync="pageSize" @pagination="getApplicationList" />
+                                    <pagination v-show="total>0" :total="total" :page.sync="pageNum" layout="prev, pager, next,total" :limit.sync="pageSize" @pagination="getApplicationList" />
                                 </el-col>
                             </el-row>
                         </div>
@@ -150,6 +156,9 @@ export default {
 
         initPage(applicationId, id) {
 
+            applicationId = applicationId || this.json.applicationId
+            id = id || this.json.id
+
             Promise.all([
                 changeDetail(id),
                 changeApplicationList(applicationId)
@@ -167,13 +176,17 @@ export default {
                 })
         },
         //领取后
-        receiveAfter() {
-            this.initPage()
+        receiveAfter(type) {
+            //拨打领取，只需要刷新列表页
+            if (type == 'all') {
+                this.initPage()
+            }
             this.$emit('reload')
         },
         //申请人商标列表
         getApplicationList() {
-            let name = '深圳市新宝沙水产实业有限公司'
+
+            let name = this.json.companyName
             if (!name) return {}
 
             let requireObj = {

@@ -290,3 +290,21 @@ export function customerList(data) {
 export function customerDel(arr) {
     return $axios.post('customerManage/batch/del', arr)
 }
+
+
+/******************************************************** 资源管理 */
+
+//新增和修改用户
+export function resourseManage(data) {
+    return $axios.post('consultResourceManage/add', data)
+}
+
+//客户列表
+export function resourseList(data) {
+    return $axios.post('consultResourceManage/page/list', data)
+}
+
+//客户删除
+export function resourseDel(arr) {
+    return $axios.post('consultResourceManage/batch/del', arr)
+}

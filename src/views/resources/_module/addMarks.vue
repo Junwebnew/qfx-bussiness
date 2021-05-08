@@ -28,19 +28,9 @@
 import { clueMarksUpdate, clueTipsUpdate } from "@/api/center";
 
 export default {
-    props: {
-        /*类型  1：线索必传 2：商机不传）*/
-        type: {
-            type: String | Number,
-            default: 2
-        },
-        clueStatueArr: {
-            type: Array,
-            default: () => []
-        }
-    },
     data() {
         return {
+            type: 1,  /*类型  1：线索必传 2：商机不传）*/
             //备注弹框
             businessId: '',
             open: false,
@@ -61,9 +51,10 @@ export default {
         }
     },
     methods: {
-        show(obj, tit) {
+        show(id, type, tit) {
 
-            this.businessId = obj.id
+            this.businessId = id
+            this.type = type
             this.addTitle = tit || '新增备注'
 
             // this.form = { businessStatusId: obj.followStatus, remindDate: '' }

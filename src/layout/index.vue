@@ -41,7 +41,7 @@
             <img src="../assets/images/fixphone.png" alt="电话">
         </div>
         <!-- 电话组件 -->
-        <takePhone/>
+        <takePhone />
     </div>
 </template>
 
@@ -140,7 +140,7 @@ export default {
     top: 0;
     height: 100%;
     position: absolute;
-    z-index: 999;
+    z-index: 1000;
 }
 
 .fixed-header {

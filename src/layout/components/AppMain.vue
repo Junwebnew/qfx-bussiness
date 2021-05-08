@@ -1,11 +1,10 @@
 <!-- @author ruoyi 20201128 支持三级以上菜单缓存 -->
 <template>
-    <section class="app-main">
+    <section class="app-main" :class="{'mobile':device == 'mobile'}">
         <!-- <transition name="fade-transform" mode="out-in">
-            <keep-alive :max="20" :exclude="notCacheName">
+            <keep-alive :include="cachedViews">
                 <router-view :key="key" />
             </keep-alive>
-            <router-view :key="key" />
         </transition> -->
 
         <transition name="fade-transform" mode="out-in">
@@ -20,10 +19,14 @@
 
 <script>
 import Global from "@/layout/components/global.js";
+import { mapState } from 'vuex'
 
 export default {
     name: 'AppMain',
     computed: {
+        ...mapState({
+            device: state => state.app.device,
+        }),
         notCacheName() {
             var visitedViews = this.$store.state.tagsView.visitedViews;
             var noCacheViews = [];
@@ -159,6 +162,9 @@ export default {
     .fixed-header + .app-main {
         padding-top: 92px;
         padding-left: 182px;
+    }
+    .app-main.mobile {
+        padding-left: 0;
     }
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
     <div class="navbar">
-        <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
+        <hamburger v-if="device =='mobile'" id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
         <!-- <div class="refresh hamburger-container" style="padding: 0 10px;" @click="refreshFunc"> <i class="el-icon-refresh-right"></i> </div> -->
         <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
-        <div class="logoBox">
+        <div class="logoBox" :class="{wap: device =='mobile'}">
             <a href="http://www.qmxip.com" target="_blank" rel="noopener noreferrer">
                 <!-- <img src="../../assets/images/logo-black2.png" alt='权明星'> -->
                 权发现
-            </a><span class="min">知识产权销售利器</span>
+            </a>
+            <span class="min" v-if="device !=='mobile'">知识产权销售利器</span>
         </div>
         <div class="right-menu">
             <template v-if="device!=='mobile'">
@@ -64,11 +65,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
+// import Screenfull from '@/components/Screenfull'
+// import SizeSelect from '@/components/SizeSelect'
+// import Search from '@/components/HeaderSearch'
 import RuoYiGit from '@/components/RuoYi/Git'
 // import RuoYiDoc from '@/components/RuoYi/Doc'
 import qmxmsg from '@/components/RuoYi/msg'
@@ -76,11 +77,11 @@ import wchartBox from './wchartBox'
 import Global from "@/layout/components/global.js";
 export default {
     components: {
-        Breadcrumb,
+        // Breadcrumb,
         Hamburger,
-        Screenfull,
-        SizeSelect,
-        Search,
+        // Screenfull,
+        // SizeSelect,
+        // Search,
         RuoYiGit,
         // RuoYiDoc,
         qmxmsg,
@@ -148,6 +149,9 @@ export default {
         line-height: 50px;
         margin-left: 20px;
         font-size: 0;
+        &.wap {
+            margin: 0;
+        }
         img {
             // height: 50px;
             width: 152px;

@@ -175,14 +175,18 @@ export default {
 
                     let str = newObj.id ? '修改成功' : '新增成功'
 
-                    externalResourceManage(newObj).then(res => {
+                    let loading = this.$loading()
 
-                        console.log(111, res)
+                    externalResourceManage(newObj).then(res => {
 
                         this.msgSuccess(str)
                         this.open = false
                         this.$emit('finish', res.data)
+                        loading.close()
                     })
+                        .catch(res => {
+                            loading.close()
+                        })
                 }
             });
         },

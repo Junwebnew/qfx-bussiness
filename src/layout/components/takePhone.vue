@@ -88,7 +88,7 @@ export default {
         Global.$on("takePhone", (telePhone) => {
 
             that.showTakeBox(true)
-
+            // console.error('执行好多次111111&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
             if (telePhone) {
                 that.telNum = telePhone
                 that.ringout()
@@ -125,7 +125,7 @@ export default {
                         type: "warning"
                     }).then(function () { })
                         .catch(msg => {
-                            console.log(11111, msg)
+                            // console.log(11111, msg)
                         })
                 }
 
@@ -138,7 +138,7 @@ export default {
 
             $axios.post('callPhoneConfig/page/list', { "pageNum": 1, "pageSize": 10 })
                 .then(res => {
-                    console.log('999', res.data[0])
+                    // console.log('999', res.data[0])
 
                     if (res.data && res.data.length) {
 
@@ -176,7 +176,7 @@ export default {
         },
         //点击拨打
         ringout() {
-
+            console.error('执行好多次222222222&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
             if (!this.status) {
                 this.msgError('电话连接失败，请稍后再试！')
                 return

@@ -19,36 +19,43 @@
                             <el-input v-model="queryParams.regNum" placeholder="精准:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="国际分类" prop="intClass" class="el-form-item-none">
                             <el-input v-model="queryParams.intClass" placeholder="精准:请输入1-45" clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="申请人" prop="applicationName" class="el-form-item-none">
                             <el-input v-model="queryParams.applicationName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="申请人地址" prop="applicationAddress" class="el-form-item-none">
                             <el-input v-model="queryParams.applicationAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="申请日期" prop="applydateRange" class="el-form-item-none">
                             <el-date-picker v-model="applydateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="驳回日期" prop="rejectdateRange" class="el-form-item-none">
                             <el-date-picker v-model="rejectdateRange" size="small" :picker-options="pickerOptions" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="24" :sm="24" :xs="24" align='right'>
-                        <el-form-item class="el-form-item-none ml20">
-                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
+                        <el-form-item label="号码类型" prop="phoneType" class="el-form-item-none">
+                            <el-select v-model="queryParams.phoneType" clearable size="small" style="width: 100%">
+                                <el-option v-for="dict in phoneTypeArr" :key="dict.value" :label="dict.key" :value="dict.value" />
+                            </el-select>
                         </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none">
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                        <SwitchForm :showSwitch.sync="showSwitch" />
+
                     </el-col>
                 </el-row>
 
@@ -110,10 +117,11 @@
 
 <script>
 import { rejectList } from "@/api/resources";
-import { draw } from '../_module'
+import { draw, resourseMixin } from '../_module'
 import detail from './detail'
 export default {
     name: "recentApply",
+    mixins: [resourseMixin],
     components: {
         draw, detail
     },
@@ -121,6 +129,7 @@ export default {
         return {
             //显示搜索框
             showSearch: true,
+            showSwitch: false,
             //显示loading
             loading: false,
             //数据列表 
@@ -141,7 +150,8 @@ export default {
                 regNum: undefined,
                 intClass: undefined,
                 applicationName: undefined,
-                applicationAddress: undefined
+                applicationAddress: undefined,
+                phoneType: undefined
             },
             //初始日期
             initDate: [],

@@ -43,7 +43,7 @@
                                 <el-date-picker v-model="dateRange" size="small" style="width:100%" value-format="yyyy-MM-dd" type="daterange" range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
                             </el-form-item>
                         </el-col>
-                        <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                        <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none">
                             <div>
                                 <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -122,10 +122,11 @@
 
 <script>
 import { recentApplyList } from "@/api/resources";
-import { draw } from '../_module'
+import { draw, resourseMixin } from '../_module'
 import detail from './detail'
 export default {
     name: "recentApply",
+    mixins: [resourseMixin],
     components: {
         draw, detail
     },
@@ -151,27 +152,13 @@ export default {
                 typeOfTrademarkCode: undefined,
                 applicationDddrCn: undefined,
                 applicationType: undefined,
-            },
-            //初始时间
-            initDate: [],
-            //申请人类型
-            applicantTypeEnum: [],
-            //电话类型
-            phoneTypeArr: [],
-            userList: []
+            }
         }
     },
     created() {
 
     },
     mounted() {
-
-        this.qmxDataKey().then(res => {
-            console.log('0000', res)
-            this.phoneTypeArr = res['phoneTypeEnumList']
-            this.applicantTypeEnum = res['applicantTypeEnumList']
-        })
-
         this.getList()
     },
     methods: {

@@ -126,11 +126,10 @@
 <script>
 import { getClueStatusList, bussMyList, bussEliminate, bussTransfer } from "@/api/center";
 import { bussModule, distribution, selectVocTpye, completeBuss } from '../_module'
-import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 
 export default {
-    components: { bussModule, SwitchForm, distribution, selectVocTpye, completeBuss },
+    components: { bussModule, distribution, selectVocTpye, completeBuss },
     data() {
         return {
             //显示搜索框
