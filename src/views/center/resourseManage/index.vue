@@ -60,7 +60,7 @@
                     <template slot-scope="scope">
                         <div class='operation'>
                             <el-button size="mini" type="text" @click="checkDetail(scope.row)">详情</el-button>
-                            <!-- <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button> -->
+                            <el-button class="col-update" size="mini" type="text" v-hasPermi="['edit']" @click="handleUpdate(scope.row)">修改</el-button>
                             <el-button class="col-del" size="mini" type="text" v-hasPermi="['del']" @click="handleEliminate(scope.row)">删除</el-button>
                         </div>
                     </template>

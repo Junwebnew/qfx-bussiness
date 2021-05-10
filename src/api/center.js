@@ -294,9 +294,21 @@ export function customerDel(arr) {
 
 /******************************************************** 资源管理 */
 
-//新增和修改用户
+//id查询
+
+export function resourseDetail(id) {
+    return $axios.post('consultResourceManage/get', '"' + id + '"')
+}
+
+
+//新增
 export function resourseManage(data) {
     return $axios.post('consultResourceManage/add', data)
+}
+
+//修改
+export function resourseManageUpdate(data) {
+    return $axios.post('consultResourceManage/update', data)
 }
 
 //客户列表

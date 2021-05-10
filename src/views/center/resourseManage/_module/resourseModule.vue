@@ -73,9 +73,20 @@
                 </el-row>
                 <el-row :gutter="20">
 
-                    <el-col :span="24">
+                    <el-col :span="12">
                         <el-form-item label="分配部门" prop="allocationDept">
-                            <el-cascader-panel v-model='form.allocationDept' :props="seProps" :options="deptList" style="width:100%;" :size='"small"' clearable></el-cascader-panel>
+                            <treeselect v-model="form.allocationDept" :options="deptList" :disable-branch-nodes="true" :normalizer="normalizer" placeholder="选择部门" noResultsText="暂无结果" :searchable="true" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="提醒人员" prop="remindersName">
+                            <div class="pointer">
+                                <!-- <span @click="openTipsBox" v-if="!form.remindersName">请选择</span>
+                                {{form.remindersName}} -->
+                                <!-- <el-input v-model="form.remindersName" readOnly placeholder="请点击选择" type="text" class="pointer" maxlength="50" clearable /> -->
+
+                            </div>
+                            <ClickInput @click="openTipsBox" :iptValue.sync='form.remindersName' />
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -93,17 +104,25 @@
             <el-button @click="cancel">取 消</el-button>
             <el-button v-show='modeType !=  "check"' type="primary" @click="submitForm">确 定</el-button>
         </div>
+
+        <!-- 人员 -->
+        <distribution ref='distribution' @finish='seleceUserFinish' showStr='提醒' :isBatch='true' />
+
     </el-dialog>
 </template>
 
 <script>
 
-import { resourseManage } from "@/api/center"
+import { resourseManage, resourseDetail, resourseManageUpdate } from "@/api/center"
 import { qmxDetailDept, qmxDept } from "@/api/system/dept";
 import { mapGetters } from 'vuex'
-import { deepClone } from '@/utils/index'
-
+import { deepClone, backAascaderArr } from '@/utils/index'
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import distribution from '../../_module/distribution'
+import ClickInput from '@/components/ClickInput'
 export default {
+    components: { Treeselect, distribution, ClickInput },
     data() {
 
         var validateUseName = (rule, value, callback) => {
@@ -154,14 +173,15 @@ export default {
                 contactsName: undefined,
                 mobilePhone: undefined,
                 wechatNumber: undefined,
-
                 qq: undefined,
                 remark: undefined,
                 customerSource: undefined,
                 applicationType: undefined,
                 // resourceType: undefined,
                 vocId: undefined,
-                allocationDept: undefined
+                allocationDept: undefined,
+                remindersName: undefined,
+                reminders: undefined
             },
             seProps: { value: 'id', label: "name" },
             //客户来源枚举
@@ -180,6 +200,8 @@ export default {
             vocIdArr: [],
             //部门列表
             deptList: [],
+            //提醒人员的数组包含名字和id
+            remindersArr: [],
             // 表单校验
             rules: {
                 customerName: [
@@ -225,9 +247,20 @@ export default {
             'companyId'
         ]),
     },
+    watch: {
+        remindersArr(current, old) {
+
+            this.$set(this.form, 'reminders', current.map(item => item.id).join(','))
+
+            this.$set(this.form, 'remindersName', current.map(item => item.name).join(','))
+
+            // this.form.reminders = current.map(item => item.id).join(',')
+            // this.form.remindersName = current.map(item => item.name).join(',')
+
+            // console.log('999', this.form.remindersName)
+        }
+    },
     created() {
-
-
         this.initEnumList()
     },
     methods: {
@@ -237,7 +270,15 @@ export default {
             this.modeType = modeType
             this.tit = tit
             if (obj.id) {
-                this.form = deepClone(obj)
+
+                resourseDetail(obj.id)
+                    .then((msg) => {
+
+                        let json = msg.data
+                        // json.allocationDept = backAascaderArr(this.deptList, json.allocationDept)
+                        this.form = json
+
+                    })
             }
             this.open = true
         },
@@ -270,7 +311,7 @@ export default {
             });
 
             qmxDept({}).then(res => {
-                this.deptList = this.changeDate(res.data)[0].children
+                this.deptList = res.data[0].treeVoList
             })
 
             return
@@ -279,33 +320,25 @@ export default {
             this.$store.dispatch('getBussStatus', 4).then(res => {
                 this.clueStatueArr = res
             })
-
             //culb
-
-
             this.$store.dispatch('getBussStatus', 2).then(res => {
                 this.clueStatueArr = res
             })
 
-            this.$store.dispatch('getCenterType', 1).then(res => {
-                this.vocIdArr = res
-            })
-            this.$store.dispatch('getCenterType', 2).then(res => {
-                this.resourceTypeArr = res
-            })
+        },
 
+        /** 转换菜单数据结构 */
+        normalizer(node) {
+            if (node.treeVoList && !node.treeVoList.length) {
+                delete node.treeVoList;
+            }
+            return {
+                id: node.id,
+                label: node.name,
+                children: node.treeVoList
+            };
         },
-        //数据子集切换和删除
-        changeDate(arr) {
-            arr.map(i => {
-                if (i.treeVoList && i.treeVoList.length > 0) {
-                    let newArr = this.changeDate(i.treeVoList)
-                    i.children = newArr
-                }
-                delete i.treeVoList
-            })
-            return arr
-        },
+
         // 取消按钮
         cancel() {
             this.open = false;
@@ -325,18 +358,32 @@ export default {
                 remark: undefined,
                 customerSource: undefined,
                 applicationType: undefined,
+                allocationDept: undefined
             }
             this.resetForm("form");
             this.disabled = false
         },
+        //提醒
+        openTipsBox() {
+            this.$refs.distribution.show({}, '选择提醒人员')
+        },
+        seleceUserFinish(msg) {
 
+            if (msg instanceof Array) {
+
+                // console.log(111, msg)
+                this.remindersArr = msg
+            }
+            else {
+                this.remindersArr = [msg]
+            }
+        },
         /** 提交按钮 新增用户*/
         submitForm: function () {
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
-
-                    console.log('9999', this.form)
+                    //console.log('9999', this.form)
 
                     let newObj = deepClone(this.form)
 
@@ -350,29 +397,21 @@ export default {
                         newObj.vocId = newObj.vocId[newObj.vocId.length - 1]
                     }
 
-                    //部门
-                    if (typeof newObj.allocationDept != "string") {
-                        newObj.allocationDept = newObj.allocationDept[newObj.allocationDept.length - 1]
-                    }
-
                     // businessBelong   1 是线索 2 是商机  
                     newObj.businessBelong = this.receiveOppWay == 'buss' ? 2 : 1
 
                     //1手动分配 2 自动分配
                     newObj.allocationType = 1
 
-
-
                     let str = newObj.id ? '修改成功' : '新增成功'
 
-                    // console.log('9999',this.form, newObj)
+                    let axiosFunc = newObj.id ? resourseManageUpdate : resourseManage
 
-                    // return
+                    let loading = this.$loading()
 
-                    resourseManage(newObj).then(res => {
-
+                    axiosFunc(newObj).then(res => {
                         // console.log(111, res)
-
+                        loading.close()
                         this.msgSuccess(str)
                         this.open = false
                         this.$emit('finish', res.data)

@@ -407,7 +407,7 @@ export function GetZindex() {
 }
 
 
-//获取当前页面最高层级
+//下载文件 图片等
 export function DownFile(content, filename) {
     var eleLink = document.createElement('a')
     eleLink.style.display = 'none'
@@ -421,4 +421,37 @@ export function DownFile(content, filename) {
     window.URL.revokeObjectURL(url)
     // 然后移除
     document.body.removeChild(eleLink);
+}
+//级联 返回 数组
+export function backAascaderArr(arr, value, params = {}) {
+
+    let $1 = params.id || 'id'
+    let $2 = params.children || 'children'
+
+    var loop = arrData => {
+
+        for (let item of arrData) {
+
+            let child = item[$2];
+
+            if (child && child.length > 0) {// 是否有子节点，有则继续遍历下一级，无则是叶子节点
+
+                let hasFindArr = loop(child)
+
+                if (hasFindArr && hasFindArr.length) {
+
+                    hasFindArr.unshift(item[$1])
+
+                    return hasFindArr
+                }
+            }
+            if (item[$1] === value) {
+                return [item[$1]]
+            }
+        }
+        return false
+    }
+
+    return loop(arr);
+
 }

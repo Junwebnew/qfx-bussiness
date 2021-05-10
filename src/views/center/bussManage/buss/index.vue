@@ -125,7 +125,8 @@
 
 <script>
 import { getClueStatusList, bussMyList, bussEliminate, bussTransfer } from "@/api/center";
-import { bussModule, distribution, selectVocTpye, completeBuss } from '../_module'
+import { bussModule, selectVocTpye, completeBuss } from '../_module'
+import distribution from '../../_module/distribution'
 import { deepClone } from '@/utils/index'
 
 export default {
@@ -272,10 +273,10 @@ export default {
                 })
         },
         //选完用户之后
-        seleceUserFinish(userId) {
+        seleceUserFinish(userObj) {
 
 
-            bussTransfer({ oppIds: this.ids, disTraUserId: userId }).then(res => {
+            bussTransfer({ oppIds: this.ids, disTraUserId: userObj.id }).then(res => {
 
                 this.msgSuccess('移交成功')
                 this.handleQuery()

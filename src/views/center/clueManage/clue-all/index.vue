@@ -114,7 +114,8 @@
 
 <script>
 import { getClueStatusList, clueList, clueEliminate, clueDistribution } from "@/api/center";
-import { clubModule, distribution } from '../_module'
+import { clubModule } from '../_module'
+import distribution from '../../_module/distribution'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 import { mapGetters } from 'vuex'
@@ -294,8 +295,8 @@ export default {
                 })
         },
         //选完用户之后
-        seleceUserFinish(userId) {
-            clueDistribution({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+        seleceUserFinish(userObj) {
+            clueDistribution({ clueIds: this.ids, disTraUserId: userObj.id }).then(res => {
 
                 this.msgSuccess('分配成功')
                 this.handleQuery()

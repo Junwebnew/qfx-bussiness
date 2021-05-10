@@ -1,17 +1,24 @@
 <template>
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="800px" :close-on-click-modal='false' append-to-body>
         <div class="pad0-20">
             <div>
                 <el-form label-width="80px" @submit.native.prevent>
                     <el-form-item label="用户名称" prop="name" class="el-form-item-none">
                         <el-input v-model="queryParams.name" placeholder="请输入用户名称" clearable size="small" style="width: 70%" @keyup.enter.native="getList" />
-
                         <el-button class="ml20" size="mini" type="primary" @click="getList">搜 索</el-button>
+
+                    </el-form-item>
+                    <el-form-item label="已选用户" prop="name" class="el-form-item-none" v-if="isBatch">
+                        <el-tag :key="tag.id" v-for="(tag,idx) in ids" closable :disable-transitions="false" @close="handleClose(tag,idx)" size='small' class="mr10">
+                            {{tag.name}}
+                        </el-tag>
+                        <el-button type="success" size="mini" @click="handleDistributionIdx()" :disabled="!ids.length">确认</el-button>
                     </el-form-item>
                 </el-form>
             </div>
-            <el-table v-loading="loading" :data="userList">
+            <el-table v-loading="loading" ref='multipleTable' :data="userList" @selection-change="handleSelectionChange" @select='handleSelection' @select-all='handleSelectionAll'>
+                <el-table-column type='selection' width="50" v-if="isBatch"></el-table-column>
                 <el-table-column type="index" width="50" align="center" />
                 <el-table-column label="用户名称" align="center" prop="name">
                     <template slot-scope="scope">
@@ -38,19 +45,20 @@
 <script>
 
 import { qmxUserList } from "@/api/system/user";
-import { clueDistribution } from "@/api/center";
 import { mapGetters } from 'vuex'
 
 export default {
     props: {
-        ids: {
-            type: Array,
-            default: () => []
-        },
         showStr: {
             type: String,
             default: '分配'
-        }
+        },
+        //是否可以多选
+        isBatch: {
+            type: Boolean,
+            default: false
+        },
+
     },
     computed: {
         ...mapGetters([
@@ -80,6 +88,8 @@ export default {
                 name: undefined,
                 orgId: ''
             },
+            //选中的id
+            ids: []
         };
     },
     created() {
@@ -90,7 +100,7 @@ export default {
         show(obj, tit) {
             //console.log(11,obj)
             this.reset()
-
+            this.ids = []
             this.title = tit || '分配'
 
             this.open = true
@@ -115,13 +125,83 @@ export default {
                 orgId: this.organizationId
             }
         },
+        //多选的删除
+        handleClose(row, idx) {
+            this.$refs.multipleTable.toggleRowSelection(row, false)
+            this.ids.splice(idx, 1)
+        },
         /** 提交按钮 新增用户*/
         handleDistribution(row) {
-
-            this.$emit('finish', row.id)
+            this.$emit('finish', row)
             this.open = false
+        },
+        //多选框单独点击
+        handleSelection(selection, row) {
+
+            // console.log('9999', selection)
+            // console.log('66666', row)
+            for (let i = 0; i < this.ids.length; i++) {
+                if (row.id == this.ids[i].id) {
+                    this.ids.splice(i, 1)
+                    return
+                }
+            }
+
+            this.ids.push(row)
 
         },
+        //多选框全选与取消
+        handleSelectionAll(selection) {
+
+            if (selection.length > 0) {
+                for (let item of selection) {
+                    let bool = false
+                    this.ids.map(idxItme => {
+                        if (idxItme.id == item.id) {
+                            bool = true
+                        }
+                    })
+                    if (!bool) {
+                        this.ids.push(item)
+                    }
+                }
+            }
+            else {
+                for (let item of this.userList) {
+
+                    for (let i = 0; i < this.ids.length; i++) {
+                        if (item.id == this.ids[i].id) {
+                            this.ids.splice(i, 1)
+
+                        }
+                    }
+                }
+            }
+
+        },
+        // 多选框选中数据
+        handleSelectionChange(selection) {
+            // this.ids = selection.map(item => item.id)
+
+            // this.ids.push(...selection)
+            // for (let item of selection) {
+            //     let bool = false
+            //     this.ids.map(idxItme => {
+            //         if (idxItme.id == item.id) {
+            //             bool = true
+            //         }
+            //     })
+            //     if (!bool) {
+            //         this.ids.push(item)
+            //     }
+            // }
+        },
+        //批量操作
+        handleDistributionIdx() {
+            // let arr = this.$refs.multipleTable.selection
+            this.$emit('finish', this.ids)
+            this.open = false
+        }
     }
 };
 </script>

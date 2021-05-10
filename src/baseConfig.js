@@ -8,7 +8,7 @@ publicUrl = 'http://192.168.0.13:9007/'
 
 // publicUrl = 'http://39.99.128.104:9007/'
 
-// publicUrl = 'https://qufax.zaiqicloud.com:9007/'
+publicUrl = 'https://qufax.zaiqicloud.com:9007/'
 
 
 //图片请求地址

@@ -80,7 +80,7 @@
             <!-- 分页 -->
             <pagination v-show="total>0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize" @pagination="getList" />
             <!-- 分配 -->
-            <!-- <distribution ref='distribution' :ids='ids' @finish='seleceUserFinish' /> -->
+
         </div>
     </div>
 </template>
@@ -89,7 +89,7 @@
 import { depPoolList, depPoolReceive } from "@/api/center";
 
 import SwitchForm from "@/components/SwitchForm";
-// import { distribution } from '../_module'
+
 export default {
     components: { SwitchForm },
     data() {

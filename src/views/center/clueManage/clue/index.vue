@@ -125,7 +125,8 @@
 
 <script>
 import { getClueStatusList, clueMyList, clueEliminate, clueTransfer } from "@/api/center";
-import { clubModule, distribution, selectVocTpye } from '../_module'
+import { clubModule, selectVocTpye } from '../_module'
+import distribution from '../../_module/distribution'
 import SwitchForm from "@/components/SwitchForm";
 import { deepClone } from '@/utils/index'
 export default {
@@ -278,8 +279,8 @@ export default {
                 })
         },
         //选完用户之后
-        seleceUserFinish(userId) {
-            clueTransfer({ clueIds: this.ids, disTraUserId: userId }).then(res => {
+        seleceUserFinish(userObj) {
+            clueTransfer({ clueIds: this.ids, disTraUserId: userObj.id }).then(res => {
 
                 this.msgSuccess('移交成功')
                 this.handleQuery()
