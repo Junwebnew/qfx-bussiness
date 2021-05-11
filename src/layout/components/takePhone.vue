@@ -1,6 +1,7 @@
 <template>
 
     <transition name="sidebarLogoFade">
+
         <div class="phoneBox" v-show="phoneShow" v-drag>
             <span class="el-icon-close close" @click=" phoneShow = false"></span>
             <div class="tit"> 拨打电话 <span class="status" :class="{'green':status}"></span></div>
@@ -34,13 +35,16 @@
                     <div class="btn button hangup" @click="hangup">挂断</div>
                 </div>
             </div>
+
+            <video id="remoteVideo" name="remoteVideo" class="hide" style=" background:#0C6"></video>
+            <video id="localVideo" name="localVideo" class='hide' muted="muted" style="background:#f00"></video>
         </div>
     </transition>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { formatDate } from '@/utils/index'
+import { formatDate, preventRepeatClick } from '@/utils/index'
 import SIP from './webphone.js'
 import Global from "@/layout/components/global.js";
 import $axios from '@/utils/http'
@@ -138,22 +142,29 @@ export default {
 
             $axios.post('callPhoneConfig/page/list', { "pageNum": 1, "pageSize": 10 })
                 .then(res => {
-                    // console.log('999', res.data[0])
+                    //console.log('999', res.data[0])
 
                     if (res.data && res.data.length) {
 
                         let config = res.data[0]
 
-                        let setNumber = 2
-                        var ua = this.UA = new SIP.UA({
-                            uri: config.uri,
+                        let numberConfig = {
+                            uri: seatNumber + config.uri,
                             wsServers: [config.wsServers],
-                            authorizationUser: config.authorizationUser,
-                            password: config.password,
+                            authorizationUser: seatNumber,
+                            password: config.password + seatNumber,
                             hackIpInContact: true,
                             rtcpMuxPolicy: config.rtcpMuxPolicy,
                             hackWssInTransport: true,
-                        });
+                        }
+
+                        // console.log('123123', numberConfig)
+
+
+                        // return
+
+
+                        var ua = this.UA = new SIP.UA(numberConfig);
 
                         //连接成功
                         ua.on('registered', function () {
@@ -176,20 +187,25 @@ export default {
         },
         //点击拨打
         ringout() {
-            console.error('执行好多次222222222&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-            if (!this.status) {
-                this.msgError('电话连接失败，请稍后再试！')
-                return
-            }
-            // var phone = $('#number').val();
-            // //alert('webdial:'+phone);
-            // call(phone);
-            if (this.telNum && this.telNum.length <= 11) {
+            // console.error('执行好多次222222222&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
 
-                this.showWave = true
-                this.isConnection = true
-                this.call_events()
-            }
+
+            preventRepeatClick(() => {
+
+
+                if (!this.status) {
+                    this.msgError('电话连接失败，请稍后再试！')
+                    return
+                }
+
+                if (this.telNum) {
+
+                    this.connectionText = '正在接通'
+                    this.showWave = true
+                    this.isConnection = true
+                    this.call_events()
+                }
+            })
 
         },
         //挂断电话
@@ -228,9 +244,9 @@ export default {
                 that.showWave = true
                 that.connectionText = '接听中'
 
-                var num = 0
+                var num = 1
 
-                this.timer = setInterval(() => {
+                that.timer = setInterval(() => {
 
                     num++
 
@@ -238,7 +254,7 @@ export default {
                         minni = Math.floor(num / 60 % 60),
                         sec = Math.floor(num % 60);
 
-                    this.connentTime = (hours ? ((hours < 10 ? ('0' + hours) : "") + ":") : '') + (minni ? ((minni < 10 ? ('0' + minni) : "") + ":") : '00:') + (sec < 10 ? ('0' + sec) : sec)
+                    that.connentTime = (hours ? ((hours < 10 ? ('0' + hours) : "") + ":") : '') + (minni ? ((minni < 10 ? ('0' + minni) : "") + ":") : '00:') + (sec < 10 ? ('0' + sec) : sec)
 
                 }, 1000)
 
@@ -261,24 +277,24 @@ export default {
             });
             sss.on('bye', function (request) {//挂机
 
-                clearInterval(this.timer)
+                clearInterval(that.timer)
 
                 that.showWave = false
                 that.connectionText = '挂机'
             })
             sss.on('terminated', function (message, cause) {//结束
 
-                clearInterval(this.timer)
+                clearInterval(that.timer)
 
                 that.showWave = false
                 that.connectionText = '结束'
+
             });
 
 
             sss.on('progress', function (response) {
                 that.showWave = true
                 that.connectionText = '拨号中'
-                // $('#state0').html('拨号中')
                 if (response.status_code === 183 && response.body && this.hasOffer && !this.dialog) {
                     if (!response.hasHeader('require') || response.getHeader('require').indexOf('100rel') === -1) {
                         if (this.mediaHandler.hasDescription(response)) {
@@ -316,6 +332,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+    display: none;
+}
 .sidebarLogoFade-enter-active {
     transition: opacity 0.5s;
 }
@@ -464,7 +483,7 @@ export default {
     color: #fff;
 }
 .topBox {
-    height: 210px;
+    height: 194px;
     padding: 15px 0 0;
 }
 .icon_loading {

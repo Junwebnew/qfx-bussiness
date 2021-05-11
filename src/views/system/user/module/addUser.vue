@@ -242,7 +242,7 @@ export default {
 
             this.form = obj
 
-            console.log(obj)
+            // console.log(obj)
 
             if (obj.id) {
                 this.getUserRole(obj.id)
@@ -312,7 +312,7 @@ export default {
                     // console.log('000000', this.form.companyId)
                     // return
                     qmxUserUpdate(this.form).then(res => {
-                        console.log(111, res)
+                        // console.log(111, res)
                         this.addUserRole(res.data)
                     })
                 }
@@ -324,7 +324,7 @@ export default {
 
             qmxSaveUserRole({ userId: id, roleIdList: this.form.roleIds, id: this.form.id })
                 .then(res => {
-                    console.log('角色新增成功', res)
+                    // console.log('角色新增成功', res)
                     this.msgSuccess(str)
                     this.open = false
                     this.$emit('backGetList')

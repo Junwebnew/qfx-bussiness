@@ -77,14 +77,6 @@
                         <span class="b col">{{item.value}}</span>
                     </li>
                 </ul>
-                <!-- <template v-for="(item,idx) in resourceTotal">
-                    <el-col :md='4' :sm="6" :xs="12" :key='idx' v-show='item.value != 0 '>
-                        <p class="mb10 pointer" @click="goPage( item.id )">
-                            <label>{{item.name}}：</label>
-                            <span class="b col ml5">{{item.value}}</span> 条
-                        </p>
-                    </el-col>
-                </template> -->
             </el-row>
         </div>
         <!-- //图标 -->
@@ -95,7 +87,16 @@
                         成单金额统计 <small class="col-hui f12">(默认查询当月 {{timer.orderformTimeStart}} ~ {{timer.orderformTimeEnd}} )</small>
                         <router-link class="col fr f14" to="/center/finishManage/finishStatistics">更多></router-link>
                     </p>
-                    <div ref="myChart1" class="myChart"></div>
+                    <el-row :gutter="10" class="chartBox">
+                        <el-col :md='12' :sm="24" :xs="24" class="l">
+                            <div ref="myChart1" class="myChart"></div>
+                        </el-col>
+                        <el-col :md='12' :sm="24" :xs="24" class="l">
+                            <div class="staticBox">
+
+                            </div>
+                        </el-col>
+                    </el-row>
                 </div>
             </el-col>
             <el-col :md='12' :sm="24" :xs="24" class='r'>
@@ -203,10 +204,13 @@ export default {
     },
     mounted() {
 
-        //防止canvas 动画未停止
+        //防止登录页canvas 动画未停止
         window.CanvasStop && window.CanvasStop()
 
         this.myChart.a = echarts.init(this.$refs.myChart1, null, { devicePixelRatio: 2.5 });
+
+        window.onresize = this.myChart.a.resize;
+
         this.handleQuery()
 
         totalCountResourse().then(res => {
@@ -227,7 +231,9 @@ export default {
 
                 this.bussTodayArr = res[0].data
 
-                this.initCharts(this.myChart.a, '总金额', res[1].data.businessTypeCountList, this.assTotal(res[1].data.businessTypeCountList))
+                let businessTypeCountList = res[1].data.businessTypeCountList
+
+                this.initCharts(this.myChart.a, '总金额', businessTypeCountList, this.assTotal(businessTypeCountList))
             })
 
         },
@@ -260,7 +266,7 @@ export default {
                 title: {
                     text: titStr,
                     subtext: "￥" + total,
-                    left: '27%',
+                    left: '50%',
                     top: '40%',
                     textAlign: 'center',
                     padding: [5, 0],
@@ -281,9 +287,10 @@ export default {
                 },
                 color: ['#3aa1ff', '#36cbcb', '#4ecb73', '#fbd437', '#f2637b', '#975fe5', '#2f54eb', '#fa541c'],
                 legend: {
+                    show: false,
                     orient: 'vertical', //布局方式，默认水平布局，另可选vertical
                     top: '50',
-                    left: '57%',
+                    left: '50%',
                     itemWidth: 8,　　　　　　　//图例大小  我这里用的是圆
                     itemGap: 16,　　　　　　　　//图例之间的间隔
                     y: '80%',　　　　　　　　　　//垂直放的位置，可以写top，center，bottom，也可以写px或者百分比。x轴方向同理，默认center
@@ -344,9 +351,13 @@ export default {
                     {
                         name: '成单金额统计',
                         type: 'pie',
-                        radius: ['45%', '65%'],
+                        radius: ['80%', '50%'],
+                        // center: ['27%', '50%'],
+                        // radius: ['50%', '50%'],
+                        center: ['50%', '50%'],
+                        width: '100%',
+                        height: "100%",
                         avoidLabelOverlap: false,
-                        center: ['27%', '50%'],
                         data: chartData,
                         label: {
                             formatter: '{b} : {c} ',
@@ -374,11 +385,11 @@ export default {
         //页面跳转
         goPage(id) {
             var resoursesPage = [
-                { id: "1344173032301821954", url: '/resources/recent-apply' }, { id: "1344241701388201986", url: '/resources/objection-analysis' },
-                { id: "1344173049066455042", url: '/resources/renewal' }, { id: "1344173216280772609", url: '/resources/agency-cancel' },
-                { id: "1344173201047060482", url: '/resources/change' }, { id: "1344241701266567170", url: '/resources/reject' },
-                { id: "1344241701547585538", url: '/resources/resource-buy' }, { id: "1344241701484670977", url: '/resources/white-list' },
-                { id: "1344241701484670978", url: '/resources/serving-notice' }
+                { id: "1344173032301821954", url: '/resources/tm/recent-apply' }, { id: "1344241701388201986", url: '/resources/tm/objection-analysis' },
+                { id: "1344173049066455042", url: '/resources/tm/renewal' }, { id: "1344173216280772609", url: '/resources/tm/agency-cancel' },
+                { id: "1344173201047060482", url: '/resources/tm/change' }, { id: "1344241701266567170", url: '/resources/tm/reject' },
+                { id: "1344241701547585538", url: '/resources/tm/resource-buy' }, { id: "1344241701484670977", url: '/resources/tm/white-list' },
+                { id: "1344241701484670978", url: '/resources/tm/serving-notice' }
             ]
             let goItem = resoursesPage.filter(i => i.id == id)
             this.$router.push(goItem[0].url)
@@ -471,7 +482,7 @@ export default {
 }
 .myChart {
     height: 360px;
-    width: 530px;
+    width: 100%;
     margin: 0 auto;
     // border: 1px solid #eaeaea;
 }

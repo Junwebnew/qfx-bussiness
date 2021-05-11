@@ -197,6 +197,14 @@ function setInfoMsg(commit, user) {
     commit('SET_SUPER', user.accountType)
     commit('SET_NAME', user.name)
     commit('SET_AVATAR', avatar)
+
+    //坐席号 开发模式下  没有坐席号 就默认一个
+    if (process.env.NODE_ENV != 'production') {
+        user.seatNumber = user.seatNumber || '8008'
+    }
+
+
+
     commit('SET_USER', user)
 
 }

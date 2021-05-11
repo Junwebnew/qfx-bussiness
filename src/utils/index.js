@@ -455,3 +455,57 @@ export function backAascaderArr(arr, value, params = {}) {
     return loop(arr);
 
 }
+
+
+// 防抖
+export function JsFangDou(fn, time = 100) {
+    let times = null;
+    return function () {
+        clearTimeout(times)
+        times = setTimeout(() => {
+            fn.apply(this, arguments)
+        }, time)
+    }
+}
+
+//节流
+export function JsJieLiu(fn, time = 100) {
+    let canRun = true;
+    return function () {
+        if (!canRun) return;
+        canRun = false;
+        setTimeout(() => {
+            fn.apply(this, arguments)
+            canRun = true;
+        }, time)
+    }
+
+}
+
+//防重复点击
+
+function preventRepeatClickOld() {
+    let canRun = true;
+
+    return function (fn, time = 1000) {
+        if (!canRun) return;
+        canRun = false;
+        fn()
+        setTimeout(() => {
+            canRun = true;
+        }, time)
+    }
+
+}
+
+export var preventRepeatClick = new preventRepeatClickOld()
+
+// 防重复触发
+// export var preventRepeatClick = function (obj, dely = 1000) {
+//     if (obj.callFlag) return true;
+//     obj.callFlag = !obj.callFlag;
+//     clearTimeout(obj.iTime);
+//     obj.iTime = setTimeout(function () {
+//         obj.callFlag = !obj.callFlag;
+//     }, dely);
+// }

@@ -129,8 +129,8 @@
                             </template>
                         </el-table-column>
                         <el-table-column label="部门" prop="organizationName" :show-overflow-tooltip="true" />
+                        <el-table-column label="坐席号" prop="seatNumber" :show-overflow-tooltip="true" />
                         <el-table-column label="角色名称" prop="userRoleName" :show-overflow-tooltip="true" />
-
                         <el-table-column label="登录账号" prop="loginName" width="120" />
                         <el-table-column label="手机号码" prop="mobile" width="120" />
                         <el-table-column label="审核状态" width="84" v-if="superAdmin">
@@ -152,7 +152,7 @@
                                 <span>{{ parseTime(scope.row.createTime) }}</span>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" align="left" width="170" class-name="small-padding fixed-width" fixed="right">
+                        <el-table-column label="操作" align="left" width="130" class-name="small-padding fixed-width" fixed="right">
                             <template slot-scope="scope">
                                 <el-button class="col-update" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleUpdate(scope.row)" v-hasPermi="['t-edit']">修改</el-button>
                                 <el-button class="col-del" v-if="isShowBtn(scope.row)" size="mini" type="text" @click="handleDelete(scope.row)" v-hasPermi="['t-del']">删除</el-button>
@@ -234,7 +234,7 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 import { mapGetters } from 'vuex'
-
+import { deepClone } from '@/utils/index'
 
 export default {
     name: "User",
@@ -592,11 +592,11 @@ export default {
             row.orgId = row.organizationId
 
             if (row.accountType === 0) {
-                this.$refs.addMainUser.showFunc(row, '修改主用户')
+                this.$refs.addMainUser.showFunc(deepClone(row), '修改主用户')
             }
             else {
 
-                this.$refs.addUser.showFunc(row, '修改用户')
+                this.$refs.addUser.showFunc(deepClone(row), '修改用户')
             }
 
 
@@ -624,36 +624,6 @@ export default {
             //       });
             //     }).catch(() => {});
 
-        },
-        /** 提交按钮 */
-        submitForm: function () {
-            this.$refs["form"].validate(valid => {
-                if (valid) {
-
-                    let str = this.form.id != undefined ? '修改成功' : '新增成功'
-
-                    console.log(111, this.form)
-
-                    this.form.loginName = this.form.mobile
-
-                    qmxUserUpdate(this.form).then(res => {
-                        console.log(111, res)
-                    })
-                    //   if (this.form.id != undefined) {
-                    //     updateUser(this.form).then(response => {
-                    //       this.msgSuccess("修改成功");
-                    //       this.open = false;
-                    //       this.getList();
-                    //     });
-                    //   } else {
-                    //     addUser(this.form).then(response => {
-                    //       this.msgSuccess("新增成功");
-                    //       this.open = false;
-                    //       this.getList();
-                    //     });
-                    //   }
-                }
-            });
         },
         /** 删除按钮操作 */
         handleDelete(row) {
