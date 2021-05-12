@@ -714,6 +714,13 @@ export const asyncAllRoutes = [
                         meta: { title: "商标求购", noCache: false },
                     },
                     {
+                        name: "resource-sell",
+                        path: "resource-sell",
+                        hidden: false,
+                        component: "resources/resource-sell/index",
+                        meta: { title: "商标出售", noCache: false },
+                    },
+                    {
                         name: "serving-notice",
                         path: "serving-notice",
                         hidden: false,

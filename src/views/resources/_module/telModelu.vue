@@ -7,12 +7,14 @@
                 <template slot-scope="scope">
                     <div class='operation'>
                         <el-button size="mini" type="text" @click="getResourse(scope.row)">领取</el-button>
-                        <el-button size="mini" class="col-green" type="text" @click="getNewNumber(scope.row)">拨打</el-button>
-                        <el-button size="mini" v-show='scope.row.businessId' class="col-red" type="text" @click="addMarksFunc(scope.row)">备注</el-button>
+                        <!-- <el-button size="mini" class="col-green" type="text" @click="getNewNumber($event,scope.row,1)">拨打</el-button> -->
+                        <el-button size="mini" class="col-green" type="text" @click="getNewNumber($event,scope.row,2)">复制</el-button>
+                        <el-button size="mini" v-show='scope.row.businessId || true' class="col-red" type="text" @click="addMarksFunc(scope.row)">备注</el-button>
                     </div>
                 </template>
             </el-table-column>
         </el-table>
+        <span ref='copy' style="display:none" @click="testCopy($event)">复制</span>
         <!-- 新增备注 -->
         <addMarks ref='addMarks' @finish='finish' />
     </div>
@@ -20,11 +22,12 @@
 </template>
 
 <script>
-import { qmxDept } from "@/api/system/dept";
+import { qmxDept, qmxDetailDept } from "@/api/system/dept";
 import { receiveResource, getResourcePhoneNumber } from "@/api/resources";
 import Global from "@/layout/components/global.js";
 import addMarks from "./addMarks";
 import { mapGetters } from 'vuex'
+import { $CliCopy } from '@/utils/installTools.js'
 export default {
     components: { addMarks },
     props: {
@@ -53,10 +56,8 @@ export default {
             'mainAccount',
             'companyId'
         ]),
-    },
-    computed: {
         urlTypeStr() {
-            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList/', 'notice/arrive/noticeArrive', 'resource/notContinues', 'externalResourceInput']
+            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList', 'notice/arrive/noticeArrive', 'resource/notContinues', 'externalResourceInput']
 
             return arr[this.resourcesModule - 1]
         },
@@ -72,15 +73,20 @@ export default {
             /*分配给谁*/
             distributionToUserId: '',
             /*所属业务（1：线索 2：商机）*/
-            businessBelong: 2,
+            businessBelong: 1,
+            selsectedPhone: false,
         }
     },
     mounted() {
         qmxDetailDept(this.companyId).then(response => {
 
-            this.businessBelong = response.data.receiveClueOppWay == 1 ? 1 : 2
+            // console.log('99999', response)
+
+            this.businessBelong = response.data.receiveClueOppWay == 2 ? 2 : 1
 
         });
+
+        // console.log('1', this.$refs.copy)
     },
     methods: {
         getResourse(row) {
@@ -150,7 +156,7 @@ export default {
                 })
         },
         //获取真实的号码号码
-        getNewNumber(row) {
+        getNewNumber(event, row, type) {
 
 
             //坐席号
@@ -175,8 +181,6 @@ export default {
 
             this.formationBussiness(row, (data) => {
 
-
-
                 that.$set(row, 'businessId', data.data)
 
                 that.$set(row, 'type', data.msg)
@@ -186,15 +190,25 @@ export default {
                 that.getRealPhone(row)
                     .then(phone => {
 
-
                         that.$set(row, 'phone', phone)
+                        //拨打电话
+                        if (type == 1) {
+                            Global.$emit("takePhone", phone)
+                        }
+                        //复制电话
+                        else if (type == 2) {
 
-                        Global.$emit("takePhone", phone)
+                            that.selsectedPhone = phone
 
+                            that.$nextTick(() => {
+                                that.$refs.copy.click()
+                            })
+                        }
                     })
                     .catch(error => {
                         console.log('错误：', error)
                     })
+
 
             })
         },
@@ -221,6 +235,9 @@ export default {
         },
         finish() {
 
+        },
+        testCopy(e) {
+            $CliCopy(e, this.selsectedPhone)
         }
     }
 }

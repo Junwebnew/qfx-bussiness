@@ -3,11 +3,7 @@
         <div class="back-fff form-box mb10" v-show="showSearch">
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
                 <el-row :gutter="20">
-                    <el-col :lg="6" :sm="12" :xs="24">
-                        <el-form-item label="状态" prop="applicantName" class="el-form-item-none">
-                            <el-input v-model="queryParams.applicantName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
-                        </el-form-item>
-                    </el-col>
+
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="注册号" prop="applicantName" class="el-form-item-none">
                             <el-input v-model="queryParams.applicantName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
@@ -18,14 +14,20 @@
                             <el-input v-model="queryParams.applicantName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="申请人" prop="address" class="el-form-item-none">
                             <el-input v-model="queryParams.address" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" align='right'>
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
+                        <el-form-item label="状态" prop="applicantName" class="el-form-item-none">
+                            <el-input v-model="queryParams.applicantName" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
+                        </el-form-item>
+                    </el-col>
+                    <el-col :lg="6" :sm="12" :xs="24" class="el-form-item-none mt2">
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                        <SwitchForm :showSwitch.sync="showSwitch" />
                     </el-col>
                 </el-row>
             </el-form>

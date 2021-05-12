@@ -13,19 +13,32 @@
                             <el-input v-model="form.remarkContent" type="textarea" maxLength='200' placeholder="请输入内容"></el-input>
                         </el-form-item>
                     </el-col>
+                    <el-col :span='24' class="f12" v-if="type != 2">
+
+                        <p class="fl mr10" style="line-height:2;margin-left:15px">
+                            <i class="el-icon-warning col-warn" style=""></i>
+                            提示：
+                        </p>
+                        <p style="overflow:hidden;color:#888;line-height:2">
+                            点击转为商机备注，此条资源会由线索转为商机，<br>转为商机备注后请在<span class="col-warn">我的商机</span>中查看此条资源。<br>
+                        </p>
+                    </el-col>
                 </el-row>
             </el-form>
+
         </div>
 
         <div slot="footer" class="dialog-footer">
-            <el-button @click="open = false">取 消</el-button>
-            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="open = false" size='small' class="fl">取 消</el-button>
+            <el-button type="primary" size='small' @click="submitForm(1)">{{type != 2 ? '线索' : '商机' }}备注</el-button>
+            <el-button type="warning" size='small' @click="submitForm(2)" v-if="type != 2">转为商机备注</el-button>
         </div>
     </el-dialog>
 </template>
 <script>
 
 import { clueMarksUpdate, clueTipsUpdate } from "@/api/center";
+import { clueChangToOpp } from "@/api/center";
 
 export default {
     data() {
@@ -63,7 +76,7 @@ export default {
             // document.body.appendChild(this.$el);
         },
         /** 提交按钮 */
-        submitForm: function () {
+        submitForm: function (type) {
             this.$refs["form"].validate(valid => {
                 if (valid) {
 
@@ -72,27 +85,45 @@ export default {
                     this.form.remindContent = this.form.remarkContent
                     let that = this
 
-                    function isNeedTips() {
-                        if (that.form.remindDate) {
-                            if (that.form.remindDate.indexOf('00:00') == -1) {
-                                that.form.remindDate = that.form.remindDate + ':00:00'
-                            }
-                            return clueTipsUpdate(that.form)
-                        }
-                        return []
-                    }
+                    //线索再转一次商机
+                    if (type == 2) {
 
-                    Promise.all([
-                        isNeedTips(),
-                        clueMarksUpdate(this.form)
-                    ]).then(res => {
-                        this.msgSuccess('新增成功');
-                        this.open = false;
-                        this.$emit('finish');
-                    })
+                        this.form.type = 2
+
+                        clueChangToOpp({ id: that.businessId })
+                            .then(res => {
+                                that.form.businessId = res.data
+                                that.addMarksFunc()
+                            })
+                        return
+                    }
+                    this.addMarksFunc()
                 }
             });
         },
+        addMarksFunc() {
+
+            let that = this
+
+            function isNeedTips() {
+                if (that.form.remindDate) {
+                    if (that.form.remindDate.indexOf('00:00') == -1) {
+                        that.form.remindDate = that.form.remindDate + ':00:00'
+                    }
+                    return clueTipsUpdate(that.form)
+                }
+                return []
+            }
+
+            Promise.all([
+                isNeedTips(),
+                clueMarksUpdate(that.form)
+            ]).then(res => {
+                this.msgSuccess('新增成功');
+                this.open = false;
+                this.$emit('finish');
+            })
+        }
     }
 }
 </script>

@@ -203,8 +203,6 @@ function setInfoMsg(commit, user) {
         user.seatNumber = user.seatNumber || '8008'
     }
 
-
-
     commit('SET_USER', user)
 
 }

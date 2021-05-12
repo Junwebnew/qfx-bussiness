@@ -32,27 +32,27 @@
                             <el-input v-model="queryParams.applicationNameCn" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="申请人地址" prop="userAddress" class="el-form-item-none">
                             <el-input v-model="queryParams.userAddress" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="代理机构" prop="agency" class="el-form-item-none">
                             <el-input v-model="queryParams.agency" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24">
+                    <el-col :lg="6" :sm="12" :xs="24" v-show="showSwitch">
                         <el-form-item label="号码类型" prop="phoneType" class="el-form-item-none">
                             <el-select v-model="queryParams.phoneType" clearable size="small" style="width: 100%">
                                 <el-option v-for="dict in phoneTypeArr" :key="dict.value" :label="dict.key" :value="dict.value" />
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none">
+                    <el-col :lg="6" :sm="12" :xs="24" align='right' class="el-form-item-none mt2">
                         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
                         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-
+                        <SwitchForm :showSwitch.sync="showSwitch" />
                     </el-col>
                 </el-row>
 

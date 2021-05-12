@@ -16,11 +16,9 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-                    <el-col :span='12' align='right'>
-                        <el-form-item class="el-form-item-none ml20">
-                            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-                            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                        </el-form-item>
+                    <el-col :lg="6" :sm="12" :xs="24" class="el-form-item-none mt2">
+                        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                     </el-col>
                 </el-row>
             </el-form>

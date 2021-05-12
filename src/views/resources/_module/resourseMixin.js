@@ -8,6 +8,7 @@ export default {
             applicantTypeEnum: [],
             //电话类型
             phoneTypeArr: [],
+            showSwitch: false, //展开与关闭
         }
     },
     mounted() {

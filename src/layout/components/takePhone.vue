@@ -85,6 +85,9 @@ export default {
 
         //开发环境，暂时不能使用
 
+
+        return
+
         this.initPhoneSet('init')
 
         let that = this
@@ -118,6 +121,8 @@ export default {
 
             //坐席号
             let seatNumber = this.$store.state.user.userInfo.seatNumber || ''
+
+            console.log('9999', seatNumber)
 
             if (!seatNumber && !seatNumber.trim()) {
 
@@ -235,8 +240,6 @@ export default {
             };
             var sss = this.SSS = this.UA.invite('sip:' + this.telNum + '@cc.666vps.xyz', options);
 
-
-            // console.error('9999999999999999999999')
             var that = this
 
             sss.on('accepted', function (data) {//接听
