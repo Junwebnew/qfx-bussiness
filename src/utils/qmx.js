@@ -30,3 +30,9 @@ Vue.prototype.$headImg = {
     img: headerImg,
     error: 'this.src="' + headerImg + '"',
 }
+
+//打开新的页面
+Vue.prototype.$openNewView = (url) => {
+    var newTab = window.open();
+    newTab.location = url
+}

@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="back-fff form-box mb10" v-show="showSearch && superAdmin">
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
-                <el-row :gutter="20" class="mb20-20-0">
+                <el-row :gutter="10" class="mb20-20-0">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="电话号码" prop="phone" class="el-form-item-none" v-if="superAdmin">
                             <el-input v-model="queryParams.phone" placeholder="请输入电话号码" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />

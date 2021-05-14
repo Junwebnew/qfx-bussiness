@@ -3,9 +3,9 @@
         <div class="mb10 custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
-                <el-col :sm="17" :xs="24">
+                <el-col :sm="16" :xs="24">
                     <div class="back-fff pad20 custom-box full-height2 posRelative">
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :span="24" class="mb16">
                                 <p class=" tit">资源信息</p>
                             </el-col>
@@ -51,7 +51,7 @@
                     </div>
                 </el-col>
                 <!-- //右侧 -->
-                <el-col :sm="7" :xs="24">
+                <el-col :sm="8" :xs="24">
                     <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
                         <phoneList :phoneList.sync='phoneList' resourcesModule='10' :resourceId='json.id' @reload='receiveAfter' />

@@ -8,9 +8,9 @@
                 <!-- //左侧 -->
                 <el-col>
                     <div class="back-fff pad20 ">
-                        <el-row :gutter="20" class="mb16">
+                        <el-row :gutter="10" class="mb16">
                             <el-col :span="24" class="mb16 tit">
-                                <el-row :gutter="20">
+                                <el-row :gutter="10">
                                     <el-col :lg="3" :sm="3" :xs="12">
                                         <span>基本信息</span>
                                     </el-col>
@@ -21,7 +21,7 @@
                                 </el-row>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :sm="10" :xs="24" class="mb16">
                                 <span class="custom-label">客户名称：</span>
                                 <div class="custom-r">
@@ -110,9 +110,9 @@
                         </el-row>
                     </div>
                     <div class="mt10 back-fff pad20 custom-box">
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :span="24" class="mb16 tit">
-                                <el-row :gutter="20">
+                                <el-row :gutter="10">
                                     <el-col :lg="3" :sm="3" :xs="12">
                                         <span>备注信息</span>
                                     </el-col>

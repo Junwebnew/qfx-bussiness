@@ -2,7 +2,7 @@
 
     <transition name="sidebarLogoFade">
 
-        <div class="phoneBox" v-show="phoneShow" v-drag>
+        <div class="phoneBox noSelect" v-show="phoneShow" v-drag>
             <span class="el-icon-close close" @click=" phoneShow = false"></span>
             <div class="tit"> 拨打电话 <span class="status" :class="{'green':status}"></span></div>
             <div class="iptBox">
@@ -85,9 +85,6 @@ export default {
 
         //开发环境，暂时不能使用
 
-
-        return
-
         this.initPhoneSet('init')
 
         let that = this
@@ -106,18 +103,24 @@ export default {
     methods: {
         //展开
         showTakeBox(bool) {
+
             if (!this.phoneShow && !this.status) {
 
                 this.phoneShow = true
 
                 this.initPhoneSet()
             }
+            else if (!this.telNum && this.phoneShow) {
+                this.phoneShow = false
+            }
             else
-
-                this.phoneShow = bool || !this.phoneShow
+                this.phoneShow = bool
 
         },
         initPhoneSet(type) {
+
+
+            return
 
             //坐席号
             let seatNumber = this.$store.state.user.userInfo.seatNumber || ''
@@ -199,7 +202,7 @@ export default {
 
 
                 if (!this.status) {
-                    this.msgError('电话连接失败，请稍后再试！')
+                    // this.msgError('电话连接失败，请稍后再试！')
                     return
                 }
 

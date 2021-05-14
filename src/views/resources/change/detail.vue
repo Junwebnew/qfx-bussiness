@@ -3,12 +3,12 @@
         <div class="custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
-                <el-col :sm="17" :xs="24">
+                <el-col :sm="16" :xs="24">
                     <div class="full-height-auto">
 
                         <div class="back-fff pad20 custom-box posRelative">
                             <resoursePrice :resourcesModule='5' :applicationType='json.applicationType' />
-                            <el-row :gutter="20">
+                            <el-row :gutter="10">
                                 <el-col :span="24" class="mb16">
                                     <p class=" tit">申请人信息</p>
                                 </el-col>
@@ -34,7 +34,7 @@
                             </el-row>
                         </div>
                         <div class="mt10 back-fff pad20 custom-box">
-                            <el-row :gutter="20">
+                            <el-row :gutter="10">
                                 <el-col :span="24" class="mb16">
                                     <p class=" tit">变更信息</p>
                                 </el-col>
@@ -69,7 +69,7 @@
                         </div>
 
                         <div class="mt10 back-fff pad20 custom-box">
-                            <el-row :gutter="20">
+                            <el-row :gutter="10">
                                 <el-col :span="24" class="mb16">
                                     <p class=" tit">申请人相关商标</p>
                                 </el-col>
@@ -108,7 +108,7 @@
                     </div>
                 </el-col>
                 <!-- //右侧 -->
-                <el-col :sm="7" :xs="24">
+                <el-col :sm="8" :xs="24">
                     <div class="back-fff pad20 full-height2">
                         <p class="tit mb16">联系信息</p>
                         <phoneList :phoneList='json.phoneList' resourcesModule='5' :resourceId='json.id' @reload='receiveAfter' />
@@ -237,20 +237,3 @@ export default {
     }
 }
 </script>
-// <style lang="scss" scoped>
-// .timeList {
-//     padding: 0 30px;
-//     ::v-deep .el-image-viewer__close .el-icon-circle-close {
-//         color: #ffffff;
-//     }
-//     ::v-deep .el-timeline-item__timestamp {
-//         font-size: 14px;
-//         color: #2d8cf0;
-//         font-weight: bold;
-//     }
-//     ::v-deep .el-timeline-item__content {
-//         color: #515a6e;
-//     }
-// }
-//
-</style>

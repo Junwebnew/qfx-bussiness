@@ -442,7 +442,8 @@ ul::-webkit-scrollbar-thumb {
     overflow: hidden;
     line-height: 2;
     color: #515a6e;
-    margin-bottom: 10px;
+    min-height: 24px;
+    margin-bottom: 6px;
     .imgBox {
       width: 180px;
       height: 160px;
@@ -457,6 +458,18 @@ ul::-webkit-scrollbar-thumb {
       }
     }
   }
+}
+
+//资源列表-图片盒子
+.resourse-img-box{
+    width: 80px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    img{
+        max-width: 100%;
+        max-height: 100%;
+    }
 }
 
 /* 拖拽列样式 */

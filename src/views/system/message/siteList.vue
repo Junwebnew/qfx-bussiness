@@ -3,7 +3,7 @@
         <div class="back-fff form-box mb10" v-show="showSearch">
 
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
-                <el-row :gutter="20">
+                <el-row :gutter="10">
 
                     <el-col :lg="12" :sm="24" :xs="24">
                         <el-form-item label="公司名称:" prop="orgId">
@@ -26,7 +26,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="消息状态" prop="isRelease" class="el-form-item-none">
                             <el-select v-model="queryParams.isRelease" size="small" clearable style="width: 100%">

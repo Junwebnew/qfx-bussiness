@@ -4,7 +4,7 @@
         <div class="pad20">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
                             <el-input v-model="form.customerName" :disabled='disabled' placeholder="请输入..." maxlength="50" />
@@ -17,7 +17,7 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="联系电话" prop="contactPhone">
                             <el-input v-model="form.contactPhone" placeholder="请输入..." maxlength="11" />
@@ -29,7 +29,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="联系微信" prop="contactWx">
                             <el-input v-model="form.contactWx" placeholder="请输入..." maxlength="50" />
@@ -44,7 +44,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="资源类型" prop="resourceType">
                             <el-cascader :props="seProps" :options="resourceTypeArr" :disabled='disabled' style="width:100%;" :size='"small"' v-model='form.resourceType' clearable></el-cascader>
@@ -56,7 +56,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20" v-show='whetherAdmin'>
+                <el-row :gutter="10" v-show='whetherAdmin'>
                     <el-col :span="12">
                         <el-form-item label="所属商务" prop="counselorId">
                             <!-- <el-input v-model="form.counselorId" :disabled='disabled' placeholder="请输入..." type="text" maxlength="50" /> -->

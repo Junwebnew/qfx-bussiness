@@ -82,8 +82,11 @@ div:focus {
 }
 
 .inlineBlock {
-  display: block;
+  display: inline-block;
 }
+.inline {
+    display: inline;
+  }
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
@@ -260,7 +263,7 @@ img {
 
 
 //页面双击的时候产生阴影 选中.....
-div,span{
+.noSelect{
     -moz-user-select:none;/*火狐*/
     -webkit-user-select:none;/*webkit浏览器*/
     -ms-user-select:none;/*IE10*/

@@ -4,7 +4,7 @@
         <div class="pad0-20">
             <el-form ref="form" :model="form" :rules="rules" label-width="80px">
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <!-- <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
                             <el-input v-model="form.customerName" :disabled='disabled' placeholder="请输入..." maxlength="50" />
@@ -26,7 +26,7 @@
 
                 </el-row>
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="联系人" prop="contactName">
                             <el-input v-model="form.contactName" placeholder="请输入..." type="text" maxlength="50" />
@@ -39,7 +39,7 @@
                     </el-col>
 
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="联系QQ" prop="contactQq">
                             <el-input v-model="form.contactQq" placeholder="请输入..." type="text" maxlength="50" />
@@ -51,7 +51,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="商机状态" prop="followStatus">
                             <el-select v-model="form.followStatus" :disabled='disabled' clearable size="small" style="width: 100%">
@@ -66,7 +66,7 @@
                     </el-col>
 
                 </el-row>
-                <el-row :gutter="20" v-show='whetherAdmin'>
+                <el-row :gutter="10" v-show='whetherAdmin'>
                     <el-col :span="12">
                         <el-form-item label="业务类型" prop="vocId">
                             <el-cascader :props="seProps" :options="vocIdArr" style="width:100%;" :size='"small"' v-model='form.vocId' clearable></el-cascader>
@@ -218,10 +218,14 @@ export default {
 
             this.form.counselorId = this.userId
 
+            console.log(999, obj)
+
             if (obj.id) {
 
                 this.form = obj
                 this.disabled = true
+
+                this.searchName(obj.customerName)
             }
 
             this.open = true

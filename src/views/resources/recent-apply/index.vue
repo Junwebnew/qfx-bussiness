@@ -3,7 +3,7 @@
         <div class=" back-fff full-height">
             <div class="form-box " v-show="showSearch">
                 <el-form :model="queryParams" ref="queryForm" v-show="showSearch" label-width="100px">
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
                         <el-col :lg="6" :sm="12" :xs="24">
                             <el-form-item label="代理机构" prop="agency" class="el-form-item-none">
                                 <el-input v-model="queryParams.agency" placeholder="模糊:请输入..." clearable size="small" @keyup.enter.native="handleQuery" />
@@ -71,11 +71,13 @@
                 </el-row>
 
                 <el-table v-loading="loading" :data="tableData" row-key="id">
-                    <el-table-column prop="name" label="商标图样" align='center' width='80'>
+                    <el-table-column prop="name" label="商标图样" align='center' width='100'>
                         <template slot-scope="scope">
-                            <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col imgBox">
-                                <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''">
-                            </a>
+                            <div class="resourse-img-box">
+                                <a @click="checkDetail(scope.row)" href="javascript:void(0)" class="col">
+                                    <img :src="$getImg(scope.row.graphicStyle,2) || scope.row.originalGraphicStyle || ''">
+                                </a>
+                            </div>
                         </template>
                     </el-table-column>
                     <el-table-column label="注册号" width='90' prop="trademarkNumber">

@@ -4,7 +4,7 @@
         <div class="pad0-20">
             <el-form ref="form" :model="form" :rules="rules" label-width="96px">
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="企业名称" prop="companyName">
                             <el-input v-model="form.companyName" :disabled='disabled' placeholder="" maxlength="50" />
@@ -16,7 +16,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="企业地址" prop="companyAddress">
                             <el-input v-model="form.companyAddress" placeholder="" type="text" maxlength="50" />
@@ -28,7 +28,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="联系情况" prop="contactSituation">
                             <el-input v-model="form.contactSituation" :disabled='disabled' placeholder="" maxlength="50" />
@@ -42,7 +42,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" v-model="form.remark" placeholder="" maxlength="500" />

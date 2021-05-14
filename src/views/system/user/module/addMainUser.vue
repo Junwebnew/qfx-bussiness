@@ -4,7 +4,7 @@
         <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body :close-on-click-modal='false'>
             <div class="pad20">
                 <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
 
                         <el-col :span="24">
                             <el-form-item label="归属部门" prop="orgId">
@@ -23,7 +23,7 @@
                         </el-col>
                     </el-row>
 
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
                         <el-col :span="12">
                             <el-form-item label="手机号码" prop="mobile">
                                 <el-input v-model="form.mobile" placeholder="请输入手机号码" maxlength="11" />
@@ -35,7 +35,7 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
                         <el-col :span="12">
                             <el-form-item label="用户性别">
                                 <el-select v-model="form.gender" placeholder="请选择" style="width:100%">
@@ -61,7 +61,7 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
 
                         <el-col :span="24">
                             <el-form-item label="角色" prop="roleIds">

@@ -20,7 +20,7 @@
             <el-col :span="19" :xs="24" class="">
                 <div class="l-t back-fff pad20 mb10" v-show="showSearch">
                     <el-form :model="queryParams" ref="queryForm" label-width="80px">
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :lg="8" :sm="12" :xs="24">
                                 <el-form-item label="用户名称" prop="name" class="el-form-item-none">
                                     <el-input v-model="queryParams.name" placeholder="请输入用户名称" clearable size="small" style="width: 100%" @keyup.enter.native="handleQuery" />
@@ -65,7 +65,7 @@
 
                 <div class="back-fff pad20">
 
-                    <el-row :gutter="20">
+                    <el-row :gutter="10">
                         <el-col :span="4" class="lin32">
                             <span class="f18">用户列表</span>
                         </el-col>

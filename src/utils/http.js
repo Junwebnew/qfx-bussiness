@@ -39,7 +39,7 @@ http.interceptors.request.use(
         }
 
         if (url.indexOf('?form') > 0) {   //切换Content-Type
-            config.headers.['Content-Type'] = 'application/x-www-form-urlencoded'
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
             url = url.replace('?form', '')
         }
 
@@ -47,7 +47,7 @@ http.interceptors.request.use(
             url = url.replace('?token', '')
         }
         else {
-            config.headers.['x-access-token'] = getToken()
+            config.headers['x-access-token'] = getToken()
         }
 
         config.url = url
@@ -64,6 +64,9 @@ http.interceptors.request.use(
 // 添加响应拦截器
 http.interceptors.response.use(
     function (res) {
+
+
+        // console.log('22222222222222222', res)
 
 
         if (loading) {
@@ -113,7 +116,7 @@ http.interceptors.response.use(
     },
     function (error) {
 
-        // console.error(error.response)
+        // console.error('错误', error.response)
 
         if (loading) {
             loading.close()

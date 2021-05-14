@@ -3,7 +3,7 @@
         <div class="back-fff form-box mb10" v-show="showSearch">
             <!-- 
             <el-form :model="queryParams" ref="queryForm" label-width="120px">
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :lg="8" :sm="12" :xs="24">
                         <el-form-item label="部门名称" prop="name" class="el-form-item-none">
                             <el-input v-model="queryParams.name" placeholder="请输入部门名称" style="width: 100%" clearable size="small" @keyup.enter.native="handleQuery" />

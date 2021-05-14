@@ -6,17 +6,17 @@
         <div class="mb10 custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
-                <el-col :sm="16" :xs="24">
+                <el-col :sm="16" :xs="24" class="full-height-auto">
                     <div class="back-fff pad20 posRelative">
                         <resoursePrice :resourcesModule='3' :applicationType='json.applicationType' />
-                        <el-row :gutter="20" class="mb16">
+                        <el-row :gutter="10" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :xs="24">
-                                <el-row :gutter="20">
+                                <el-row :gutter="10">
                                     <el-col :sm="12" :xs="24" class="mb16">
                                         <span class="custom-label">商标名称：</span>
                                         <div class="custom-r">
@@ -58,7 +58,7 @@
                         </el-row>
                     </div>
                     <div class="mt10 back-fff pad20 custom-box">
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :span="24" class="mb16">
                                 <p class=" tit">申请人信息</p>
                             </el-col>

@@ -3,17 +3,17 @@
         <div class="mb10 custom-box">
             <el-row :gutter="10">
                 <!-- //左侧 -->
-                <el-col :sm="16" :xs="24">
+                <el-col :sm="16" :xs="24" class="full-height-auto">
                     <div class="back-fff pad20 posRelative" id='detail'>
                         <resoursePrice :resourcesModule='9' :applicationType='json.applicationType' />
-                        <el-row :gutter="20" class="mb16">
+                        <el-row :gutter="10" class="mb16">
                             <el-col :span="24">
                                 <p class="tit">基本信息</p>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :sm="12" :xs="24">
-                                <el-row :gutter="20">
+                                <el-row :gutter="10">
                                     <el-col :sm="24" :xs="24" class="mb16">
                                         <span class="custom-label">公告期号：</span>
                                         <div class="custom-r">
@@ -43,13 +43,14 @@
                             <el-col :sm="12" :xs="24" class="mb16">
                                 <span class="custom-label"> 公告文件：</span>
                                 <div class="custom-r">
-                                    <div class="imgBox">
-                                        <el-image :src="$getImg(json.noticeFile) ||  ''" :alt="'商标图样'" :preview-src-list="[$getImg(json.noticeFile,1)]"></el-image>
+                                    <div class="imgBox pointer">
+
+                                        <img :src="$getImg(json.noticeFile,2)" @click="$openNewView( $getImg(json.noticeFile,1) ) ">
                                     </div>
                                 </div>
                             </el-col>
                         </el-row>
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :sm="12" :xs="24" class="mb16">
                                 <span class="custom-label">申请日期：</span>
                                 <div class="custom-r">
@@ -65,7 +66,7 @@
                         </el-row>
                     </div>
                     <div class="mt10 back-fff pad20 custom-box">
-                        <el-row :gutter="20">
+                        <el-row :gutter="10">
                             <el-col :span="24" class="mb16">
                                 <p class=" tit">申请人信息</p>
                             </el-col>

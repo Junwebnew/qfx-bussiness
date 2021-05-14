@@ -2,14 +2,14 @@
     <div>
         <el-table :data="phoneList" row-key="id" class="table" v-loading='loading'>
             <!-- <el-table-column type="index" width="40"></el-table-column> -->
-            <el-table-column label="联系方式" prop="phone"></el-table-column>
+            <el-table-column label="联系方式" prop="phone" width='134'></el-table-column>
             <el-table-column label="操作" align='center'>
                 <template slot-scope="scope">
                     <div class='operation'>
                         <el-button size="mini" type="text" @click="getResourse(scope.row)">领取</el-button>
-                        <!-- <el-button size="mini" class="col-green" type="text" @click="getNewNumber($event,scope.row,1)">拨打</el-button> -->
-                        <el-button size="mini" class="col-green" type="text" @click="getNewNumber($event,scope.row,2)">复制</el-button>
-                        <el-button size="mini" v-show='scope.row.businessId || true' class="col-red" type="text" @click="addMarksFunc(scope.row)">备注</el-button>
+                        <el-button size="mini" type="text" @click="getNewNumber($event,scope.row,1)">拨打</el-button>
+                        <el-button size="mini" type="text" @click="getNewNumber($event,scope.row,2)">复制</el-button>
+                        <el-button size="mini" v-show='scope.row.businessId' class="col-red" type="text" @click="addMarksFunc(scope.row)">备注</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -45,7 +45,7 @@ export default {
             default: 2
         },
 
-        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:企业白名单,8:送达公告,9:到期未续展,10:外部资源的导入*/
+        /*资源类型 1:近日申请,2:异议分析,3:商标续展,4:代理注销,5:商标变更,6:疑似驳回,7:企业白名单,8:送达公告,9:到期未续展,10:外部资源的导入,11:商标出售*/
 
         resourcesModule: {
             type: String | Number
@@ -57,13 +57,13 @@ export default {
             'companyId'
         ]),
         urlTypeStr() {
-            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList', 'notice/arrive/noticeArrive', 'resource/notContinues', 'externalResourceInput']
+            let arr = ['resource/trademark', 'objectionanalysis', 'resource/continues', 'resource/agencyCancel', 'resource/change', 'resource/reject', 'resource/whiteList', 'notice/arrive/noticeArrive', 'resource/notContinues', 'externalResourceInput', '']
 
             return arr[this.resourcesModule - 1]
         },
         resourcesModuleType() {
 
-            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170', '1344241701484670977', '1344241701484670978', '1344241701547586666', '外部资源无']
+            let arr = ['1344173032301821954', '1344241701388201986', '1344173049066455042', '1344173216280772609', '1344173201047060482', '1344241701266567170', '1344241701484670977', '1344241701484670978', '1344241701547586666', '外部资源无', '商标出售无']
             return arr[this.resourcesModule - 1]
         }
     },
@@ -116,10 +116,25 @@ export default {
             that.loading = true
 
             //如果是10 外部资源形成商机
-
             if (this.resourcesModule == 10) {
 
                 this.$axios.get(this.urlTypeStr + '/receive?id=' + row.id)
+                    .then(res => {
+
+                        that.loading = false
+                        cb && cb(res)
+                    })
+                    .catch(res => {
+                        that.loading = false
+                    })
+
+                return
+            }
+
+            //如果是11 外部资源形成商机
+            if (this.resourcesModule == 11) {
+
+                this.$axios.get('transaction/sellTrademark/receive/new?id=' + row.id)
                     .then(res => {
 
                         that.loading = false
@@ -158,6 +173,22 @@ export default {
         //获取真实的号码号码
         getNewNumber(event, row, type) {
 
+            //已经形成了线索或商机了的第二次的点击
+            if (row.businessId && this.selsectedPhone) {
+
+                //拨打电话
+                if (type == 1) {
+                    Global.$emit("takePhone", row.phone)
+                }
+                //复制电话
+                else if (type == 2) {
+
+                    this.selsectedPhone = row.phone
+
+                    that.$refs.copy.click()
+                }
+                return
+            }
 
             //坐席号
             let seatNumber = this.$store.state.user.userInfo.seatNumber || ''
@@ -212,11 +243,11 @@ export default {
 
             })
         },
-        //区分是否需要真实的号码 如果是10 外部资源不需要拉取
+        //区分是否需要真实的号码 如果是10，11 外部资源不需要拉取
         getRealPhone(row) {
             return new Promise((resolve) => {
 
-                if (this.resourcesModule == 10) {
+                if (this.resourcesModule == 10 || this.resourcesModule == 11) {
                     resolve(row.phone)
                     return
                 }

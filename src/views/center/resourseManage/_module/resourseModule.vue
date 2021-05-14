@@ -4,7 +4,7 @@
         <div class="pad0-20">
             <el-form ref="form" :model="form" :rules="rules" label-width="96px">
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
                             <el-input v-model="form.customerName" :disabled='disabled' placeholder="" maxlength="50" />
@@ -16,7 +16,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="手机号" prop="mobilePhone">
                             <el-input v-model="form.mobilePhone" :disabled='disabled' placeholder="" maxlength="11" />
@@ -28,7 +28,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="QQ" prop="qq">
                             <el-input v-model="form.qq" placeholder="" type="text" maxlength="50" />
@@ -42,7 +42,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
 
                     <el-col :span="12">
                         <el-form-item label="申请人类型" prop="applicationType">
@@ -57,7 +57,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <!-- <el-col :span="12">
                         <el-form-item label="商机状态" prop="followStatus">
                             <el-select v-model="form.followStatus" :disabled='disabled' clearable size="small" style="width: 100%">
@@ -71,7 +71,7 @@
                         </el-form-item>
                     </el-col> -->
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
 
                     <el-col :span="12">
                         <el-form-item label="分配部门" prop="allocationDept">
@@ -91,7 +91,7 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" v-model="form.remark" placeholder="" maxlength="500" />

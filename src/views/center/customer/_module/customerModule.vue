@@ -4,7 +4,7 @@
         <div class="pad0-20">
             <el-form ref="form" :model="form" :rules="rules" label-width="96px">
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="客户名称" prop="customerName">
                             <el-input v-model="form.customerName" :disabled='disabled' placeholder="" maxlength="50" />
@@ -16,7 +16,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="企业名称" prop="companyName">
                             <el-input v-model="form.companyName" :disabled='disabled' placeholder="" maxlength="50" />
@@ -28,7 +28,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="手机号" prop="mobilePhone">
                             <el-input v-model="form.mobilePhone" :disabled='disabled' placeholder="" maxlength="11" />
@@ -40,7 +40,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="固话" prop="fixedTel">
                             <el-input v-model="form.fixedTel" :disabled='disabled' placeholder="" maxlength="50" />
@@ -53,7 +53,7 @@
                     </el-col>
                 </el-row>
 
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="官网" prop="officialWebsite">
                             <el-input v-model="form.officialWebsite" placeholder="" maxlength="100" />
@@ -65,7 +65,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="12">
                         <el-form-item label="客户来源" prop="customerSource">
                             <el-select v-model="form.customerSource" :disabled='disabled' clearable size="small" style="width: 100%">
@@ -81,7 +81,7 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :span="24">
                         <el-form-item label="备注" prop="remark">
                             <el-input type="textarea" v-model="form.remark" placeholder="" maxlength="500" />

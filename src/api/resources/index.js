@@ -218,6 +218,53 @@ export function externalResourceManage(data) {
 }
 
 
+//******************************************** 商标出售 ******************************************** 
+
+/**
+ *  商标出售 分页查询
+ */
+export function sellTrademarkList(str) {
+
+    return $axios.get('transaction/sellTrademark/sellPageList?' + str)
+}
+
+/* id 详情*/
+
+export function sellTrademarkDetail(id) {
+    return $axios.get('transaction/sellTrademark/getById?id=' + id)
+}
+
+
+//******************************************** 寻找持有人 ******************************************** 
+
+/**
+ *   寻找持有人 分页查询
+ */
+export function holderList(data) {
+
+    return $axios.post('searchholder/page/list', data)
+}
+
+/* id 详情*/
+
+export function holderDetail(id) {
+    return $axios.post('searchholder/get', '"' + id + '"')
+}
+
+
+// 创建任务
+
+export function holderCreated(data) {
+    return $axios.post('searchholder/createTask', data)
+}
+
+// 结束任务
+
+export function holderCancel(id) {
+    return $axios.post('/searchholder/finishTask?id=' + id)
+}
+
+
 // ******************************************** 资源领取 ************************************
 
 //资源领取为线索

@@ -2,7 +2,7 @@
     <div class="app-container">
         <div class="back-fff pad20-20-0 mb10" v-show="showSearch && superAdmin">
             <el-form :model="queryParams" ref="queryForm" v-show="showSearch" @submit.native.prevent label-width="90px">
-                <el-row :gutter="20">
+                <el-row :gutter="10">
                     <el-col :lg="6" :sm="12" :xs="24">
                         <el-form-item label="公司名称" prop="orgId">
                             <el-select v-model="queryParams.orgId" style="width:100%" clearable placeholder="请选择" size="small" @keyup.enter.native="handleQuery">
