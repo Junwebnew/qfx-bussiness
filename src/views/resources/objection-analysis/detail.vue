@@ -1,12 +1,11 @@
 <template>
     <div class="app-container">
-        <div class="mb10 custom-box">
+        <div class="mb10 custom-box" id='detail'>
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24">
                     <div class="full-height-auto">
-
-                        <div class="back-fff pad20 posRelative" id='detail'>
+                        <div class="back-fff pad20 posRelative">
                             <resoursePrice :resourcesModule='2' :applicationType='json.applicationType' />
                             <el-row :gutter="10" class="mb16">
                                 <el-col :span="24">
@@ -204,8 +203,6 @@ export default {
 
             const loading = this.$loading({
                 lock: true,
-                spinner: 'el-icon-loading',
-                background: 'rgba(255, 255, 255, 0.7)',
                 target: "#detail"
             });
 

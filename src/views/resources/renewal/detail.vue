@@ -3,7 +3,7 @@
         <!-- <div class="head-parts mb10">
             <div class="words">{{title}}</div>
         </div> -->
-        <div class="mb10 custom-box">
+        <div class="mb10 custom-box" id='detail'>
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24" class="full-height-auto">
@@ -122,10 +122,15 @@ export default {
 
             id = id || this.json.id
 
+            const loading = this.$eleLoading("#detail");
+
             renewalrDetail(id)
                 .then(res => {
                     this.title = (res.data.tmName || '') + ' 续展详情页'
                     this.json = res.data
+                    loading.close()
+                }).catch(() => {
+                    loading.close()
                 })
         },
         //领取后

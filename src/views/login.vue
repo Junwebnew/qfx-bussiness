@@ -68,7 +68,7 @@
 
         <!--  底部  -->
         <div class="el-login-footer">
-            <span>Copyright © 2020-2021 成都权明星科技有限公司 版权所有</span>
+            <span>Copyright © 2021-2024 成都权明星科技有限公司 版权所有</span>
         </div>
     </div>
 </template>
@@ -181,8 +181,8 @@ export default {
                     this.$store
                         .dispatch("Login", this.loginForm)
                         .then(() => {
-                            this.$router.push({ path: this.redirect || "/" },( msg ) => {
-                                console.log('9999',msg)
+                            this.$router.push({ path: this.redirect || "/" }, (msg) => {
+                                console.log('9999', msg)
                             });
                         })
                         .catch((err) => {

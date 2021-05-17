@@ -8,7 +8,7 @@ publicUrl = 'http://192.168.0.13:9007/'
 
 // publicUrl = 'http://39.99.128.104:9007/'
 
-// publicUrl = 'https://qufax.zaiqicloud.com:9007/'
+publicUrl = 'https://qufax.zaiqicloud.com:9007/'
 
 
 //图片请求地址
@@ -33,8 +33,7 @@ const resourseConfig = [
     { id: "1344241701484670977", name: "企业白名单", key: 'white-list' },
     { id: "1344241701484670978", name: "送达公告", key: 'serving-notice' },
     { id: "1344241701547586666", name: "到期未续展", key: 'notContinues' },
-    { id: "1344241701547586688", name: "外部资源导入", key: 'otherResourse"' },
-
+    { id: "1344241701547586688", name: "外部资源导入", key: 'otherResourse"' }
 ]
 
 

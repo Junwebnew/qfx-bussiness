@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="mb10 custom-box">
+        <div class="mb10 custom-box" id='detail'>
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24" class="full-height-auto">
@@ -101,12 +101,17 @@ export default {
 
             id = id || this.json.id
 
+            const loading = this.$eleLoading("#detail");
+
             companyWhiteDetail(id)
                 .then(res => {
 
                     this.title = (res.data.applicantName || '')
 
                     this.json = res.data
+                    loading.close()
+                }).catch(() => {
+                    loading.close()
                 })
         },
         //领取后

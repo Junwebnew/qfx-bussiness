@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="mb10 custom-box">
+        <div class="mb10 custom-box" id='detail'>
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24">
@@ -109,14 +109,15 @@ export default {
 
             id = id || this.json.id
 
+            const loading = this.$eleLoading("#detail");
+
             agencyCancelDetail(id)
                 .then(res => {
                     this.title = (res.data.tmName || '') + ' 机构注销详情'
                     this.json = res.data
-                    // if (type != 'second') {
-                    //     this.getPrice(res.data.applicationType)
-                    // }
-
+                    loading.close()
+                }).catch(() => {
+                    loading.close()
                 })
         },
         //领取后

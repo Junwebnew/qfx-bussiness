@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <div class="custom-box">
+        <div class="custom-box" id='detail'>
             <el-row :gutter="10">
                 <!-- //左侧 -->
                 <el-col :sm="16" :xs="24">
@@ -159,6 +159,8 @@ export default {
             applicationId = applicationId || this.json.applicationId
             id = id || this.json.id
 
+            const loading = this.$eleLoading("#detail");
+
             Promise.all([
                 changeDetail(id),
                 changeApplicationList(applicationId)
@@ -173,6 +175,9 @@ export default {
                     this.changeVoList = res[1].data
 
                     this.getApplicationList()
+                    loading.close()
+                }).catch(() => {
+                    loading.close()
                 })
         },
         //领取后
